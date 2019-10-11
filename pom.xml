@@ -6,7 +6,7 @@
 
 	<groupId>com.dwarfeng</groupId>
 	<artifactId>flight-data-recorder</artifactId>
-	<version>0.0.1-alpha</version>
+	<version>alpha-0.0.1.a-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
@@ -51,8 +51,6 @@
 		<spring.data.redis.version>1.7.11.RELEASE</spring.data.redis.version>
 		<hibernate.version>5.3.13.Final</hibernate.version>
 		<dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
-		<!-- 本程序版本生命 -->
-		<flight-data-recorder.version>0.0.1-alpha</flight-data-recorder.version>
 	</properties>
 
 	<!-- 声明资源的坐标 -->
@@ -281,7 +279,7 @@
 			<dependency>
 				<groupId>com.dwarfeng</groupId>
 				<artifactId>flight-data-recorder-stack-bean</artifactId>
-				<version>${flight-data-recorder.version}</version>
+				<version>alpha-0.0.1.a-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
