@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -23,9 +22,8 @@
 		<!-- 进行版本声明 -->
 		<!-- 集中定义依赖版本号 -->
 		<junit.version>4.12</junit.version>
-		<spring.version>4.3.18.RELEASE</spring.version>
-		<mysql.version>5.1.32</mysql.version>
-		<slf4j.version>1.6.4</slf4j.version>
+		<spring.version>5.1.10.RELEASE</spring.version>
+		<mysql.version>8.0.16</mysql.version>
 		<fastJson.version>1.2.47</fastJson.version>
 		<druid.version>1.0.9</druid.version>
 		<jstl.version>1.2</jstl.version>
@@ -45,12 +43,14 @@
 		<httpcomponents.version>4.4.1</httpcomponents.version>
 		<noggit.version>0.6</noggit.version>
 		<zookeeper.version>3.4.6</zookeeper.version>
-		<log4j.version>1.2.17</log4j.version>
 		<aspectj.version>1.8.2</aspectj.version>
 		<aopalliance.version>1.0</aopalliance.version>
 		<spring.data.redis.version>1.7.11.RELEASE</spring.data.redis.version>
 		<hibernate.version>5.3.13.Final</hibernate.version>
+		<log4j2.version>2.12.1</log4j2.version>
 		<dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
+		<!-- Maven插件版本声明 -->
+		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
 	</properties>
 
 	<!-- 声明资源的坐标 -->
@@ -87,12 +87,6 @@
 				<artifactId>zookeeper</artifactId>
 				<version>${zookeeper.version}</version>
 			</dependency>
-			<!-- 时间操作组件 -->
-			<dependency>
-				<groupId>joda-time</groupId>
-				<artifactId>joda-time</artifactId>
-				<version>${joda-time.version}</version>
-			</dependency>
 			<!-- Apache工具组件 -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -115,6 +109,7 @@
 				<artifactId>fastjson</artifactId>
 				<version>${fastJson.version}</version>
 			</dependency>
+			<!-- Dubbo分布式包 -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>dubbo</artifactId>
@@ -135,28 +130,24 @@
 				<scope>test</scope>
 			</dependency>
 			<!-- 日志处理 -->
+			<!-- 日志处理 -->
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>${slf4j.version}</version>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-slf4j-impl</artifactId>
+				<version>${log4j2.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${log4j.version}</version>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>${log4j2.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>com.github.pagehelper</groupId>
-				<artifactId>pagehelper</artifactId>
-				<version>${pagehelper.version}</version>
-			</dependency>
-			<!-- MySql -->
+			<!-- MySql连接器 -->
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.version}</version>
 			</dependency>
-			<!-- 连接池 -->
+			<!-- Druid连接池 -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>druid</artifactId>
@@ -185,11 +176,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
-				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
 				<artifactId>spring-tx</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
@@ -201,6 +187,16 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aspects</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<!-- JSP相关 -->
@@ -281,8 +277,25 @@
 				<artifactId>flight-data-recorder-stack-bean</artifactId>
 				<version>alpha-0.0.1.a-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>com.dwarfeng</groupId>
+				<artifactId>flight-data-recorder-stack-persistence</artifactId>
+				<version>alpha-0.0.1.a-SNAPSHOT</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>${maven-clean-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<modules>
 		<module>flight-data-recorder-stack</module>

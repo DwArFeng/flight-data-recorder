@@ -2,13 +2,7 @@ package com.dwarfeng.fdr.stack.bean.entity;
 
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
 
-/**
- * 数据点。
- * 
- * @author DwArFeng
- * @since 0.0.1-alpha
- */
-public interface Datapoint extends Entity<NameKey> {
+public interface Point extends Entity<NameKey> {
 
 	/**
 	 * 获取数据点的类型。
@@ -18,11 +12,11 @@ public interface Datapoint extends Entity<NameKey> {
 	public String getType();
 
 	/**
-	 * 数据点是否被启用。
+	 * 数据点是否记录历史数据。
 	 * 
-	 * @return 数据点是否被启用。
+	 * @return 是否记录历史数据。
 	 */
-	public boolean isEnabled();
+	public boolean isRecord();
 
 	/**
 	 * 获取数据点的备注。

@@ -5,12 +5,12 @@ import java.util.Date;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 /**
- * 历史值。
+ * 值。
  * 
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface Datavalue extends Entity<UuidKey> {
+public interface Value extends Entity<UuidKey> {
 
 	/**
 	 * 获取历史值的发生日期。
@@ -25,12 +25,5 @@ public interface Datavalue extends Entity<UuidKey> {
 	 * @return 历史值的值。
 	 */
 	public String getValue();
-
-	/**
-	 * 获取历史的触发器信息。
-	 * 
-	 * @return 历史的触发器信息。
-	 */
-	public String getTriggerMessage();
 
 }

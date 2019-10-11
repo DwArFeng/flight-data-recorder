@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.constraint;
 
-import com.dwarfeng.fdr.stack.bean.entity.Datavalue;
+import com.dwarfeng.fdr.stack.bean.entity.Value;
 
 /**
  * 数据值约束。
@@ -8,6 +8,6 @@ import com.dwarfeng.fdr.stack.bean.entity.Datavalue;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface DatavalueConstraint extends Constraint<Datavalue> {
+public interface ValueConstraint extends Constraint<Value> {
 
 }

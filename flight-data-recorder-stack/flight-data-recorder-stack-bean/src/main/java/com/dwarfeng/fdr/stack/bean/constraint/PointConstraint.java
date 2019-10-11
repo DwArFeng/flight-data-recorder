@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.constraint;
 
-import com.dwarfeng.fdr.stack.bean.entity.Datapoint;
+import com.dwarfeng.fdr.stack.bean.entity.Point;
 
 /**
  * 数据点约束。
@@ -8,6 +8,6 @@ import com.dwarfeng.fdr.stack.bean.entity.Datapoint;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface DatapointConstraint extends Constraint<Datapoint> {
+public interface PointConstraint extends Constraint<Point> {
 
 }
