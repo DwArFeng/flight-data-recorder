@@ -12,11 +12,11 @@ public interface Point extends Entity<NameKey> {
 	public String getType();
 
 	/**
-	 * 数据点是否记录历史数据。
+	 * 数据点是否持久化。
 	 * 
-	 * @return 是否记录历史数据。
+	 * @return 数据点是否持久化记录数据。
 	 */
-	public boolean isRecord();
+	public boolean isPersistence();
 
 	/**
 	 * 获取数据点的备注。

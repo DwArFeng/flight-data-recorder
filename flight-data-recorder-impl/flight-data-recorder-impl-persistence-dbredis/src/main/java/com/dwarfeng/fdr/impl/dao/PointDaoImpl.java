@@ -8,7 +8,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.dwarfeng.fdr.stack.bean.constraint.PointConstraint;
-import com.dwarfeng.fdr.stack.bean.dto.PagingInfo;
+import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
 import com.dwarfeng.fdr.stack.dao.PointDao;
@@ -46,7 +46,7 @@ public class PointDaoImpl implements PointDao {
 	}
 
 	@Override
-	public List<Point> select(PointConstraint constraint, PagingInfo pagingInfo) {
+	public List<Point> select(PointConstraint constraint, LookupPagingInfo pagingInfo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

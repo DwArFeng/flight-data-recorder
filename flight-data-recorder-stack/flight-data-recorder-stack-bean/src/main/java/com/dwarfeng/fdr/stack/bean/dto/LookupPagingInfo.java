@@ -1,12 +1,12 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
 /**
- * 分页信息对象。
+ * 查询分页信息对象。
  * 
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface PagingInfo {
+public interface LookupPagingInfo {
 
 	/**
 	 * 是否启用分页功能。

@@ -37,9 +37,9 @@ public class PointImpl implements Point {
 	@JSONField(name = "type", ordinal = 2)
 	private String type;
 
-	@Column(name = "record")
-	@JSONField(name = "record", ordinal = 3)
-	private Boolean record;
+	@Column(name = "persistence")
+	@JSONField(name = "persistence", ordinal = 3)
+	private Boolean persistence;
 
 	@Column(name = "remark", length = 255, nullable = true)
 	@JSONField(name = "remark", ordinal = 4)
@@ -77,12 +77,12 @@ public class PointImpl implements Point {
 		this.type = type;
 	}
 
-	public Boolean getRecord() {
-		return record;
+	public Boolean getPersistence() {
+		return persistence;
 	}
 
-	public void setRecord(Boolean record) {
-		this.record = record;
+	public void setPersistence(Boolean persistence) {
+		this.persistence = persistence;
 	}
 
 	@Override
@@ -108,8 +108,8 @@ public class PointImpl implements Point {
 	}
 
 	@Override
-	public boolean isRecord() {
-		return Optional.ofNullable(record).map(Boolean::booleanValue).orElse(false);
+	public boolean isPersistence() {
+		return Optional.ofNullable(persistence).map(Boolean::booleanValue).orElse(false);
 	}
 
 	@Override

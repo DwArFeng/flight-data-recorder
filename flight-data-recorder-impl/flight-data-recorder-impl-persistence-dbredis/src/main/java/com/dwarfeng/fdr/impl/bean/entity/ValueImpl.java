@@ -9,6 +9,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,15 +41,36 @@ public class ValueImpl implements Value {
 	@JSONField(name = "channel_channel_name", ordinal = 3)
 	private String channelChannelName;
 
+	@Column(name = "pervious_value_uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
+	@JSONField(name = "pervious_value_uuid", ordinal = 4)
+	private String perviousValueUuid;
+
+	@Column(name = "next_value_uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
+	@JSONField(name = "next_value_uuid", ordinal = 5)
+	private String nextValueUuid;
+
 	// -----------------------------------------------------------主属性字段-----------------------------------------------------------
 	@Column(name = "happened_date", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@JSONField(name = "happened_date", ordinal = 4)
+	@JSONField(name = "happened_date", ordinal = 6)
 	private Date happenedDate;
 
 	@Column(name = "value", length = 255, nullable = false)
-	@JSONField(name = "value", ordinal = 5)
+	@JSONField(name = "value", ordinal = 7)
 	private String value;
+
+	// -----------------------------------------------------------一对一-----------------------------------------------------------
+	@OneToOne(targetEntity = ValueImpl.class)
+	@JoinColumns({ //
+			@JoinColumn(name = "pervious_value_uuid", referencedColumnName = "uuid", insertable = false, updatable = false) //
+	})
+	private ValueImpl perviousValueImpl;
+
+	@OneToOne(targetEntity = ValueImpl.class)
+	@JoinColumns({ //
+			@JoinColumn(name = "next_value_uuid", referencedColumnName = "uuid", insertable = false, updatable = false) //
+	})
+	private ValueImpl nextValueImpl;
 
 	// -----------------------------------------------------------多对一-----------------------------------------------------------
 	@ManyToOne(targetEntity = ChannelImpl.class)
@@ -94,6 +116,22 @@ public class ValueImpl implements Value {
 		this.channelChannelName = channelChannelName;
 	}
 
+	public String getPerviousValueUuid() {
+		return perviousValueUuid;
+	}
+
+	public void setPerviousValueUuid(String perviousValueUuid) {
+		this.perviousValueUuid = perviousValueUuid;
+	}
+
+	public String getNextValueUuid() {
+		return nextValueUuid;
+	}
+
+	public void setNextValueUuid(String nextValueUuid) {
+		this.nextValueUuid = nextValueUuid;
+	}
+
 	@Override
 	public Date getHappenedDate() {
 		return happenedDate;
@@ -112,6 +150,22 @@ public class ValueImpl implements Value {
 		this.value = value;
 	}
 
+	public ValueImpl getPerviousValueImpl() {
+		return perviousValueImpl;
+	}
+
+	public void setPerviousValueImpl(ValueImpl perviousValueImpl) {
+		this.perviousValueImpl = perviousValueImpl;
+	}
+
+	public ValueImpl getNextValueImpl() {
+		return nextValueImpl;
+	}
+
+	public void setNextValueImpl(ValueImpl nextValueImpl) {
+		this.nextValueImpl = nextValueImpl;
+	}
+
 	public ChannelImpl getChannelImpl() {
 		return channelImpl;
 	}
@@ -128,7 +182,8 @@ public class ValueImpl implements Value {
 	@Override
 	public String toString() {
 		return "ValueImpl [uuid=" + uuid + ", channelPointName=" + channelPointName + ", channelChannelName="
-				+ channelChannelName + ", happenedDate=" + happenedDate + ", value=" + value + "]";
+				+ channelChannelName + ", perviousValueUuid=" + perviousValueUuid + ", nextValueUuid=" + nextValueUuid
+				+ ", happenedDate=" + happenedDate + ", value=" + value + "]";
 	}
 
 }

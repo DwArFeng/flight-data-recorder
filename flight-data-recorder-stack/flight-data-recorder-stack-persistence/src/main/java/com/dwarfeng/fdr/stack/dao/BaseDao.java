@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.stack.dao;
 import java.util.List;
 
 import com.dwarfeng.fdr.stack.bean.constraint.Constraint;
-import com.dwarfeng.fdr.stack.bean.dto.PagingInfo;
+import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Entity;
 import com.dwarfeng.fdr.stack.bean.key.Key;
 
@@ -52,7 +52,7 @@ public interface BaseDao<K extends Key, E extends Entity<K>, C extends Constrain
 	 * @param constraint 指定的约束。
 	 * @param pagingInfo 指定的分页信息。
 	 */
-	public List<E> select(C constraint, PagingInfo pagingInfo);
+	public List<E> select(C constraint, LookupPagingInfo pagingInfo);
 
 	/**
 	 * 查询指定约束下的元素的数量。
