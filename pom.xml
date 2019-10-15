@@ -48,6 +48,7 @@
 		<spring.data.redis.version>1.7.11.RELEASE</spring.data.redis.version>
 		<hibernate.version>5.3.13.Final</hibernate.version>
 		<log4j2.version>2.12.1</log4j2.version>
+		<dozer.version>5.5.1</dozer.version>
 		<dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
 		<!-- Maven插件版本声明 -->
 		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
@@ -261,6 +262,17 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
+			<!-- Dozer模块 -->
+			<dependency>
+				<groupId>net.sf.dozer</groupId>
+				<artifactId>dozer</artifactId>
+				<version>${dozer.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.dozer</groupId>
+				<artifactId>dozer-spring</artifactId>
+				<version>${dozer.version}</version>
+			</dependency>
 			<!-- dutil组件 -->
 			<dependency>
 				<groupId>com.dwarfeng</groupId>
@@ -272,6 +284,7 @@
 				<artifactId>dutil-develop</artifactId>
 				<version>${dutil.version}</version>
 			</dependency>
+			<!-- 程序自身组件 -->
 			<dependency>
 				<groupId>com.dwarfeng</groupId>
 				<artifactId>flight-data-recorder-stack-bean</artifactId>
@@ -280,6 +293,11 @@
 			<dependency>
 				<groupId>com.dwarfeng</groupId>
 				<artifactId>flight-data-recorder-stack-persistence</artifactId>
+				<version>alpha-0.0.1.a-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dwarfeng</groupId>
+				<artifactId>flight-data-recorder-stack-cache</artifactId>
 				<version>alpha-0.0.1.a-SNAPSHOT</version>
 			</dependency>
 		</dependencies>

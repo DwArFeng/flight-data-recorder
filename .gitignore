@@ -48,4 +48,10 @@ buildNumber.properties
 #################
 ## Logger Files
 #################
-flight-data-recorder-impl/flight-data-recorder-impl-persistence-dbredis/logs/
+flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/log/
+
+#################
+## Configuration Files
+#################
+flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/conf/
+

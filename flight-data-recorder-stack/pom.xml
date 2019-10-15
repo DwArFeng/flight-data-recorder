@@ -28,5 +28,6 @@
     <module>flight-data-recorder-stack-model</module>
     <module>flight-data-recorder-stack-handler</module>
     <module>flight-data-recorder-stack-service</module>
+    <module>flight-data-recorder-stack-cache</module>
   </modules>
 </project>
