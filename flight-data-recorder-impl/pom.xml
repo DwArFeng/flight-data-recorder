@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.dwarfeng</groupId>
-		<artifactId>flight-data-recorder</artifactId>
-		<version>alpha-0.0.1.a-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.dwarfeng</groupId>
+        <artifactId>flight-data-recorder</artifactId>
+        <version>alpha-0.0.1.a-SNAPSHOT</version>
+    </parent>
 
-	<packaging>pom</packaging>
+    <packaging>pom</packaging>
 
-	<artifactId>flight-data-recorder-impl</artifactId>
-	<name>flight-data-recorder-impl</name>
-	<url>http://maven.apache.org</url>
+    <artifactId>flight-data-recorder-impl</artifactId>
+    <name>flight-data-recorder-impl</name>
+    <url>http://maven.apache.org</url>
 
-	<properties>
-		<!-- 进行工程编码声明 -->
-		<!-- 进行JDK版本声明 -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-	</properties>
+    <properties>
+        <!-- 进行工程编码声明 -->
+        <!-- 进行JDK版本声明 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
-	<modules>
-		<module>flight-data-recorder-impl-persistence-hibernate</module>
-    <module>flight-data-recorder-impl-cache-redis</module>
-  </modules>
+    <modules>
+        <module>flight-data-recorder-impl-persistence-hibernate</module>
+        <module>flight-data-recorder-impl-cache-redis</module>
+        <module>flight-data-recorder-impl-record-dubbo</module>
+        <module>flight-data-recorder-impl-lookup-dubbo</module>
+        <module>flight-data-recorder-impl-maintain-self</module>
+    </modules>
 </project>
