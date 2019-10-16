@@ -38,10 +38,10 @@ public class ValueImpl implements Value {
 	@Column(name = "channel_channel_name", length = 255, nullable = true)
 	private String channelChannelName;
 
-	@Column(name = "pervious_value_uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
+	@Column(name = "pervious_value_uuid", columnDefinition = "CHAR(22)", nullable = true)
 	private String perviousValueUuid;
 
-	@Column(name = "next_value_uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
+	@Column(name = "next_value_uuid", columnDefinition = "CHAR(22)", nullable = true)
 	private String nextValueUuid;
 
 	// -----------------------------------------------------------主属性字段-----------------------------------------------------------

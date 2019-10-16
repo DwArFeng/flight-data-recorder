@@ -13,5 +13,9 @@
 
 	<!-- 设置配置文件的路径 -->
 	<context:property-placeholder location="classpath:connection/*.properties" local-override="true"
-		properties-ref="file:conf/connection/*.properties" />
+		properties-ref="refProperties" />
+
+	<bean id="refProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations" value="file:conf/connection/*.properties"></property>
+	</bean>
 </beans>
