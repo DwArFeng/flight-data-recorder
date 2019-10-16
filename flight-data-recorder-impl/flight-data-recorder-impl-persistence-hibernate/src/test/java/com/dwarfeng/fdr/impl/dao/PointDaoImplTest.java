@@ -1,6 +1,9 @@
 package com.dwarfeng.fdr.impl.dao;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -20,10 +23,10 @@ import com.dwarfeng.fdr.stack.exception.DaoException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:spring/application-context*.xml")
-public class DatapointDaoImplTest {
+public class PointDaoImplTest {
 
 	@Autowired
-	private PointDao datapointDao;
+	private PointDao pointDao;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -42,59 +45,62 @@ public class DatapointDaoImplTest {
 	}
 
 	@Test
-	public void testGet() {
-		fail("Not yet implemented");
+	@Transactional
+	public void testGet() throws DaoException {
+		PointImpl pointImpl = new PointImpl();
+		pointImpl.setKey(new NameKeyImpl("test-point"));
+		pointImpl.setPersistence(false);
+		pointImpl.setRemark("this is a test");
+		pointImpl.setType("string");
+		pointDao.insert(pointImpl);
+		Point point = pointDao.get(new NameKeyImpl("test-point"));
+		assertFalse(point.isPersistence());
+		assertEquals("this is a test", point.getRemark());
+		assertEquals("string", point.getType());
 	}
 
 	@Test
 	@Transactional
 	public void testInsert() throws DaoException {
 		PointImpl pointImpl = new PointImpl();
-		pointImpl.setKey(new NameKeyImpl("this-is-a-test"));
+		pointImpl.setKey(new NameKeyImpl("test-point"));
 		pointImpl.setPersistence(false);
 		pointImpl.setRemark("this is a test");
 		pointImpl.setType("string");
-		datapointDao.insert(pointImpl);
+		pointDao.insert(pointImpl);
 	}
 
 	@Test
-	public void testUpdate() {
-		fail("Not yet implemented");
+	@Transactional
+	public void testUpdate() throws DaoException {
+		PointImpl pointImpl = new PointImpl();
+		pointImpl.setKey(new NameKeyImpl("test-point"));
+		pointImpl.setPersistence(false);
+		pointImpl.setRemark("this is a test");
+		pointImpl.setType("string");
+		pointDao.insert(pointImpl);
+		pointImpl.setPersistence(true);
+		pointImpl.setRemark("this is an update test");
+		pointImpl.setType("integer");
+		pointDao.update(pointImpl);
+		Point point = pointDao.get(new NameKeyImpl("test-point"));
+		assertTrue(point.isPersistence());
+		assertEquals("this is an update test", point.getRemark());
+		assertEquals("integer", point.getType());
 	}
 
 	@Test
-	public void testDelete() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSelect() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSelectCount() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetDatavalue() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSetTriggerSetting() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testClearDatavalue() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testClearTriggerSetting() {
-		fail("Not yet implemented");
+	@Transactional
+	public void testDelete() throws DaoException {
+		PointImpl pointImpl = new PointImpl();
+		pointImpl.setKey(new NameKeyImpl("test-point"));
+		pointImpl.setPersistence(false);
+		pointImpl.setRemark("this is a test");
+		pointImpl.setType("string");
+		pointDao.insert(pointImpl);
+		pointDao.delete(new NameKeyImpl("test-point"));
+		Point point = pointDao.get(new NameKeyImpl("test-point"));
+		assertNull(point);
 	}
 
 	public static class NameKeyImpl implements NameKey {

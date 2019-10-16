@@ -64,7 +64,7 @@ public class PointDaoImpl implements PointDao {
 	public void delete(NameKey key) throws DaoException {
 		NameKeyImpl keyImpl = mapper.map(key, NameKeyImpl.class);
 		try {
-			hibernateTemplate.delete(key);
+			hibernateTemplate.delete(hibernateTemplate.get(PointImpl.class, keyImpl));
 			hibernateTemplate.flush();
 			hibernateTemplate.clear();
 		} catch (Exception e) {
