@@ -1,7 +1,6 @@
 #################
 ## Eclipse
 #################
-
 *.pydevproject
 .project
 .metadata
@@ -29,9 +28,14 @@ local.properties
 .buildpath
 
 #################
+## Idea
+#################
+**/*.iml
+.idea/
+
+#################
 ## Maven
 #################
-
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -53,5 +57,5 @@ flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/log/
 #################
 ## Configuration Files
 #################
-flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/conf/
+**/conf/
 
