@@ -14,6 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -151,34 +153,24 @@ public class ChannelDaoImplTest {
         }
 
         @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((channelName == null) ? 0 : channelName.hashCode());
-            result = prime * result + ((pointName == null) ? 0 : pointName.hashCode());
-            return result;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (Objects.isNull(o)) return false;
+            if (!(o instanceof ChannelKey)) return false;
+
+            ChannelKey that = (ChannelKey) o;
+
+            if (!Objects.equals(this.getPointName(), that.getPointName())) return false;
+            if (!Objects.equals(this.getChannelName(), that.getChannelName())) return false;
+
+            return true;
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            ChannelKeyImpl other = (ChannelKeyImpl) obj;
-            if (channelName == null) {
-                if (other.channelName != null)
-                    return false;
-            } else if (!channelName.equals(other.channelName))
-                return false;
-            if (pointName == null) {
-                if (other.pointName != null)
-                    return false;
-            } else if (!pointName.equals(other.pointName))
-                return false;
-            return true;
+        public int hashCode() {
+            int result = getPointName() != null ? getPointName().hashCode() : 0;
+            result = 31 * result + (getChannelName() != null ? getChannelName().hashCode() : 0);
+            return result;
         }
 
         @Override

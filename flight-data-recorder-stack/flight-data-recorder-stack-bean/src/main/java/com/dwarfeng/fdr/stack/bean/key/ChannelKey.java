@@ -22,4 +22,10 @@ public interface ChannelKey extends Key {
 	 */
 	public String getChannelName();
 
+	@Override
+	public boolean equals(Object obj);
+
+	@Override
+	public int hashCode();
+
 }

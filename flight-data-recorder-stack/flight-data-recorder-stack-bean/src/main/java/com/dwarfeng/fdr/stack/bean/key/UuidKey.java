@@ -15,4 +15,10 @@ public interface UuidKey extends Key {
 	 */
 	public String getUuid();
 
+	@Override
+	public boolean equals(Object obj);
+
+	@Override
+	public int hashCode();
+
 }

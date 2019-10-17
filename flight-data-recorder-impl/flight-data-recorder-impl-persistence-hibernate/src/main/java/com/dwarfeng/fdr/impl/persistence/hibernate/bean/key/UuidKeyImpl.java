@@ -2,60 +2,56 @@ package com.dwarfeng.fdr.impl.persistence.hibernate.bean.key;
 
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
+import java.util.Objects;
+
 public class UuidKeyImpl implements UuidKey {
 
-	private static final long serialVersionUID = -2968659158721861267L;
+    private static final long serialVersionUID = -2968659158721861267L;
 
-	public static UuidKeyImpl of(String uuid) {
-		return new UuidKeyImpl(uuid);
-	}
+    public static UuidKeyImpl of(String uuid) {
+        return new UuidKeyImpl(uuid);
+    }
 
-	private String uuid;
+    private String uuid;
 
-	public UuidKeyImpl() {
-	}
+    public UuidKeyImpl() {
+    }
 
-	public UuidKeyImpl(String uuid) {
-		this.uuid = uuid;
-	}
+    public UuidKeyImpl(String uuid) {
+        this.uuid = uuid;
+    }
 
-	@Override
-	public String getUuid() {
-		return uuid;
-	}
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	@Override
-	public String toString() {
-		return "UuidKeyImpl [uuid=" + uuid + "]";
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (Objects.isNull(o)) return false;
+        if (!(o instanceof UuidKey)) return false;
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
-		return result;
-	}
+        UuidKey that = (UuidKey) o;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UuidKeyImpl other = (UuidKeyImpl) obj;
-		if (uuid == null) {
-			if (other.uuid != null)
-				return false;
-		} else if (!uuid.equals(other.uuid))
-			return false;
-		return true;
-	}
+        if (!Objects.equals(this.getUuid(), that.getUuid())) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid() != null ? getUuid().hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "UuidKeyImpl [uuid=" + uuid + "]";
+    }
+
 
 }

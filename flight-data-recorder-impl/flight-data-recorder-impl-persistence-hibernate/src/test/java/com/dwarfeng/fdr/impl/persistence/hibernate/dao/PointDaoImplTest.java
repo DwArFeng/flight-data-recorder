@@ -13,6 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -112,28 +114,21 @@ public class PointDaoImplTest {
         }
 
         @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((name == null) ? 0 : name.hashCode());
-            return result;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (Objects.isNull(o)) return false;
+            if (!(o instanceof NameKey)) return false;
+
+            NameKey that = (NameKey) o;
+
+            if (!Objects.equals(this.getName(), that.getName())) return false;
+
+            return true;
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            NameKeyImpl other = (NameKeyImpl) obj;
-            if (name == null) {
-                if (other.name != null)
-                    return false;
-            } else if (!name.equals(other.name))
-                return false;
-            return true;
+        public int hashCode() {
+            return getName() != null ? getName().hashCode() : 0;
         }
 
         @Override

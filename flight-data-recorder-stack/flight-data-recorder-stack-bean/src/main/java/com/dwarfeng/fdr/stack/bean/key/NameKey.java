@@ -15,4 +15,10 @@ public interface NameKey extends Key {
 	 */
 	public String getName();
 
+	@Override
+	public boolean equals(Object obj);
+
+	@Override
+	public int hashCode();
+
 }
