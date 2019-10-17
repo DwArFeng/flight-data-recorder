@@ -52,10 +52,11 @@ buildNumber.properties
 #################
 ## Logger Files
 #################
-flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/log/
+/flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/log/
+/flight-data-recorder-sdk/log/
 
 #################
 ## Configuration Files
 #################
-**/conf/
-
+/flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/conf/
+/flight-data-recorder-sdk/conf/
