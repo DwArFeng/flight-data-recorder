@@ -5,7 +5,7 @@ import com.dwarfeng.fdr.impl.cache.redis.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
 import com.dwarfeng.fdr.stack.bean.entity.Value;
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
-import com.dwarfeng.fdr.stack.cache.ValueCache;
+import com.dwarfeng.fdr.stack.cache.ValueEntityCache;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -20,9 +20,9 @@ import java.util.concurrent.TimeUnit;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class ValueCacheImpl implements ValueCache {
+public class ValueEntityCacheImpl implements ValueEntityCache {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ValueCacheImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValueEntityCacheImpl.class);
 
     @Autowired
     private RedisTemplate<UuidKeyImpl, ValueImpl> redisTemplate;

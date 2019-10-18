@@ -5,7 +5,7 @@ import com.dwarfeng.fdr.impl.cache.redis.bean.key.NameKeyImpl;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSetting;
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
-import com.dwarfeng.fdr.stack.cache.TriggerSettingCache;
+import com.dwarfeng.fdr.stack.cache.TriggerSettingEntityCache;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -20,9 +20,9 @@ import java.util.concurrent.TimeUnit;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class TriggerSettingCacheImpl implements TriggerSettingCache {
+public class TriggerEntitySettingCacheImpl implements TriggerSettingEntityCache {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TriggerSettingCacheImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TriggerEntitySettingCacheImpl.class);
 
     @Autowired
     private RedisTemplate<NameKeyImpl, TriggerSettingImpl> redisTemplate;

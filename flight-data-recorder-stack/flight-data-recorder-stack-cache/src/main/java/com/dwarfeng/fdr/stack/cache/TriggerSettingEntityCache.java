@@ -11,5 +11,5 @@ import com.dwarfeng.fdr.stack.bean.key.NameKey;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface TriggerSettingCache extends BaseCache<NameKey, TriggerSetting> {
+public interface TriggerSettingEntityCache extends BaseCache<NameKey, TriggerSetting> {
 }

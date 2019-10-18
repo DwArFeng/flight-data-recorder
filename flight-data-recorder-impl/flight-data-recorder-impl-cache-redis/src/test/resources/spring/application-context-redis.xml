@@ -81,10 +81,8 @@
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
         <!--如果不配置Serializer，那么存储的时候缺省使用String，如果用User类型存储，那么会提示错误User can't cast to String！！  -->
-        <!--<property name="keySerializer">
+        <property name="keySerializer">
             <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
-        </property>-->
-        <property name="keySerializer" ref="fastJsonRedisSerializer">
         </property>
         <property name="valueSerializer" ref="fastJsonRedisSerializer"/>
         <property name="hashKeySerializer">

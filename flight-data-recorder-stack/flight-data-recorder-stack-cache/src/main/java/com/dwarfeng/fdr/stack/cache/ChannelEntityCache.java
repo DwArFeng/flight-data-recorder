@@ -8,5 +8,5 @@ import com.dwarfeng.fdr.stack.bean.key.ChannelKey;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface ChannelCache extends BaseCache<ChannelKey, Channel> {
+public interface ChannelEntityCache extends BaseCache<ChannelKey, Channel> {
 }

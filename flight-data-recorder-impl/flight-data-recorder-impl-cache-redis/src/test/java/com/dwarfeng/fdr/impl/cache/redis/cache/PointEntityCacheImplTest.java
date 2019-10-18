@@ -1,10 +1,11 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
+import com.dwarfeng.fdr.impl.cache.redis.bean.entity.PointImpl;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.NameKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
-import com.dwarfeng.fdr.stack.cache.PointCache;
+import com.dwarfeng.fdr.stack.cache.PointEntityCache;
 import com.dwarfeng.fdr.stack.exception.CacheException;
-import com.sun.xml.internal.messaging.saaj.soap.name.NameImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,15 +17,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
-public class PointCacheImplTest {
+public class PointEntityCacheImplTest {
 
     @Autowired
-    private PointCache pointCache;
+    private PointEntityCache pointEntityCache;
 
     @Before
     public void setUp() throws Exception {
@@ -36,28 +36,73 @@ public class PointCacheImplTest {
 
     @Test
     public void testExists() throws CacheException {
-        NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
-        assertFalse(pointCache.exists(nameKeyImpl));
+        pointEntityCache.delete(new NameKeyImpl("test-point"));
+        try {
+            NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
+            assertFalse(pointEntityCache.exists(nameKeyImpl));
+        } finally {
+            pointEntityCache.delete(new NameKeyImpl("test-point"));
+        }
     }
 
     @Test
-    public void get() {
+    public void testGet() throws CacheException {
+        pointEntityCache.delete(new NameKeyImpl("test-point"));
+        try {
+            assertNull(pointEntityCache.get(new NameKeyImpl("test-point")));
+            NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
+            PointImpl pointImpl = new PointImpl(nameKeyImpl, "string", false, "this is a test");
+            pointEntityCache.push(nameKeyImpl, pointImpl, 10, TimeUnit.MINUTES);
+            Point point = pointEntityCache.get(new NameKeyImpl("test-point"));
+            assertEquals("string", point.getType());
+            assertFalse(point.isPersistence());
+            assertEquals("this is a test", point.getRemark());
+        } finally {
+            pointEntityCache.delete(new NameKeyImpl("test-point"));
+        }
     }
 
     @Test
-    public void testGet() {
+    public void testGetKeyDefaultValue() throws CacheException {
+        pointEntityCache.delete(new NameKeyImpl("test-point"));
+        try {
+            NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
+            PointImpl pointImpl = new PointImpl(nameKeyImpl, "string", false, "this is a test");
+            Point point = pointEntityCache.get(new NameKeyImpl("test-point"), pointImpl);
+            assertEquals("string", point.getType());
+            assertFalse(point.isPersistence());
+            assertEquals("this is a test", point.getRemark());
+        } finally {
+            pointEntityCache.delete(new NameKeyImpl("test-point"));
+        }
     }
 
     @Test
     public void testPush() throws CacheException {
-        NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
-        PointImpl pointImpl = new PointImpl(nameKeyImpl, "string", false, "this is a test");
-        pointCache.push(nameKeyImpl, pointImpl, 10, TimeUnit.MINUTES);
-        assertTrue(pointCache.exists(nameKeyImpl));
+        pointEntityCache.delete(new NameKeyImpl("test-point"));
+        try {
+            NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
+            PointImpl pointImpl = new PointImpl(nameKeyImpl, "string", false, "this is a test");
+            pointEntityCache.push(nameKeyImpl, pointImpl, 10, TimeUnit.MINUTES);
+            assertTrue(pointEntityCache.exists(nameKeyImpl));
+        } finally {
+            pointEntityCache.delete(new NameKeyImpl("test-point"));
+        }
     }
 
     @Test
     public void delete() throws CacheException {
+        pointEntityCache.delete(new NameKeyImpl("test-point"));
+        try {
+            NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
+            PointImpl pointImpl = new PointImpl(nameKeyImpl, "string", false, "this is a test");
+            pointEntityCache.push(nameKeyImpl, pointImpl, 10, TimeUnit.MINUTES);
+            assertTrue(pointEntityCache.exists(new NameKeyImpl("test-point")));
+            pointEntityCache.delete(new NameKeyImpl("test-point"));
+            assertFalse(pointEntityCache.exists(new NameKeyImpl("test-point")));
+        } finally {
+            pointEntityCache.delete(new NameKeyImpl("test-point"));
+        }
 
     }
 

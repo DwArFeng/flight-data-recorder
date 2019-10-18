@@ -10,4 +10,6 @@
     <context:component-scan base-package="com.dwarfeng.fdr.impl.cache.redis.cache"/>
     <!--扫描aspect切面增强的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.sdk.interceptor"/>
+    <!--扫描aspect切面增强的实现包。 -->
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.cache.redis.configuration"/>
 </beans>
