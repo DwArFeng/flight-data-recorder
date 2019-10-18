@@ -1,40 +1,35 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
-import com.dwarfeng.fdr.impl.cache.redis.bean.entity.PointImpl;
+import com.dwarfeng.fdr.impl.cache.redis.bean.entity.TriggerSettingImpl;
 import com.dwarfeng.fdr.impl.cache.redis.bean.key.NameKeyImpl;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
-import com.dwarfeng.fdr.stack.bean.entity.Point;
+import com.dwarfeng.fdr.stack.bean.entity.TriggerSetting;
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
-import com.dwarfeng.fdr.stack.cache.PointCache;
+import com.dwarfeng.fdr.stack.cache.TriggerSettingCache;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 数据点缓存的实现。
- *
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-@Repository
-public class PointCacheImpl implements PointCache {
+public class TriggerSettingCacheImpl implements TriggerSettingCache {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PointCacheImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TriggerSettingCacheImpl.class);
 
     @Autowired
-    private RedisTemplate<NameKeyImpl, PointImpl> redisTemplate;
+    private RedisTemplate<NameKeyImpl, TriggerSettingImpl> redisTemplate;
     @Autowired
     private Mapper mapper;
 
     @Override
-    @TimeAnalyseAdvisor.TimeAnalyse
     public boolean exists(NameKey key) throws CacheException {
         NameKeyImpl keyImpl = mapper.map(key, NameKeyImpl.class);
         try {
@@ -46,7 +41,7 @@ public class PointCacheImpl implements PointCache {
 
     @Override
     @TimeAnalyseAdvisor.TimeAnalyse
-    public Point get(NameKey key) throws CacheException {
+    public TriggerSetting get(NameKey key) throws CacheException {
         NameKeyImpl keyImpl = mapper.map(key, NameKeyImpl.class);
         try {
             return redisTemplate.opsForValue().get(keyImpl);
@@ -57,10 +52,10 @@ public class PointCacheImpl implements PointCache {
 
     @Override
     @TimeAnalyseAdvisor.TimeAnalyse
-    public Point get(NameKey key, Point defaultValue) throws CacheException {
+    public TriggerSetting get(NameKey key, TriggerSetting defaultValue) throws CacheException {
         NameKeyImpl keyImpl = mapper.map(key, NameKeyImpl.class);
         try {
-            return Optional.ofNullable((Point) redisTemplate.opsForValue().get(keyImpl)).orElse(defaultValue);
+            return Optional.ofNullable((TriggerSetting) redisTemplate.opsForValue().get(keyImpl)).orElse(defaultValue);
         } catch (Exception e) {
             throw new CacheException("无法获得指定键的值: " + keyImpl.toString(), e);
         }
@@ -68,14 +63,15 @@ public class PointCacheImpl implements PointCache {
 
     @Override
     @TimeAnalyseAdvisor.TimeAnalyse
-    public void push(NameKey key, Point point, long timeout, TimeUnit timeUnit) throws CacheException {
+    public void push(NameKey key, TriggerSetting triggerSetting, long timeout, TimeUnit timeUnit) throws CacheException {
         NameKeyImpl keyImpl = mapper.map(key, NameKeyImpl.class);
-        PointImpl pointImpl = mapper.map(point, PointImpl.class);
+        TriggerSettingImpl triggerSettingImpl = mapper.map(triggerSetting, TriggerSettingImpl.class);
         try {
-            redisTemplate.opsForValue().set(keyImpl, pointImpl);
+            redisTemplate.opsForValue().set(keyImpl, triggerSettingImpl);
             redisTemplate.expire(keyImpl, timeout, timeUnit);
         } catch (Exception e) {
-            throw new CacheException("无法设置指定键的值: [键]" + keyImpl.toString() + " [值]" + pointImpl.toString(), e);
+            throw new CacheException("无法设置指定键的值: [键]" + keyImpl.toString() +
+                    " [值]" + triggerSettingImpl.toString(), e);
         }
     }
 
