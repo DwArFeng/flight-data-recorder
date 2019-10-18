@@ -4,7 +4,6 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
                     http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
-    <!--此处编写映射的详细配置-->
     <mapping wildcard="true">
         <class-a>com.dwarfeng.fdr.impl.cache.redis.cache.PointEntityCacheImplTest.PointImpl</class-a>
         <class-b>com.dwarfeng.fdr.impl.cache.redis.bean.entity.PointImpl</class-b>
