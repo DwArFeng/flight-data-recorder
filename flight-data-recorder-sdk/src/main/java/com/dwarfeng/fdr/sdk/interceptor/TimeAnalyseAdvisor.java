@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.sdk.aspect;
+package com.dwarfeng.fdr.sdk.interceptor;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
  */
 @Component
 @Aspect
-public class TimeAnalyseAspect {
+public class TimeAnalyseAdvisor {
 
     /**
      * 时间分析注解。
@@ -31,9 +31,9 @@ public class TimeAnalyseAspect {
 
     }
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TimeAnalyseAspect.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(TimeAnalyseAdvisor.class);
 
-    @Around("execution(@com.dwarfeng.fdr.sdk.aspect.TimeAnalyseAspect.TimeAnalyse * *(..)) || within(@com.dwarfeng.fdr.sdk.aspect.TimeAnalyseAspect.TimeAnalyse *)")
+    @Around("execution(@com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor.TimeAnalyse * *(..)) || within(@com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor.TimeAnalyse *)")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         LOGGER.debug("TimeAnalyseAspect: 进入增强方法");
         String methodName = pjp.getSignature().getName();
