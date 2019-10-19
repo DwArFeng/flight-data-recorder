@@ -55,6 +55,7 @@ buildNumber.properties
 /flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/log/
 /flight-data-recorder-impl/flight-data-recorder-impl-cache-redis/log/
 /flight-data-recorder-sdk/log/
+/flight-data-recorder-impl/flight-data-recorder-impl-maintain-self/log/
 
 #################
 ## Configuration Files
@@ -62,3 +63,4 @@ buildNumber.properties
 /flight-data-recorder-impl/flight-data-recorder-impl-persistence-hibernate/conf/
 /flight-data-recorder-impl/flight-data-recorder-impl-cache-redis/conf/
 /flight-data-recorder-sdk/conf/
+/flight-data-recorder-impl/flight-data-recorder-impl-maintain-self/conf/

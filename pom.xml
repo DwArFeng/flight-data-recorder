@@ -305,6 +305,21 @@
                 <artifactId>flight-data-recorder-sdk</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-persistence-hibernate</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-cache-redis</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-stack-service</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
