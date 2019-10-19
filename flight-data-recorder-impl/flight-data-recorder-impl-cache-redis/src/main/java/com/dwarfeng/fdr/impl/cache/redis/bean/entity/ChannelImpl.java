@@ -1,31 +1,78 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.stack.bean.entity.Channel;
 import com.dwarfeng.fdr.stack.bean.key.ChannelKey;
 
-/**
- * @author DwArFeng
- * @since 0.0.1-alpha
- */
 public class ChannelImpl implements Channel {
 
-    @Override
-    public boolean isDefaultChannel() {
-        return false;
+    private static final long serialVersionUID = 2637696850814900093L;
+
+    @JSONField(name = "key", ordinal = 1)
+    private ChannelKey key;
+
+    @JSONField(name = "default_channel", ordinal = 2)
+    private boolean defaultChannel;
+
+    @JSONField(name = "enabled", ordinal = 3)
+    private boolean enabled;
+
+    @JSONField(name = "remark", ordinal = 4)
+    private String remark;
+
+    public ChannelImpl() {
     }
 
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
-    @Override
-    public String getRemark() {
-        return null;
+    public ChannelImpl(ChannelKey key, boolean defaultChannel, boolean enabled, String remark) {
+        this.key = key;
+        this.defaultChannel = defaultChannel;
+        this.enabled = enabled;
+        this.remark = remark;
     }
 
     @Override
     public ChannelKey getKey() {
-        return null;
+        return key;
+    }
+
+    public void setKey(ChannelKey key) {
+        this.key = key;
+    }
+
+    @Override
+    public boolean isDefaultChannel() {
+        return defaultChannel;
+    }
+
+    public void setDefaultChannel(boolean defaultChannel) {
+        this.defaultChannel = defaultChannel;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Override
+    public String toString() {
+        return "ChannelImpl{" +
+                "key=" + key +
+                ", defaultChannel=" + defaultChannel +
+                ", enabled=" + enabled +
+                ", remark='" + remark + '\'' +
+                '}';
     }
 }

@@ -63,21 +63,6 @@ public class PointEntityCacheImplTest {
     }
 
     @Test
-    public void testGetKeyDefaultValue() throws CacheException {
-        pointEntityCache.delete(new NameKeyImpl("test-point"));
-        try {
-            NameKeyImpl nameKeyImpl = new NameKeyImpl("test-point");
-            PointImpl pointImpl = new PointImpl(nameKeyImpl, "string", false, "this is a test");
-            Point point = pointEntityCache.get(new NameKeyImpl("test-point"), pointImpl);
-            assertEquals("string", point.getType());
-            assertFalse(point.isPersistence());
-            assertEquals("this is a test", point.getRemark());
-        } finally {
-            pointEntityCache.delete(new NameKeyImpl("test-point"));
-        }
-    }
-
-    @Test
     public void testPush() throws CacheException {
         pointEntityCache.delete(new NameKeyImpl("test-point"));
         try {

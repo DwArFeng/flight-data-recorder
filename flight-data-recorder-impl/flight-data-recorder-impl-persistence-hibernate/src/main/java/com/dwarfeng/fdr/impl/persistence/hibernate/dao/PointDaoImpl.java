@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PointDaoImpl implements PointDao {
+public class PointDaoImpl extends AbstractBaseDao<NameKey, Point, PointConstraint> implements PointDao {
 
     @Autowired
     private HibernateTemplate hibernateTemplate;

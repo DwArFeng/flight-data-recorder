@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ChannelDaoImpl implements ChannelDao {
+public class ChannelDaoImpl extends AbstractBaseDao<ChannelKey, Channel, ChannelConstraint> implements ChannelDao {
 
     @Autowired
     private HibernateTemplate hibernateTemplate;

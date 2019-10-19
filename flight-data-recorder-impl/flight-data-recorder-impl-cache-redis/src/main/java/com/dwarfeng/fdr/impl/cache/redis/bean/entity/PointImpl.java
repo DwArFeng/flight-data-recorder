@@ -4,10 +4,6 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
 
-/**
- * @author DwArFeng
- * @since 0.0.1-alpha
- */
 public class PointImpl implements Point {
 
     private static final long serialVersionUID = 5256767191752007679L;

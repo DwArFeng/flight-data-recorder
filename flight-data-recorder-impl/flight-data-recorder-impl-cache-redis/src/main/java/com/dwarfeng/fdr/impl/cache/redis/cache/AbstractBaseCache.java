@@ -1,13 +1,13 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
-import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
 import com.dwarfeng.fdr.sdk.utils.RedisUtil;
 import com.dwarfeng.fdr.stack.cache.BaseCache;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.Optional;
+import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,13 +27,24 @@ public abstract class AbstractBaseCache<K, V> implements BaseCache<K, V> {
     }
 
     @Override
-    public V get(K key) throws CacheException {
-        return object2Value(RedisUtil.get(redisTemplate, key2Object(key)));
+    public boolean existsAll(Collection<K> c) throws CacheException {
+        for (K key : c) {
+            if (!RedisUtil.exists(redisTemplate, key2Object(key))) return false;
+        }
+        return true;
     }
 
     @Override
-    public V get(K key, V defaultValue) throws CacheException {
-        return Optional.ofNullable(get(key)).map(this::object2Value).orElse(defaultValue);
+    public boolean existsNon(Collection<K> c) throws CacheException {
+        for (K key : c) {
+            if (RedisUtil.exists(redisTemplate, key2Object(key))) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public V get(K key) throws CacheException {
+        return object2Value(RedisUtil.get(redisTemplate, key2Object(key)));
     }
 
     @Override
@@ -42,8 +53,23 @@ public abstract class AbstractBaseCache<K, V> implements BaseCache<K, V> {
     }
 
     @Override
+    public void batchPush(Map<K, V> map, long timeout, TimeUnit timeUnit) throws CacheException {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            RedisUtil.push(redisTemplate, key2Object(entry.getKey()), value2Object(entry.getValue()), timeout,
+                    timeUnit);
+        }
+    }
+
+    @Override
     public void delete(K key) throws CacheException {
         RedisUtil.delete(redisTemplate, key2Object(key));
+    }
+
+    @Override
+    public void batchDelete(Collection<K> c) throws CacheException {
+        for (K key : c) {
+            RedisUtil.delete(redisTemplate, key2Object(key));
+        }
     }
 
     /**
