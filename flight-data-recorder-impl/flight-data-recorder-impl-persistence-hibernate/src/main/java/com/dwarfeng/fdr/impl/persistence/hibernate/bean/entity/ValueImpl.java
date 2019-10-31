@@ -1,23 +1,12 @@
 package com.dwarfeng.fdr.impl.persistence.hibernate.bean.entity;
 
-import java.util.Date;
-import java.util.Optional;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import com.dwarfeng.fdr.impl.persistence.hibernate.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Value;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Optional;
 
 @Entity
 @IdClass(UuidKeyImpl.class)
@@ -167,11 +156,11 @@ public class ValueImpl implements Value {
 	}
 
 	@Override
-	public UuidKey getKey() {
+	public UuidKeyImpl getKey() {
 		return UuidKeyImpl.of(uuid);
 	}
 
-	public void setKey(UuidKey uuidKey) {
+	public void setKey(UuidKeyImpl uuidKey) {
 		this.uuid = Optional.ofNullable(uuidKey).map(UuidKey::getUuid).orElse(null);
 	}
 

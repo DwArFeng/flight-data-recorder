@@ -1,15 +1,15 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.ChannelKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Channel;
-import com.dwarfeng.fdr.stack.bean.key.ChannelKey;
 
 public class ChannelImpl implements Channel {
 
     private static final long serialVersionUID = 2637696850814900093L;
 
     @JSONField(name = "key", ordinal = 1)
-    private ChannelKey key;
+    private ChannelKeyImpl key;
 
     @JSONField(name = "default_channel", ordinal = 2)
     private boolean defaultChannel;
@@ -23,7 +23,7 @@ public class ChannelImpl implements Channel {
     public ChannelImpl() {
     }
 
-    public ChannelImpl(ChannelKey key, boolean defaultChannel, boolean enabled, String remark) {
+    public ChannelImpl(ChannelKeyImpl key, boolean defaultChannel, boolean enabled, String remark) {
         this.key = key;
         this.defaultChannel = defaultChannel;
         this.enabled = enabled;
@@ -31,11 +31,11 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public ChannelKey getKey() {
+    public ChannelKeyImpl getKey() {
         return key;
     }
 
-    public void setKey(ChannelKey key) {
+    public void setKey(ChannelKeyImpl key) {
         this.key = key;
     }
 

@@ -1,15 +1,15 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.NameKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.NameKey;
 
 public class PointImpl implements Point {
 
     private static final long serialVersionUID = 5256767191752007679L;
 
     @JSONField(name = "key", ordinal = 1)
-    private NameKey key;
+    private NameKeyImpl key;
 
     @JSONField(name = "type", ordinal = 2)
     private String type;
@@ -23,7 +23,7 @@ public class PointImpl implements Point {
     public PointImpl() {
     }
 
-    public PointImpl(NameKey key, String type, boolean persistence, String remark) {
+    public PointImpl(NameKeyImpl key, String type, boolean persistence, String remark) {
         this.key = key;
         this.type = type;
         this.persistence = persistence;
@@ -31,11 +31,11 @@ public class PointImpl implements Point {
     }
 
     @Override
-    public NameKey getKey() {
+    public NameKeyImpl getKey() {
         return key;
     }
 
-    public void setKey(NameKey key) {
+    public void setKey(NameKeyImpl key) {
         this.key = key;
     }
 

@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Value;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ public class ValueImpl implements Value {
     private static final long serialVersionUID = 8094022497241806770L;
 
     @JSONField(name = "key", ordinal = 1)
-    private UuidKey key;
+    private UuidKeyImpl key;
 
     @JSONField(name = "happened_date", ordinal = 2)
     private Date happenedDate;
@@ -22,18 +22,18 @@ public class ValueImpl implements Value {
     public ValueImpl() {
     }
 
-    public ValueImpl(UuidKey key, Date happenedDate, String value) {
+    public ValueImpl(UuidKeyImpl key, Date happenedDate, String value) {
         this.key = key;
         this.happenedDate = happenedDate;
         this.value = value;
     }
 
     @Override
-    public UuidKey getKey() {
+    public UuidKeyImpl getKey() {
         return key;
     }
 
-    public void setKey(UuidKey key) {
+    public void setKey(UuidKeyImpl key) {
         this.key = key;
     }
 

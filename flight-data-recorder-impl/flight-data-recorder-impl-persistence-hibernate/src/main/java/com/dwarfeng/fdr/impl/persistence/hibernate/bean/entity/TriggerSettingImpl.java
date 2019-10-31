@@ -1,21 +1,14 @@
 package com.dwarfeng.fdr.impl.persistence.hibernate.bean.entity;
 
-import java.util.Optional;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.dwarfeng.fdr.impl.persistence.hibernate.bean.key.NameKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSetting;
 import com.dwarfeng.fdr.stack.bean.key.NameKey;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @IdClass(NameKeyImpl.class)
@@ -98,11 +91,11 @@ public class TriggerSettingImpl implements TriggerSetting {
 	}
 
 	@Override
-	public NameKey getKey() {
+    public NameKeyImpl getKey() {
 		return NameKeyImpl.of(name);
 	}
 
-	public void setKey(NameKey nameKey) {
+    public void setKey(NameKeyImpl nameKey) {
 		this.name = Optional.ofNullable(nameKey).map(NameKey::getName).orElse(null);
 	}
 

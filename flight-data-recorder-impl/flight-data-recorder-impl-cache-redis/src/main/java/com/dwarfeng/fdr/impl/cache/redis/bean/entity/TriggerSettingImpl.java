@@ -1,15 +1,15 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.NameKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSetting;
-import com.dwarfeng.fdr.stack.bean.key.NameKey;
 
 public class TriggerSettingImpl implements TriggerSetting {
 
     private static final long serialVersionUID = -3656468063489794952L;
 
     @JSONField(name = "key", ordinal = 1)
-    private NameKey key;
+    private NameKeyImpl key;
 
     @JSONField(name = "trigger_data", ordinal = 2)
     private String triggerData;
@@ -20,18 +20,18 @@ public class TriggerSettingImpl implements TriggerSetting {
     public TriggerSettingImpl() {
     }
 
-    public TriggerSettingImpl(NameKey key, String triggerData, String remark) {
+    public TriggerSettingImpl(NameKeyImpl key, String triggerData, String remark) {
         this.key = key;
         this.triggerData = triggerData;
         this.remark = remark;
     }
 
     @Override
-    public NameKey getKey() {
+    public NameKeyImpl getKey() {
         return key;
     }
 
-    public void setKey(NameKey key) {
+    public void setKey(NameKeyImpl key) {
         this.key = key;
     }
 
