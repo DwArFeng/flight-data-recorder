@@ -47,37 +47,19 @@
         <aopalliance.version>1.0</aopalliance.version>
         <spring.data.redis.version>1.7.11.RELEASE</spring.data.redis.version>
         <hibernate.version>5.3.13.Final</hibernate.version>
+        <hibernate-validator.version>6.0.18.Final</hibernate-validator.version>
         <log4j2.version>2.12.1</log4j2.version>
         <dozer.version>5.5.1</dozer.version>
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+        <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
     </properties>
 
     <!-- 声明资源的坐标 -->
     <!-- 只定义依赖的版本，并不实际依赖 -->
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-redis</artifactId>
-                <version>${spring.data.redis.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-context</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-context-support</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>aopalliance</groupId>
-                <artifactId>aopalliance</artifactId>
-                <version>${aopalliance.version}</version>
-            </dependency>
             <!-- AspectJ组件 -->
             <dependency>
                 <groupId>org.aspectj</groupId>
@@ -172,6 +154,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
@@ -199,6 +186,21 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-redis</artifactId>
+                <version>${spring.data.redis.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-context-support</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- JSP相关 -->
             <dependency>
@@ -262,6 +264,12 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
             </dependency>
+            <!-- Hibernate验证器 -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
             <!-- Dozer模块 -->
             <dependency>
                 <groupId>net.sf.dozer</groupId>
@@ -320,6 +328,11 @@
                 <artifactId>flight-data-recorder-stack-service</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-maintain-hibred</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -330,6 +343,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>${maven-clean-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>${tomcat7-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
