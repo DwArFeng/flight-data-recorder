@@ -14,9 +14,9 @@
 
 <h3>你好，世界</h3>
 <br/>
-<a href="${pageContext.request.contextPath}/web/hello-world">点击此处跳转到 Hello World 页面。</a>
+<a href="${pageContext.request.contextPath}/hello-world">点击此处跳转到 Hello World 页面。</a>
 <br/>
-<a href="${pageContext.request.contextPath}/web/random-add-point">点我随机添加一条数据点。</a>
+<a href="${pageContext.request.contextPath}/random-add-point">点我随机添加一条数据点。</a>
 
 </body>
 </html>
