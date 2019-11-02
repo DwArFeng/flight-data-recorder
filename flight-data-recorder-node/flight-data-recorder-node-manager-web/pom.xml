@@ -181,7 +181,7 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <configuration>
                     <!-- 部署到指定的目录下 -->
-                    <path>/fdr-manager</path>
+                    <path>/fdr-manager-web</path>
                     <!-- tomcat的地址和端口，manager/text是固定的 -->
                     <url>http://192.168.154.100:8080/manager/text</url>
                     <username>admin</username>
