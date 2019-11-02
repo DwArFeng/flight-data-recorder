@@ -57,6 +57,7 @@ buildNumber.properties
 /flight-data-recorder-sdk/log/
 /flight-data-recorder-impl/flight-data-recorder-impl-maintain-hibred/log/
 /flight-data-recorder-node/flight-data-recorder-node-manager-web/log/
+/flight-data-recorder-node/flight-data-recorder-node-manager-ws/log/
 
 #################
 ## Configuration Files
@@ -66,3 +67,4 @@ buildNumber.properties
 /flight-data-recorder-sdk/conf/
 /flight-data-recorder-impl/flight-data-recorder-impl-maintain-hibred/conf/
 /flight-data-recorder-node/flight-data-recorder-node-manager-web/conf/
+/flight-data-recorder-node/flight-data-recorder-node-manager-ws/conf/

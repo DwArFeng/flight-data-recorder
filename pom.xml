@@ -51,6 +51,7 @@
         <log4j2.version>2.12.1</log4j2.version>
         <dozer.version>5.5.1</dozer.version>
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
+        <cxf.version>3.1.6</cxf.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
@@ -292,6 +293,22 @@
                 <artifactId>dutil-develop</artifactId>
                 <version>${dutil.version}</version>
             </dependency>
+            <!-- cxf WebService组件 -->
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxws</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-core</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
             <!-- 程序自身组件 -->
             <dependency>
                 <groupId>com.dwarfeng</groupId>
@@ -358,5 +375,6 @@
         <module>flight-data-recorder-impl</module>
         <module>flight-data-recorder-sdk</module>
         <module>flight-data-recorder-node</module>
+        <module>flight-data-recorder-api</module>
     </modules>
 </project>
