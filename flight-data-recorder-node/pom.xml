@@ -28,5 +28,6 @@
     <modules>
         <module>flight-data-recorder-node-manager-web</module>
         <module>flight-data-recorder-node-manager-ws</module>
+        <module>flight-data-recorder-node-validate-test</module>
     </modules>
 </project>
