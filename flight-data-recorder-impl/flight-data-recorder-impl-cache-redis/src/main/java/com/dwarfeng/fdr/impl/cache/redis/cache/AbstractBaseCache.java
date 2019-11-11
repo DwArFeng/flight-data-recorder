@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
+import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
 import com.dwarfeng.fdr.sdk.utils.RedisUtil;
 import com.dwarfeng.fdr.stack.cache.BaseCache;
 import com.dwarfeng.fdr.stack.exception.CacheException;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
+@TimeAnalyseAdvisor.TimeAnalyse
 public abstract class AbstractBaseCache<K, V> implements BaseCache<K, V> {
 
     @Autowired
@@ -55,8 +57,7 @@ public abstract class AbstractBaseCache<K, V> implements BaseCache<K, V> {
     @Override
     public void batchPush(Map<K, V> map, long timeout, TimeUnit timeUnit) throws CacheException {
         for (Map.Entry<K, V> entry : map.entrySet()) {
-            RedisUtil.push(redisTemplate, key2Object(entry.getKey()), value2Object(entry.getValue()), timeout,
-                    timeUnit);
+            RedisUtil.push(redisTemplate, key2Object(entry.getKey()), value2Object(entry.getValue()), timeout, timeUnit);
         }
     }
 

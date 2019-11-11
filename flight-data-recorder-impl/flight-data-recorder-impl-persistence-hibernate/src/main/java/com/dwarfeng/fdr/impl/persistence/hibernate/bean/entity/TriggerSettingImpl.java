@@ -1,108 +1,161 @@
 package com.dwarfeng.fdr.impl.persistence.hibernate.bean.entity;
 
-import com.dwarfeng.fdr.impl.persistence.hibernate.bean.key.NameKeyImpl;
+import com.dwarfeng.fdr.impl.persistence.hibernate.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSetting;
-import com.dwarfeng.fdr.stack.bean.key.NameKey;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
-import java.util.Optional;
-import java.util.Set;
 
 @Entity
-@IdClass(NameKeyImpl.class)
+@IdClass(UuidKeyImpl.class)
 @Table(name = "tbl_trigger_setting")
 public class TriggerSettingImpl implements TriggerSetting {
 
-	private static final long serialVersionUID = 8645692239920385325L;
+    private static final long serialVersionUID = 6533538842633760945L;
 
-	// -----------------------------------------------------------主键-----------------------------------------------------------
-	@Id
-	@Column(name = "name", length = 255, nullable = false, unique = true)
-	private String name;
+    // -----------------------------------------------------------主键-----------------------------------------------------------
+    @Id
+    @Column(name = "uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
+    private String uuid;
 
-	// -----------------------------------------------------------外键-----------------------------------------------------------
-	@Column(name = "point_name", length = 255, nullable = true)
-	private String pointName;
+    // -----------------------------------------------------------外键-----------------------------------------------------------
+    @Column(name = "point_uuid", columnDefinition = "CHAR(22)")
+    private String point_uuid;
 
-	// -----------------------------------------------------------主属性字段-----------------------------------------------------------
-	@Column(name = "trigger_data", columnDefinition = "TEXT", nullable = false)
-	private String triggerData;
+    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    @Column(name = "name", length = 255, nullable = false)
+    private String name;
 
-	@Column(name = "remark", length = 255, nullable = true)
-	private String remark;
+    @Column(name = "trigger_data", columnDefinition = "TEXT", nullable = false)
+    private String triggerData;
 
-	// -----------------------------------------------------------多对多-----------------------------------------------------------
-	@ManyToMany(targetEntity = ChannelImpl.class, mappedBy = "triggerSettingImpls")
-	@Cascade(CascadeType.MERGE)
-	private Set<ChannelImpl> channelImpls;
+    @Column(name = "remark", length = 255, nullable = true)
+    private String remark;
 
-	public TriggerSettingImpl() {
-	}
+    @Column(name = "trigger_broadcast", nullable = false)
+    private boolean triggerBroadcast;
 
-	public TriggerSettingImpl(String name, String pointName, String triggerData, String remark) {
-		this.name = name;
-		this.pointName = pointName;
-		this.triggerData = triggerData;
-		this.remark = remark;
-	}
+    @Column(name = "trigger_persistence", nullable = false)
+    private boolean triggerPersistence;
 
-	public String getName() {
-		return name;
-	}
+    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    @ManyToOne(targetEntity = CategoryImpl.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "point_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+    })
+    private PointImpl point;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public TriggerSettingImpl() {
+    }
 
-	public String getPointName() {
-		return pointName;
-	}
+    public TriggerSettingImpl(
+            String uuid,
+            String point_uuid,
+            String name,
+            String triggerData,
+            String remark,
+            boolean triggerBroadcast,
+            boolean triggerPersistence,
+            PointImpl point
+    ) {
+        this.uuid = uuid;
+        this.point_uuid = point_uuid;
+        this.name = name;
+        this.triggerData = triggerData;
+        this.remark = remark;
+        this.triggerBroadcast = triggerBroadcast;
+        this.triggerPersistence = triggerPersistence;
+        this.point = point;
+    }
 
-	public void setPointName(String pointName) {
-		this.pointName = pointName;
-	}
+    @Override
+    public UuidKeyImpl getKey() {
+        return UuidKeyImpl.of(uuid);
+    }
 
-	@Override
-	public String getTriggerData() {
-		return triggerData;
-	}
+    public void setKey(UuidKeyImpl uuidKey) {
+        this.uuid = uuidKey.getUuid();
+    }
 
-	public void setTriggerData(String triggerData) {
-		this.triggerData = triggerData;
-	}
+    public String getUuid() {
+        return uuid;
+    }
 
-	@Override
-	public String getRemark() {
-		return remark;
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public String getPoint_uuid() {
+        return point_uuid;
+    }
 
-	public Set<ChannelImpl> getChannelImpls() {
-		return channelImpls;
-	}
+    public void setPoint_uuid(String point_uuid) {
+        this.point_uuid = point_uuid;
+    }
 
-	public void setChannelImpls(Set<ChannelImpl> channelImpls) {
-		this.channelImpls = channelImpls;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-    public NameKeyImpl getKey() {
-		return NameKeyImpl.of(name);
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public void setKey(NameKeyImpl nameKey) {
-		this.name = Optional.ofNullable(nameKey).map(NameKey::getName).orElse(null);
-	}
+    @Override
+    public String getTriggerData() {
+        return triggerData;
+    }
 
-	@Override
-	public String toString() {
-		return "TriggerSettingImpl [name=" + name + ", pointName=" + pointName + ", triggerData=" + triggerData
-				+ ", remark=" + remark + "]";
-	}
+    public void setTriggerData(String triggerData) {
+        this.triggerData = triggerData;
+    }
 
+    @Override
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Override
+    public boolean isTriggerBroadcast() {
+        return triggerBroadcast;
+    }
+
+    public void setTriggerBroadcast(boolean triggerBroadcast) {
+        this.triggerBroadcast = triggerBroadcast;
+    }
+
+    @Override
+    public boolean isTriggerPersistence() {
+        return triggerPersistence;
+    }
+
+    public void setTriggerPersistence(boolean triggerPersistence) {
+        this.triggerPersistence = triggerPersistence;
+    }
+
+    public PointImpl getPoint() {
+        return point;
+    }
+
+    public void setPoint(PointImpl point) {
+        this.point = point;
+    }
+
+    @Override
+    public String toString() {
+        return "TriggerSettingImpl{" +
+                "uuid='" + uuid + '\'' +
+                ", point_uuid='" + point_uuid + '\'' +
+                ", name='" + name + '\'' +
+                ", triggerData='" + triggerData + '\'' +
+                ", remark='" + remark + '\'' +
+                ", triggerBroadcast=" + triggerBroadcast +
+                ", triggerPersistence=" + triggerPersistence +
+                ", point=" + point +
+                '}';
+    }
 }

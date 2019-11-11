@@ -33,12 +33,13 @@ public class TimeAnalyseAdvisor {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TimeAnalyseAdvisor.class);
 
-    @Around("execution(@com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor.TimeAnalyse * *(..)) || within(@com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor.TimeAnalyse *)")
+    @Around("@annotation(com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor.TimeAnalyse) || @within(com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor.TimeAnalyse)")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         LOGGER.debug("TimeAnalyseAspect: 进入增强方法");
+        String className = pjp.getSignature().getDeclaringTypeName();
         String methodName = pjp.getSignature().getName();
         LOGGER.debug("TimeAnalyseAspect: 获得方法名称 " + methodName);
-        LOGGER.info("TimeAnalyseAspect: 方法 " + methodName + " 开始计时...");
+        LOGGER.info("TimeAnalyseAspect: 方法 " + className + "." + methodName + " 开始计时...");
         long firstTimeStamp = System.currentTimeMillis();
         LOGGER.debug("TimeAnalyseAspect: 获得当前系统时间戳 " + firstTimeStamp);
         try {
@@ -49,7 +50,7 @@ public class TimeAnalyseAdvisor {
             long lastTimeStamp = System.currentTimeMillis();
             LOGGER.debug("TimeAnalyseAspect: 获得当前系统时间戳 " + lastTimeStamp);
             LOGGER.debug("TimeAnalyseAspect: 计算方法执行时间，公式: " + lastTimeStamp + "-" + firstTimeStamp);
-            LOGGER.info("TimeAnalyseAspect: 方法 " + methodName + " 运行结束，用时 " + (lastTimeStamp - firstTimeStamp) + " 毫秒");
+            LOGGER.info("TimeAnalyseAspect: 方法 " + className + "." + methodName + " 运行结束，用时 " + (lastTimeStamp - firstTimeStamp) + " 毫秒");
         }
     }
 

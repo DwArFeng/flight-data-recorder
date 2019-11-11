@@ -29,5 +29,6 @@
         <module>flight-data-recorder-impl-record-dubbo</module>
         <module>flight-data-recorder-impl-lookup-dubbo</module>
         <module>flight-data-recorder-impl-maintain-hibred</module>
+        <module>flight-data-recorder-impl-bean-validate</module>
     </modules>
 </project>

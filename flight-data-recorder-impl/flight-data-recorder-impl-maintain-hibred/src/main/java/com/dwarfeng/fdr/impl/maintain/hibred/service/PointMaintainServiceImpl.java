@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.impl.maintain.hibred.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.NameKey;
+import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.PointEntityCache;
 import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
@@ -32,7 +32,7 @@ public class PointMaintainServiceImpl implements PointMaintainService {
     @Override
     @Transactional(readOnly = true)
     @TimeAnalyseAdvisor.TimeAnalyse
-    public boolean exists(NameKey key) throws ServiceException {
+    public boolean exists(UuidKey key) throws ServiceException {
         try {
             //如果缓存中包含指定的数据点，则返回true
             if (pointEntityCache.exists(key)) return true;
@@ -45,8 +45,7 @@ public class PointMaintainServiceImpl implements PointMaintainService {
 
     @Override
     @Transactional(readOnly = true)
-    @TimeAnalyseAdvisor.TimeAnalyse
-    public Point get(NameKey key) throws ServiceException {
+    public Point get(UuidKey key) throws ServiceException {
         try {
             //如果缓存中包含指定的数据点，则返回指定的数据点。
             if (pointEntityCache.exists(key)) return pointEntityCache.get(key);
@@ -79,7 +78,7 @@ public class PointMaintainServiceImpl implements PointMaintainService {
     @Override
     @Transactional
     @TimeAnalyseAdvisor.TimeAnalyse
-    public void remove(NameKey key) throws ServiceException {
+    public void remove(UuidKey key) throws ServiceException {
         try {
             //将数据点从缓存中移除。
             pointEntityCache.delete(key);

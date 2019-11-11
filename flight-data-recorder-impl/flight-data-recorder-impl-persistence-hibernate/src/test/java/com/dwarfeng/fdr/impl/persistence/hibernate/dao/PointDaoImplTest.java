@@ -1,7 +1,9 @@
 package com.dwarfeng.fdr.impl.persistence.hibernate.dao;
 
+import com.dwarfeng.dutil.basic.str.UUIDUtil;
+import com.dwarfeng.fdr.impl.bean.validate.bean.entity.PointImpl;
+import com.dwarfeng.fdr.impl.bean.validate.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.NameKey;
 import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.junit.After;
@@ -13,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -24,24 +26,29 @@ public class PointDaoImplTest {
     @Autowired
     private PointDao pointDao;
 
+    private UuidKeyImpl key;
+
     @Before
     public void setUp() throws Exception {
+        key = UuidKeyImpl.of(UUIDUtil.toDenseString(UUID.randomUUID()));
     }
 
     @After
     public void tearDown() throws Exception {
+        key = null;
     }
 
     @Test
     @Transactional
     public void testGet() throws DaoException {
         PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(new NameKeyImpl("test-point"));
+        pointImpl.setKey(key);
         pointImpl.setPersistence(false);
+        pointImpl.setName("test-point");
         pointImpl.setRemark("this is a test");
         pointImpl.setType("string");
         pointDao.insert(pointImpl);
-        Point point = pointDao.get(new NameKeyImpl("test-point"));
+        Point point = pointDao.get(key);
         assertFalse(point.isPersistence());
         assertEquals("this is a test", point.getRemark());
         assertEquals("string", point.getType());
@@ -51,7 +58,7 @@ public class PointDaoImplTest {
     @Transactional
     public void testInsert() throws DaoException {
         PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(new NameKeyImpl("test-point"));
+        pointImpl.setKey(new UuidKeyImpl("test-point"));
         pointImpl.setPersistence(false);
         pointImpl.setRemark("this is a test");
         pointImpl.setType("string");
@@ -62,7 +69,7 @@ public class PointDaoImplTest {
     @Transactional
     public void testUpdate() throws DaoException {
         PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(new NameKeyImpl("test-point"));
+        pointImpl.setKey(new UuidKeyImpl("test-point"));
         pointImpl.setPersistence(false);
         pointImpl.setRemark("this is a test");
         pointImpl.setType("string");
@@ -71,7 +78,7 @@ public class PointDaoImplTest {
         pointImpl.setRemark("this is an update test");
         pointImpl.setType("integer");
         pointDao.update(pointImpl);
-        Point point = pointDao.get(new NameKeyImpl("test-point"));
+        Point point = pointDao.get(new UuidKeyImpl("test-point"));
         assertTrue(point.isPersistence());
         assertEquals("this is an update test", point.getRemark());
         assertEquals("integer", point.getType());
@@ -81,124 +88,14 @@ public class PointDaoImplTest {
     @Transactional
     public void testDelete() throws DaoException {
         PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(new NameKeyImpl("test-point"));
+        pointImpl.setKey(new UuidKeyImpl("test-point"));
         pointImpl.setPersistence(false);
         pointImpl.setRemark("this is a test");
         pointImpl.setType("string");
         pointDao.insert(pointImpl);
-        pointDao.delete(new NameKeyImpl("test-point"));
-        Point point = pointDao.get(new NameKeyImpl("test-point"));
+        pointDao.delete(new UuidKeyImpl("test-point"));
+        Point point = pointDao.get(new UuidKeyImpl("test-point"));
         assertNull(point);
-    }
-
-    public static class NameKeyImpl implements NameKey {
-
-        private static final long serialVersionUID = -6372678944223074527L;
-
-        private String name;
-
-        public NameKeyImpl() {
-        }
-
-        public NameKeyImpl(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (Objects.isNull(o)) return false;
-            if (!(o instanceof NameKey)) return false;
-
-            NameKey that = (NameKey) o;
-
-            if (!Objects.equals(this.getName(), that.getName())) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            return getName() != null ? getName().hashCode() : 0;
-        }
-
-        @Override
-        public String toString() {
-            return "NameKeyImpl [name=" + name + "]";
-        }
-
-    }
-
-    public static class PointImpl implements Point {
-
-        private static final long serialVersionUID = 5413283787016073082L;
-
-        private NameKey key;
-        private String type;
-        private boolean isPersistence;
-        private String remark;
-
-        public PointImpl() {
-        }
-
-        public PointImpl(NameKey key, String type, boolean isPersistence, String remark) {
-            this.key = key;
-            this.type = type;
-            this.isPersistence = isPersistence;
-            this.remark = remark;
-        }
-
-        @Override
-        public NameKey getKey() {
-            return key;
-        }
-
-        public void setKey(NameKey key) {
-            this.key = key;
-        }
-
-        @Override
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        @Override
-        public boolean isPersistence() {
-            return isPersistence;
-        }
-
-        public void setPersistence(boolean isPersistence) {
-            this.isPersistence = isPersistence;
-        }
-
-        @Override
-        public String getRemark() {
-            return remark;
-        }
-
-        public void setRemark(String remark) {
-            this.remark = remark;
-        }
-
-        @Override
-        public String toString() {
-            return "PointImpl [key=" + key + ", type=" + type + ", isPersistence=" + isPersistence + ", remark="
-                    + remark + "]";
-        }
-
     }
 
 }

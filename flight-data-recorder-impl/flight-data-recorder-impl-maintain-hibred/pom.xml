@@ -138,6 +138,10 @@
             <artifactId>flight-data-recorder-impl-cache-redis</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>flight-data-recorder-impl-bean-validate</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

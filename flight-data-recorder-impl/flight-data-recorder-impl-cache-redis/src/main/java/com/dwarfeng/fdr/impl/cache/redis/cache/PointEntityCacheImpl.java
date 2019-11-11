@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.impl.cache.redis.cache;
 
 import com.dwarfeng.fdr.impl.cache.redis.bean.entity.PointImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.NameKey;
+import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.PointEntityCache;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
  * @since 0.0.1-alpha
  */
 @Repository
-public class PointEntityCacheImpl extends AbstractBaseCache<NameKey, Point> implements PointEntityCache {
+public class PointEntityCacheImpl extends AbstractBaseCache<UuidKey, Point> implements PointEntityCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PointEntityCacheImpl.class);
 
@@ -28,8 +28,8 @@ public class PointEntityCacheImpl extends AbstractBaseCache<NameKey, Point> impl
     private String keyFormat;
 
     @Override
-    protected Object key2Object(NameKey key) {
-        return String.format(keyFormat, key.getName());
+    protected Object key2Object(UuidKey key) {
+        return String.format(keyFormat, key.getUuid());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.stack.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.NameKey;
+import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 
 /**
@@ -19,7 +19,7 @@ public interface PointMaintainService extends Service {
      * @return 指定的键是否存在。
      * @throws ServiceException 服务异常。
      */
-    public boolean exists(NameKey key) throws ServiceException;
+    boolean exists(UuidKey key) throws ServiceException;
 
     /**
      * 获得指定的键对应的数据点。
@@ -28,7 +28,7 @@ public interface PointMaintainService extends Service {
      * @return 指定的键对应的数据点。
      * @throws ServiceException 服务异常。
      */
-    public Point get(NameKey key) throws ServiceException;
+    Point get(UuidKey key) throws ServiceException;
 
     /**
      * 添加数据点。
@@ -36,7 +36,7 @@ public interface PointMaintainService extends Service {
      * @param point 指定的数据点。
      * @throws ServiceException 服务异常。
      */
-    public void add(Point point) throws ServiceException;
+    void add(Point point) throws ServiceException;
 
     /**
      * 移除数据点。
@@ -44,6 +44,6 @@ public interface PointMaintainService extends Service {
      * @param key 指定的数据点对应的键。
      * @throws ServiceException 服务异常。
      */
-    public void remove(NameKey key) throws ServiceException;
+    void remove(UuidKey key) throws ServiceException;
 
 }

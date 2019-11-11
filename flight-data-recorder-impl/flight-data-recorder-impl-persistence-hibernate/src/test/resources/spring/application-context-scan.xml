@@ -8,4 +8,6 @@
 
     <!--扫描dao的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.persistence.hibernate.dao"/>
+    <!--扫描aop增强所在的包。 -->
+    <context:component-scan base-package="com.dwarfeng.fdr.sdk.interceptor"/>
 </beans>

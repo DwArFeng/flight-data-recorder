@@ -1,13 +1,15 @@
 package com.dwarfeng.fdr.node.manager.web.bean.entity;
 
-import com.dwarfeng.fdr.node.manager.web.bean.key.NameKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
+import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 public class PointImpl implements Point {
 
-    private static final long serialVersionUID = 5256767191752007679L;
+    private static final long serialVersionUID = -5760702843039539791L;
 
-    private NameKeyImpl key;
+    private UuidKey key;
+
+    private String name;
 
     private String type;
 
@@ -18,20 +20,30 @@ public class PointImpl implements Point {
     public PointImpl() {
     }
 
-    public PointImpl(NameKeyImpl key, String type, boolean persistence, String remark) {
+    public PointImpl(UuidKey key, String name, String type, boolean persistence, String remark) {
         this.key = key;
+        this.name = name;
         this.type = type;
         this.persistence = persistence;
         this.remark = remark;
     }
 
     @Override
-    public NameKeyImpl getKey() {
+    public UuidKey getKey() {
         return key;
     }
 
-    public void setKey(NameKeyImpl key) {
+    public void setKey(UuidKey key) {
         this.key = key;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -65,6 +77,7 @@ public class PointImpl implements Point {
     public String toString() {
         return "PointImpl{" +
                 "key=" + key +
+                ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", persistence=" + persistence +
                 ", remark='" + remark + '\'' +
