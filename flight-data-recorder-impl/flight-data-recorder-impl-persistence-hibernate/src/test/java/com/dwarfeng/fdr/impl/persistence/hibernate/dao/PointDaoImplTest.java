@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.impl.persistence.hibernate.dao;
 
 import com.dwarfeng.dutil.basic.str.UUIDUtil;
-import com.dwarfeng.fdr.impl.bean.validate.bean.entity.PointImpl;
-import com.dwarfeng.fdr.impl.bean.validate.bean.key.UuidKeyImpl;
+import com.dwarfeng.fdr.impl.bean.testbean.bean.entity.PointImpl;
+import com.dwarfeng.fdr.impl.bean.testbean.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.fdr.stack.exception.DaoException;
@@ -27,73 +27,61 @@ public class PointDaoImplTest {
     private PointDao pointDao;
 
     private UuidKeyImpl key;
+    private PointImpl point;
 
     @Before
     public void setUp() throws Exception {
         key = UuidKeyImpl.of(UUIDUtil.toDenseString(UUID.randomUUID()));
+        point = new PointImpl(
+                key,
+                "test-point",
+                "string",
+                true,
+                "this is a test"
+        );
     }
 
     @After
     public void tearDown() throws Exception {
         key = null;
+        point = null;
     }
 
     @Test
     @Transactional
     public void testGet() throws DaoException {
-        PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(key);
-        pointImpl.setPersistence(false);
-        pointImpl.setName("test-point");
-        pointImpl.setRemark("this is a test");
-        pointImpl.setType("string");
-        pointDao.insert(pointImpl);
-        Point point = pointDao.get(key);
-        assertFalse(point.isPersistence());
-        assertEquals("this is a test", point.getRemark());
-        assertEquals("string", point.getType());
+        pointDao.insert(point);
+        Point localPoint = pointDao.get(key);
+        assertTrue(localPoint.isPersistence());
+        assertEquals("this is a test", localPoint.getRemark());
+        assertEquals("string", localPoint.getType());
     }
 
     @Test
     @Transactional
     public void testInsert() throws DaoException {
-        PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(new UuidKeyImpl("test-point"));
-        pointImpl.setPersistence(false);
-        pointImpl.setRemark("this is a test");
-        pointImpl.setType("string");
-        pointDao.insert(pointImpl);
+        pointDao.insert(point);
     }
 
     @Test
     @Transactional
     public void testUpdate() throws DaoException {
-        PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(new UuidKeyImpl("test-point"));
-        pointImpl.setPersistence(false);
-        pointImpl.setRemark("this is a test");
-        pointImpl.setType("string");
-        pointDao.insert(pointImpl);
-        pointImpl.setPersistence(true);
-        pointImpl.setRemark("this is an update test");
-        pointImpl.setType("integer");
-        pointDao.update(pointImpl);
-        Point point = pointDao.get(new UuidKeyImpl("test-point"));
-        assertTrue(point.isPersistence());
-        assertEquals("this is an update test", point.getRemark());
-        assertEquals("integer", point.getType());
+        pointDao.insert(point);
+        point.setPersistence(true);
+        point.setRemark("this is an update test");
+        point.setType("integer");
+        pointDao.update(point);
+        Point localPoint = pointDao.get(key);
+        assertTrue(localPoint.isPersistence());
+        assertEquals("this is an update test", localPoint.getRemark());
+        assertEquals("integer", localPoint.getType());
     }
 
     @Test
     @Transactional
     public void testDelete() throws DaoException {
-        PointImpl pointImpl = new PointImpl();
-        pointImpl.setKey(new UuidKeyImpl("test-point"));
-        pointImpl.setPersistence(false);
-        pointImpl.setRemark("this is a test");
-        pointImpl.setType("string");
-        pointDao.insert(pointImpl);
-        pointDao.delete(new UuidKeyImpl("test-point"));
+        pointDao.insert(point);
+        pointDao.delete(key);
         Point point = pointDao.get(new UuidKeyImpl("test-point"));
         assertNull(point);
     }

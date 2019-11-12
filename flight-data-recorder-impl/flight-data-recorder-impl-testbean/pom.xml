@@ -10,9 +10,9 @@
         <version>alpha-0.0.1.a-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flight-data-recorder-impl-bean-validate</artifactId>
-    <name>flight-data-recorder-impl-bean-validate</name>
-    <url>http://www.example.com</url>
+    <artifactId>flight-data-recorder-impl-testbean</artifactId>
+    <name>flight-data-recorder-impl-testbean</name>
+    <url>http://maven.apache.org</url>
 
     <properties>
         <!-- 进行工程编码声明 -->
@@ -23,7 +23,6 @@
     </properties>
 
     <dependencies>
-        <!-- 程序自身模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-stack-bean</artifactId>

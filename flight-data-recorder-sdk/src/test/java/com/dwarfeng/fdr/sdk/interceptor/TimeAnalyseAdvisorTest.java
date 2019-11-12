@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.sdk.interceptor;
 
-import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +36,7 @@ public class TimeAnalyseAdvisorTest {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(Tester.class);
 
-        @TimeAnalyseAdvisor.TimeAnalyse
+        @TimeAnalyse
         public void testMethod() {
             try {
                 Thread.sleep(500l);

@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.bean.validate.bean.key;
+package com.dwarfeng.fdr.impl.bean.testbean.bean.key;
 
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 

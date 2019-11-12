@@ -95,7 +95,8 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-bean-validate</artifactId>
+            <artifactId>flight-data-recorder-impl-testbean</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>

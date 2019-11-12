@@ -1,7 +1,7 @@
-package com.dwarfeng.fdr.impl.bean.validate.bean.entity;
+package com.dwarfeng.fdr.impl.bean.testbean.bean.entity;
 
+import com.dwarfeng.fdr.impl.bean.testbean.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Value;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ public class ValueImpl implements Value {
 
     private static final long serialVersionUID = -595194912918789614L;
 
-    private UuidKey key;
+    private UuidKeyImpl key;
 
     private Date happenedDate;
 
@@ -22,18 +22,18 @@ public class ValueImpl implements Value {
     public ValueImpl() {
     }
 
-    public ValueImpl(UuidKey key, Date happenedDate, String value) {
+    public ValueImpl(UuidKeyImpl key, Date happenedDate, String value) {
         this.key = key;
         this.happenedDate = happenedDate;
         this.value = value;
     }
 
     @Override
-    public UuidKey getKey() {
+    public UuidKeyImpl getKey() {
         return key;
     }
 
-    public void setKey(UuidKey key) {
+    public void setKey(UuidKeyImpl key) {
         this.key = key;
     }
 

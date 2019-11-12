@@ -1,7 +1,7 @@
-package com.dwarfeng.fdr.impl.bean.validate.bean.entity;
+package com.dwarfeng.fdr.impl.bean.testbean.bean.entity;
 
+import com.dwarfeng.fdr.impl.bean.testbean.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSetting;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 /**
  * @author DwArFeng
@@ -11,7 +11,7 @@ public class TriggerSettingImpl implements TriggerSetting {
 
     private static final long serialVersionUID = 1851383230321096992L;
 
-    private UuidKey key;
+    private UuidKeyImpl key;
 
     private String name;
 
@@ -26,7 +26,7 @@ public class TriggerSettingImpl implements TriggerSetting {
     public TriggerSettingImpl() {
     }
 
-    public TriggerSettingImpl(UuidKey key, String name, String triggerData, String remark, boolean triggerBroadcast, boolean triggerPersistence) {
+    public TriggerSettingImpl(UuidKeyImpl key, String name, String triggerData, String remark, boolean triggerBroadcast, boolean triggerPersistence) {
         this.key = key;
         this.name = name;
         this.triggerData = triggerData;
@@ -36,11 +36,11 @@ public class TriggerSettingImpl implements TriggerSetting {
     }
 
     @Override
-    public UuidKey getKey() {
+    public UuidKeyImpl getKey() {
         return key;
     }
 
-    public void setKey(UuidKey key) {
+    public void setKey(UuidKeyImpl key) {
         this.key = key;
     }
 

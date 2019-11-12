@@ -1,7 +1,7 @@
-package com.dwarfeng.fdr.impl.bean.validate.bean.entity;
+package com.dwarfeng.fdr.impl.bean.testbean.bean.entity;
 
+import com.dwarfeng.fdr.impl.bean.testbean.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 /**
  * @author DwArFeng
@@ -11,7 +11,7 @@ public class CategoryImpl implements Category {
 
     private static final long serialVersionUID = -6264447099891399232L;
 
-    private UuidKey key;
+    private UuidKeyImpl key;
 
     private String name;
 
@@ -20,18 +20,18 @@ public class CategoryImpl implements Category {
     public CategoryImpl() {
     }
 
-    public CategoryImpl(UuidKey key, String name, String remark) {
+    public CategoryImpl(UuidKeyImpl key, String name, String remark) {
         this.key = key;
         this.name = name;
         this.remark = remark;
     }
 
     @Override
-    public UuidKey getKey() {
+    public UuidKeyImpl getKey() {
         return key;
     }
 
-    public void setKey(UuidKey key) {
+    public void setKey(UuidKeyImpl key) {
         this.key = key;
     }
 

@@ -340,7 +340,7 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-bean-validate</artifactId>
+                <artifactId>flight-data-recorder-impl-testbean</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>

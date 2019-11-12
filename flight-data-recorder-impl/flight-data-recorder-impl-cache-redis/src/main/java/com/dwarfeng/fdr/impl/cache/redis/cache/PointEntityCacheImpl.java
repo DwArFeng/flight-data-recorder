@@ -1,15 +1,15 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
-import com.dwarfeng.fdr.impl.cache.redis.bean.entity.PointImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.PointEntityCache;
-import org.dozer.Mapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 数据点缓存的实现。
@@ -18,27 +18,48 @@ import org.springframework.stereotype.Repository;
  * @since 0.0.1-alpha
  */
 @Repository
-public class PointEntityCacheImpl extends AbstractBaseCache<UuidKey, Point> implements PointEntityCache {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PointEntityCacheImpl.class);
+public class PointEntityCacheImpl implements PointEntityCache {
 
     @Autowired
-    private Mapper mapper;
-    @Value("${key_format.entity.point}")
-    private String keyFormat;
+    private PointEntityCacheDelegate delegate;
 
     @Override
-    protected Object key2Object(UuidKey key) {
-        return String.format(keyFormat, key.getUuid());
+    public boolean exists(UuidKey key) throws CacheException {
+        return delegate.exists(key);
     }
 
     @Override
-    protected Object value2Object(Point value) {
-        return mapper.map(value, PointImpl.class);
+    public boolean existsAll(Collection<UuidKey> c) throws CacheException {
+        return delegate.existsAll(c);
     }
 
     @Override
-    protected Point object2Value(Object object) {
-        return (Point) object;
+    public boolean existsNon(Collection<UuidKey> c) throws CacheException {
+        return delegate.existsNon(c);
+    }
+
+    @Override
+    public Point get(UuidKey key) throws CacheException {
+        return delegate.get(key);
+    }
+
+    @Override
+    public void push(UuidKey key, Point value, long timeout, TimeUnit timeUnit) throws CacheException {
+        delegate.push(key, value, timeout, timeUnit);
+    }
+
+    @Override
+    public void batchPush(Map<UuidKey, Point> map, long timeout, TimeUnit timeUnit) throws CacheException {
+        delegate.batchPush(map, timeout, timeUnit);
+    }
+
+    @Override
+    public void delete(UuidKey key) throws CacheException {
+        delegate.delete(key);
+    }
+
+    @Override
+    public void batchDelete(Collection<UuidKey> c) throws CacheException {
+        delegate.batchDelete(c);
     }
 }

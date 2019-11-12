@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.impl.maintain.hibred.service;
 
 import com.dwarfeng.dutil.basic.str.UUIDUtil;
-import com.dwarfeng.fdr.impl.bean.validate.bean.entity.PointImpl;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.UuidKeyImpl;
+import com.dwarfeng.fdr.impl.bean.testbean.bean.entity.PointImpl;
+import com.dwarfeng.fdr.impl.bean.testbean.bean.key.UuidKeyImpl;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.cache.PointEntityCache;
 import com.dwarfeng.fdr.stack.dao.PointDao;
@@ -32,40 +32,47 @@ public class PointMaintainServiceImplTest {
     @Autowired
     PointDao pointDao;
 
-    private UuidKeyImpl key;
+    private com.dwarfeng.fdr.impl.bean.testbean.bean.key.UuidKeyImpl key;
+    private PointImpl point;
 
     @Before
     public void setUp() throws Exception {
         key = UuidKeyImpl.of(UUIDUtil.toDenseString(UUID.randomUUID()));
+        point = new PointImpl(
+                key,
+                "test-point",
+                "string",
+                true,
+                "this is a test"
+        );
     }
 
     @After
     public void tearDown() throws Exception {
         key = null;
+        point = null;
     }
-
 
     @Test
     @Rollback(value = false)
     public void get() throws Exception {
-        Point point = new PointImpl(key, "test-point", "string", true, "this is a test");
         try {
             if (pointMaintainService.exists(key)) pointMaintainService.remove(key);
             pointMaintainService.add(point);
 
             //删除缓存中的数据，第一次调用的是持久层中的数据。
             pointEntityCache.delete(key);
-            point = pointMaintainService.get(key);
-            assertEquals(key, point.getKey());
-            assertEquals("string", point.getType());
-            assertTrue(point.isPersistence());
-            assertEquals("this is a test", point.getRemark());
+            Point localPoint = pointMaintainService.get(key);
+            assertEquals(key, localPoint.getKey());
+            assertEquals("string", localPoint.getType());
+            assertTrue(localPoint.isPersistence());
+            assertEquals("this is a test", localPoint.getRemark());
             //第一次调用的是数据持久层中的数据，第二次调用的是缓存中的数据。
-            point = pointMaintainService.get(key);
-            assertEquals(key, point.getKey());
-            assertEquals("string", point.getType());
-            assertTrue(point.isPersistence());
-            assertEquals("this is a test", point.getRemark());
+            localPoint = pointMaintainService.get(key);
+            assertEquals(key, localPoint.getKey());
+            assertEquals("string", localPoint.getType());
+            assertTrue(localPoint.isPersistence());
+            assertEquals("this is a test", localPoint.getRemark());
         } finally {
             if (pointMaintainService.exists(key)) pointMaintainService.remove(key);
         }
@@ -74,7 +81,6 @@ public class PointMaintainServiceImplTest {
     @Test
     @Rollback(value = false)
     public void add() throws Exception {
-        PointImpl point = new PointImpl(key, "test-point", "string", true, "this is a test");
         try {
             if (pointMaintainService.exists(key)) pointMaintainService.remove(key);
             pointMaintainService.add(point);

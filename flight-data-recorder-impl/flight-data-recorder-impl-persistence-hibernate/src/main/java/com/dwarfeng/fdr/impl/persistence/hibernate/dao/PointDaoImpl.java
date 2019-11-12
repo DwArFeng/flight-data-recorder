@@ -1,91 +1,81 @@
 package com.dwarfeng.fdr.impl.persistence.hibernate.dao;
 
-import com.dwarfeng.fdr.impl.persistence.hibernate.bean.entity.PointImpl;
-import com.dwarfeng.fdr.impl.persistence.hibernate.bean.key.UuidKeyImpl;
-import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyseAdvisor;
 import com.dwarfeng.fdr.stack.bean.constraint.PointConstraint;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.fdr.stack.exception.DaoException;
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
-@TimeAnalyseAdvisor.TimeAnalyse
-@Validated
-public class PointDaoImpl extends AbstractBaseDao<UuidKey, Point, PointConstraint> implements PointDao {
+public class PointDaoImpl implements PointDao {
 
     @Autowired
-    private HibernateTemplate hibernateTemplate;
-    @Autowired
-    private Mapper mapper;
+    private PointDaoDelegate delegate;
+
 
     @Override
-    public Point get(@NotNull UuidKey key) throws DaoException {
-        UuidKeyImpl keyImpl = mapper.map(key, UuidKeyImpl.class);
-        try {
-            return hibernateTemplate.get(PointImpl.class, keyImpl);
-        } catch (Exception e) {
-            throw new DaoException("无法读取指定的数据点: " + keyImpl.toString(), e);
-        }
+    public boolean exists(UuidKey key) throws DaoException {
+        return delegate.exists(key);
+    }
+
+    @Override
+    public boolean existsAll(Collection<UuidKey> c) throws DaoException {
+        return delegate.existsAll(c);
+    }
+
+    @Override
+    public boolean existsNon(Collection<UuidKey> c) throws DaoException {
+        return delegate.existsNon(c);
+    }
+
+    @Override
+    public Point get(UuidKey key) throws DaoException {
+        return delegate.get(key);
     }
 
     @Override
     public UuidKey insert(Point element) throws DaoException {
-        PointImpl pointImpl = mapper.map(element, PointImpl.class);
-        try {
-            hibernateTemplate.save(pointImpl);
-            hibernateTemplate.flush();
-            hibernateTemplate.clear();
-            return pointImpl.getKey();
-        } catch (Exception e) {
-            throw new DaoException("无法插入指定的数据点: " + pointImpl.toString(), e);
-        }
+        return delegate.insert(element);
+    }
+
+    @Override
+    public void batchInsert(Collection<Point> c) throws DaoException {
+        delegate.batchInsert(c);
     }
 
     @Override
     public UuidKey update(Point element) throws DaoException {
-        PointImpl pointImpl = mapper.map(element, PointImpl.class);
-        try {
-            hibernateTemplate.update(pointImpl);
-            hibernateTemplate.flush();
-            hibernateTemplate.clear();
-            return pointImpl.getKey();
-        } catch (Exception e) {
-            throw new DaoException("无法更新指定的数据点: " + pointImpl.toString(), e);
-        }
+        return delegate.update(element);
+    }
+
+    @Override
+    public void batchUpdate(Collection<Point> c) throws DaoException {
+        delegate.batchUpdate(c);
     }
 
     @Override
     public void delete(UuidKey key) throws DaoException {
-        UuidKeyImpl keyImpl = mapper.map(key, UuidKeyImpl.class);
-        try {
-            hibernateTemplate.delete(hibernateTemplate.get(PointImpl.class, keyImpl));
-            hibernateTemplate.flush();
-            hibernateTemplate.clear();
-        } catch (Exception e) {
-            throw new DaoException("无法删除指定的数据点: " + keyImpl.toString(), e);
-        }
+        delegate.delete(key);
     }
 
     @Override
-    public List<Point> select(PointConstraint constraint, LookupPagingInfo lookupPagingInfo) {
-        // TODO Auto-generated method stub
-        return null;
+    public void batchDelete(Collection<UuidKey> c) throws DaoException {
+        delegate.batchDelete(c);
     }
 
     @Override
-    public int selectCount(PointConstraint constraint) {
-        // TODO Auto-generated method stub
-        return 0;
+    public List<Point> select(PointConstraint constraint, LookupPagingInfo lookupPagingInfo) throws DaoException {
+        return delegate.select(constraint, lookupPagingInfo);
     }
 
+    @Override
+    public int selectCount(PointConstraint constraint) throws DaoException {
+        return delegate.selectCount(constraint);
+    }
 }
