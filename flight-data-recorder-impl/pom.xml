@@ -24,7 +24,7 @@
     </properties>
 
     <modules>
-        <module>flight-data-recorder-impl-persistence-hibernate</module>
+        <module>flight-data-recorder-impl-dao-hibernate</module>
         <module>flight-data-recorder-impl-cache-redis</module>
         <module>flight-data-recorder-impl-record-dubbo</module>
         <module>flight-data-recorder-impl-lookup-dubbo</module>

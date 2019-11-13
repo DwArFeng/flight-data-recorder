@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.dwarfeng</groupId>
-		<artifactId>flight-data-recorder</artifactId>
-		<version>alpha-0.0.1.a-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.dwarfeng</groupId>
+        <artifactId>flight-data-recorder</artifactId>
+        <version>alpha-0.0.1.a-SNAPSHOT</version>
+    </parent>
 
-	<packaging>pom</packaging>
+    <packaging>pom</packaging>
 
-	<artifactId>flight-data-recorder-stack</artifactId>
-	<name>flight-data-recorder-stack</name>
-	<url>http://maven.apache.org</url>
+    <artifactId>flight-data-recorder-stack</artifactId>
+    <name>flight-data-recorder-stack</name>
+    <url>http://maven.apache.org</url>
 
-	<properties>
-		<!-- 进行工程编码声明 -->
-		<!-- 进行JDK版本声明 -->
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-	</properties>
+    <properties>
+        <!-- 进行工程编码声明 -->
+        <!-- 进行JDK版本声明 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
-	<modules>
-		<module>flight-data-recorder-stack-bean</module>
-		<module>flight-data-recorder-stack-persistence</module>
-    <module>flight-data-recorder-stack-model</module>
-    <module>flight-data-recorder-stack-handler</module>
-    <module>flight-data-recorder-stack-service</module>
-    <module>flight-data-recorder-stack-cache</module>
-  </modules>
+    <modules>
+        <module>flight-data-recorder-stack-bean</module>
+        <module>flight-data-recorder-stack-dao</module>
+        <module>flight-data-recorder-stack-model</module>
+        <module>flight-data-recorder-stack-handler</module>
+        <module>flight-data-recorder-stack-service</module>
+        <module>flight-data-recorder-stack-cache</module>
+    </modules>
 </project>
