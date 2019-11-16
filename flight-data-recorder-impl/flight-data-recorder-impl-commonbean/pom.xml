@@ -3,20 +3,15 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <modules>
-        <module>flight-data-recorder-api-client-maintain-ws</module>
-    </modules>
 
     <parent>
+        <artifactId>flight-data-recorder-impl</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <artifactId>flight-data-recorder</artifactId>
         <version>alpha-0.0.1.a-SNAPSHOT</version>
     </parent>
 
-    <packaging>pom</packaging>
-
-    <artifactId>flight-data-recorder-api</artifactId>
-    <name>flight-data-recorder-api</name>
+    <artifactId>flight-data-recorder-impl-commonbean</artifactId>
+    <name>flight-data-recorder-impl-commonbean</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -26,4 +21,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>flight-data-recorder-stack-bean</artifactId>
+        </dependency>
+    </dependencies>
 </project>

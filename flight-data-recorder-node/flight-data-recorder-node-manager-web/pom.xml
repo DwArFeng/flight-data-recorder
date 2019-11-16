@@ -169,7 +169,7 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-maintain-hibred</artifactId>
+            <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
         </dependency>
     </dependencies>
 

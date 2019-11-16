@@ -17,7 +17,6 @@ public class FastJsonConfiguration {
     public FastJsonConfiguration() {
         LOGGER.info("正在配置 FastJson autotype 白名单");
         ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.impl.cache.redis.bean.entity.PointImpl");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.impl.cache.redis.bean.entity.ChannelImpl");
         LOGGER.debug("FastJson autotype 白名单配置完毕");
     }
 }

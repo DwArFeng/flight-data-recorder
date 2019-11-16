@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.stack.cache;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,7 @@ public interface BaseCache<K, V> extends Cache {
      * @param key 指定的键是否存在。
      * @return 指定的键是否存在。
      */
-    public boolean exists(K key) throws CacheException;
+    boolean exists(K key) throws CacheException;
 
     /**
      * 获取缓存中指定的所有键是否存在。
@@ -29,7 +30,7 @@ public interface BaseCache<K, V> extends Cache {
      * @return 指定的所有键是否都存在。
      * @throws CacheException 缓存异常。
      */
-    public boolean existsAll(Collection<K> c) throws CacheException;
+    boolean existsAll(Collection<K> c) throws CacheException;
 
     /**
      * 获取缓存中指定的所有键是否都不存在。
@@ -38,7 +39,7 @@ public interface BaseCache<K, V> extends Cache {
      * @return 指定的所有键是否都不存在。
      * @throws CacheException 缓存异常。
      */
-    public boolean existsNon(Collection<K> c) throws CacheException;
+    boolean existsNon(Collection<K> c) throws CacheException;
 
     /**
      * 获取缓存中指定键对应的值。
@@ -46,7 +47,16 @@ public interface BaseCache<K, V> extends Cache {
      * @param key 指定的键。
      * @return 指定的键对应的值。
      */
-    public V get(K key) throws CacheException;
+    V get(K key) throws CacheException;
+
+    /**
+     * 批量获取缓存中指定键的对应值。
+     *
+     * @param keys 指定的键组成的列表。
+     * @return 指定的键对应的值组成的列表。
+     * @throws CacheException 缓存异常。
+     */
+    List<? extends V> batchGet(List<? extends K> keys) throws CacheException;
 
     /**
      * 向缓存中推送指定的键与值。
@@ -58,7 +68,7 @@ public interface BaseCache<K, V> extends Cache {
      * @param timeout  超时时间。
      * @param timeUnit 时间单位。
      */
-    public void push(K key, V value, long timeout, TimeUnit timeUnit) throws CacheException;
+    void push(K key, V value, long timeout, TimeUnit timeUnit) throws CacheException;
 
     /**
      * 向缓存中批量推送键与值。
@@ -68,14 +78,14 @@ public interface BaseCache<K, V> extends Cache {
      * @param timeUnit 时间单位。
      * @throws CacheException 缓存异常。
      */
-    public void batchPush(Map<K, V> map, long timeout, TimeUnit timeUnit) throws CacheException;
+    void batchPush(Map<K, V> map, long timeout, TimeUnit timeUnit) throws CacheException;
 
     /**
      * 从缓存中删除指定的键。
      *
      * @param key 指定的键。
      */
-    public void delete(K key) throws CacheException;
+    void delete(K key) throws CacheException;
 
     /**
      * 从缓存中批量删除指定的键。
@@ -83,6 +93,6 @@ public interface BaseCache<K, V> extends Cache {
      * @param c 指定的键组成的集合。
      * @throws CacheException 缓存异常。
      */
-    public void batchDelete(Collection<K> c) throws CacheException;
+    void batchDelete(Collection<K> c) throws CacheException;
 
 }

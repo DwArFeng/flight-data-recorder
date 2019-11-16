@@ -55,7 +55,7 @@ buildNumber.properties
 /flight-data-recorder-impl/flight-data-recorder-impl-dao-hibernate/log/
 /flight-data-recorder-impl/flight-data-recorder-impl-cache-redis/log/
 /flight-data-recorder-sdk/log/
-/flight-data-recorder-impl/flight-data-recorder-impl-maintain-hibred/log/
+/flight-data-recorder-impl/flight-data-recorder-impl-service-maintain/log/
 /flight-data-recorder-node/flight-data-recorder-node-manager-web/log/
 /flight-data-recorder-node/flight-data-recorder-node-manager-ws/log/
 /flight-data-recorder-node/flight-data-recorder-node-validate-test/log/
@@ -66,7 +66,7 @@ buildNumber.properties
 /flight-data-recorder-impl/flight-data-recorder-impl-dao-hibernate/conf/
 /flight-data-recorder-impl/flight-data-recorder-impl-cache-redis/conf/
 /flight-data-recorder-sdk/conf/
-/flight-data-recorder-impl/flight-data-recorder-impl-maintain-hibred/conf/
+/flight-data-recorder-impl/flight-data-recorder-impl-service-maintain/conf/
 /flight-data-recorder-node/flight-data-recorder-node-manager-web/conf/
 /flight-data-recorder-node/flight-data-recorder-node-manager-ws/conf/
 /flight-data-recorder-node/flight-data-recorder-node-validate-test/conf/

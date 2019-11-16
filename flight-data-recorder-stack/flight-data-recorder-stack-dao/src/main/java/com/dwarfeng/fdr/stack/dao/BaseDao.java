@@ -33,7 +33,7 @@ public interface BaseDao<K extends Key, E extends Entity<K>, C extends Constrain
      * @return 指定的键是否都存在。
      * @throws DaoException 数据访问层异常。
      */
-    boolean existsAll(Collection<K> c) throws DaoException;
+    boolean existsAll(Collection<? extends K> c) throws DaoException;
 
     /**
      * 获取指定的所有键是否都不存在。
@@ -42,7 +42,7 @@ public interface BaseDao<K extends Key, E extends Entity<K>, C extends Constrain
      * @return 指定的键是否都不存在。
      * @throws DaoException 数据访问层异常。
      */
-    boolean existsNon(Collection<K> c) throws DaoException;
+    boolean existsNon(Collection<? extends K> c) throws DaoException;
 
     /**
      * 获取实体。
@@ -51,6 +51,15 @@ public interface BaseDao<K extends Key, E extends Entity<K>, C extends Constrain
      * @return 实体的键对应的实体。
      */
     E get(K key) throws DaoException;
+
+    /**
+     * 批量获取实体。
+     *
+     * @param keys 指定的键组成的列表。
+     * @return 指定的键对应的实体组成的列表。
+     * @throws DaoException 数据访问层异常。
+     */
+    List<? extends E> batchGet(List<? extends K> keys) throws DaoException;
 
     /**
      * 插入实体。
@@ -66,7 +75,7 @@ public interface BaseDao<K extends Key, E extends Entity<K>, C extends Constrain
      * @param c 指定的实体组成的集合。
      * @throws DaoException 数据访问层异常。
      */
-    void batchInsert(Collection<E> c) throws DaoException;
+    void batchInsert(Collection<? extends E> c) throws DaoException;
 
     /**
      * 更新实体。
@@ -83,7 +92,7 @@ public interface BaseDao<K extends Key, E extends Entity<K>, C extends Constrain
      * @param c 指定的实体组成的集合。
      * @throws DaoException 数据访问层异常。
      */
-    void batchUpdate(Collection<E> c) throws DaoException;
+    void batchUpdate(Collection<? extends E> c) throws DaoException;
 
     /**
      * 删除实体。
@@ -98,7 +107,7 @@ public interface BaseDao<K extends Key, E extends Entity<K>, C extends Constrain
      * @param c 指定的实体的键组成的集合。
      * @throws DaoException 数据访问层异常。
      */
-    void batchDelete(Collection<K> c) throws DaoException;
+    void batchDelete(Collection<? extends K> c) throws DaoException;
 
     /**
      * 查询指定约束和指定的分页信息下的元素组成的集合。

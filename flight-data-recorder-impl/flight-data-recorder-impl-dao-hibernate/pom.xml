@@ -95,7 +95,7 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-testbean</artifactId>
+            <artifactId>flight-data-recorder-impl-commonbean</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
