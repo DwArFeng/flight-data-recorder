@@ -94,11 +94,6 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-sdk</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-commonbean</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

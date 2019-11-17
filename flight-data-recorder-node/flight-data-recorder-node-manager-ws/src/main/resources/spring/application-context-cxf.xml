@@ -7,4 +7,5 @@
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <jaxws:endpoint implementor="#helloWebService" address="/hello"/>
+    <jaxws:endpoint implementor="#categoryMaintainWebService" address="/category_maintain"/>
 </beans>

@@ -1,20 +1,20 @@
 package com.dwarfeng.fdr.impl.dao.hibernate.bean.entity;
 
 import com.dwarfeng.fdr.impl.dao.hibernate.bean.key.HibernateUuidKey;
-import com.dwarfeng.fdr.stack.bean.entity.Category;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import com.dwarfeng.fdr.sdk.util.Constants;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
 @IdClass(HibernateUuidKey.class)
 @Table(name = "tbl_category")
-public class HibernateCategory implements Category {
+public class HibernateCategory implements Serializable {
 
-    private static final long serialVersionUID = 583598193113136019L;
+    private static final long serialVersionUID = 6680055254581597361L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -26,10 +26,10 @@ public class HibernateCategory implements Category {
     private String parentUuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
-    @Column(name = "name", length = 255, nullable = false)
+    @Column(name = "name", length = Constants.DATABASE_LENGTH_CATAGORY_NAME, nullable = false)
     private String name;
 
-    @Column(name = "remark", length = 255, nullable = true)
+    @Column(name = "remark", length = Constants.DATABASE_LENGTH_CATAGORY_REMARK, nullable = true)
     private String remark;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------
@@ -40,42 +40,22 @@ public class HibernateCategory implements Category {
     private HibernateCategory parentCategory;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(targetEntity = HibernateCategory.class, mappedBy = "parentCategory")
-    @Cascade(CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateCategory.class, mappedBy = "parentCategory")
     private Set<HibernateCategory> childCategories = new HashSet<>();
 
-    @OneToMany(targetEntity = HibernatePoint.class, mappedBy = "category")
-    @Cascade(CascadeType.MERGE)
-    private Set<HibernatePoint> points = new HashSet<>();
+//    @OneToMany(targetEntity = PointHibernateImpl.class, mappedBy = "category")
+//    @Cascade(CascadeType.MERGE)
+//    private Set<PointHibernateImpl> points = new HashSet<>();
 
     public HibernateCategory() {
     }
 
-    public HibernateCategory(
-            String uuid,
-            String parentUuid,
-            String name,
-            String remark,
-            HibernateCategory parentCategory,
-            Set<HibernateCategory> childCategories,
-            Set<HibernatePoint> points
-    ) {
-        this.uuid = uuid;
-        this.parentUuid = parentUuid;
-        this.name = name;
-        this.remark = remark;
-        this.parentCategory = parentCategory;
-        this.childCategories = childCategories;
-        this.points = points;
-    }
-
-    @Override
     public HibernateUuidKey getKey() {
-        return HibernateUuidKey.of(uuid);
+        return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
     }
 
     public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = uuidKey.getUuid();
+        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
     }
 
     public String getUuid() {
@@ -86,6 +66,14 @@ public class HibernateCategory implements Category {
         this.uuid = uuid;
     }
 
+    public HibernateUuidKey getParentKey() {
+        return Optional.ofNullable(parentUuid).map(HibernateUuidKey::new).orElse(null);
+    }
+
+    public void setParentKey(HibernateUuidKey parentKey) {
+        this.parentUuid = Optional.ofNullable(parentKey).map(HibernateUuidKey::getUuid).orElse(null);
+    }
+
     public String getParentUuid() {
         return parentUuid;
     }
@@ -94,7 +82,6 @@ public class HibernateCategory implements Category {
         this.parentUuid = parentUuid;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -103,7 +90,6 @@ public class HibernateCategory implements Category {
         this.name = name;
     }
 
-    @Override
     public String getRemark() {
         return remark;
     }
@@ -128,24 +114,13 @@ public class HibernateCategory implements Category {
         this.childCategories = childCategories;
     }
 
-    public Set<HibernatePoint> getPoints() {
-        return points;
-    }
-
-    public void setPoints(Set<HibernatePoint> points) {
-        this.points = points;
-    }
-
     @Override
     public String toString() {
-        return "CategoryImpl{" +
+        return "HibernateCategory{" +
                 "uuid='" + uuid + '\'' +
                 ", parentUuid='" + parentUuid + '\'' +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
-                ", parentCategory=" + parentCategory +
-                ", childCategories=" + childCategories +
-                ", points=" + points +
                 '}';
     }
 }

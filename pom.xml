@@ -38,8 +38,10 @@
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
         <jedis.version>2.9.0</jedis.version>
         <solrj.version>4.10.3</solrj.version>
-        <dubbo.version>2.5.3</dubbo.version>
-        <zkclient.version>0.10</zkclient.version>
+        <dubbo.version>2.7.1</dubbo.version>
+        <netty.version>4.1.43.Final</netty.version>
+        <curator.version>4.2.0</curator.version>
+        <zkclient.version>0.11</zkclient.version>
         <httpcomponents.version>4.4.1</httpcomponents.version>
         <noggit.version>0.6</noggit.version>
         <zookeeper.version>3.4.6</zookeeper.version>
@@ -98,7 +100,7 @@
             </dependency>
             <!-- Dubbo分布式包 -->
             <dependency>
-                <groupId>com.alibaba</groupId>
+                <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo</artifactId>
                 <exclusions>
                     <!-- 排除或者不适用dubbo中指定的spring版本 -->
@@ -108,6 +110,18 @@
                     </exclusion>
                 </exclusions>
                 <version>${dubbo.version}</version>
+            </dependency>
+            <!-- Netty网络连接包 -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <!-- Curator框架 -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
             </dependency>
             <!-- 单元测试 -->
             <dependency>
@@ -340,7 +354,7 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-commonbean</artifactId>
+                <artifactId>flight-data-recorder-impl-bean-common</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -361,6 +375,16 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-handler-validation</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-stack-handler</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
         </dependencies>

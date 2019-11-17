@@ -1,27 +1,24 @@
 package com.dwarfeng.fdr.impl.dao.hibernate.bean.key;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import java.io.Serializable;
 
-import java.util.Objects;
+/**
+ * @author DwArFeng
+ * @since 0.0.1-alpha
+ */
+public class HibernateUuidKey implements Serializable {
 
-public class HibernateUuidKey implements UuidKey {
+    private static final long serialVersionUID = -3366231350415339034L;
 
-    private static final long serialVersionUID = -2968659158721861267L;
+    private String uuid;
 
     public HibernateUuidKey() {
     }
-
-    private String uuid;
 
     public HibernateUuidKey(String uuid) {
         this.uuid = uuid;
     }
 
-    public static HibernateUuidKey of(String uuid) {
-        return new HibernateUuidKey(uuid);
-    }
-
-    @Override
     public String getUuid() {
         return uuid;
     }
@@ -33,12 +30,11 @@ public class HibernateUuidKey implements UuidKey {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (Objects.isNull(o)) return false;
-        if (!(o instanceof UuidKey)) return false;
+        if (!(o instanceof HibernateUuidKey)) return false;
 
-        UuidKey that = (UuidKey) o;
+        HibernateUuidKey that = (HibernateUuidKey) o;
 
-        return Objects.equals(this.getUuid(), that.getUuid());
+        return getUuid() != null ? getUuid().equals(that.getUuid()) : that.getUuid() == null;
     }
 
     @Override
@@ -48,8 +44,8 @@ public class HibernateUuidKey implements UuidKey {
 
     @Override
     public String toString() {
-        return "UuidKeyImpl [uuid=" + uuid + "]";
+        return "HibernateUuidKey{" +
+                "uuid='" + uuid + '\'' +
+                '}';
     }
-
-
 }

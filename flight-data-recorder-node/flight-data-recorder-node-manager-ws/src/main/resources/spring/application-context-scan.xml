@@ -8,11 +8,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--扫描service的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.maintain.hibred.service"/>
-    <!--扫描dao的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.persistence.hibernate.dao"/>
-    <!--扫描cache的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.cache.redis.cache"/>
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.service.maintain.service"/>
     <!--扫描配置类所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.node.manager.ws.configuration"/>
     <!--扫描WebService所在的包。 -->

@@ -3,36 +3,92 @@ package com.dwarfeng.fdr.stack.bean.entity;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 /**
- * 数据点接口。
+ * 数据点。
  */
-public interface Point extends Entity<UuidKey> {
+public class Point implements Entity<UuidKey> {
 
+    /**
+     * 主键。
+     */
+    private UuidKey key;
     /**
      * 数据点的名称。
-     *
-     * @return 数据点的名称。
      */
-    String getName();
-
+    private String name;
     /**
-     * 获取数据点的类型。
-     *
-     * @return 数据点的类型。
+     * 备注。
      */
-    String getType();
-
+    private String remark;
     /**
-     * 数据点是否持久化。
-     *
-     * @return 数据点是否持久化记录数据。
+     * 是否启用持久化。
      */
-    boolean isPersistence();
-
+    private boolean persistenceEnabled;
     /**
-     * 获取数据点的备注。
-     *
-     * @return 数据点的备注。
+     * 是否启用实时化。
      */
-    String getRemark();
+    private boolean realtimeEnabled;
 
+    public Point() {
+    }
+
+    public Point(UuidKey key, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+        this.key = key;
+        this.name = name;
+        this.remark = remark;
+        this.persistenceEnabled = persistenceEnabled;
+        this.realtimeEnabled = realtimeEnabled;
+    }
+
+    @Override
+    public UuidKey getKey() {
+        return key;
+    }
+
+    @Override
+    public void setKey(UuidKey key) {
+        this.key = key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public boolean isPersistenceEnabled() {
+        return persistenceEnabled;
+    }
+
+    public void setPersistenceEnabled(boolean persistenceEnabled) {
+        this.persistenceEnabled = persistenceEnabled;
+    }
+
+    public boolean isRealtimeEnabled() {
+        return realtimeEnabled;
+    }
+
+    public void setRealtimeEnabled(boolean realtimeEnabled) {
+        this.realtimeEnabled = realtimeEnabled;
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "key=" + key +
+                ", name='" + name + '\'' +
+                ", remark='" + remark + '\'' +
+                ", persistenceEnabled=" + persistenceEnabled +
+                ", realtimeEnabled=" + realtimeEnabled +
+                '}';
+    }
 }

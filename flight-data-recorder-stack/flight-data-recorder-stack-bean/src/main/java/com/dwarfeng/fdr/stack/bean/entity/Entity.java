@@ -12,10 +12,17 @@ import com.dwarfeng.fdr.stack.bean.key.Key;
 public interface Entity<K extends Key> extends Bean {
 
     /**
-     * 获取实体的主键。
+     * 获取主键。
      *
      * @return 实体的主键。
      */
     K getKey();
+
+    /**
+     * 设置实体的主键。
+     *
+     * @param key 被设置的主键。
+     */
+    void setKey(K key);
 
 }

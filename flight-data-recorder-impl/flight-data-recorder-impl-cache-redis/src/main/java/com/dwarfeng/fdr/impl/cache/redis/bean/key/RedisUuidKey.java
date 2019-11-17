@@ -1,29 +1,27 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class RedisUuidKey implements UuidKey {
+/**
+ * @author DwArFeng
+ * @since 0.0.1-alpha
+ */
+public class RedisUuidKey implements Serializable {
 
-    private static final long serialVersionUID = 5709087570416541857L;
-
-    public RedisUuidKey() {
-    }
+    private static final long serialVersionUID = -1523467630414290246L;
 
     @JSONField(name = "uuid", ordinal = 1)
     private String uuid;
+
+    public RedisUuidKey() {
+    }
 
     public RedisUuidKey(String uuid) {
         this.uuid = uuid;
     }
 
-    public static RedisUuidKey of(String uuid) {
-        return new RedisUuidKey(uuid);
-    }
-
-    @Override
     public String getUuid() {
         return uuid;
     }
@@ -35,12 +33,11 @@ public class RedisUuidKey implements UuidKey {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (Objects.isNull(o)) return false;
-        if (!(o instanceof UuidKey)) return false;
+        if (!(o instanceof RedisUuidKey)) return false;
 
-        UuidKey that = (UuidKey) o;
+        RedisUuidKey that = (RedisUuidKey) o;
 
-        return Objects.equals(this.getUuid(), that.getUuid());
+        return getUuid() != null ? getUuid().equals(that.getUuid()) : that.getUuid() == null;
     }
 
     @Override
@@ -50,8 +47,8 @@ public class RedisUuidKey implements UuidKey {
 
     @Override
     public String toString() {
-        return "UuidKeyImpl [uuid=" + uuid + "]";
+        return "RedisUuidKey{" +
+                "uuid='" + uuid + '\'' +
+                '}';
     }
-
-
 }

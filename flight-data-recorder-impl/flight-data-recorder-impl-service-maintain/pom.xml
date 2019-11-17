@@ -114,6 +114,10 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
+            <artifactId>flight-data-recorder-stack-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-stack-dao</artifactId>
         </dependency>
         <dependency>
@@ -130,18 +134,15 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
+            <artifactId>flight-data-recorder-impl-handler-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-impl-dao-hibernate</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-impl-cache-redis</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-commonbean</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
