@@ -161,7 +161,7 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-dao-hibernate</artifactId>
+            <artifactId>flight-data-recorder-impl-dao-hnh</artifactId>
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>

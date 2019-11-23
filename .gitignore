@@ -52,7 +52,7 @@ buildNumber.properties
 #################
 ## Logger Files
 #################
-/flight-data-recorder-impl/flight-data-recorder-impl-dao-hibernate/log/
+/flight-data-recorder-impl/flight-data-recorder-impl-dao-hnh/log/
 /flight-data-recorder-impl/flight-data-recorder-impl-cache-redis/log/
 /flight-data-recorder-sdk/log/
 /flight-data-recorder-impl/flight-data-recorder-impl-service-maintain/log/
@@ -63,7 +63,7 @@ buildNumber.properties
 #################
 ## Configuration Files
 #################
-/flight-data-recorder-impl/flight-data-recorder-impl-dao-hibernate/conf/
+/flight-data-recorder-impl/flight-data-recorder-impl-dao-hnh/conf/
 /flight-data-recorder-impl/flight-data-recorder-impl-cache-redis/conf/
 /flight-data-recorder-sdk/conf/
 /flight-data-recorder-impl/flight-data-recorder-impl-service-maintain/conf/

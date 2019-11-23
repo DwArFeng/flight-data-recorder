@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.dwarfeng</groupId>
-        <artifactId>flight-data-recorder-node</artifactId>
+        <artifactId>flight-data-recorder-impl</artifactId>
         <version>alpha-0.0.1.a-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flight-data-recorder-node-manager-dubbo</artifactId>
-    <name>flight-data-recorder-node-manager-dubbo</name>
+    <artifactId>flight-data-recorder-impl-dao-hnh</artifactId>
+    <name>flight-data-recorder-impl-dao-hnh</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -36,38 +35,45 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Dubbo分布式包 -->
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
         </dependency>
-        <!-- Netty网络连接包 -->
+        <!-- Druid连接池 -->
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
         </dependency>
-        <!-- Curator框架 -->
+        <!-- Hibernate框架 -->
         <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
         </dependency>
-        <!-- zookeeper客户端 -->
+        <!-- MySql连接器 -->
         <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>log4j</artifactId>
-                    <groupId>log4j</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- Dozer模块 -->
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer-spring</artifactId>
+        </dependency>
+        <!-- dutil模块 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>dutil-basic</artifactId>
         </dependency>
         <!-- 日志处理 -->
         <dependency>
@@ -89,37 +95,22 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-cache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-sdk</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-dao-hnh</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-cache-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Maven 清理插件，用于清理测试时留下的日志。 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <artifactId>maven-clean-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <filesets>
+                        <fileset>
+                            <directory>log</directory>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
         </plugins>

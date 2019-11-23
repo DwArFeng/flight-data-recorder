@@ -359,7 +359,7 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-dao-hibernate</artifactId>
+                <artifactId>flight-data-recorder-impl-dao-hnh</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>

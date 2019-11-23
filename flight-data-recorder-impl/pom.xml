@@ -24,7 +24,7 @@
     </properties>
 
     <modules>
-        <module>flight-data-recorder-impl-dao-hibernate</module>
+        <module>flight-data-recorder-impl-dao-hnh</module>
         <module>flight-data-recorder-impl-cache-redis</module>
         <module>flight-data-recorder-impl-service-maintain</module>
         <module>flight-data-recorder-impl-handler-validation</module>
