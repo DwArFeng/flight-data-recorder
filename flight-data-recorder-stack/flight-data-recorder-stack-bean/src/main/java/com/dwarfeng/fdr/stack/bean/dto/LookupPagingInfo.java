@@ -6,7 +6,7 @@ package com.dwarfeng.fdr.stack.bean.dto;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class LookupPagingInfo {
+public class LookupPagingInfo implements Dto {
 
     /**
      * 是否启用分页功能。

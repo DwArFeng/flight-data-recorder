@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -116,9 +117,16 @@ public class CategoryDaoDelegate {
             }
 
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateCategory hibernateCategory = new HibernateCategory();
-            hibernateCategory.setKey(hibernateUuidKey);
+            HibernateCategory hibernateCategory = hibernateTemplate.get(HibernateCategory.class, hibernateUuidKey);
+            //取消所有与该分类有关的自分类的父项关联。
+            DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class)
+                    .add(Restrictions.eq("parentUuid", hibernateUuidKey.getUuid()));
+            for (Object child : hibernateTemplate.findByCriteria(criteria)) {
+                ((HibernateCategory) child).setParentUuid(null);
+            }
+            assert hibernateCategory != null;
             hibernateTemplate.delete(hibernateCategory);
+            hibernateTemplate.flush();
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
         }
@@ -128,7 +136,7 @@ public class CategoryDaoDelegate {
     @Transactional(readOnly = true)
     public List<Category> getChilds(UuidKey key, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(Category.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);
             if (Objects.isNull(key)) {
                 criteria.add(Restrictions.isNull("parentUuid"));
             } else {
@@ -136,7 +144,11 @@ public class CategoryDaoDelegate {
             }
             criteria.addOrder(Order.asc("name"));
             @SuppressWarnings("unchecked")
-            List<Category> result = (List<Category>) hibernateTemplate.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+            List<HibernateCategory> hibernateResult = (List<HibernateCategory>) hibernateTemplate.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+            List<Category> result = new ArrayList<>();
+            for (HibernateCategory hibernateCategory : hibernateResult) {
+                result.add(mapper.map(hibernateCategory, Category.class));
+            }
             return result;
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -147,7 +159,7 @@ public class CategoryDaoDelegate {
     @Transactional(readOnly = true)
     public long getChildCount(UuidKey key) throws DaoException {
         try {
-            DetachedCriteria criteria = DetachedCriteria.forClass(Category.class);
+            DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);
             if (Objects.isNull(key)) {
                 criteria.add(Restrictions.isNull("parentUuid"));
             } else {

@@ -59,6 +59,7 @@ buildNumber.properties
 /flight-data-recorder-node/flight-data-recorder-node-manager-web/log/
 /flight-data-recorder-node/flight-data-recorder-node-manager-ws/log/
 /flight-data-recorder-node/flight-data-recorder-node-manager-dubbo/log/
+/flight-data-recorder-api/flight-data-recorder-api-maintain-dubbo/log/
 
 #################
 ## Configuration Files
@@ -70,3 +71,4 @@ buildNumber.properties
 /flight-data-recorder-node/flight-data-recorder-node-manager-web/conf/
 /flight-data-recorder-node/flight-data-recorder-node-manager-ws/conf/
 /flight-data-recorder-node/flight-data-recorder-node-manager-dubbo/conf/
+/flight-data-recorder-api/flight-data-recorder-api-maintain-dubbo/conf/

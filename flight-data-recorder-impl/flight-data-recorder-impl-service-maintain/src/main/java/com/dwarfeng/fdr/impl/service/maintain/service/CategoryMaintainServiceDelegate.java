@@ -94,7 +94,7 @@ public class CategoryMaintainServiceDelegate {
                 return category.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:");
+            throw new ServiceException("服务异常，原因如下:", e);
         }
     }
 
@@ -113,7 +113,7 @@ public class CategoryMaintainServiceDelegate {
                 categoryDao.delete(key);
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:");
+            throw new ServiceException("服务异常，原因如下:", e);
         }
     }
 
@@ -141,7 +141,7 @@ public class CategoryMaintainServiceDelegate {
                     categories
             );
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:");
+            throw new ServiceException("服务异常，原因如下:", e);
         }
     }
 }

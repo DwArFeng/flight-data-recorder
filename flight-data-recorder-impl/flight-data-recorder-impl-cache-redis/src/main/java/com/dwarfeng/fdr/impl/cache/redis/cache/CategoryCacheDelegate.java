@@ -34,7 +34,7 @@ public class CategoryCacheDelegate {
             Category category = template.opsForValue().get(uuidKey2String(key));
             return Objects.nonNull(category);
         } catch (Exception e) {
-            throw new CacheException("缓存异常");
+            throw new CacheException("缓存异常", e);
         }
     }
 
@@ -43,7 +43,7 @@ public class CategoryCacheDelegate {
         try {
             return template.opsForValue().get(uuidKey2String(key));
         } catch (Exception e) {
-            throw new CacheException("缓存异常");
+            throw new CacheException("缓存异常", e);
         }
     }
 
@@ -52,7 +52,7 @@ public class CategoryCacheDelegate {
         try {
             template.opsForValue().set(uuidKey2String(key), value, timeout, timeUnit);
         } catch (Exception e) {
-            throw new CacheException("缓存异常");
+            throw new CacheException("缓存异常", e);
         }
     }
 
@@ -61,7 +61,7 @@ public class CategoryCacheDelegate {
         try {
             template.delete(uuidKey2String(key));
         } catch (Exception e) {
-            throw new CacheException("缓存异常");
+            throw new CacheException("缓存异常", e);
         }
     }
 
