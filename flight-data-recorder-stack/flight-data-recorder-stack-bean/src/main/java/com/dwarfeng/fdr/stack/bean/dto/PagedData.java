@@ -13,11 +13,11 @@ public class PagedData<E> implements Dto {
     private static final long serialVersionUID = -3109709137312688572L;
 
     /**
-     * 当前的页数。
+     * 当前的页数，从0开始计数。
      */
     private int currentPage;
     /**
-     * 总共的页数。
+     * 总共的页数，该值最小是1。
      */
     private int totlePages;
     /**

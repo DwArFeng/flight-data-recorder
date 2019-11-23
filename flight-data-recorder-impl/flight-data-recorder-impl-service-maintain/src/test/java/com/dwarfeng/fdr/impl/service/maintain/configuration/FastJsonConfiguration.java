@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.cache.redis.configuration;
+package com.dwarfeng.fdr.impl.service.maintain.configuration;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import org.slf4j.Logger;

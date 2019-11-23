@@ -2,8 +2,6 @@ package com.dwarfeng.fdr.stack.cache;
 
 import com.dwarfeng.fdr.stack.exception.CacheException;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * 基础缓存接口。
  *
@@ -33,12 +31,11 @@ public interface BaseCache<K, V> extends Cache {
      * <p>
      * 如果指定的键不存在，则创建。
      *
-     * @param key      指定的键。
-     * @param value    指定的键对应的值。
-     * @param timeout  超时时间。
-     * @param timeUnit 时间单位。
+     * @param key     指定的键。
+     * @param value   指定的键对应的值。
+     * @param timeout 超时时间（毫秒）。
      */
-    void push(K key, V value, long timeout, TimeUnit timeUnit) throws CacheException;
+    void push(K key, V value, long timeout) throws CacheException;
 
     /**
      * 从缓存中删除指定的键。

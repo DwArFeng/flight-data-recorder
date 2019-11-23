@@ -7,13 +7,15 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--扫描service的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.maintain.hibred.service"/>
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.service.maintain.service"/>
+    <!--扫描配置包。 -->
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.service.maintain.configuration"/>
+    <!--扫描handler的实现包。 -->
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.validation.handler"/>
     <!--扫描dao的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.dao.hnh.dao"/>
     <!--扫描cache的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.cache.redis.cache"/>
-    <!--扫描配置类所在的包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.maintain.hibred.configuration"/>
     <!--扫描aop增强所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.sdk.interceptor"/>
 </beans>

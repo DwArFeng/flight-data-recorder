@@ -26,6 +26,11 @@ public final class Constants {
      */
     public static final int DATABASE_LENGTH_CATAGORY_REMARK = 100;
 
+    /**
+     * 批量缓存抓取的数据长度。
+     */
+    public static final int BATCH_CACHE_FETCH_SIZE = 100;
+
     private Constants() {
         throw new IllegalStateException("禁止实例化");
     }

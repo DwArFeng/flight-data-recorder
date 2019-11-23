@@ -126,10 +126,6 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-service</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-sdk</artifactId>
         </dependency>
         <dependency>

@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.stack.bean.key;
 
+import java.util.Objects;
+
 /**
  * UUID主键。
  *
@@ -25,6 +27,19 @@ public class UuidKey implements Key {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UuidKey)) return false;
+        UuidKey uuidKey = (UuidKey) o;
+        return Objects.equals(getUuid(), uuidKey.getUuid());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid());
     }
 
     @Override

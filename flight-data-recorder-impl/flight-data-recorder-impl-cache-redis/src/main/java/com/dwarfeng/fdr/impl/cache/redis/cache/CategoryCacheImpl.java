@@ -7,8 +7,6 @@ import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.concurrent.TimeUnit;
-
 @Repository
 public class CategoryCacheImpl implements CategoryCache {
 
@@ -26,8 +24,8 @@ public class CategoryCacheImpl implements CategoryCache {
     }
 
     @Override
-    public void push(UuidKey key, Category value, long timeout, TimeUnit timeUnit) throws CacheException {
-        delegate.push(key, value, timeout, timeUnit);
+    public void push(UuidKey key, Category value, long timeout) throws CacheException {
+        delegate.push(key, value, timeout);
     }
 
 
