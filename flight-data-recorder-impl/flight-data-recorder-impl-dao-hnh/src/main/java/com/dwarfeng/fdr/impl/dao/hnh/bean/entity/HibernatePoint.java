@@ -5,16 +5,14 @@ import com.dwarfeng.fdr.sdk.util.Constants;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Entity
 @IdClass(HibernateUuidKey.class)
-@Table(name = "tbl_category")
-public class HibernateCategory implements Serializable {
+@Table(name = "tbl_point")
+public class HibernatePoint implements Serializable {
 
-    private static final long serialVersionUID = 6680055254581597361L;
+    private static final long serialVersionUID = 4923865131580198476L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -22,35 +20,38 @@ public class HibernateCategory implements Serializable {
     private String uuid;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "parent_uuid", columnDefinition = "CHAR(22)")
-    private String parentUuid;
+    @Column(name = "category_uuid", columnDefinition = "CHAR(22)")
+    private String categoryUuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
-    @Column(name = "name", length = Constants.CONSTRAINT_LENGTH_CATAGORY_NAME, nullable = false)
+    @Column(name = "name", length = Constants.CONSTRAINT_LENGTH_POINT_NAME, nullable = false)
     private String name;
 
-    @Column(name = "remark", length = Constants.CONSTRAINT_LENGTH_CATAGORY_REMARK, nullable = true)
+    @Column(name = "remark", length = Constants.CONSTRAINT_LENGTH_POINT_REMARK, nullable = true)
     private String remark;
+
+    @Column(name = "persistence_enabled", nullable = false)
+    private boolean persistenceEnabled;
+
+    @Column(name = "realtime_enabled", nullable = false)
+    private boolean realtimeEnabled;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernateCategory.class)
     @JoinColumns({ //
-            @JoinColumn(name = "parent_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "category_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
     })
-    private HibernateCategory parentCategory;
+    private HibernateCategory category;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateCategory.class, mappedBy = "parentCategory")
-    private Set<HibernateCategory> childCategories = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePoint.class, mappedBy = "category")
-    private Set<HibernatePoint> points = new HashSet<>();
+//    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePoint.class, mappedBy = "parentCategory")
+//    private Set<HibernatePoint> childCategories = new HashSet<>();
 
 //    @OneToMany(targetEntity = PointHibernateImpl.class, mappedBy = "category")
 //    @Cascade(CascadeType.MERGE)
 //    private Set<PointHibernateImpl> points = new HashSet<>();
 
-    public HibernateCategory() {
+    public HibernatePoint() {
     }
 
     public HibernateUuidKey getKey() {
@@ -69,20 +70,20 @@ public class HibernateCategory implements Serializable {
         this.uuid = uuid;
     }
 
-    public HibernateUuidKey getParentKey() {
-        return Optional.ofNullable(parentUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateUuidKey getCategoryKey() {
+        return Optional.ofNullable(categoryUuid).map(HibernateUuidKey::new).orElse(null);
     }
 
-    public void setParentKey(HibernateUuidKey parentKey) {
-        this.parentUuid = Optional.ofNullable(parentKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setCategoryKey(HibernateUuidKey parentKey) {
+        this.categoryUuid = Optional.ofNullable(parentKey).map(HibernateUuidKey::getUuid).orElse(null);
     }
 
-    public String getParentUuid() {
-        return parentUuid;
+    public String getCategoryUuid() {
+        return categoryUuid;
     }
 
-    public void setParentUuid(String parentUuid) {
-        this.parentUuid = parentUuid;
+    public void setCategoryUuid(String categoryUuid) {
+        this.categoryUuid = categoryUuid;
     }
 
     public String getName() {
@@ -101,29 +102,40 @@ public class HibernateCategory implements Serializable {
         this.remark = remark;
     }
 
-    public HibernateCategory getParentCategory() {
-        return parentCategory;
+    public boolean isPersistenceEnabled() {
+        return persistenceEnabled;
     }
 
-    public void setParentCategory(HibernateCategory parentCategory) {
-        this.parentCategory = parentCategory;
+    public void setPersistenceEnabled(boolean persistenceEnabled) {
+        this.persistenceEnabled = persistenceEnabled;
     }
 
-    public Set<HibernateCategory> getChildCategories() {
-        return childCategories;
+    public boolean isRealtimeEnabled() {
+        return realtimeEnabled;
     }
 
-    public void setChildCategories(Set<HibernateCategory> childCategories) {
-        this.childCategories = childCategories;
+    public void setRealtimeEnabled(boolean realtimeEnabled) {
+        this.realtimeEnabled = realtimeEnabled;
+    }
+
+    public HibernateCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(HibernateCategory category) {
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return "HibernateCategory{" +
+        return "HibernatePoint{" +
                 "uuid='" + uuid + '\'' +
-                ", parentUuid='" + parentUuid + '\'' +
+                ", categoryUuid='" + categoryUuid + '\'' +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
+                ", persistenceEnabled=" + persistenceEnabled +
+                ", realtimeEnabled=" + realtimeEnabled +
+                ", category=" + category +
                 '}';
     }
 }

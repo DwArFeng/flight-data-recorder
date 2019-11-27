@@ -1,43 +1,43 @@
-package com.dwarfeng.fdr.stack.bean.entity;
+package com.dwarfeng.fdr.impl.handler.validation.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.impl.handler.validation.bean.key.ValidationUuidKey;
+import com.dwarfeng.fdr.sdk.util.Constants;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
- * 数据点。
+ * @author DwArFeng
+ * @since 0.0.1-alpha
  */
-public class Point implements Entity<UuidKey> {
+public class ValidationPoint implements Serializable {
 
-    private static final long serialVersionUID = 9116129592160719291L;
+    private static final long serialVersionUID = 8875178147675699532L;
 
-    /**
-     * 主键。
-     */
-    private UuidKey key;
-    /**
-     * 所属分类主键。
-     */
-    private UuidKey categoryKey;
-    /**
-     * 数据点的名称。
-     */
+    @NotNull
+    @Valid
+    private ValidationUuidKey key;
+
+    @Valid
+    private ValidationUuidKey categoryKey;
+
+    @NotNull
+    @Length(max = Constants.CONSTRAINT_LENGTH_POINT_NAME)
     private String name;
-    /**
-     * 备注。
-     */
+
+    @Length(max = Constants.CONSTRAINT_LENGTH_POINT_REMARK)
     private String remark;
-    /**
-     * 是否启用持久化。
-     */
+
     private boolean persistenceEnabled;
-    /**
-     * 是否启用实时化。
-     */
+
     private boolean realtimeEnabled;
 
-    public Point() {
+    public ValidationPoint() {
     }
 
-    public Point(UuidKey key, UuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public ValidationPoint(ValidationUuidKey key, ValidationUuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
         this.key = key;
         this.categoryKey = categoryKey;
         this.name = name;
@@ -46,21 +46,19 @@ public class Point implements Entity<UuidKey> {
         this.realtimeEnabled = realtimeEnabled;
     }
 
-    @Override
-    public UuidKey getKey() {
+    public ValidationUuidKey getKey() {
         return key;
     }
 
-    @Override
-    public void setKey(UuidKey key) {
+    public void setKey(ValidationUuidKey key) {
         this.key = key;
     }
 
-    public UuidKey getCategoryKey() {
+    public ValidationUuidKey getCategoryKey() {
         return categoryKey;
     }
 
-    public void setCategoryKey(UuidKey categoryKey) {
+    public void setCategoryKey(ValidationUuidKey categoryKey) {
         this.categoryKey = categoryKey;
     }
 
@@ -98,7 +96,7 @@ public class Point implements Entity<UuidKey> {
 
     @Override
     public String toString() {
-        return "Point{" +
+        return "ValidationPoint{" +
                 "key=" + key +
                 ", categoryKey=" + categoryKey +
                 ", name='" + name + '\'' +

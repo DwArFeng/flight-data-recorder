@@ -26,12 +26,12 @@ public class WsCategory implements Serializable {
      * 名称。
      */
     @NotNull
-    @Length(max = Constants.DATABASE_LENGTH_CATAGORY_NAME)
+    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_NAME)
     private String name;
     /**
      * 备注。
      */
-    @Length(max = Constants.DATABASE_LENGTH_CATAGORY_REMARK)
+    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_REMARK)
     private String remark;
 
     public WsCategory() {

@@ -1,8 +1,10 @@
 package com.dwarfeng.fdr.impl.handler.validation.bean.entity;
 
 import com.dwarfeng.fdr.impl.handler.validation.bean.key.ValidationUuidKey;
+import com.dwarfeng.fdr.sdk.util.Constants;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -15,13 +17,17 @@ public class ValidationCategory implements Serializable {
     private static final long serialVersionUID = -5872875775155764577L;
 
     @NotNull
+    @Valid
     private ValidationUuidKey key;
 
+    @Valid
+    private ValidationUuidKey parentKey;
+
     @NotNull
-    @Length(max = 50)
+    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_NAME)
     private String name;
 
-    @Length(max = 100)
+    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_REMARK)
     private String remark;
 
     public ValidationCategory() {

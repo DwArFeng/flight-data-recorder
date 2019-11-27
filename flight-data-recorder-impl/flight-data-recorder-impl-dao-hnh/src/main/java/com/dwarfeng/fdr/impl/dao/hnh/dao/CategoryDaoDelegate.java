@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.hnh.dao;
 
 import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernateCategory;
+import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernatePoint;
 import com.dwarfeng.fdr.impl.dao.hnh.bean.key.HibernateUuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
@@ -32,7 +33,7 @@ public class CategoryDaoDelegate {
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryDaoDelegate.class);
 
     @Autowired
-    private HibernateTemplate hibernateTemplate;
+    private HibernateTemplate template;
     @Autowired
     private Mapper mapper;
 
@@ -48,7 +49,7 @@ public class CategoryDaoDelegate {
 
     private boolean innerExists(UuidKey key) throws Exception {
         HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-        return Objects.nonNull(hibernateTemplate.get(HibernateCategory.class, hibernateUuidKey));
+        return Objects.nonNull(template.get(HibernateCategory.class, hibernateUuidKey));
     }
 
     @TimeAnalyse
@@ -56,7 +57,7 @@ public class CategoryDaoDelegate {
     public Category get(UuidKey key) throws DaoException {
         try {
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateCategory hibernateCategory = hibernateTemplate.get(HibernateCategory.class, hibernateUuidKey);
+            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
             return mapper.map(hibernateCategory, Category.class);
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -67,18 +68,14 @@ public class CategoryDaoDelegate {
     @Transactional
     public UuidKey insert(@NotNull Category category) throws DaoException {
         try {
-            if (Objects.isNull(category.getKey())) {
-                LOGGER.warn("指定的Category " + category.toString() + " 没有主键, 将抛出异常...");
-                throw new IllegalArgumentException("指定的Category " + category.toString() + " 没有主键");
-            }
             if (innerExists(category.getKey())) {
                 LOGGER.warn("指定的Category " + category.toString() + " 已经存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的Category " + category.toString() + " 已经存在");
             }
 
             HibernateCategory hibernateCategory = mapper.map(category, HibernateCategory.class);
-            hibernateTemplate.save(hibernateCategory);
-            hibernateTemplate.flush();
+            template.save(hibernateCategory);
+            template.flush();
             return category.getKey();
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -89,18 +86,14 @@ public class CategoryDaoDelegate {
     @Transactional
     public UuidKey update(@NotNull Category category) throws DaoException {
         try {
-            if (Objects.isNull(category.getKey())) {
-                LOGGER.warn("指定的Category " + category.toString() + " 没有主键, 将抛出异常...");
-                throw new IllegalArgumentException("指定的Category " + category.toString() + " 没有主键");
-            }
             if (!innerExists(category.getKey())) {
                 LOGGER.warn("指定的Category " + category.toString() + " 不存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的Category " + category.toString() + " 不存在");
             }
 
             HibernateCategory hibernateCategory = mapper.map(category, HibernateCategory.class);
-            hibernateTemplate.update(hibernateCategory);
-            hibernateTemplate.flush();
+            template.update(hibernateCategory);
+            template.flush();
             return category.getKey();
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -117,16 +110,24 @@ public class CategoryDaoDelegate {
             }
 
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateCategory hibernateCategory = hibernateTemplate.get(HibernateCategory.class, hibernateUuidKey);
-            //取消所有与该分类有关的自分类的父项关联。
+            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
+            //取消所有与该分类有关的子分类的父项关联。
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class)
                     .add(Restrictions.eq("parentUuid", hibernateUuidKey.getUuid()));
-            for (Object child : hibernateTemplate.findByCriteria(criteria)) {
+            for (Object child : template.findByCriteria(criteria)) {
                 ((HibernateCategory) child).setParentUuid(null);
+                template.save(child);
+            }
+            //取消所有与该分类有关的数据点的关联。
+            criteria = DetachedCriteria.forClass(HibernatePoint.class)
+                    .add(Restrictions.eq("categoryUuid", hibernateUuidKey.getUuid()));
+            for (Object child : template.findByCriteria(criteria)) {
+                ((HibernatePoint) child).setCategoryUuid(null);
+                template.save(child);
             }
             assert hibernateCategory != null;
-            hibernateTemplate.delete(hibernateCategory);
-            hibernateTemplate.flush();
+            template.delete(hibernateCategory);
+            template.flush();
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
         }
@@ -144,7 +145,7 @@ public class CategoryDaoDelegate {
             }
             criteria.addOrder(Order.asc("name"));
             @SuppressWarnings("unchecked")
-            List<HibernateCategory> hibernateResult = (List<HibernateCategory>) hibernateTemplate.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+            List<HibernateCategory> hibernateResult = (List<HibernateCategory>) template.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
             List<Category> result = new ArrayList<>();
             for (HibernateCategory hibernateCategory : hibernateResult) {
                 result.add(mapper.map(hibernateCategory, Category.class));
@@ -166,7 +167,7 @@ public class CategoryDaoDelegate {
                 criteria.add(Restrictions.eq("parentUuid", key.getUuid()));
             }
             criteria.setProjection(Projections.rowCount());
-            return hibernateTemplate.findByCriteria(criteria).stream().findFirst().map(Long.class::cast).orElse(0L);
+            return template.findByCriteria(criteria).stream().findFirst().map(Long.class::cast).orElse(0L);
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
         }

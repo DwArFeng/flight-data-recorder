@@ -18,13 +18,21 @@ public final class Constants {
     public static final String DENSE_UUID_REGEX = "^[a-zA-Z0-9/+]*={0,2}$";
 
     /**
-     * 数据库中，分类名称的长度。
+     * 分类名称的长度约束。
      */
-    public static final int DATABASE_LENGTH_CATAGORY_NAME = 50;
+    public static final int CONSTRAINT_LENGTH_CATAGORY_NAME = 50;
     /**
-     * 数据库中，分类备注的长度。
+     * 分类备注的长度约束。
      */
-    public static final int DATABASE_LENGTH_CATAGORY_REMARK = 100;
+    public static final int CONSTRAINT_LENGTH_CATAGORY_REMARK = 100;
+    /**
+     * 数据点名称的长度约束。
+     */
+    public static final int CONSTRAINT_LENGTH_POINT_NAME = 50;
+    /**
+     * 数据点备注的长度约束。
+     */
+    public static final int CONSTRAINT_LENGTH_POINT_REMARK = 100;
 
     /**
      * 批量缓存抓取的数据长度。

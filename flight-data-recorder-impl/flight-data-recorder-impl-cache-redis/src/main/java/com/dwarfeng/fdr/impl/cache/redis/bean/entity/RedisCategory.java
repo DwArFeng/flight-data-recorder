@@ -6,6 +6,8 @@ import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
 import java.io.Serializable;
 
 /**
+ * Redis分类对象。
+ *
  * @author DwArFeng
  * @since 0.0.1-alpha
  */

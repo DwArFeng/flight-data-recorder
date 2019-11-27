@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
+import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ValidationException;
 
@@ -36,5 +37,14 @@ public interface ValidationHandler {
      * @throws ValidationException 符合法时抛出的异常。
      */
     void lookupPagingInfoValidation(LookupPagingInfo lookupPagingInfo) throws ValidationException;
+
+    /**
+     * 验证数据点是否合法。
+     *
+     * @param point 指定的Point。
+     * @throws ValidationException 不合法时抛出的异常。
+     */
+    void pointValidation(Point point) throws ValidationException;
+
 
 }

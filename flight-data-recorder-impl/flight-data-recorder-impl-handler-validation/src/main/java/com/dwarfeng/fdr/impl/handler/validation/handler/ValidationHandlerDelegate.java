@@ -2,9 +2,11 @@ package com.dwarfeng.fdr.impl.handler.validation.handler;
 
 import com.dwarfeng.fdr.impl.handler.validation.bean.dto.ValidationLookupPagingInfo;
 import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationCategory;
+import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationPoint;
 import com.dwarfeng.fdr.impl.handler.validation.bean.key.ValidationUuidKey;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
+import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ValidationException;
 import org.dozer.Mapper;
@@ -41,7 +43,7 @@ public class ValidationHandlerDelegate {
         Set<ConstraintViolation<ValidationUuidKey>> constraintViolations = validator.validate(validationUuidKey);
         if (!constraintViolations.isEmpty()) {
             LOGGER.warn(uuidKey + " 不合法，抛出异常...");
-            throw new ValidationException("入口参数非法: " + uuidKey.toString(), new ConstraintViolationException(constraintViolations));
+            throw new ValidationException("参数非法: " + uuidKey.toString(), new ConstraintViolationException(constraintViolations));
         }
     }
 
@@ -55,7 +57,7 @@ public class ValidationHandlerDelegate {
         Set<ConstraintViolation<ValidationCategory>> constraintViolations = validator.validate(validationCategory);
         if (!constraintViolations.isEmpty()) {
             LOGGER.warn(category + " 不合法，抛出异常...");
-            throw new ValidationException("入口参数非法: " + category.toString(), new ConstraintViolationException(constraintViolations));
+            throw new ValidationException("参数非法: " + category.toString(), new ConstraintViolationException(constraintViolations));
         }
     }
 
@@ -69,7 +71,21 @@ public class ValidationHandlerDelegate {
         Set<ConstraintViolation<ValidationLookupPagingInfo>> constraintViolations = validator.validate(validationLookupPagingInfo);
         if (!constraintViolations.isEmpty()) {
             LOGGER.warn(lookupPagingInfo + " 不合法，抛出异常...");
-            throw new ValidationException("入口参数非法: " + lookupPagingInfo.toString(), new ConstraintViolationException(constraintViolations));
+            throw new ValidationException("参数非法: " + lookupPagingInfo.toString(), new ConstraintViolationException(constraintViolations));
+        }
+    }
+
+    public void pointValidation(Point point) throws ValidationException {
+        if (Objects.isNull(point)) {
+            return;
+        }
+
+        LOGGER.debug("验证 " + point.toString() + " 的合法性...");
+        ValidationPoint validationPoint = mapper.map(point, ValidationPoint.class);
+        Set<ConstraintViolation<ValidationPoint>> constraintViolations = validator.validate(validationPoint);
+        if (!constraintViolations.isEmpty()) {
+            LOGGER.warn(point + " 不合法，抛出异常...");
+            throw new ValidationException("参数非法: " + point.toString(), new ConstraintViolationException(constraintViolations));
         }
     }
 }

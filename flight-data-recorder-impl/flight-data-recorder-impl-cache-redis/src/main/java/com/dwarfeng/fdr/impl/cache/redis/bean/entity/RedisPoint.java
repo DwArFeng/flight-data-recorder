@@ -1,43 +1,42 @@
-package com.dwarfeng.fdr.stack.bean.entity;
+package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
+
+import java.io.Serializable;
 
 /**
- * 数据点。
+ * Redis数据点对象。
+ *
+ * @author DwArFeng
+ * @since 0.0.1-alpha
  */
-public class Point implements Entity<UuidKey> {
+public class RedisPoint implements Serializable {
 
-    private static final long serialVersionUID = 9116129592160719291L;
+    private static final long serialVersionUID = -6727125091352050788L;
 
-    /**
-     * 主键。
-     */
-    private UuidKey key;
-    /**
-     * 所属分类主键。
-     */
-    private UuidKey categoryKey;
-    /**
-     * 数据点的名称。
-     */
+    @JSONField(name = "key", ordinal = 1)
+    private RedisUuidKey key;
+
+    @JSONField(name = "catgory_key", ordinal = 2)
+    private RedisUuidKey categoryKey;
+
+    @JSONField(name = "name", ordinal = 3)
     private String name;
-    /**
-     * 备注。
-     */
+
+    @JSONField(name = "remark", ordinal = 4)
     private String remark;
-    /**
-     * 是否启用持久化。
-     */
+
+    @JSONField(name = "persistence_enabled", ordinal = 5)
     private boolean persistenceEnabled;
-    /**
-     * 是否启用实时化。
-     */
+
+    @JSONField(name = "realtime_enabled", ordinal = 6)
     private boolean realtimeEnabled;
 
-    public Point() {
+    public RedisPoint() {
     }
 
-    public Point(UuidKey key, UuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public RedisPoint(RedisUuidKey key, RedisUuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
         this.key = key;
         this.categoryKey = categoryKey;
         this.name = name;
@@ -46,21 +45,19 @@ public class Point implements Entity<UuidKey> {
         this.realtimeEnabled = realtimeEnabled;
     }
 
-    @Override
-    public UuidKey getKey() {
+    public RedisUuidKey getKey() {
         return key;
     }
 
-    @Override
-    public void setKey(UuidKey key) {
+    public void setKey(RedisUuidKey key) {
         this.key = key;
     }
 
-    public UuidKey getCategoryKey() {
+    public RedisUuidKey getCategoryKey() {
         return categoryKey;
     }
 
-    public void setCategoryKey(UuidKey categoryKey) {
+    public void setCategoryKey(RedisUuidKey categoryKey) {
         this.categoryKey = categoryKey;
     }
 
@@ -98,7 +95,7 @@ public class Point implements Entity<UuidKey> {
 
     @Override
     public String toString() {
-        return "Point{" +
+        return "RedisPoint{" +
                 "key=" + key +
                 ", categoryKey=" + categoryKey +
                 ", name='" + name + '\'' +
