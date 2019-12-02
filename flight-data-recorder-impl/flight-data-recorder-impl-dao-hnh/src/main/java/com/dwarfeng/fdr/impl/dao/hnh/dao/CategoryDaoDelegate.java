@@ -41,13 +41,13 @@ public class CategoryDaoDelegate {
     @Transactional(readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
-            return innerExists(key);
+            return internalExists(key);
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
         }
     }
 
-    private boolean innerExists(UuidKey key) throws Exception {
+    private boolean internalExists(UuidKey key) {
         HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
         return Objects.nonNull(template.get(HibernateCategory.class, hibernateUuidKey));
     }
@@ -68,7 +68,7 @@ public class CategoryDaoDelegate {
     @Transactional
     public UuidKey insert(@NotNull Category category) throws DaoException {
         try {
-            if (innerExists(category.getKey())) {
+            if (internalExists(category.getKey())) {
                 LOGGER.warn("指定的Category " + category.toString() + " 已经存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的Category " + category.toString() + " 已经存在");
             }
@@ -86,7 +86,7 @@ public class CategoryDaoDelegate {
     @Transactional
     public UuidKey update(@NotNull Category category) throws DaoException {
         try {
-            if (!innerExists(category.getKey())) {
+            if (!internalExists(category.getKey())) {
                 LOGGER.warn("指定的Category " + category.toString() + " 不存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的Category " + category.toString() + " 不存在");
             }
@@ -104,7 +104,7 @@ public class CategoryDaoDelegate {
     @Transactional
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
-            if (!innerExists(key)) {
+            if (!internalExists(key)) {
                 LOGGER.warn("指定的Category " + key.toString() + " 不存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
             }

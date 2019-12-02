@@ -8,7 +8,10 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.CategoryHasPointCache;
 import com.dwarfeng.fdr.stack.cache.PointCache;
+import com.dwarfeng.fdr.stack.cache.PointHasFilterInfoCache;
 import com.dwarfeng.fdr.stack.dao.PointDao;
+import com.dwarfeng.fdr.stack.exception.CacheException;
+import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import com.dwarfeng.fdr.stack.handler.ValidationHandler;
 import org.slf4j.Logger;
@@ -22,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @Validated
@@ -36,6 +40,8 @@ public class PointMaintainServiceDelegate {
     @Autowired
     private CategoryHasPointCache categoryHasPointCache;
     @Autowired
+    private PointHasFilterInfoCache pointHasFilterInfoCache;
+    @Autowired
     private ValidationHandler validationHandler;
 
     @Value("${cache.timeout.entity.point}")
@@ -48,19 +54,22 @@ public class PointMaintainServiceDelegate {
     public Point get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
-
-            if (pointCache.exists(key)) {
-                LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
-                return pointCache.get(key);
-            } else {
-                LOGGER.debug("未能在缓存中发现 " + key.toString() + " 对应的值，读取数据访问层...");
-                Point point = pointDao.get(key);
-                LOGGER.debug("将读取到的值 " + point.toString() + " 回写到缓存中...");
-                pointCache.push(key, point, pointTimeout);
-                return point;
-            }
+            return internalGet(key);
         } catch (Exception e) {
             throw new ServiceException("服务异常，原因如下:", e);
+        }
+    }
+
+    private Point internalGet(UuidKey key) throws CacheException, DaoException {
+        if (pointCache.exists(key)) {
+            LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
+            return pointCache.get(key);
+        } else {
+            LOGGER.debug("未能在缓存中发现 " + key.toString() + " 对应的值，读取数据访问层...");
+            Point point = pointDao.get(key);
+            LOGGER.debug("将读取到的值 " + point.toString() + " 回写到缓存中...");
+            pointCache.push(key, point, pointTimeout);
+            return point;
         }
     }
 
@@ -78,8 +87,10 @@ public class PointMaintainServiceDelegate {
                 pointDao.insert(point);
                 LOGGER.debug("将指定的实体 " + point.toString() + " 插入缓存中...");
                 pointCache.push(point.getKey(), point, pointTimeout);
-                LOGGER.debug("清除实体 " + point.toString() + " 对应的子项缓存...");
-//                pointHasChildCache.delete(point.getKey());
+                if (Objects.nonNull(point.getCategoryKey())) {
+                    LOGGER.debug("清除实体 " + point.toString() + " 对应的父项缓存...");
+                    categoryHasPointCache.delete(point.getCategoryKey());
+                }
                 return point.getKey();
             }
         } catch (Exception e) {
@@ -97,12 +108,19 @@ public class PointMaintainServiceDelegate {
                 LOGGER.debug("指定的实体 " + point.toString() + " 已经存在，无法更新...");
                 throw new IllegalStateException("指定的实体 " + point.toString() + " 已经存在，无法更新...");
             } else {
+                Point oldPoint = internalGet(point.getKey());
+                if (Objects.nonNull(oldPoint.getCategoryKey())) {
+                    LOGGER.debug("清除旧实体 " + oldPoint.toString() + " 对应的父项缓存...");
+                    categoryHasPointCache.delete(oldPoint.getCategoryKey());
+                }
                 LOGGER.debug("将指定的实体 " + point.toString() + " 插入数据访问层中...");
                 pointDao.update(point);
                 LOGGER.debug("将指定的实体 " + point.toString() + " 插入缓存中...");
                 pointCache.push(point.getKey(), point, pointTimeout);
-                LOGGER.debug("清除实体 " + point.toString() + " 对应的子项缓存...");
-//                pointHasChildCache.delete(point.getKey());
+                if (Objects.nonNull(point.getCategoryKey())) {
+                    LOGGER.debug("清除新实体 " + point.toString() + " 对应的父项缓存...");
+                    categoryHasPointCache.delete(point.getCategoryKey());
+                }
                 return point.getKey();
             }
         } catch (Exception e) {
@@ -120,8 +138,13 @@ public class PointMaintainServiceDelegate {
                 LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
                 throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");
             } else {
+                Point oldPoint = internalGet(key);
+                if (Objects.nonNull(oldPoint.getCategoryKey())) {
+                    LOGGER.debug("清除旧实体 " + oldPoint.toString() + " 对应的父项缓存...");
+                    categoryHasPointCache.delete(oldPoint.getCategoryKey());
+                }
                 LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
-//                pointHasChildCache.delete(key);
+                pointHasFilterInfoCache.delete(key);
                 LOGGER.debug("将指定的Point从缓存中删除...");
                 pointCache.delete(key);
                 LOGGER.debug("将指定的Point从数据访问层中删除...");
@@ -151,7 +174,7 @@ public class PointMaintainServiceDelegate {
             } else {
                 LOGGER.debug("查询指定的Point对应的子项...");
                 categories = pointDao.getPoints(categoryUuid, lookupPagingInfo);
-                count = pointDao.getChildCount(categoryUuid);
+                count = pointDao.getPointCount(categoryUuid);
                 for (Point point : categories) {
                     LOGGER.debug("将查询到的的实体 " + point.toString() + " 插入缓存中...");
                     pointCache.push(point.getKey(), point, pointTimeout);
@@ -173,12 +196,13 @@ public class PointMaintainServiceDelegate {
 
 
     @Transactional
+    @TimeAnalyse
     @Async
     public void fetchPoint2Cache(UuidKey uuidKey) {
         try {
             int totlePage;
             int currPage;
-            long count = pointDao.getChildCount(uuidKey);
+            long count = pointDao.getPointCount(uuidKey);
             totlePage = Math.max((int) Math.ceil((double) count / Constants.BATCH_CACHE_FETCH_SIZE), 1);
             currPage = 0;
             categoryHasPointCache.delete(uuidKey);

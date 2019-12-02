@@ -5,7 +5,9 @@ import com.dwarfeng.fdr.sdk.util.Constants;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @IdClass(HibernateUuidKey.class)
@@ -44,8 +46,8 @@ public class HibernatePoint implements Serializable {
     private HibernateCategory category;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-//    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePoint.class, mappedBy = "parentCategory")
-//    private Set<HibernatePoint> childCategories = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilterInfo.class, mappedBy = "point")
+    private Set<HibernateFilterInfo> filterInfos = new HashSet<>();
 
 //    @OneToMany(targetEntity = PointHibernateImpl.class, mappedBy = "category")
 //    @Cascade(CascadeType.MERGE)

@@ -33,11 +33,16 @@ public final class Constants {
      * 数据点备注的长度约束。
      */
     public static final int CONSTRAINT_LENGTH_POINT_REMARK = 100;
+    /**
+     * 数据点备注的长度约束。
+     */
+    public static final int CONSTRAINT_LENGTH_FILTER_INFO_REMARK = 100;
 
     /**
      * 批量缓存抓取的数据长度。
      */
     public static final int BATCH_CACHE_FETCH_SIZE = 100;
+
 
     private Constants() {
         throw new IllegalStateException("禁止实例化");

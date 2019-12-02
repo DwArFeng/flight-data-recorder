@@ -2,10 +2,12 @@ package com.dwarfeng.fdr.impl.handler.validation.handler;
 
 import com.dwarfeng.fdr.impl.handler.validation.bean.dto.ValidationLookupPagingInfo;
 import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationCategory;
+import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationFilterInfo;
 import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationPoint;
 import com.dwarfeng.fdr.impl.handler.validation.bean.key.ValidationUuidKey;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
+import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ValidationException;
@@ -86,6 +88,20 @@ public class ValidationHandlerDelegate {
         if (!constraintViolations.isEmpty()) {
             LOGGER.warn(point + " 不合法，抛出异常...");
             throw new ValidationException("参数非法: " + point.toString(), new ConstraintViolationException(constraintViolations));
+        }
+    }
+
+    public void filterInfoValidation(FilterInfo filterInfo) throws ValidationException {
+        if (Objects.isNull(filterInfo)) {
+            return;
+        }
+
+        LOGGER.debug("验证 " + filterInfo.toString() + " 的合法性...");
+        ValidationFilterInfo validationFilterInfo = mapper.map(filterInfo, ValidationFilterInfo.class);
+        Set<ConstraintViolation<ValidationFilterInfo>> constraintViolations = validator.validate(validationFilterInfo);
+        if (!constraintViolations.isEmpty()) {
+            LOGGER.warn(filterInfo + " 不合法，抛出异常...");
+            throw new ValidationException("参数非法: " + filterInfo.toString(), new ConstraintViolationException(constraintViolations));
         }
     }
 }

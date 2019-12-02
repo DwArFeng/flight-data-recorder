@@ -1,14 +1,13 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-
-import java.io.Serializable;
+import com.dwarfeng.fdr.stack.bean.key.Key;
 
 /**
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class RedisUuidKey implements Serializable {
+public class RedisUuidKey implements Key {
 
     private static final long serialVersionUID = -1523467630414290246L;
 

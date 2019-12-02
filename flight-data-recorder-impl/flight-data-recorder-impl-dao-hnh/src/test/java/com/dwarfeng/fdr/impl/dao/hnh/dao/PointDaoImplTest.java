@@ -75,7 +75,7 @@ public class PointDaoImplTest {
         for (Point point : points) {
             assertTrue(pointDao.exists(point.getKey()));
         }
-        assertEquals(5, pointDao.getChildCount(parentCategory.getKey()));
+        assertEquals(5, pointDao.getPointCount(parentCategory.getKey()));
         assertEquals(5, pointDao.getPoints(parentCategory.getKey(), new LookupPagingInfo(false, 0, 0)).size());
         categoryDao.delete(parentCategory.getKey());
         for (Point point : points) {

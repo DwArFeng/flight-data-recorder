@@ -9,6 +9,8 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.CategoryCache;
 import com.dwarfeng.fdr.stack.cache.CategoryHasChildCache;
 import com.dwarfeng.fdr.stack.dao.CategoryDao;
+import com.dwarfeng.fdr.stack.exception.CacheException;
+import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import com.dwarfeng.fdr.stack.handler.ValidationHandler;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @Validated
@@ -48,19 +51,22 @@ public class CategoryMaintainServiceDelegate {
     public Category get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
-
-            if (categoryCache.exists(key)) {
-                LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
-                return categoryCache.get(key);
-            } else {
-                LOGGER.debug("未能在缓存中发现 " + key.toString() + " 对应的值，读取数据访问层...");
-                Category category = categoryDao.get(key);
-                LOGGER.debug("将读取到的值 " + category.toString() + " 回写到缓存中...");
-                categoryCache.push(key, category, categoryTimeout);
-                return category;
-            }
+            return internalGet(key);
         } catch (Exception e) {
             throw new ServiceException("服务异常，原因如下:", e);
+        }
+    }
+
+    public Category internalGet(UuidKey key) throws CacheException, DaoException {
+        if (categoryCache.exists(key)) {
+            LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
+            return categoryCache.get(key);
+        } else {
+            LOGGER.debug("未能在缓存中发现 " + key.toString() + " 对应的值，读取数据访问层...");
+            Category category = categoryDao.get(key);
+            LOGGER.debug("将读取到的值 " + category.toString() + " 回写到缓存中...");
+            categoryCache.push(key, category, categoryTimeout);
+            return category;
         }
     }
 
@@ -78,8 +84,10 @@ public class CategoryMaintainServiceDelegate {
                 categoryDao.insert(category);
                 LOGGER.debug("将指定的实体 " + category.toString() + " 插入缓存中...");
                 categoryCache.push(category.getKey(), category, categoryTimeout);
-                LOGGER.debug("清除实体 " + category.toString() + " 对应的子项缓存...");
-                categoryHasChildCache.delete(category.getKey());
+                if (Objects.nonNull(category.getParentKey())) {
+                    LOGGER.debug("清除实体 " + category.toString() + " 对应的父项缓存...");
+                    categoryHasChildCache.delete(category.getParentKey());
+                }
                 return category.getKey();
             }
         } catch (Exception e) {
@@ -97,12 +105,19 @@ public class CategoryMaintainServiceDelegate {
                 LOGGER.debug("指定的实体 " + category.toString() + " 已经存在，无法更新...");
                 throw new IllegalStateException("指定的实体 " + category.toString() + " 已经存在，无法更新...");
             } else {
+                Category oldCategory = internalGet(category.getKey());
+                if (Objects.nonNull(oldCategory.getParentKey())) {
+                    LOGGER.debug("清除旧实体 " + oldCategory.toString() + " 对应的父项缓存...");
+                    categoryHasChildCache.delete(oldCategory.getParentKey());
+                }
                 LOGGER.debug("将指定的实体 " + category.toString() + " 插入数据访问层中...");
                 categoryDao.update(category);
                 LOGGER.debug("将指定的实体 " + category.toString() + " 插入缓存中...");
                 categoryCache.push(category.getKey(), category, categoryTimeout);
-                LOGGER.debug("清除实体 " + category.toString() + " 对应的子项缓存...");
-                categoryHasChildCache.delete(category.getKey());
+                if (Objects.nonNull(category.getParentKey())) {
+                    LOGGER.debug("清除新实体 " + category.toString() + " 对应的父项缓存...");
+                    categoryHasChildCache.delete(category.getParentKey());
+                }
                 return category.getKey();
             }
         } catch (Exception e) {
@@ -120,6 +135,11 @@ public class CategoryMaintainServiceDelegate {
                 LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
                 throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");
             } else {
+                Category oldCategory = internalGet(key);
+                if (Objects.nonNull(oldCategory.getParentKey())) {
+                    LOGGER.debug("清除旧实体 " + oldCategory.toString() + " 对应的父项缓存...");
+                    categoryHasChildCache.delete(oldCategory.getParentKey());
+                }
                 LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
                 categoryHasChildCache.delete(key);
                 LOGGER.debug("将指定的Category从缓存中删除...");
@@ -158,7 +178,7 @@ public class CategoryMaintainServiceDelegate {
                 LOGGER.debug("抓取实体 " + uuidKey.toString() + " 对应的子项并插入缓存...");
                 fetchChild2Cache(uuidKey);
             }
-            return new PagedData<Category>(
+            return new PagedData<>(
                     lookupPagingInfo.getPage(),
                     Math.max((int) Math.ceil((double) count / lookupPagingInfo.getRows()), 1),
                     lookupPagingInfo.getRows(),
@@ -171,6 +191,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @Transactional
+    @TimeAnalyse
     @Async
     public void fetchChild2Cache(UuidKey uuidKey) {
         try {

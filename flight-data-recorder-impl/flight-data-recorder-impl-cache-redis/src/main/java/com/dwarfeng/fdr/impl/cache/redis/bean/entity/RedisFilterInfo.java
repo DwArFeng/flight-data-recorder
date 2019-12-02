@@ -1,57 +1,50 @@
-package com.dwarfeng.fdr.stack.bean.entity;
+package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
+import com.dwarfeng.fdr.stack.bean.entity.Entity;
 
 /**
+ * Redis数据点对象。
+ *
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class FilterInfo implements Entity<UuidKey> {
+public class RedisFilterInfo implements Entity<RedisUuidKey> {
 
-    private static final long serialVersionUID = 3393705759584503229L;
+    @JSONField(name = "key", ordinal = 1)
+    private RedisUuidKey key;
 
-    /**
-     * 主键。
-     */
-    private UuidKey key;
+    @JSONField(name = "point_key", ordinal = 2)
+    private RedisUuidKey pointKey;
 
-    /**
-     * 数据点键。
-     */
-    private UuidKey pointKey;
-
+    @JSONField(name = "enabled", ordinal = 3)
     private boolean enabled;
 
+    @JSONField(name = "remark", ordinal = 4)
     private String remark;
 
+    @JSONField(name = "content", ordinal = 5)
     private String content;
 
-    public FilterInfo() {
-    }
-
-    public FilterInfo(UuidKey key, UuidKey pointKey, boolean enabled, String remark, String content) {
-        this.key = key;
-        this.pointKey = pointKey;
-        this.enabled = enabled;
-        this.remark = remark;
-        this.content = content;
+    public RedisFilterInfo() {
     }
 
     @Override
-    public UuidKey getKey() {
+    public RedisUuidKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(UuidKey key) {
+    public void setKey(RedisUuidKey key) {
         this.key = key;
     }
 
-    public UuidKey getPointKey() {
+    public RedisUuidKey getPointKey() {
         return pointKey;
     }
 
-    public void setPointKey(UuidKey pointKey) {
+    public void setPointKey(RedisUuidKey pointKey) {
         this.pointKey = pointKey;
     }
 
@@ -81,7 +74,7 @@ public class FilterInfo implements Entity<UuidKey> {
 
     @Override
     public String toString() {
-        return "FilterInfo{" +
+        return "RedisFilterInfo{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
                 ", enabled=" + enabled +

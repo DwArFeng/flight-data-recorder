@@ -2,8 +2,7 @@ package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
-
-import java.io.Serializable;
+import com.dwarfeng.fdr.stack.bean.entity.Entity;
 
 /**
  * Redis数据点对象。
@@ -11,7 +10,7 @@ import java.io.Serializable;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class RedisPoint implements Serializable {
+public class RedisPoint implements Entity<RedisUuidKey> {
 
     private static final long serialVersionUID = -6727125091352050788L;
 

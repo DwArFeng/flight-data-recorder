@@ -47,7 +47,7 @@ public class PointDaoImpl implements PointDao {
     }
 
     @Override
-    public long getChildCount(UuidKey categoryUuidKey) throws DaoException {
-        return delegate.getChildCount(categoryUuidKey);
+    public long getPointCount(UuidKey categoryUuidKey) throws DaoException {
+        return delegate.getPointCount(categoryUuidKey);
     }
 }

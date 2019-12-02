@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.impl.handler.validation.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
+import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ValidationException;
@@ -34,4 +35,10 @@ public class ValidationHandlerImpl implements ValidationHandler {
     public void pointValidation(Point point) throws ValidationException {
         delegate.pointValidation(point);
     }
+
+    @Override
+    public void filterInfoValidation(FilterInfo filterInfo) throws ValidationException {
+        delegate.filterInfoValidation(filterInfo);
+    }
+
 }

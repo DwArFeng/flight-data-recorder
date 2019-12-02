@@ -17,6 +17,6 @@ public interface PointDao extends BaseDao<UuidKey, Point> {
 
     List<Point> getPoints(UuidKey categoryUuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException;
 
-    long getChildCount(UuidKey categoryUuidKey) throws DaoException;
+    long getPointCount(UuidKey categoryUuidKey) throws DaoException;
 
 }
