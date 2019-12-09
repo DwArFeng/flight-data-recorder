@@ -1,11 +1,11 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
 import com.dwarfeng.dutil.basic.str.UUIDUtil;
-import com.dwarfeng.fdr.api.maintain.dubbo.api.CategoryMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
+import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggerInfoMaintainApi;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
-import com.dwarfeng.fdr.stack.bean.entity.Category;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
+import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
@@ -24,56 +24,57 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
-public class PointMaintainApiImplTest {
+public class TriggerInfoMaintainApiImplTest {
 
-    @Autowired
-    private CategoryMaintainApi categoryMaintainApi;
     @Autowired
     private PointMaintainApi pointMaintainApi;
+    @Autowired
+    private TriggerInfoMaintainApi triggerInfoMaintainApi;
 
-    private Category parentCategory;
-    private List<Point> points;
+    private Point parentPoint;
+    private List<TriggerInfo> triggerInfos;
 
     @Before
     public void setUp() {
-        parentCategory = new Category(
+        parentPoint = new Point(
                 new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
                 null,
-                "parent",
-                "test-parent"
+                "parent-point",
+                "test-point",
+                true,
+                true
         );
-        points = new ArrayList<>();
+        triggerInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Point point = new Point(
+            TriggerInfo triggerInfo = new TriggerInfo(
                     new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
-                    parentCategory.getKey(),
-                    "point-" + (i + 1),
-                    "test-point",
+                    parentPoint.getKey(),
                     true,
-                    true
+                    "trigger-info-" + i,
+                    "this is a test"
             );
-            points.add(point);
+            triggerInfos.add(triggerInfo);
         }
     }
 
     @After
     public void tearDown() {
-        parentCategory = null;
-        points.clear();
+        parentPoint = null;
+        triggerInfos.clear();
     }
 
     @Test
     public void test() throws ServiceException {
         try {
-            categoryMaintainApi.insert(parentCategory);
-            for (Point point : points) {
-                pointMaintainApi.insert(point);
+            pointMaintainApi.insert(parentPoint);
+            for (TriggerInfo triggerInfo : triggerInfos) {
+                triggerInfoMaintainApi.insert(triggerInfo);
             }
-            assertEquals(5, pointMaintainApi.getPoints(parentCategory.getKey(), new LookupPagingInfo(false, 0, 0)).getCount());
+            assertEquals(5, triggerInfoMaintainApi.getTriggerInfos(parentPoint.getKey(), new LookupPagingInfo(false, 0, 0)).getCount());
         } finally {
-            categoryMaintainApi.delete(parentCategory.getKey());
-            for (Point point : points) {
-                pointMaintainApi.delete(point.getKey());
+            pointMaintainApi.delete(parentPoint.getKey());
+            for (TriggerInfo triggerInfo : triggerInfos) {
+                triggerInfoMaintainApi.delete(triggerInfo.getKey());
             }
         }
     }

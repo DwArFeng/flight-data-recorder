@@ -19,6 +19,7 @@ public class FastJsonConfiguration {
         ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisCategory");
         ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisPoint");
         ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisFilterInfo");
+        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisTriggerInfo");
         LOGGER.debug("FastJson autotype 白名单配置完毕");
     }
 }

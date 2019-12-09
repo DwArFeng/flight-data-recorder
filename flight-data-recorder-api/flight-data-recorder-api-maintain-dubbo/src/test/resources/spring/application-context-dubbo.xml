@@ -22,4 +22,6 @@
                      interface="com.dwarfeng.fdr.stack.service.PointMaintainService"/>
     <dubbo:reference id="filterInfoMaintainService"
                      interface="com.dwarfeng.fdr.stack.service.FilterInfoMaintainService"/>
+    <dubbo:reference id="triggerInfoMaintainService"
+                     interface="com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService"/>
 </beans>

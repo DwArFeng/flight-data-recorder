@@ -49,6 +49,9 @@ public class HibernatePoint implements Serializable {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilterInfo.class, mappedBy = "point")
     private Set<HibernateFilterInfo> filterInfos = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggerInfo.class, mappedBy = "point")
+    private Set<HibernateTriggerInfo> triggerInfos = new HashSet<>();
+
 //    @OneToMany(targetEntity = PointHibernateImpl.class, mappedBy = "category")
 //    @Cascade(CascadeType.MERGE)
 //    private Set<PointHibernateImpl> points = new HashSet<>();

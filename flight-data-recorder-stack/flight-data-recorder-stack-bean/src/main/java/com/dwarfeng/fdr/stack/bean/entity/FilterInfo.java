@@ -3,6 +3,8 @@ package com.dwarfeng.fdr.stack.bean.entity;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 
 /**
+ * 过滤器信息。
+ *
  * @author DwArFeng
  * @since 0.0.1-alpha
  */

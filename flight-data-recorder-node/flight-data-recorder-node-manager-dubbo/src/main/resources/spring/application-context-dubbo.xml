@@ -25,4 +25,6 @@
                    ref="pointMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.fdr.stack.service.FilterInfoMaintainService"
                    ref="filterInfoMaintainServiceImpl"/>
+    <dubbo:service interface="com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService"
+                   ref="triggerInfoMaintainServiceImpl"/>
 </beans>

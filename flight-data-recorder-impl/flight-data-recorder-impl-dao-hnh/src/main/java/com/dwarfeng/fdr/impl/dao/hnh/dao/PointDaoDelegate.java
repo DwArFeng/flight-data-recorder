@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.impl.dao.hnh.dao;
 
 import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernateFilterInfo;
 import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernatePoint;
+import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernateTriggerInfo;
 import com.dwarfeng.fdr.impl.dao.hnh.bean.key.HibernateUuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
@@ -112,18 +113,23 @@ public class PointDaoDelegate {
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateUuidKey);
             //取消所有与该数据点有关的过滤器关联。
-            DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class)
-                    .add(Restrictions.eq("pointUuid", hibernateUuidKey.getUuid()));
-            for (Object filterInfo : template.findByCriteria(criteria)) {
-                ((HibernateFilterInfo) filterInfo).setPointUuid(null);
-                template.save(filterInfo);
+            {
+                DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class)
+                        .add(Restrictions.eq("pointUuid", hibernateUuidKey.getUuid()));
+                for (Object filterInfo : template.findByCriteria(criteria)) {
+                    ((HibernateFilterInfo) filterInfo).setPointUuid(null);
+                    template.save(filterInfo);
+                }
             }
-//            //取消所有与该分类有关的自分类的父项关联。
-//            DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePoint.class)
-//                    .add(Restrictions.eq("parentUuid", hibernateUuidKey.getUuid()));
-//            for (Object child : hibernateTemplate.findByCriteria(criteria)) {
-//                ((HibernatePoint) child).setParentUuid(null);
-//            }
+            //取消所有与该数据点有关的触发器关联。
+            {
+                DetachedCriteria criteria = DetachedCriteria.forClass(HibernateTriggerInfo.class)
+                        .add(Restrictions.eq("pointUuid", hibernateUuidKey.getUuid()));
+                for (Object triggerInfo : template.findByCriteria(criteria)) {
+                    ((HibernateTriggerInfo) triggerInfo).setPointUuid(null);
+                    template.save(triggerInfo);
+                }
+            }
             assert hibernatePoint != null;
             template.delete(hibernatePoint);
             template.flush();

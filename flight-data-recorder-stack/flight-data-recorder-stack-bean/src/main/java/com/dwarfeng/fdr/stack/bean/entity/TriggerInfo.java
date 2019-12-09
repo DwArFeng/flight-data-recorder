@@ -10,7 +10,7 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
  */
 public class TriggerInfo implements Entity<UuidKey> {
 
-    private static final long serialVersionUID = 976639449175248078L;
+    private static final long serialVersionUID = -6254943183430307516L;
 
     /**
      * 主键。
@@ -18,25 +18,22 @@ public class TriggerInfo implements Entity<UuidKey> {
     private UuidKey key;
 
     /**
-     * 是否启用。
+     * 数据点键。
      */
+    private UuidKey pointKey;
+
     private boolean enabled;
 
-    /**
-     * 备注。
-     */
     private String remark;
 
-    /**
-     * 内容。
-     */
     private String content;
 
     public TriggerInfo() {
     }
 
-    public TriggerInfo(UuidKey key, boolean enabled, String remark, String content) {
+    public TriggerInfo(UuidKey key, UuidKey pointKey, boolean enabled, String remark, String content) {
         this.key = key;
+        this.pointKey = pointKey;
         this.enabled = enabled;
         this.remark = remark;
         this.content = content;
@@ -50,6 +47,14 @@ public class TriggerInfo implements Entity<UuidKey> {
     @Override
     public void setKey(UuidKey key) {
         this.key = key;
+    }
+
+    public UuidKey getPointKey() {
+        return pointKey;
+    }
+
+    public void setPointKey(UuidKey pointKey) {
+        this.pointKey = pointKey;
     }
 
     public boolean isEnabled() {
@@ -80,6 +85,7 @@ public class TriggerInfo implements Entity<UuidKey> {
     public String toString() {
         return "TriggerInfo{" +
                 "key=" + key +
+                ", pointKey=" + pointKey +
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +

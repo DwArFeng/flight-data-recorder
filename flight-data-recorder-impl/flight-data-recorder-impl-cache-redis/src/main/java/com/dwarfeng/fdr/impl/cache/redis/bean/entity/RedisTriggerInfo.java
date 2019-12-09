@@ -10,9 +10,9 @@ import com.dwarfeng.fdr.stack.bean.entity.Entity;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class RedisFilterInfo implements Entity<RedisUuidKey> {
+public class RedisTriggerInfo implements Entity<RedisUuidKey> {
 
-    private static final long serialVersionUID = 635115142498652853L;
+    private static final long serialVersionUID = -7563795664602239319L;
 
     @JSONField(name = "key", ordinal = 1)
     private RedisUuidKey key;
@@ -29,7 +29,7 @@ public class RedisFilterInfo implements Entity<RedisUuidKey> {
     @JSONField(name = "content", ordinal = 5)
     private String content;
 
-    public RedisFilterInfo() {
+    public RedisTriggerInfo() {
     }
 
     @Override
@@ -76,7 +76,7 @@ public class RedisFilterInfo implements Entity<RedisUuidKey> {
 
     @Override
     public String toString() {
-        return "RedisFilterInfo{" +
+        return "RedisTriggerInfo{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
                 ", enabled=" + enabled +

@@ -34,9 +34,13 @@ public final class Constants {
      */
     public static final int CONSTRAINT_LENGTH_POINT_REMARK = 100;
     /**
-     * 数据点备注的长度约束。
+     * 过滤器信息备注的长度约束。
      */
     public static final int CONSTRAINT_LENGTH_FILTER_INFO_REMARK = 100;
+    /**
+     * 触发器信息备注的长度约束。
+     */
+    public static final int CONSTRAINT_LENGTH_TRIGGER_INFO_REMARK = 100;
 
     /**
      * 批量缓存抓取的数据长度。

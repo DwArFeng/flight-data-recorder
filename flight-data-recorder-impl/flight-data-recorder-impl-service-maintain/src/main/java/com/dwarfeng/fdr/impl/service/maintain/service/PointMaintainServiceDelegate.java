@@ -9,6 +9,7 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.CategoryHasPointCache;
 import com.dwarfeng.fdr.stack.cache.PointCache;
 import com.dwarfeng.fdr.stack.cache.PointHasFilterInfoCache;
+import com.dwarfeng.fdr.stack.cache.PointHasTriggerInfoCache;
 import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
@@ -41,6 +42,8 @@ public class PointMaintainServiceDelegate {
     private CategoryHasPointCache categoryHasPointCache;
     @Autowired
     private PointHasFilterInfoCache pointHasFilterInfoCache;
+    @Autowired
+    private PointHasTriggerInfoCache pointHasTriggerInfoCache;
     @Autowired
     private ValidationHandler validationHandler;
 
@@ -145,6 +148,7 @@ public class PointMaintainServiceDelegate {
                 }
                 LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
                 pointHasFilterInfoCache.delete(key);
+                pointHasTriggerInfoCache.delete(key);
                 LOGGER.debug("将指定的Point从缓存中删除...");
                 pointCache.delete(key);
                 LOGGER.debug("将指定的Point从数据访问层中删除...");

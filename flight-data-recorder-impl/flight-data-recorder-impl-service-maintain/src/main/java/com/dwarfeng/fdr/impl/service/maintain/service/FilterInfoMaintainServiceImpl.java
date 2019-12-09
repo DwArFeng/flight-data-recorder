@@ -21,13 +21,13 @@ public class FilterInfoMaintainServiceImpl implements FilterInfoMaintainService 
     }
 
     @Override
-    public UuidKey insert(FilterInfo point) throws ServiceException {
-        return delegate.insert(point);
+    public UuidKey insert(FilterInfo filterInfo) throws ServiceException {
+        return delegate.insert(filterInfo);
     }
 
     @Override
-    public UuidKey update(FilterInfo point) throws ServiceException {
-        return delegate.update(point);
+    public UuidKey update(FilterInfo filterInfo) throws ServiceException {
+        return delegate.update(filterInfo);
     }
 
     @Override

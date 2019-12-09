@@ -9,10 +9,10 @@ import java.util.Optional;
 
 @Entity
 @IdClass(HibernateUuidKey.class)
-@Table(name = "tbl_filter_info")
-public class HibernateFilterInfo implements Serializable {
+@Table(name = "tbl_trigger_info")
+public class HibernateTriggerInfo implements Serializable {
 
-    private static final long serialVersionUID = -5083998565528007661L;
+    private static final long serialVersionUID = -1622721129538827725L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -27,7 +27,7 @@ public class HibernateFilterInfo implements Serializable {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "remark", length = Constants.CONSTRAINT_LENGTH_FILTER_INFO_REMARK, nullable = true)
+    @Column(name = "remark", length = Constants.CONSTRAINT_LENGTH_TRIGGER_INFO_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)
@@ -40,7 +40,7 @@ public class HibernateFilterInfo implements Serializable {
     })
     private HibernatePoint point;
 
-    public HibernateFilterInfo() {
+    public HibernateTriggerInfo() {
     }
 
     public String getUuid() {
@@ -109,7 +109,7 @@ public class HibernateFilterInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "HibernateFilterInfo{" +
+        return "HibernateTriggerInfo{" +
                 "uuid='" + uuid + '\'' +
                 ", pointUuid='" + pointUuid + '\'' +
                 ", enabled=" + enabled +

@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
+import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ValidationException;
 
@@ -54,5 +55,13 @@ public interface ValidationHandler {
      * @throws ValidationException 不合法时抛出的异常。
      */
     void filterInfoValidation(FilterInfo filterInfo) throws ValidationException;
+
+    /**
+     * 验证触发器信息是否合法。
+     *
+     * @param triggerInfo 指定的TriggerInfo。
+     * @throws ValidationException 不合法时抛出的异常。
+     */
+    void triggerInfoValidation(TriggerInfo triggerInfo) throws ValidationException;
 
 }
