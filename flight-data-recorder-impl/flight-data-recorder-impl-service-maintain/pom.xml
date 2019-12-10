@@ -151,7 +151,7 @@
                 <configuration>
                     <filesets>
                         <fileset>
-                            <directory>log</directory>
+                            <directory>logs</directory>
                         </fileset>
                     </filesets>
                 </configuration>

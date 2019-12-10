@@ -1,53 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
 	<Appenders>
-		<Console name="std.console" target="SYSTEM_OUT" follow="true">
-			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
-			<PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8" />
-		</Console>
-		<RollingFile name="std.trace.rollingfile" fileName="log/trace.log" filePattern="log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
-			<ThresholdFilter level="TRACE" onMatch="ACCEPT" onMismatch="DENY" />
-			<PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8" />
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="168" modulate="true" />
-				<SizeBasedTriggeringPolicy size="20 MB" />
-			</Policies>
-		</RollingFile>
-		<RollingFile name="std.debug.rollingfile" fileName="log/debug.log" filePattern="log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
-			<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
-			<PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8" />
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="168" modulate="true" />
-				<SizeBasedTriggeringPolicy size="20 MB" />
-			</Policies>
-		</RollingFile>
-		<RollingFile name="std.info.rollingfile" fileName="log/info.log" filePattern="log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
-			<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
-			<PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8" />
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="168" modulate="true" />
-				<SizeBasedTriggeringPolicy size="20 MB" />
-			</Policies>
-		</RollingFile>
-		<RollingFile name="std.warn.rollingfile" fileName="log/warn.log" filePattern="log/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}-%i.log.gz">
-			<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY" />
-			<PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8" />
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="168" modulate="true" />
-				<SizeBasedTriggeringPolicy size="20 MB" />
-			</Policies>
-		</RollingFile>
-		<RollingFile name="std.error.rollingfile" fileName="log/error.log" filePattern="log/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}-%i.log.gz">
-			<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
-			<PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8" />
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="168" modulate="true" />
-				<SizeBasedTriggeringPolicy size="20 MB" />
-			</Policies>
-		</RollingFile>
+        <Console name="std.console" target="SYSTEM_OUT" follow="true">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8"/>
+        </Console>
+        <RollingFile name="std.trace.rollingfile" fileName="logs/trace.log"
+                     filePattern="log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
+            <ThresholdFilter level="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="168" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="std.debug.rollingfile" fileName="logs/debug.log"
+                     filePattern="log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="168" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="std.info.rollingfile" fileName="logs/info.log"
+                     filePattern="log/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz">
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="168" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="std.warn.rollingfile" fileName="logs/warn.log"
+                     filePattern="log/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}-%i.log.gz">
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="168" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="std.error.rollingfile" fileName="logs/error.log"
+                     filePattern="log/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}-%i.log.gz">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{DEFAULT}] [%p] [%t]: %m%n" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="168" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+        </RollingFile>
 
-		<Async name="sync:std.console">
-			<AppenderRef ref="std.console" />
+        <Async name="sync:std.console">
+            <AppenderRef ref="std.console"/>
 		</Async>
 		<Async name="sync:std.trace.rollingfile">
 			<AppenderRef ref="std.trace.rollingfile" />

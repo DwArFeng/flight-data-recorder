@@ -1,6 +1,7 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -9,8 +10,8 @@
         <version>alpha-0.0.1.a-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flight-data-recorder-impl-dao-hnh</artifactId>
-    <name>flight-data-recorder-impl-dao-hnh</name>
+    <artifactId>flight-data-recorder-impl-dao-fuh</artifactId>
+    <name>flight-data-recorder-impl-dao-fuh</name>
     <url>http://maven.apache.org</url>
 
     <properties>
