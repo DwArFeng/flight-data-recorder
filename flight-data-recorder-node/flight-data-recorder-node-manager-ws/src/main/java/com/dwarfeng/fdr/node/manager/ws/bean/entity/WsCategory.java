@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.node.manager.ws.bean.entity;
 
 import com.dwarfeng.fdr.node.manager.ws.bean.key.WsUuidKey;
-import com.dwarfeng.fdr.sdk.util.Constants;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
@@ -26,12 +26,12 @@ public class WsCategory implements Serializable {
      * 名称。
      */
     @NotNull
-    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_NAME)
+    @Length(max = Constraints.LENGTH_CATAGORY_NAME)
     private String name;
     /**
      * 备注。
      */
-    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_REMARK)
+    @Length(max = Constraints.LENGTH_CATAGORY_REMARK)
     private String remark;
 
     public WsCategory() {

@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.hnh.bean.entity;
 
 import com.dwarfeng.fdr.impl.dao.hnh.bean.key.HibernateUuidKey;
-import com.dwarfeng.fdr.sdk.util.Constants;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,10 +26,10 @@ public class HibernateCategory implements Serializable {
     private String parentUuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
-    @Column(name = "name", length = Constants.CONSTRAINT_LENGTH_CATAGORY_NAME, nullable = false)
+    @Column(name = "name", length = Constraints.LENGTH_CATAGORY_NAME, nullable = false)
     private String name;
 
-    @Column(name = "remark", length = Constants.CONSTRAINT_LENGTH_CATAGORY_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_CATAGORY_REMARK, nullable = true)
     private String remark;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------

@@ -334,17 +334,7 @@
             <!-- 程序自身组件 -->
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-stack-bean</artifactId>
-                <version>alpha-0.0.1.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-stack-dao</artifactId>
-                <version>alpha-0.0.1.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-stack-cache</artifactId>
+                <artifactId>flight-data-recorder-stack</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -359,6 +349,11 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-dao-fuh</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-dao-hnh</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
@@ -369,22 +364,12 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-stack-service</artifactId>
-                <version>alpha-0.0.1.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-handler-validation</artifactId>
-                <version>alpha-0.0.1.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-stack-handler</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
         </dependencies>

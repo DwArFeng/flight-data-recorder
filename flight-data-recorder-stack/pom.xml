@@ -9,8 +9,6 @@
         <version>alpha-0.0.1.a-SNAPSHOT</version>
     </parent>
 
-    <packaging>pom</packaging>
-
     <artifactId>flight-data-recorder-stack</artifactId>
     <name>flight-data-recorder-stack</name>
     <url>http://maven.apache.org</url>
@@ -22,13 +20,4 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-
-    <modules>
-        <module>flight-data-recorder-stack-bean</module>
-        <module>flight-data-recorder-stack-dao</module>
-        <module>flight-data-recorder-stack-model</module>
-        <module>flight-data-recorder-stack-handler</module>
-        <module>flight-data-recorder-stack-service</module>
-        <module>flight-data-recorder-stack-cache</module>
-    </modules>
 </project>

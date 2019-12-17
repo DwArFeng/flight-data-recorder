@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.sdk.validation;
 
-import com.dwarfeng.fdr.sdk.util.Constants;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,11 +48,11 @@ public @interface DenseUUID {
                     LOGGER.debug("对象 " + value.toString() + " 不属于 String, 验证不通过...");
                     return false;
                 }
-                if (((String) value).length() != Constants.DENSE_UUID_LENGTH) {
+                if (((String) value).length() != Constraints.DENSE_UUID_LENGTH) {
                     LOGGER.debug("文本 " + value + " 的长度不是紧缩UUID标准长度, 验证不通过...");
                     return false;
                 }
-                if (!((String) value).matches(Constants.DENSE_UUID_REGEX)) {
+                if (!((String) value).matches(Constraints.DENSE_UUID_REGEX)) {
                     LOGGER.debug("文本 " + value + " 不满足紧缩UUID的格式, 验证不通过...");
                     return false;
                 } else {

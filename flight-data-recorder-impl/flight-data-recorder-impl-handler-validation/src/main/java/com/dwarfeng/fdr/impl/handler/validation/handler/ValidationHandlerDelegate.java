@@ -1,16 +1,10 @@
 package com.dwarfeng.fdr.impl.handler.validation.handler;
 
 import com.dwarfeng.fdr.impl.handler.validation.bean.dto.ValidationLookupPagingInfo;
-import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationCategory;
-import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationFilterInfo;
-import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationPoint;
-import com.dwarfeng.fdr.impl.handler.validation.bean.entity.ValidationTriggerInfo;
+import com.dwarfeng.fdr.impl.handler.validation.bean.entity.*;
 import com.dwarfeng.fdr.impl.handler.validation.bean.key.ValidationUuidKey;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
-import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
+import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ValidationException;
 import org.dozer.Mapper;
@@ -118,6 +112,62 @@ public class ValidationHandlerDelegate {
         if (!constraintViolations.isEmpty()) {
             LOGGER.warn(triggerInfo + " 不合法，抛出异常...");
             throw new ValidationException("参数非法: " + triggerInfo.toString(), new ConstraintViolationException(constraintViolations));
+        }
+    }
+
+    public void filteredValueValidation(FilteredValue filteredValue) throws ValidationException {
+        if (Objects.isNull(filteredValue)) {
+            return;
+        }
+
+        LOGGER.debug("验证 " + filteredValue.toString() + " 的合法性...");
+        ValidationFilterInfo validationTriggerInfo = mapper.map(filteredValue, ValidationFilterInfo.class);
+        Set<ConstraintViolation<ValidationFilterInfo>> constraintViolations = validator.validate(validationTriggerInfo);
+        if (!constraintViolations.isEmpty()) {
+            LOGGER.warn(filteredValue + " 不合法，抛出异常...");
+            throw new ValidationException("参数非法: " + filteredValue.toString(), new ConstraintViolationException(constraintViolations));
+        }
+    }
+
+    public void persistenceValueValidation(PersistenceValue persistenceValue) throws ValidationException {
+        if (Objects.isNull(persistenceValue)) {
+            return;
+        }
+
+        LOGGER.debug("验证 " + persistenceValue.toString() + " 的合法性...");
+        ValidationPersistenceValue validationTriggerInfo = mapper.map(persistenceValue, ValidationPersistenceValue.class);
+        Set<ConstraintViolation<ValidationPersistenceValue>> constraintViolations = validator.validate(validationTriggerInfo);
+        if (!constraintViolations.isEmpty()) {
+            LOGGER.warn(persistenceValue + " 不合法，抛出异常...");
+            throw new ValidationException("参数非法: " + persistenceValue.toString(), new ConstraintViolationException(constraintViolations));
+        }
+    }
+
+    public void realtimeValueValidation(RealtimeValue realtimeValue) throws ValidationException {
+        if (Objects.isNull(realtimeValue)) {
+            return;
+        }
+
+        LOGGER.debug("验证 " + realtimeValue.toString() + " 的合法性...");
+        ValidationRealtimeValue validationTriggerInfo = mapper.map(realtimeValue, ValidationRealtimeValue.class);
+        Set<ConstraintViolation<ValidationRealtimeValue>> constraintViolations = validator.validate(validationTriggerInfo);
+        if (!constraintViolations.isEmpty()) {
+            LOGGER.warn(realtimeValue + " 不合法，抛出异常...");
+            throw new ValidationException("参数非法: " + realtimeValue.toString(), new ConstraintViolationException(constraintViolations));
+        }
+    }
+
+    public void triggeredValueValidation(TriggeredValue triggeredValue) throws ValidationException {
+        if (Objects.isNull(triggeredValue)) {
+            return;
+        }
+
+        LOGGER.debug("验证 " + triggeredValue.toString() + " 的合法性...");
+        ValidationTriggeredValue validationTriggerInfo = mapper.map(triggeredValue, ValidationTriggeredValue.class);
+        Set<ConstraintViolation<ValidationTriggeredValue>> constraintViolations = validator.validate(validationTriggerInfo);
+        if (!constraintViolations.isEmpty()) {
+            LOGGER.warn(triggeredValue + " 不合法，抛出异常...");
+            throw new ValidationException("参数非法: " + triggeredValue.toString(), new ConstraintViolationException(constraintViolations));
         }
     }
 }

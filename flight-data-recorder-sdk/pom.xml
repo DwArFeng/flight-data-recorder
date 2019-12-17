@@ -96,5 +96,10 @@
             <artifactId>dozer-spring</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- 程序自身模块 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>flight-data-recorder-stack</artifactId>
+        </dependency>
     </dependencies>
 </project>

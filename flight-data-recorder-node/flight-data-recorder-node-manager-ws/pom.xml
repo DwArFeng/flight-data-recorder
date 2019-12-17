@@ -156,19 +156,7 @@
         <!-- 程序自身模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-bean</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-dao</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-cache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-service</artifactId>
+            <artifactId>flight-data-recorder-stack</artifactId>
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>

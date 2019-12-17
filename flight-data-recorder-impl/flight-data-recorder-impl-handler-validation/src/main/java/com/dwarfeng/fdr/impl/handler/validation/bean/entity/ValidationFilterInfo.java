@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.validation.bean.entity;
 
 import com.dwarfeng.fdr.impl.handler.validation.bean.key.ValidationUuidKey;
-import com.dwarfeng.fdr.sdk.util.Constants;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.NonNull;
 
@@ -26,7 +26,7 @@ public class ValidationFilterInfo implements Serializable {
 
     private boolean enabled;
 
-    @Length(max = Constants.CONSTRAINT_LENGTH_FILTER_INFO_REMARK)
+    @Length(max = Constraints.LENGTH_FILTER_INFO_REMARK)
     private String remark;
 
     private String content;
@@ -34,7 +34,7 @@ public class ValidationFilterInfo implements Serializable {
     public ValidationFilterInfo() {
     }
 
-    public ValidationFilterInfo(@NonNull @Valid ValidationUuidKey key, @Valid ValidationUuidKey pointKey, boolean enabled, @Length(max = Constants.CONSTRAINT_LENGTH_FILTER_INFO_REMARK) String remark, String content) {
+    public ValidationFilterInfo(@NonNull @Valid ValidationUuidKey key, @Valid ValidationUuidKey pointKey, boolean enabled, @Length(max = Constraints.LENGTH_FILTER_INFO_REMARK) String remark, String content) {
         this.key = key;
         this.pointKey = pointKey;
         this.enabled = enabled;

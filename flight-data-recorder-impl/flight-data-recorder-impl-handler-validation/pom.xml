@@ -38,15 +38,11 @@
         <!-- 程序自身组件 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-bean</artifactId>
+            <artifactId>flight-data-recorder-stack</artifactId>
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-sdk</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>flight-data-recorder-stack-handler</artifactId>
         </dependency>
     </dependencies>
 </project>

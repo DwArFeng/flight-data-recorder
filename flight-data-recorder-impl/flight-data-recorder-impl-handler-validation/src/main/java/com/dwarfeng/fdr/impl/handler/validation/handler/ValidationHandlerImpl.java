@@ -1,10 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.validation.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
-import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
+import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ValidationException;
 import com.dwarfeng.fdr.stack.handler.ValidationHandler;
@@ -45,5 +42,25 @@ public class ValidationHandlerImpl implements ValidationHandler {
     @Override
     public void triggerInfoValidation(TriggerInfo triggerInfo) throws ValidationException {
         delegate.triggerInfoValidation(triggerInfo);
+    }
+
+    @Override
+    public void filteredValueValidation(FilteredValue filteredValue) throws ValidationException {
+        delegate.filteredValueValidation(filteredValue);
+    }
+
+    @Override
+    public void persistenceValueValidation(PersistenceValue persistenceValue) throws ValidationException {
+        delegate.persistenceValueValidation(persistenceValue);
+    }
+
+    @Override
+    public void realtimeValueValidation(RealtimeValue realtimeValue) throws ValidationException {
+        delegate.realtimeValueValidation(realtimeValue);
+    }
+
+    @Override
+    public void triggeredValueValidation(TriggeredValue triggeredValue) throws ValidationException {
+        delegate.triggeredValueValidation(triggeredValue);
     }
 }

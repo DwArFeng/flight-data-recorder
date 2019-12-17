@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
-import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
@@ -51,6 +50,8 @@ public class PointMaintainServiceDelegate {
     private long pointTimeout;
     @Value("${cache.timeout.one_to_many.category_has_point}")
     private long pointHasChildTimeout;
+    @Value("${cache.batch_fetch_size.point}")
+    private int pointFetchSize;
 
     @TimeAnalyse
     @Transactional(readOnly = true)
@@ -59,7 +60,7 @@ public class PointMaintainServiceDelegate {
             validationHandler.uuidKeyValidation(key);
             return internalGet(key);
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -97,7 +98,7 @@ public class PointMaintainServiceDelegate {
                 return point.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -127,7 +128,7 @@ public class PointMaintainServiceDelegate {
                 return point.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -155,7 +156,7 @@ public class PointMaintainServiceDelegate {
                 pointDao.delete(key);
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -194,7 +195,7 @@ public class PointMaintainServiceDelegate {
                     categories
             );
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -207,11 +208,11 @@ public class PointMaintainServiceDelegate {
             int totlePage;
             int currPage;
             long count = pointDao.getPointCount(uuidKey);
-            totlePage = Math.max((int) Math.ceil((double) count / Constants.BATCH_CACHE_FETCH_SIZE), 1);
+            totlePage = Math.max((int) Math.ceil((double) count / pointFetchSize), 1);
             currPage = 0;
             categoryHasPointCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, Constants.BATCH_CACHE_FETCH_SIZE);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, pointFetchSize);
                 List<Point> childs = pointDao.getPoints(uuidKey, lookupPagingInfo);
                 categoryHasPointCache.push(uuidKey, childs, pointHasChildTimeout);
             } while (currPage < totlePage);

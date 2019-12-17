@@ -24,4 +24,12 @@
                      interface="com.dwarfeng.fdr.stack.service.FilterInfoMaintainService"/>
     <dubbo:reference id="triggerInfoMaintainService"
                      interface="com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService"/>
+    <dubbo:reference id="filteredValueMaintainService"
+                     interface="com.dwarfeng.fdr.stack.service.FilteredValueMaintainService"/>
+    <dubbo:reference id="persistenceValueMaintainService"
+                     interface="com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService"/>
+    <dubbo:reference id="realtimeValueMaintainService"
+                     interface="com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService"/>
+    <dubbo:reference id="triggeredValueMaintainService"
+                     interface="com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService"/>
 </beans>

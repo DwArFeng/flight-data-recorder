@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
 import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
-import com.dwarfeng.fdr.sdk.util.Constants;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -27,7 +27,7 @@ public class HibernateTriggerInfo implements Serializable {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "remark", length = Constants.CONSTRAINT_LENGTH_TRIGGER_INFO_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_TRIGGER_INFO_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)

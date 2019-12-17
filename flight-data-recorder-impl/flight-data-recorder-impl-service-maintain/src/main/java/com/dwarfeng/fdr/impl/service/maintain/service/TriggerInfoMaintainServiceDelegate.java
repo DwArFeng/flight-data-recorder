@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
-import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
@@ -45,6 +44,8 @@ public class TriggerInfoMaintainServiceDelegate {
     private long triggerInfoTimeout;
     @Value("${cache.timeout.one_to_many.point_has_trigger_info}")
     private long pointHasTriggerInfoTimeout;
+    @Value("${cache.batch_fetch_size.trigger_info}")
+    private int triggerInfoFetchSize;
 
     @TimeAnalyse
     @Transactional(readOnly = true)
@@ -53,7 +54,7 @@ public class TriggerInfoMaintainServiceDelegate {
             validationHandler.uuidKeyValidation(key);
             return internalGet(key);
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -91,7 +92,7 @@ public class TriggerInfoMaintainServiceDelegate {
                 return triggerInfo.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -121,7 +122,7 @@ public class TriggerInfoMaintainServiceDelegate {
                 return triggerInfo.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -148,7 +149,7 @@ public class TriggerInfoMaintainServiceDelegate {
                 triggerInfoDao.delete(key);
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -187,7 +188,7 @@ public class TriggerInfoMaintainServiceDelegate {
                     triggerInfos
             );
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -200,11 +201,11 @@ public class TriggerInfoMaintainServiceDelegate {
             int totlePage;
             int currPage;
             long count = triggerInfoDao.getTriggerInfoCount(uuidKey);
-            totlePage = Math.max((int) Math.ceil((double) count / Constants.BATCH_CACHE_FETCH_SIZE), 1);
+            totlePage = Math.max((int) Math.ceil((double) count / triggerInfoFetchSize), 1);
             currPage = 0;
             pointHasTriggerInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, Constants.BATCH_CACHE_FETCH_SIZE);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, triggerInfoFetchSize);
                 List<TriggerInfo> childs = triggerInfoDao.getTriggerInfos(uuidKey, lookupPagingInfo);
                 pointHasTriggerInfoCache.push(uuidKey, childs, pointHasTriggerInfoTimeout);
             } while (currPage < totlePage);

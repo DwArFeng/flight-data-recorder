@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
-import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
@@ -45,6 +44,8 @@ public class FilterInfoMaintainServiceDelegate {
     private long filterInfoTimeout;
     @Value("${cache.timeout.one_to_many.point_has_filter_info}")
     private long pointHasFilterInfoTimeout;
+    @Value("${cache.batch_fetch_size.filter_info}")
+    private int filterInfoFetchSize;
 
     @TimeAnalyse
     @Transactional(readOnly = true)
@@ -53,7 +54,7 @@ public class FilterInfoMaintainServiceDelegate {
             validationHandler.uuidKeyValidation(key);
             return internalGet(key);
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -91,7 +92,7 @@ public class FilterInfoMaintainServiceDelegate {
                 return filterInfo.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -121,7 +122,7 @@ public class FilterInfoMaintainServiceDelegate {
                 return filterInfo.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -148,7 +149,7 @@ public class FilterInfoMaintainServiceDelegate {
                 filterInfoDao.delete(key);
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -187,7 +188,7 @@ public class FilterInfoMaintainServiceDelegate {
                     filterInfos
             );
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -200,11 +201,11 @@ public class FilterInfoMaintainServiceDelegate {
             int totlePage;
             int currPage;
             long count = filterInfoDao.getFilterInfoCount(uuidKey);
-            totlePage = Math.max((int) Math.ceil((double) count / Constants.BATCH_CACHE_FETCH_SIZE), 1);
+            totlePage = Math.max((int) Math.ceil((double) count / filterInfoFetchSize), 1);
             currPage = 0;
             pointHasFilterInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, Constants.BATCH_CACHE_FETCH_SIZE);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, filterInfoFetchSize);
                 List<FilterInfo> childs = filterInfoDao.getFilterInfos(uuidKey, lookupPagingInfo);
                 pointHasFilterInfoCache.push(uuidKey, childs, pointHasFilterInfoTimeout);
             } while (currPage < totlePage);

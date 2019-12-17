@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.validation.bean.entity;
 
 import com.dwarfeng.fdr.impl.handler.validation.bean.key.ValidationUuidKey;
-import com.dwarfeng.fdr.sdk.util.Constants;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
@@ -24,10 +24,10 @@ public class ValidationCategory implements Serializable {
     private ValidationUuidKey parentKey;
 
     @NotNull
-    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_NAME)
+    @Length(max = Constraints.LENGTH_CATAGORY_NAME)
     private String name;
 
-    @Length(max = Constants.CONSTRAINT_LENGTH_CATAGORY_REMARK)
+    @Length(max = Constraints.LENGTH_CATAGORY_REMARK)
     private String remark;
 
     public ValidationCategory() {

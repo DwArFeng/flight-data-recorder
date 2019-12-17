@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
-import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
@@ -45,6 +44,8 @@ public class CategoryMaintainServiceDelegate {
     private long categoryTimeout;
     @Value("${cache.timeout.one_to_many.category_has_child}")
     private long categoryHasChildTimeout;
+    @Value("${cache.batch_fetch_size.category}")
+    private int categoryFetchSize;
 
     @TimeAnalyse
     @Transactional(readOnly = true)
@@ -53,7 +54,7 @@ public class CategoryMaintainServiceDelegate {
             validationHandler.uuidKeyValidation(key);
             return internalGet(key);
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -91,7 +92,7 @@ public class CategoryMaintainServiceDelegate {
                 return category.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -121,7 +122,7 @@ public class CategoryMaintainServiceDelegate {
                 return category.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -148,7 +149,7 @@ public class CategoryMaintainServiceDelegate {
                 categoryDao.delete(key);
             }
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -186,7 +187,7 @@ public class CategoryMaintainServiceDelegate {
                     categories
             );
         } catch (Exception e) {
-            throw new ServiceException("服务异常，原因如下:", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -198,11 +199,11 @@ public class CategoryMaintainServiceDelegate {
             int totlePage;
             int currPage;
             long count = categoryDao.getChildCount(uuidKey);
-            totlePage = Math.max((int) Math.ceil((double) count / Constants.BATCH_CACHE_FETCH_SIZE), 1);
+            totlePage = Math.max((int) Math.ceil((double) count / categoryFetchSize), 1);
             currPage = 0;
             categoryHasChildCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, Constants.BATCH_CACHE_FETCH_SIZE);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, categoryFetchSize);
                 List<Category> childs = categoryDao.getChilds(uuidKey, lookupPagingInfo);
                 categoryHasChildCache.push(uuidKey, childs, categoryHasChildTimeout);
             } while (currPage < totlePage);

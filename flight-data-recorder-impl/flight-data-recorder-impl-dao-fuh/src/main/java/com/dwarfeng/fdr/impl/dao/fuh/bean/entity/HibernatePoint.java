@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
 import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
-import com.dwarfeng.fdr.sdk.util.Constants;
+import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,10 +26,10 @@ public class HibernatePoint implements Serializable {
     private String categoryUuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
-    @Column(name = "name", length = Constants.CONSTRAINT_LENGTH_POINT_NAME, nullable = false)
+    @Column(name = "name", length = Constraints.LENGTH_POINT_NAME, nullable = false)
     private String name;
 
-    @Column(name = "remark", length = Constants.CONSTRAINT_LENGTH_POINT_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_POINT_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "persistence_enabled", nullable = false)
@@ -48,6 +48,21 @@ public class HibernatePoint implements Serializable {
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilterInfo.class, mappedBy = "point")
     private Set<HibernateFilterInfo> filterInfos = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggerInfo.class, mappedBy = "point")
+    private Set<HibernateTriggerInfo> triggerInfos = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilteredValue.class, mappedBy = "point")
+    private Set<HibernateFilteredValue> filteredValues = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePersistenceValue.class, mappedBy = "point")
+    private Set<HibernatePersistenceValue> persistenceValues = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRealtimeValue.class, mappedBy = "point")
+    private Set<HibernateRealtimeValue> realtimeValues = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggeredValue.class, mappedBy = "point")
+    private Set<HibernateTriggeredValue> triggeredValues = new HashSet<>();
 
 //    @OneToMany(targetEntity = PointHibernateImpl.class, mappedBy = "category")
 //    @Cascade(CascadeType.MERGE)
@@ -128,6 +143,54 @@ public class HibernatePoint implements Serializable {
         this.category = category;
     }
 
+    public Set<HibernateFilterInfo> getFilterInfos() {
+        return filterInfos;
+    }
+
+    public void setFilterInfos(Set<HibernateFilterInfo> filterInfos) {
+        this.filterInfos = filterInfos;
+    }
+
+    public Set<HibernateTriggerInfo> getTriggerInfos() {
+        return triggerInfos;
+    }
+
+    public void setTriggerInfos(Set<HibernateTriggerInfo> triggerInfos) {
+        this.triggerInfos = triggerInfos;
+    }
+
+    public Set<HibernateFilteredValue> getFilteredValues() {
+        return filteredValues;
+    }
+
+    public void setFilteredValues(Set<HibernateFilteredValue> filteredValues) {
+        this.filteredValues = filteredValues;
+    }
+
+    public Set<HibernatePersistenceValue> getPersistenceValues() {
+        return persistenceValues;
+    }
+
+    public void setPersistenceValues(Set<HibernatePersistenceValue> persistenceValues) {
+        this.persistenceValues = persistenceValues;
+    }
+
+    public Set<HibernateRealtimeValue> getRealtimeValues() {
+        return realtimeValues;
+    }
+
+    public void setRealtimeValues(Set<HibernateRealtimeValue> realtimeValues) {
+        this.realtimeValues = realtimeValues;
+    }
+
+    public Set<HibernateTriggeredValue> getTriggeredValues() {
+        return triggeredValues;
+    }
+
+    public void setTriggeredValues(Set<HibernateTriggeredValue> triggeredValues) {
+        this.triggeredValues = triggeredValues;
+    }
+
     @Override
     public String toString() {
         return "HibernatePoint{" +
@@ -137,7 +200,6 @@ public class HibernatePoint implements Serializable {
                 ", remark='" + remark + '\'' +
                 ", persistenceEnabled=" + persistenceEnabled +
                 ", realtimeEnabled=" + realtimeEnabled +
-                ", category=" + category +
                 '}';
     }
 }
