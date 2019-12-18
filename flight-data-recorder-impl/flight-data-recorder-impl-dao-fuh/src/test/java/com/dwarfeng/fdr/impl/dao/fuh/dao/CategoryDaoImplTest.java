@@ -59,7 +59,7 @@ public class CategoryDaoImplTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void test() throws DaoException {
         dao.insert(parentCategory);
         for (Category category : childCategories) {
@@ -70,7 +70,7 @@ public class CategoryDaoImplTest {
             assertTrue(dao.exists(category.getKey()));
         }
         assertEquals(5, dao.getChildCount(parentCategory.getKey()));
-        assertEquals(5, dao.getChilds(parentCategory.getKey(), new LookupPagingInfo(false, 0, 0)).size());
+        assertEquals(5, dao.getChilds(parentCategory.getKey(), new LookupPagingInfo(0, 0)).size());
         dao.delete(parentCategory.getKey());
         for (Category category : childCategories) {
             dao.delete(category.getKey());

@@ -5,7 +5,9 @@ import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @IdClass(HibernateUuidKey.class)
@@ -27,7 +29,7 @@ public class HibernateTriggerInfo implements Serializable {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "remark", length = Constraints.LENGTH_TRIGGER_INFO_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)
@@ -39,6 +41,10 @@ public class HibernateTriggerInfo implements Serializable {
             @JoinColumn(name = "point_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
+
+    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggeredValue.class, mappedBy = "triggerInfo")
+    private Set<HibernateTriggeredValue> triggeredValues = new HashSet<>();
 
     public HibernateTriggerInfo() {
     }
@@ -107,6 +113,14 @@ public class HibernateTriggerInfo implements Serializable {
         this.point = point;
     }
 
+    public Set<HibernateTriggeredValue> getTriggeredValues() {
+        return triggeredValues;
+    }
+
+    public void setTriggeredValues(Set<HibernateTriggeredValue> triggeredValues) {
+        this.triggeredValues = triggeredValues;
+    }
+
     @Override
     public String toString() {
         return "HibernateTriggerInfo{" +
@@ -115,7 +129,6 @@ public class HibernateTriggerInfo implements Serializable {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
-                ", point=" + point +
                 '}';
     }
 }

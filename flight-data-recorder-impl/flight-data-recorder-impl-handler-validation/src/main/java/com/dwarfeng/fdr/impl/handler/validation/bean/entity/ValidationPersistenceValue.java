@@ -30,7 +30,7 @@ public class ValidationPersistenceValue implements Serializable {
     @NotNull
     private Date happenedDate;
 
-    @Length(max = Constraints.LENGTH_PERSISTENCE_VALUE_VALUE)
+    @Length(max = Constraints.LENGTH_VALUE)
     private String value;
 
     public ValidationPersistenceValue() {

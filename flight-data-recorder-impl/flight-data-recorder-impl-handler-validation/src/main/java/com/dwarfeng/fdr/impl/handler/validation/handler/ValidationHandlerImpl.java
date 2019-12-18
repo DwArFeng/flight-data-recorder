@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.validation.handler;
 
+import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
@@ -62,5 +63,10 @@ public class ValidationHandlerImpl implements ValidationHandler {
     @Override
     public void triggeredValueValidation(TriggeredValue triggeredValue) throws ValidationException {
         delegate.triggeredValueValidation(triggeredValue);
+    }
+
+    @Override
+    public void dataInfoValidation(DataInfo dataInfo) throws ValidationException {
+        delegate.dataInfoValidation(dataInfo);
     }
 }

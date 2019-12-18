@@ -26,10 +26,10 @@ public class HibernatePoint implements Serializable {
     private String categoryUuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
-    @Column(name = "name", length = Constraints.LENGTH_POINT_NAME, nullable = false)
+    @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
     private String name;
 
-    @Column(name = "remark", length = Constraints.LENGTH_POINT_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "persistence_enabled", nullable = false)
@@ -58,8 +58,8 @@ public class HibernatePoint implements Serializable {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePersistenceValue.class, mappedBy = "point")
     private Set<HibernatePersistenceValue> persistenceValues = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRealtimeValue.class, mappedBy = "point")
-    private Set<HibernateRealtimeValue> realtimeValues = new HashSet<>();
+    @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateRealtimeValue.class, mappedBy = "point")
+    private HibernateRealtimeValue realtimeValue;
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggeredValue.class, mappedBy = "point")
     private Set<HibernateTriggeredValue> triggeredValues = new HashSet<>();
@@ -175,12 +175,12 @@ public class HibernatePoint implements Serializable {
         this.persistenceValues = persistenceValues;
     }
 
-    public Set<HibernateRealtimeValue> getRealtimeValues() {
-        return realtimeValues;
+    public HibernateRealtimeValue getRealtimeValue() {
+        return realtimeValue;
     }
 
-    public void setRealtimeValues(Set<HibernateRealtimeValue> realtimeValues) {
-        this.realtimeValues = realtimeValues;
+    public void setRealtimeValue(HibernateRealtimeValue realtimeValue) {
+        this.realtimeValue = realtimeValue;
     }
 
     public Set<HibernateTriggeredValue> getTriggeredValues() {

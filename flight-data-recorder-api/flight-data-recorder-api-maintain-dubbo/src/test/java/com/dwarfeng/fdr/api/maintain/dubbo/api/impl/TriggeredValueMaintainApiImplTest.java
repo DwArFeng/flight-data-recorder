@@ -2,9 +2,10 @@ package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
 import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
-import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggeredValueMaintainApi;
+import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggerInfoMaintainApi;
+import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
@@ -16,9 +17,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -27,10 +29,10 @@ public class TriggeredValueMaintainApiImplTest {
     @Autowired
     private PointMaintainApi pointMaintainApi;
     @Autowired
-    private TriggeredValueMaintainApi triggeredValueMaintainApi;
+    private TriggerInfoMaintainApi triggerInfoMaintainApi;
 
     private Point parentPoint;
-    private List<TriggeredValue> triggeredValues;
+    private List<TriggerInfo> triggerInfos;
 
     @Before
     public void setUp() throws Exception {
@@ -42,37 +44,38 @@ public class TriggeredValueMaintainApiImplTest {
                 true,
                 true
         );
-        triggeredValues = new ArrayList<>();
+        triggerInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            TriggeredValue triggeredValue = new TriggeredValue(
+            TriggerInfo triggerInfo = new TriggerInfo(
                     new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
                     parentPoint.getKey(),
-                    new Date(),
-                    "triggered-value-" + i,
+                    true,
+                    "trigger-info-" + i,
                     "this is a test"
             );
-            triggeredValues.add(triggeredValue);
+            triggerInfos.add(triggerInfo);
         }
     }
 
     @After
     public void tearDown() throws Exception {
         parentPoint = null;
-        triggeredValues.clear();
+        triggerInfos.clear();
     }
 
     @Test
     public void test() throws ServiceException {
         try {
             pointMaintainApi.insert(parentPoint);
-            for (TriggeredValue triggeredValue : triggeredValues) {
-                triggeredValueMaintainApi.insert(triggeredValue);
+            for (TriggerInfo triggerInfo : triggerInfos) {
+                triggerInfoMaintainApi.insert(triggerInfo);
             }
+            assertEquals(5, triggerInfoMaintainApi.getTriggerInfos(parentPoint.getKey(), new LookupPagingInfo(0, 0)).getCount());
         } finally {
-            pointMaintainApi.delete(parentPoint.getKey());
-            for (TriggeredValue triggeredValue : triggeredValues) {
-                triggeredValueMaintainApi.delete(triggeredValue.getKey());
+            for (TriggerInfo triggerInfo : triggerInfos) {
+                triggerInfoMaintainApi.delete(triggerInfo.getKey());
             }
+            pointMaintainApi.delete(parentPoint.getKey());
         }
     }
 

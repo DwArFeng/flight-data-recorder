@@ -20,47 +20,47 @@ public class FilterInfoDaoImpl implements FilterInfoDao {
     private FilterInfoDaoDelegate delegate;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         return delegate.exists(key);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public FilterInfo get(UuidKey key) throws DaoException {
         return delegate.get(key);
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     public UuidKey insert(@NotNull FilterInfo filterInfo) throws DaoException {
         return delegate.insert(filterInfo);
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     public UuidKey update(@NotNull FilterInfo filterInfo) throws DaoException {
         return delegate.update(filterInfo);
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws DaoException {
         delegate.delete(key);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public List<FilterInfo> getFilterInfos(@NotNull UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         return delegate.getFilterInfos(pointUuidKey, lookupPagingInfo);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public long getFilterInfoCount(@NotNull UuidKey pointUuidKey) throws DaoException {
         return delegate.getFilterInfoCount(pointUuidKey);

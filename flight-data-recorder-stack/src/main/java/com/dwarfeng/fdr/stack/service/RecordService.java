@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.stack.service;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
-
-import java.util.Date;
+import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
+import com.dwarfeng.fdr.stack.bean.dto.RecordResult;
+import com.dwarfeng.fdr.stack.exception.ServiceException;
 
 /**
  * 数据记录服务。
@@ -13,23 +13,12 @@ import java.util.Date;
 public interface RecordService extends Service {
 
     /**
-     * 向指定的数据点追加数据值。
+     * 向程序中记录数据。
      *
-     * <p>
-     * 数据发生的时间为系统的当前时间。
-     *
-     * @param pointKey 指定的数据点。
-     * @param value    追加的数据值。
+     * @param dataInfo 指定的数据信息。
+     * @return 记录结果。
+     * @throws ServiceException 服务异常。
      */
-    void appendValue(UuidKey pointKey, String value);
-
-    /**
-     * 向指定的数据点追加数据值。
-     *
-     * @param pointKey     指定的数据点。
-     * @param value        追加的数据值。
-     * @param happenedDate 数据发生的时间。
-     */
-    void appendValue(UuidKey pointKey, String value, Date happenedDate);
+    RecordResult record(DataInfo dataInfo) throws ServiceException;
 
 }

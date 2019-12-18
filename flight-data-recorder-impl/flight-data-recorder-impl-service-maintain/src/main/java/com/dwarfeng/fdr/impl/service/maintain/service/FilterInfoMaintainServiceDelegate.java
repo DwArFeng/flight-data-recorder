@@ -48,7 +48,7 @@ public class FilterInfoMaintainServiceDelegate {
     private int filterInfoFetchSize;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public FilterInfo get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -72,7 +72,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull FilterInfo filterInfo) throws ServiceException {
         try {
             validationHandler.filterInfoValidation(filterInfo);
@@ -97,7 +97,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull FilterInfo filterInfo) throws ServiceException {
         try {
             validationHandler.filterInfoValidation(filterInfo);
@@ -127,7 +127,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -141,8 +141,6 @@ public class FilterInfoMaintainServiceDelegate {
                     LOGGER.debug("清除旧实体 " + oldFilterInfo.toString() + " 对应的父项缓存...");
                     pointHasFilterInfoCache.delete(oldFilterInfo.getPointKey());
                 }
-//                LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
-//                filterInfoHasChildCache.delete(key);
                 LOGGER.debug("将指定的FilterInfo从缓存中删除...");
                 filterInfoCache.delete(key);
                 LOGGER.debug("将指定的FilterInfo从数据访问层中删除...");
@@ -155,7 +153,7 @@ public class FilterInfoMaintainServiceDelegate {
 
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public PagedData<FilterInfo> getFilterInfos(UuidKey pointUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(pointUuid);
@@ -173,12 +171,14 @@ public class FilterInfoMaintainServiceDelegate {
                 LOGGER.debug("查询指定的FilterInfo对应的子项...");
                 filterInfos = filterInfoDao.getFilterInfos(pointUuid, lookupPagingInfo);
                 count = filterInfoDao.getFilterInfoCount(pointUuid);
-                for (FilterInfo filterInfo : filterInfos) {
-                    LOGGER.debug("将查询到的的实体 " + filterInfo.toString() + " 插入缓存中...");
-                    filterInfoCache.push(filterInfo.getKey(), filterInfo, filterInfoTimeout);
+                if (count > 0) {
+                    for (FilterInfo filterInfo : filterInfos) {
+                        LOGGER.debug("将查询到的的实体 " + filterInfo.toString() + " 插入缓存中...");
+                        filterInfoCache.push(filterInfo.getKey(), filterInfo, filterInfoTimeout);
+                    }
+                    LOGGER.debug("抓取实体 " + pointUuid.toString() + " 对应的子项并插入缓存...");
+                    fetchFilterInfo2Cache(pointUuid);
                 }
-                LOGGER.debug("抓取实体 " + pointUuid.toString() + " 对应的子项并插入缓存...");
-                fetchFilterInfo2Cache(pointUuid);
             }
             return new PagedData<>(
                     lookupPagingInfo.getPage(),
@@ -193,7 +193,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchFilterInfo2Cache(UuidKey uuidKey) {
@@ -205,9 +205,11 @@ public class FilterInfoMaintainServiceDelegate {
             currPage = 0;
             pointHasFilterInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, filterInfoFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, filterInfoFetchSize);
                 List<FilterInfo> childs = filterInfoDao.getFilterInfos(uuidKey, lookupPagingInfo);
-                pointHasFilterInfoCache.push(uuidKey, childs, pointHasFilterInfoTimeout);
+                if (childs.size() > 0) {
+                    pointHasFilterInfoCache.push(uuidKey, childs, pointHasFilterInfoTimeout);
+                }
             } while (currPage < totlePage);
         } catch (Exception e) {
             LOGGER.warn("将分类 " + uuidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);

@@ -27,7 +27,7 @@ public class HibernateFilterInfo implements Serializable {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "remark", length = Constraints.LENGTH_FILTER_INFO_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)

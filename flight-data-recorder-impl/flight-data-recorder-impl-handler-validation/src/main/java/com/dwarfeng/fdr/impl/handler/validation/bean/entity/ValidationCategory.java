@@ -24,10 +24,10 @@ public class ValidationCategory implements Serializable {
     private ValidationUuidKey parentKey;
 
     @NotNull
-    @Length(max = Constraints.LENGTH_CATAGORY_NAME)
+    @Length(max = Constraints.LENGTH_NAME)
     private String name;
 
-    @Length(max = Constraints.LENGTH_CATAGORY_REMARK)
+    @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
 
     public ValidationCategory() {

@@ -24,6 +24,11 @@ public class TriggeredValue implements Entity<UuidKey> {
      */
     private UuidKey pointKey;
 
+    /**
+     * 触发器外键。
+     */
+    private UuidKey triggerKey;
+
     private Date happenedDate;
 
     private String value;
@@ -33,9 +38,10 @@ public class TriggeredValue implements Entity<UuidKey> {
     public TriggeredValue() {
     }
 
-    public TriggeredValue(UuidKey key, UuidKey pointKey, Date happenedDate, String value, String message) {
+    public TriggeredValue(UuidKey key, UuidKey pointKey, UuidKey triggerKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
+        this.triggerKey = triggerKey;
         this.happenedDate = happenedDate;
         this.value = value;
         this.message = message;
@@ -57,6 +63,14 @@ public class TriggeredValue implements Entity<UuidKey> {
 
     public void setPointKey(UuidKey pointKey) {
         this.pointKey = pointKey;
+    }
+
+    public UuidKey getTriggerKey() {
+        return triggerKey;
+    }
+
+    public void setTriggerKey(UuidKey triggerKey) {
+        this.triggerKey = triggerKey;
     }
 
     public Date getHappenedDate() {
@@ -88,6 +102,7 @@ public class TriggeredValue implements Entity<UuidKey> {
         return "TriggeredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", triggerKey=" + triggerKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

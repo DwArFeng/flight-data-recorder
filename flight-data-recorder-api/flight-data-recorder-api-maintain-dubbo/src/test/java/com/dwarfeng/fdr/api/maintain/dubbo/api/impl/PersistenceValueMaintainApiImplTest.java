@@ -68,10 +68,10 @@ public class PersistenceValueMaintainApiImplTest {
                 persistenceValueMaintainApi.insert(persistenceValue);
             }
         } finally {
-            pointMaintainApi.delete(parentPoint.getKey());
             for (PersistenceValue persistenceValue : persistenceValues) {
                 persistenceValueMaintainApi.delete(persistenceValue.getKey());
             }
+            pointMaintainApi.delete(parentPoint.getKey());
         }
     }
 

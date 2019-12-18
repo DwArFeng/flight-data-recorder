@@ -130,6 +130,7 @@ public class Launcher {
         }
 
         private void programStart() {
+            ctx.registerShutdownHook();
             ctx.start();
         }
 

@@ -16,21 +16,25 @@ public class RedisFilteredValue implements Entity<RedisUuidKey> {
     @JSONField(name = "point_key", ordinal = 2)
     private RedisUuidKey pointKey;
 
-    @JSONField(name = "happened_date", ordinal = 3)
+    @JSONField(name = "filter_key", ordinal = 3)
+    private RedisUuidKey filterKey;
+
+    @JSONField(name = "happened_date", ordinal = 4)
     private Date happenedDate;
 
-    @JSONField(name = "value", ordinal = 4)
+    @JSONField(name = "value", ordinal = 5)
     private String value;
 
-    @JSONField(name = "message", ordinal = 5)
+    @JSONField(name = "message", ordinal = 6)
     private String message;
 
     public RedisFilteredValue() {
     }
 
-    public RedisFilteredValue(RedisUuidKey key, RedisUuidKey pointKey, Date happenedDate, String value, String message) {
+    public RedisFilteredValue(RedisUuidKey key, RedisUuidKey pointKey, RedisUuidKey filterKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
+        this.filterKey = filterKey;
         this.happenedDate = happenedDate;
         this.value = value;
         this.message = message;
@@ -52,6 +56,14 @@ public class RedisFilteredValue implements Entity<RedisUuidKey> {
 
     public void setPointKey(RedisUuidKey pointKey) {
         this.pointKey = pointKey;
+    }
+
+    public RedisUuidKey getFilterKey() {
+        return filterKey;
+    }
+
+    public void setFilterKey(RedisUuidKey filterKey) {
+        this.filterKey = filterKey;
     }
 
     public Date getHappenedDate() {
@@ -83,6 +95,7 @@ public class RedisFilteredValue implements Entity<RedisUuidKey> {
         return "RedisFilteredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", filterKey=" + filterKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

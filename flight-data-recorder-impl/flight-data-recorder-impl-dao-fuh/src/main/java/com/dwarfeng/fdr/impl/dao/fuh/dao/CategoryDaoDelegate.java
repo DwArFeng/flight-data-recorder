@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.fuh.dao;
 
 import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernateCategory;
-import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernatePoint;
 import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
@@ -38,7 +37,7 @@ public class CategoryDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -53,9 +52,14 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public Category get(UuidKey key) throws DaoException {
         try {
+            if (!internalExists(key)) {
+                LOGGER.warn("指定的Category " + key.toString() + " 不存在, 将抛出异常...");
+                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+            }
+
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
             return mapper.map(hibernateCategory, Category.class);
@@ -65,7 +69,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull Category category) throws DaoException {
         try {
             if (internalExists(category.getKey())) {
@@ -83,7 +87,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull Category category) throws DaoException {
         try {
             if (!internalExists(category.getKey())) {
@@ -91,7 +95,10 @@ public class CategoryDaoDelegate {
                 throw new IllegalArgumentException("指定的Category " + category.toString() + " 不存在");
             }
 
-            HibernateCategory hibernateCategory = mapper.map(category, HibernateCategory.class);
+            HibernateUuidKey hibernateUuidKey = mapper.map(category.getKey(), HibernateUuidKey.class);
+            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
+            assert hibernateCategory != null;
+            mapper.map(category, hibernateUuidKey);
             template.update(hibernateCategory);
             template.flush();
             return category.getKey();
@@ -101,7 +108,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -111,20 +118,6 @@ public class CategoryDaoDelegate {
 
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
-            //取消所有与该分类有关的子分类的父项关联。
-            DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class)
-                    .add(Restrictions.eq("parentUuid", hibernateUuidKey.getUuid()));
-            for (Object child : template.findByCriteria(criteria)) {
-                ((HibernateCategory) child).setParentUuid(null);
-                template.save(child);
-            }
-            //取消所有与该分类有关的数据点的关联。
-            criteria = DetachedCriteria.forClass(HibernatePoint.class)
-                    .add(Restrictions.eq("categoryUuid", hibernateUuidKey.getUuid()));
-            for (Object child : template.findByCriteria(criteria)) {
-                ((HibernatePoint) child).setCategoryUuid(null);
-                template.save(child);
-            }
             assert hibernateCategory != null;
             template.delete(hibernateCategory);
             template.flush();
@@ -134,7 +127,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public List<Category> getChilds(UuidKey key, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);
@@ -157,7 +150,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public long getChildCount(UuidKey key) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);

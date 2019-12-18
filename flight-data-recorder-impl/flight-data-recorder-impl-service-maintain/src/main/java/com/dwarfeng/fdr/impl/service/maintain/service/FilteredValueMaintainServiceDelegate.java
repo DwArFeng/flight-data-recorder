@@ -36,7 +36,7 @@ public class FilteredValueMaintainServiceDelegate {
     private long filteredValueTimeout;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public FilteredValue get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -60,7 +60,7 @@ public class FilteredValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull FilteredValue filteredValue) throws ServiceException {
         try {
             validationHandler.filteredValueValidation(filteredValue);
@@ -81,7 +81,7 @@ public class FilteredValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull FilteredValue filteredValue) throws ServiceException {
         try {
             validationHandler.filteredValueValidation(filteredValue);
@@ -103,7 +103,7 @@ public class FilteredValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);

@@ -8,10 +8,8 @@ package com.dwarfeng.fdr.stack.bean.dto;
  */
 public class LookupPagingInfo implements Dto {
 
-    /**
-     * 是否启用分页功能。
-     */
-    private boolean enabled;
+    private static final long serialVersionUID = 7622768435096914114L;
+
     /**
      * 查询的页数。
      */
@@ -24,18 +22,9 @@ public class LookupPagingInfo implements Dto {
     public LookupPagingInfo() {
     }
 
-    public LookupPagingInfo(boolean enabled, int page, int rows) {
-        this.enabled = enabled;
+    public LookupPagingInfo(int page, int rows) {
         this.page = page;
         this.rows = rows;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public int getPage() {
@@ -57,8 +46,7 @@ public class LookupPagingInfo implements Dto {
     @Override
     public String toString() {
         return "LookupPagingInfo{" +
-                "enabled=" + enabled +
-                ", page=" + page +
+                "page=" + page +
                 ", rows=" + rows +
                 '}';
     }

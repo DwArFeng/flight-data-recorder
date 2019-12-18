@@ -24,10 +24,10 @@ public class ValidationPoint implements Serializable {
     private ValidationUuidKey categoryKey;
 
     @NotNull
-    @Length(max = Constraints.LENGTH_POINT_NAME)
+    @Length(max = Constraints.LENGTH_NAME)
     private String name;
 
-    @Length(max = Constraints.LENGTH_POINT_REMARK)
+    @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
 
     private boolean persistenceEnabled;

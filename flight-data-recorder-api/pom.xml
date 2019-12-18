@@ -26,5 +26,6 @@
 
     <modules>
         <module>flight-data-recorder-api-maintain-dubbo</module>
+        <module>flight-data-recorder-api-record-dubbo</module>
     </modules>
 </project>

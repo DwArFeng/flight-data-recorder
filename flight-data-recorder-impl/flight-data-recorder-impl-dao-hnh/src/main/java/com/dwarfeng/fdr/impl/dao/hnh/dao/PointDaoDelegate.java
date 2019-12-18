@@ -1,8 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.hnh.dao;
 
-import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernateFilterInfo;
 import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernatePoint;
-import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernateTriggerInfo;
 import com.dwarfeng.fdr.impl.dao.hnh.bean.key.HibernateUuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
@@ -39,7 +37,7 @@ public class PointDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -54,9 +52,14 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public Point get(UuidKey key) throws DaoException {
         try {
+            if (!internalExists(key)) {
+                LOGGER.warn("指定的Point " + key.toString() + " 不存在, 将抛出异常...");
+                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+            }
+
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateUuidKey);
             return mapper.map(hibernatePoint, Point.class);
@@ -66,7 +69,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull Point point) throws DaoException {
         try {
             if (internalExists(point.getKey())) {
@@ -84,7 +87,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull Point point) throws DaoException {
         try {
             if (!internalExists(point.getKey())) {
@@ -92,7 +95,10 @@ public class PointDaoDelegate {
                 throw new IllegalArgumentException("指定的Point " + point.toString() + " 不存在");
             }
 
-            HibernatePoint hibernatePoint = mapper.map(point, HibernatePoint.class);
+            HibernateUuidKey hibernateUuidKey = mapper.map(point.getKey(), HibernateUuidKey.class);
+            HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateUuidKey);
+            assert hibernatePoint != null;
+            mapper.map(point, hibernatePoint);
             template.update(hibernatePoint);
             template.flush();
             return point.getKey();
@@ -102,7 +108,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -112,24 +118,6 @@ public class PointDaoDelegate {
 
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateUuidKey);
-            //取消所有与该数据点有关的过滤器关联。
-            {
-                DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class)
-                        .add(Restrictions.eq("pointUuid", hibernateUuidKey.getUuid()));
-                for (Object filterInfo : template.findByCriteria(criteria)) {
-                    ((HibernateFilterInfo) filterInfo).setPointUuid(null);
-                    template.save(filterInfo);
-                }
-            }
-            //取消所有与该数据点有关的触发器关联。
-            {
-                DetachedCriteria criteria = DetachedCriteria.forClass(HibernateTriggerInfo.class)
-                        .add(Restrictions.eq("pointUuid", hibernateUuidKey.getUuid()));
-                for (Object triggerInfo : template.findByCriteria(criteria)) {
-                    ((HibernateTriggerInfo) triggerInfo).setPointUuid(null);
-                    template.save(triggerInfo);
-                }
-            }
             assert hibernatePoint != null;
             template.delete(hibernatePoint);
             template.flush();
@@ -139,8 +127,8 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
-    public List<Point> getPoints(@NotNull UuidKey categoryUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    public List<Point> getPoints(UuidKey categoryUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePoint.class);
             if (Objects.isNull(categoryUuidKey)) {
@@ -162,8 +150,8 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
-    public long getPointCount(@NotNull UuidKey categoryUuidKey) throws DaoException {
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    public long getPointCount(UuidKey categoryUuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePoint.class);
             if (Objects.isNull(categoryUuidKey)) {

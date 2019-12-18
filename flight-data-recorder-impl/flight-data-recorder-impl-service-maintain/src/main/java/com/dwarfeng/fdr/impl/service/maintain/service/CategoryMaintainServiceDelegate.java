@@ -48,7 +48,7 @@ public class CategoryMaintainServiceDelegate {
     private int categoryFetchSize;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public Category get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -72,7 +72,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull Category category) throws ServiceException {
         try {
             validationHandler.categoryValidation(category);
@@ -97,7 +97,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull Category category) throws ServiceException {
         try {
             validationHandler.categoryValidation(category);
@@ -127,7 +127,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -154,7 +154,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public PagedData<Category> getChilds(UuidKey uuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(uuidKey);
@@ -172,12 +172,14 @@ public class CategoryMaintainServiceDelegate {
                 LOGGER.debug("查询指定的Category对应的子项...");
                 categories = categoryDao.getChilds(uuidKey, lookupPagingInfo);
                 count = categoryDao.getChildCount(uuidKey);
-                for (Category category : categories) {
-                    LOGGER.debug("将查询到的的实体 " + category.toString() + " 插入缓存中...");
-                    categoryCache.push(category.getKey(), category, categoryTimeout);
+                if (count > 0) {
+                    for (Category category : categories) {
+                        LOGGER.debug("将查询到的的实体 " + category.toString() + " 插入缓存中...");
+                        categoryCache.push(category.getKey(), category, categoryTimeout);
+                    }
+                    LOGGER.debug("抓取实体 " + uuidKey.toString() + " 对应的子项并插入缓存...");
+                    fetchChild2Cache(uuidKey);
                 }
-                LOGGER.debug("抓取实体 " + uuidKey.toString() + " 对应的子项并插入缓存...");
-                fetchChild2Cache(uuidKey);
             }
             return new PagedData<>(
                     lookupPagingInfo.getPage(),
@@ -191,7 +193,7 @@ public class CategoryMaintainServiceDelegate {
         }
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchChild2Cache(UuidKey uuidKey) {
@@ -203,9 +205,11 @@ public class CategoryMaintainServiceDelegate {
             currPage = 0;
             categoryHasChildCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, categoryFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, categoryFetchSize);
                 List<Category> childs = categoryDao.getChilds(uuidKey, lookupPagingInfo);
-                categoryHasChildCache.push(uuidKey, childs, categoryHasChildTimeout);
+                if (childs.size() > 0) {
+                    categoryHasChildCache.push(uuidKey, childs, categoryHasChildTimeout);
+                }
             } while (currPage < totlePage);
         } catch (Exception e) {
             LOGGER.warn("将分类 " + uuidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);

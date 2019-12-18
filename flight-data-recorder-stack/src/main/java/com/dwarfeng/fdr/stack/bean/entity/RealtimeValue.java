@@ -19,11 +19,6 @@ public class RealtimeValue implements Entity<UuidKey> {
      */
     private UuidKey key;
 
-    /**
-     * 数据点外键。
-     */
-    private UuidKey pointKey;
-
     private Date happenedDate;
 
     private String value;
@@ -31,9 +26,8 @@ public class RealtimeValue implements Entity<UuidKey> {
     public RealtimeValue() {
     }
 
-    public RealtimeValue(UuidKey key, UuidKey pointKey, Date happenedDate, String value) {
+    public RealtimeValue(UuidKey key, Date happenedDate, String value) {
         this.key = key;
-        this.pointKey = pointKey;
         this.happenedDate = happenedDate;
         this.value = value;
     }
@@ -46,14 +40,6 @@ public class RealtimeValue implements Entity<UuidKey> {
     @Override
     public void setKey(UuidKey key) {
         this.key = key;
-    }
-
-    public UuidKey getPointKey() {
-        return pointKey;
-    }
-
-    public void setPointKey(UuidKey pointKey) {
-        this.pointKey = pointKey;
     }
 
     public Date getHappenedDate() {
@@ -76,7 +62,6 @@ public class RealtimeValue implements Entity<UuidKey> {
     public String toString() {
         return "RealtimeValue{" +
                 "key=" + key +
-                ", pointKey=" + pointKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 '}';

@@ -37,7 +37,7 @@ public class PointDaoImplTest {
     private List<Point> points;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         parentCategory = new Category(
                 new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
                 null,
@@ -59,13 +59,13 @@ public class PointDaoImplTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         parentCategory = null;
         points.clear();
     }
 
     @Test
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void test() throws DaoException {
         categoryDao.insert(parentCategory);
         for (Point point : points) {
@@ -76,7 +76,7 @@ public class PointDaoImplTest {
             assertTrue(pointDao.exists(point.getKey()));
         }
         assertEquals(5, pointDao.getPointCount(parentCategory.getKey()));
-        assertEquals(5, pointDao.getPoints(parentCategory.getKey(), new LookupPagingInfo(false, 0, 0)).size());
+        assertEquals(5, pointDao.getPoints(parentCategory.getKey(), new LookupPagingInfo(0, 0)).size());
         categoryDao.delete(parentCategory.getKey());
         for (Point point : points) {
             pointDao.delete(point.getKey());

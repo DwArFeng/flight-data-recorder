@@ -48,7 +48,7 @@ public class TriggerInfoMaintainServiceDelegate {
     private int triggerInfoFetchSize;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public TriggerInfo get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -72,7 +72,7 @@ public class TriggerInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull TriggerInfo triggerInfo) throws ServiceException {
         try {
             validationHandler.triggerInfoValidation(triggerInfo);
@@ -97,7 +97,7 @@ public class TriggerInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull TriggerInfo triggerInfo) throws ServiceException {
         try {
             validationHandler.triggerInfoValidation(triggerInfo);
@@ -127,7 +127,7 @@ public class TriggerInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -141,8 +141,6 @@ public class TriggerInfoMaintainServiceDelegate {
                     LOGGER.debug("清除旧实体 " + oldTriggerInfo.toString() + " 对应的父项缓存...");
                     pointHasTriggerInfoCache.delete(oldTriggerInfo.getPointKey());
                 }
-//                LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
-//                triggerInfoHasChildCache.delete(key);
                 LOGGER.debug("将指定的TriggerInfo从缓存中删除...");
                 triggerInfoCache.delete(key);
                 LOGGER.debug("将指定的TriggerInfo从数据访问层中删除...");
@@ -155,7 +153,7 @@ public class TriggerInfoMaintainServiceDelegate {
 
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public PagedData<TriggerInfo> getTriggerInfos(UuidKey pointUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(pointUuid);
@@ -173,12 +171,14 @@ public class TriggerInfoMaintainServiceDelegate {
                 LOGGER.debug("查询指定的TriggerInfo对应的子项...");
                 triggerInfos = triggerInfoDao.getTriggerInfos(pointUuid, lookupPagingInfo);
                 count = triggerInfoDao.getTriggerInfoCount(pointUuid);
-                for (TriggerInfo triggerInfo : triggerInfos) {
-                    LOGGER.debug("将查询到的的实体 " + triggerInfo.toString() + " 插入缓存中...");
-                    triggerInfoCache.push(triggerInfo.getKey(), triggerInfo, triggerInfoTimeout);
+                if (count > 0) {
+                    for (TriggerInfo triggerInfo : triggerInfos) {
+                        LOGGER.debug("将查询到的的实体 " + triggerInfo.toString() + " 插入缓存中...");
+                        triggerInfoCache.push(triggerInfo.getKey(), triggerInfo, triggerInfoTimeout);
+                    }
+                    LOGGER.debug("抓取实体 " + pointUuid.toString() + " 对应的子项并插入缓存...");
+                    fetchTriggerInfo2Cache(pointUuid);
                 }
-                LOGGER.debug("抓取实体 " + pointUuid.toString() + " 对应的子项并插入缓存...");
-                fetchTriggerInfo2Cache(pointUuid);
             }
             return new PagedData<>(
                     lookupPagingInfo.getPage(),
@@ -192,8 +192,7 @@ public class TriggerInfoMaintainServiceDelegate {
         }
     }
 
-
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchTriggerInfo2Cache(UuidKey uuidKey) {
@@ -205,9 +204,11 @@ public class TriggerInfoMaintainServiceDelegate {
             currPage = 0;
             pointHasTriggerInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, triggerInfoFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, triggerInfoFetchSize);
                 List<TriggerInfo> childs = triggerInfoDao.getTriggerInfos(uuidKey, lookupPagingInfo);
-                pointHasTriggerInfoCache.push(uuidKey, childs, pointHasTriggerInfoTimeout);
+                if (childs.size() > 0) {
+                    pointHasTriggerInfoCache.push(uuidKey, childs, pointHasTriggerInfoTimeout);
+                }
             } while (currPage < totlePage);
         } catch (Exception e) {
             LOGGER.warn("将分类 " + uuidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);

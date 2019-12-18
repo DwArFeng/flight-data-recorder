@@ -30,7 +30,7 @@ public class TriggeredValueDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -45,9 +45,14 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public TriggeredValue get(UuidKey key) throws DaoException {
         try {
+            if (!internalExists(key)) {
+                LOGGER.warn("指定的TriggeredValue " + key.toString() + " 不存在, 将抛出异常...");
+                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+            }
+
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateTriggeredValue hibernateTriggeredValue = template.get(HibernateTriggeredValue.class, hibernateUuidKey);
             return mapper.map(hibernateTriggeredValue, TriggeredValue.class);
@@ -57,7 +62,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull TriggeredValue triggeredValue) throws DaoException {
         try {
             if (internalExists(triggeredValue.getKey())) {
@@ -75,7 +80,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull TriggeredValue triggeredValue) throws DaoException {
         try {
             if (!internalExists(triggeredValue.getKey())) {
@@ -83,7 +88,10 @@ public class TriggeredValueDaoDelegate {
                 throw new IllegalArgumentException("指定的TriggeredValue " + triggeredValue.toString() + " 不存在");
             }
 
-            HibernateTriggeredValue hibernateTriggeredValue = mapper.map(triggeredValue, HibernateTriggeredValue.class);
+            HibernateUuidKey hibernateUuidKey = mapper.map(triggeredValue.getKey(), HibernateUuidKey.class);
+            HibernateTriggeredValue hibernateTriggeredValue = template.get(HibernateTriggeredValue.class, hibernateUuidKey);
+            assert hibernateTriggeredValue != null;
+            mapper.map(triggeredValue, hibernateTriggeredValue);
             template.update(hibernateTriggeredValue);
             template.flush();
             return triggeredValue.getKey();
@@ -93,7 +101,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {

@@ -13,9 +13,6 @@ public class RedisRealtimeValue implements Entity<RedisUuidKey> {
     @JSONField(name = "key", ordinal = 1)
     private RedisUuidKey key;
 
-    @JSONField(name = "point_key", ordinal = 2)
-    private RedisUuidKey pointKey;
-
     @JSONField(name = "happened_date", ordinal = 3)
     private Date happenedDate;
 
@@ -25,9 +22,8 @@ public class RedisRealtimeValue implements Entity<RedisUuidKey> {
     public RedisRealtimeValue() {
     }
 
-    public RedisRealtimeValue(RedisUuidKey key, RedisUuidKey pointKey, Date happenedDate, String value) {
+    public RedisRealtimeValue(RedisUuidKey key, Date happenedDate, String value) {
         this.key = key;
-        this.pointKey = pointKey;
         this.happenedDate = happenedDate;
         this.value = value;
     }
@@ -40,14 +36,6 @@ public class RedisRealtimeValue implements Entity<RedisUuidKey> {
     @Override
     public void setKey(RedisUuidKey key) {
         this.key = key;
-    }
-
-    public RedisUuidKey getPointKey() {
-        return pointKey;
-    }
-
-    public void setPointKey(RedisUuidKey pointKey) {
-        this.pointKey = pointKey;
     }
 
     public Date getHappenedDate() {
@@ -70,7 +58,6 @@ public class RedisRealtimeValue implements Entity<RedisUuidKey> {
     public String toString() {
         return "RedisRealtimeValue{" +
                 "key=" + key +
-                ", pointKey=" + pointKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 '}';

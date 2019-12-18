@@ -28,7 +28,7 @@ public class HibernatePersistenceValue implements Serializable {
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
-    @Column(name = "value", length = Constraints.LENGTH_PERSISTENCE_VALUE_VALUE, nullable = false)
+    @Column(name = "value", length = Constraints.LENGTH_VALUE, nullable = false)
     private String value;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------

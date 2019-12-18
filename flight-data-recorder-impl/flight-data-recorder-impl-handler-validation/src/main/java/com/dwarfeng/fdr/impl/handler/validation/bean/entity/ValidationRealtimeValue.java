@@ -24,13 +24,9 @@ public class ValidationRealtimeValue implements Serializable {
     private ValidationUuidKey key;
 
     @NotNull
-    @Valid
-    private ValidationUuidKey pointKey;
-
-    @NotNull
     private Date happenedDate;
 
-    @Length(max = Constraints.LENGTH_REALTIME_VALUE_VALUE)
+    @Length(max = Constraints.LENGTH_VALUE)
     private String value;
 
     public ValidationRealtimeValue() {
@@ -38,7 +34,6 @@ public class ValidationRealtimeValue implements Serializable {
 
     public ValidationRealtimeValue(ValidationUuidKey key, ValidationUuidKey pointKey, Date happenedDate, String value) {
         this.key = key;
-        this.pointKey = pointKey;
         this.happenedDate = happenedDate;
         this.value = value;
     }
@@ -49,14 +44,6 @@ public class ValidationRealtimeValue implements Serializable {
 
     public void setKey(ValidationUuidKey key) {
         this.key = key;
-    }
-
-    public ValidationUuidKey getPointKey() {
-        return pointKey;
-    }
-
-    public void setPointKey(ValidationUuidKey pointKey) {
-        this.pointKey = pointKey;
     }
 
     public Date getHappenedDate() {
@@ -79,7 +66,6 @@ public class ValidationRealtimeValue implements Serializable {
     public String toString() {
         return "ValidationRealtimeValue{" +
                 "key=" + key +
-                ", pointKey=" + pointKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 '}';

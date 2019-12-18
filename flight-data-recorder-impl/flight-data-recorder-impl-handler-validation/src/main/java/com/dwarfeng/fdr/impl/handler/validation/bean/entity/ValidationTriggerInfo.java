@@ -26,15 +26,16 @@ public class ValidationTriggerInfo implements Serializable {
 
     private boolean enabled;
 
-    @Length(max = Constraints.LENGTH_FILTER_INFO_REMARK)
+    @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
 
+    @NotNull
     private String content;
 
     public ValidationTriggerInfo() {
     }
 
-    public ValidationTriggerInfo(@NonNull @Valid ValidationUuidKey key, @Valid ValidationUuidKey pointKey, boolean enabled, @Length(max = Constraints.LENGTH_FILTER_INFO_REMARK) String remark, String content) {
+    public ValidationTriggerInfo(@NonNull @Valid ValidationUuidKey key, @Valid ValidationUuidKey pointKey, boolean enabled, @Length(max = Constraints.LENGTH_REMARK) String remark, String content) {
         this.key = key;
         this.pointKey = pointKey;
         this.enabled = enabled;

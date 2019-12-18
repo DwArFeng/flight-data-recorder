@@ -24,6 +24,11 @@ public class FilteredValue implements Entity<UuidKey> {
      */
     private UuidKey pointKey;
 
+    /**
+     * 过滤器外键。
+     */
+    private UuidKey filterKey;
+
     private Date happenedDate;
 
     private String value;
@@ -33,9 +38,10 @@ public class FilteredValue implements Entity<UuidKey> {
     public FilteredValue() {
     }
 
-    public FilteredValue(UuidKey key, UuidKey pointKey, Date happenedDate, String value, String message) {
+    public FilteredValue(UuidKey key, UuidKey pointKey, UuidKey filterKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
+        this.filterKey = filterKey;
         this.happenedDate = happenedDate;
         this.value = value;
         this.message = message;
@@ -57,6 +63,14 @@ public class FilteredValue implements Entity<UuidKey> {
 
     public void setPointKey(UuidKey pointKey) {
         this.pointKey = pointKey;
+    }
+
+    public UuidKey getFilterKey() {
+        return filterKey;
+    }
+
+    public void setFilterKey(UuidKey filterKey) {
+        this.filterKey = filterKey;
     }
 
     public Date getHappenedDate() {
@@ -88,6 +102,7 @@ public class FilteredValue implements Entity<UuidKey> {
         return "FilteredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", filterKey=" + filterKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

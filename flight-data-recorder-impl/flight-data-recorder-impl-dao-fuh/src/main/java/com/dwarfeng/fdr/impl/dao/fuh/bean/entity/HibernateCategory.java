@@ -26,10 +26,10 @@ public class HibernateCategory implements Serializable {
     private String parentUuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
-    @Column(name = "name", length = Constraints.LENGTH_CATAGORY_NAME, nullable = false)
+    @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
     private String name;
 
-    @Column(name = "remark", length = Constraints.LENGTH_CATAGORY_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK, nullable = true)
     private String remark;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------

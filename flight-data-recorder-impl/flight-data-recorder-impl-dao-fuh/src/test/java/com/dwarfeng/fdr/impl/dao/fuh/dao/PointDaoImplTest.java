@@ -65,7 +65,7 @@ public class PointDaoImplTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void test() throws DaoException {
         categoryDao.insert(parentCategory);
         for (Point point : points) {
@@ -76,7 +76,7 @@ public class PointDaoImplTest {
             assertTrue(pointDao.exists(point.getKey()));
         }
         assertEquals(5, pointDao.getPointCount(parentCategory.getKey()));
-        assertEquals(5, pointDao.getPoints(parentCategory.getKey(), new LookupPagingInfo(false, 0, 0)).size());
+        assertEquals(5, pointDao.getPoints(parentCategory.getKey(), new LookupPagingInfo(0, 0)).size());
         categoryDao.delete(parentCategory.getKey());
         for (Point point : points) {
             pointDao.delete(point.getKey());

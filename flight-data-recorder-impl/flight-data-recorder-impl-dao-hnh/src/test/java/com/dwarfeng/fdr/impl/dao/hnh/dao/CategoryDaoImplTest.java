@@ -33,7 +33,7 @@ public class CategoryDaoImplTest {
     private List<Category> childCategories;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         parentCategory = new Category(
                 new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
                 null,
@@ -53,13 +53,13 @@ public class CategoryDaoImplTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         parentCategory = null;
         childCategories.clear();
     }
 
     @Test
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void test() throws DaoException {
         dao.insert(parentCategory);
         for (Category category : childCategories) {
@@ -70,7 +70,7 @@ public class CategoryDaoImplTest {
             assertTrue(dao.exists(category.getKey()));
         }
         assertEquals(5, dao.getChildCount(parentCategory.getKey()));
-        assertEquals(5, dao.getChilds(parentCategory.getKey(), new LookupPagingInfo(false, 0, 0)).size());
+        assertEquals(5, dao.getChilds(parentCategory.getKey(), new LookupPagingInfo(0, 0)).size());
         dao.delete(parentCategory.getKey());
         for (Category category : childCategories) {
             dao.delete(category.getKey());

@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
+import com.dwarfeng.fdr.sdk.util.ServiceExceptionCodes;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
@@ -54,7 +55,7 @@ public class PointMaintainServiceDelegate {
     private int pointFetchSize;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public Point get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -78,7 +79,7 @@ public class PointMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull Point point) throws ServiceException {
         try {
             validationHandler.pointValidation(point);
@@ -98,12 +99,12 @@ public class PointMaintainServiceDelegate {
                 return point.getKey();
             }
         } catch (Exception e) {
-            throw new ServiceException(e);
+            throw new ServiceException(ServiceExceptionCodes.UNDEFINE, e);
         }
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull Point point) throws ServiceException {
         try {
             validationHandler.pointValidation(point);
@@ -133,7 +134,7 @@ public class PointMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -162,7 +163,7 @@ public class PointMaintainServiceDelegate {
 
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public PagedData<Point> getPoints(UuidKey categoryUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(categoryUuid);
@@ -180,12 +181,14 @@ public class PointMaintainServiceDelegate {
                 LOGGER.debug("查询指定的Point对应的子项...");
                 categories = pointDao.getPoints(categoryUuid, lookupPagingInfo);
                 count = pointDao.getPointCount(categoryUuid);
-                for (Point point : categories) {
-                    LOGGER.debug("将查询到的的实体 " + point.toString() + " 插入缓存中...");
-                    pointCache.push(point.getKey(), point, pointTimeout);
+                if (count > 0) {
+                    for (Point point : categories) {
+                        LOGGER.debug("将查询到的的实体 " + point.toString() + " 插入缓存中...");
+                        pointCache.push(point.getKey(), point, pointTimeout);
+                    }
+                    LOGGER.debug("抓取实体 " + categoryUuid.toString() + " 对应的子项并插入缓存...");
+                    fetchPoint2Cache(categoryUuid);
                 }
-                LOGGER.debug("抓取实体 " + categoryUuid.toString() + " 对应的子项并插入缓存...");
-                fetchPoint2Cache(categoryUuid);
             }
             return new PagedData<>(
                     lookupPagingInfo.getPage(),
@@ -200,7 +203,7 @@ public class PointMaintainServiceDelegate {
     }
 
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchPoint2Cache(UuidKey uuidKey) {
@@ -212,9 +215,11 @@ public class PointMaintainServiceDelegate {
             currPage = 0;
             categoryHasPointCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, pointFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, pointFetchSize);
                 List<Point> childs = pointDao.getPoints(uuidKey, lookupPagingInfo);
-                categoryHasPointCache.push(uuidKey, childs, pointHasChildTimeout);
+                if (childs.size() > 0) {
+                    categoryHasPointCache.push(uuidKey, childs, pointHasChildTimeout);
+                }
             } while (currPage < totlePage);
         } catch (Exception e) {
             LOGGER.warn("将分类 " + uuidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);

@@ -28,20 +28,25 @@ public class ValidationTriggeredValue implements Serializable {
     private ValidationUuidKey pointKey;
 
     @NotNull
+    @Valid
+    private ValidationUuidKey triggerKey;
+
+    @NotNull
     private Date happenedDate;
 
-    @Length(max = Constraints.LENGTH_TRIGGERED_VALUE_VALUE)
+    @Length(max = Constraints.LENGTH_VALUE)
     private String value;
 
-    @Length(max = Constraints.LENGTH_TRIGGERED_VALUE_MESSAGE)
+    @Length(max = Constraints.LENGTH_MESSAGE)
     private String message;
 
     public ValidationTriggeredValue() {
     }
 
-    public ValidationTriggeredValue(ValidationUuidKey key, ValidationUuidKey pointKey, Date happenedDate, String value, String message) {
+    public ValidationTriggeredValue(ValidationUuidKey key, ValidationUuidKey pointKey, ValidationUuidKey triggerKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
+        this.triggerKey = triggerKey;
         this.happenedDate = happenedDate;
         this.value = value;
         this.message = message;
@@ -61,6 +66,14 @@ public class ValidationTriggeredValue implements Serializable {
 
     public void setPointKey(ValidationUuidKey pointKey) {
         this.pointKey = pointKey;
+    }
+
+    public ValidationUuidKey getTriggerKey() {
+        return triggerKey;
+    }
+
+    public void setTriggerKey(ValidationUuidKey triggerKey) {
+        this.triggerKey = triggerKey;
     }
 
     public Date getHappenedDate() {
@@ -89,9 +102,10 @@ public class ValidationTriggeredValue implements Serializable {
 
     @Override
     public String toString() {
-        return "TriggeredValue{" +
+        return "ValidationTriggeredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", triggerKey=" + triggerKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

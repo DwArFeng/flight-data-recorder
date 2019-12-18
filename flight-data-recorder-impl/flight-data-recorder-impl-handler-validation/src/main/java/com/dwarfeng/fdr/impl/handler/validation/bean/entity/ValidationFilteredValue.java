@@ -28,20 +28,25 @@ public class ValidationFilteredValue implements Serializable {
     private ValidationUuidKey pointKey;
 
     @NotNull
+    @Valid
+    private ValidationUuidKey filterKey;
+
+    @NotNull
     private Date happenedDate;
 
-    @Length(max = Constraints.LENGTH_FILTERED_VALUE_VALUE)
+    @Length(max = Constraints.LENGTH_VALUE)
     private String value;
 
-    @Length(max = Constraints.LENGTH_FILTERED_VALUE_MESSAGE)
+    @Length(max = Constraints.LENGTH_MESSAGE)
     private String message;
 
     public ValidationFilteredValue() {
     }
 
-    public ValidationFilteredValue(ValidationUuidKey key, ValidationUuidKey pointKey, Date happenedDate, String value, String message) {
+    public ValidationFilteredValue(ValidationUuidKey key, ValidationUuidKey pointKey, ValidationUuidKey filterKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
+        this.filterKey = filterKey;
         this.happenedDate = happenedDate;
         this.value = value;
         this.message = message;
@@ -61,6 +66,14 @@ public class ValidationFilteredValue implements Serializable {
 
     public void setPointKey(ValidationUuidKey pointKey) {
         this.pointKey = pointKey;
+    }
+
+    public ValidationUuidKey getFilterKey() {
+        return filterKey;
+    }
+
+    public void setFilterKey(ValidationUuidKey filterKey) {
+        this.filterKey = filterKey;
     }
 
     public Date getHappenedDate() {
@@ -92,6 +105,7 @@ public class ValidationFilteredValue implements Serializable {
         return "ValidationFilteredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", filterKey=" + filterKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

@@ -26,10 +26,10 @@ public class HibernatePoint implements Serializable {
     private String categoryUuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
-    @Column(name = "name", length = Constraints.LENGTH_POINT_NAME, nullable = false)
+    @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
     private String name;
 
-    @Column(name = "remark", length = Constraints.LENGTH_POINT_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "persistence_enabled", nullable = false)

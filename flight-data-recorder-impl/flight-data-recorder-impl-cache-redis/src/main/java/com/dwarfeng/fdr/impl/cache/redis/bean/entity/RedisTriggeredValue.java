@@ -16,21 +16,25 @@ public class RedisTriggeredValue implements Entity<RedisUuidKey> {
     @JSONField(name = "point_key", ordinal = 2)
     private RedisUuidKey pointKey;
 
-    @JSONField(name = "happened_date", ordinal = 3)
+    @JSONField(name = "trigger_key", ordinal = 3)
+    private RedisUuidKey triggerKey;
+
+    @JSONField(name = "happened_date", ordinal = 4)
     private Date happenedDate;
 
-    @JSONField(name = "value", ordinal = 4)
+    @JSONField(name = "value", ordinal = 5)
     private String value;
 
-    @JSONField(name = "message", ordinal = 5)
+    @JSONField(name = "message", ordinal = 6)
     private String message;
 
     public RedisTriggeredValue() {
     }
 
-    public RedisTriggeredValue(RedisUuidKey key, RedisUuidKey pointKey, Date happenedDate, String value, String message) {
+    public RedisTriggeredValue(RedisUuidKey key, RedisUuidKey pointKey, RedisUuidKey triggerKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
+        this.triggerKey = triggerKey;
         this.happenedDate = happenedDate;
         this.value = value;
         this.message = message;
@@ -52,6 +56,14 @@ public class RedisTriggeredValue implements Entity<RedisUuidKey> {
 
     public void setPointKey(RedisUuidKey pointKey) {
         this.pointKey = pointKey;
+    }
+
+    public RedisUuidKey getTriggerKey() {
+        return triggerKey;
+    }
+
+    public void setTriggerKey(RedisUuidKey triggerKey) {
+        this.triggerKey = triggerKey;
     }
 
     public Date getHappenedDate() {
@@ -83,6 +95,7 @@ public class RedisTriggeredValue implements Entity<RedisUuidKey> {
         return "RedisTriggeredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
+                ", triggerKey=" + triggerKey +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

@@ -44,7 +44,7 @@ public class ServiceException extends Exception {
         if (Objects.isNull(code)) {
             return super.getMessage();
         } else {
-            return "exception code = " + code.getCode() + " - " + code.getTip();
+            return "exception code=" + code.getCode() + " - " + code.getTip();
         }
     }
 

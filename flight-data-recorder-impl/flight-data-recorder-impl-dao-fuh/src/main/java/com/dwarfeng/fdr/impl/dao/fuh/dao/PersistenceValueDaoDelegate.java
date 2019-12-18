@@ -30,7 +30,7 @@ public class PersistenceValueDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -45,9 +45,14 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public PersistenceValue get(UuidKey key) throws DaoException {
         try {
+            if (!internalExists(key)) {
+                LOGGER.warn("指定的PersistenceValue " + key.toString() + " 不存在, 将抛出异常...");
+                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+            }
+
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernatePersistenceValue hibernatePersistenceValue = template.get(HibernatePersistenceValue.class, hibernateUuidKey);
             return mapper.map(hibernatePersistenceValue, PersistenceValue.class);
@@ -57,7 +62,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull PersistenceValue persistenceValue) throws DaoException {
         try {
             if (internalExists(persistenceValue.getKey())) {
@@ -75,7 +80,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull PersistenceValue persistenceValue) throws DaoException {
         try {
             if (!internalExists(persistenceValue.getKey())) {
@@ -83,7 +88,10 @@ public class PersistenceValueDaoDelegate {
                 throw new IllegalArgumentException("指定的PersistenceValue " + persistenceValue.toString() + " 不存在");
             }
 
-            HibernatePersistenceValue hibernatePersistenceValue = mapper.map(persistenceValue, HibernatePersistenceValue.class);
+            HibernateUuidKey hibernateUuidKey = mapper.map(persistenceValue.getKey(), HibernateUuidKey.class);
+            HibernatePersistenceValue hibernatePersistenceValue = template.get(HibernatePersistenceValue.class, hibernateUuidKey);
+            assert hibernatePersistenceValue != null;
+            mapper.map(persistenceValue, hibernatePersistenceValue);
             template.update(hibernatePersistenceValue);
             template.flush();
             return persistenceValue.getKey();
@@ -93,7 +101,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {

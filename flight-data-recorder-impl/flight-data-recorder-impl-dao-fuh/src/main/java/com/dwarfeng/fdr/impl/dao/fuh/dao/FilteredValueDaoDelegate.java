@@ -30,7 +30,7 @@ public class FilteredValueDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -45,9 +45,14 @@ public class FilteredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public FilteredValue get(UuidKey key) throws DaoException {
         try {
+            if (!internalExists(key)) {
+                LOGGER.warn("指定的FilteredValue " + key.toString() + " 不存在, 将抛出异常...");
+                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+            }
+
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateFilteredValue hibernateFilteredValue = template.get(HibernateFilteredValue.class, hibernateUuidKey);
             return mapper.map(hibernateFilteredValue, FilteredValue.class);
@@ -57,7 +62,7 @@ public class FilteredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull FilteredValue filteredValue) throws DaoException {
         try {
             if (internalExists(filteredValue.getKey())) {
@@ -75,7 +80,7 @@ public class FilteredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull FilteredValue filteredValue) throws DaoException {
         try {
             if (!internalExists(filteredValue.getKey())) {
@@ -83,7 +88,10 @@ public class FilteredValueDaoDelegate {
                 throw new IllegalArgumentException("指定的FilteredValue " + filteredValue.toString() + " 不存在");
             }
 
-            HibernateFilteredValue hibernateFilteredValue = mapper.map(filteredValue, HibernateFilteredValue.class);
+            HibernateUuidKey hibernateUuidKey = mapper.map(filteredValue.getKey(), HibernateUuidKey.class);
+            HibernateFilteredValue hibernateFilteredValue = template.get(HibernateFilteredValue.class, hibernateUuidKey);
+            assert hibernateFilteredValue != null;
+            mapper.map(filteredValue, hibernateFilteredValue);
             template.update(hibernateFilteredValue);
             template.flush();
             return filteredValue.getKey();
@@ -93,7 +101,7 @@ public class FilteredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {

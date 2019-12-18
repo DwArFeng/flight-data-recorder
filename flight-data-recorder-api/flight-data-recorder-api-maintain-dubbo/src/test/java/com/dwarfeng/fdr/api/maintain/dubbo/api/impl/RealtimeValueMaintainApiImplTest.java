@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,7 +28,7 @@ public class RealtimeValueMaintainApiImplTest {
     private RealtimeValueMaintainApi realtimeValueMaintainApi;
 
     private Point parentPoint;
-    private List<RealtimeValue> realtimeValues;
+    private RealtimeValue realtimeValue;
 
     @Before
     public void setUp() throws Exception {
@@ -42,36 +40,27 @@ public class RealtimeValueMaintainApiImplTest {
                 true,
                 true
         );
-        realtimeValues = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            RealtimeValue realtimeValue = new RealtimeValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
-                    parentPoint.getKey(),
-                    new Date(),
-                    "realtime-value-" + i
-            );
-            realtimeValues.add(realtimeValue);
-        }
+        realtimeValue = new RealtimeValue(
+                parentPoint.getKey(),
+                new Date(),
+                "realtime-value"
+        );
     }
 
     @After
     public void tearDown() throws Exception {
         parentPoint = null;
-        realtimeValues.clear();
+        realtimeValue = null;
     }
 
     @Test
     public void test() throws ServiceException {
         try {
             pointMaintainApi.insert(parentPoint);
-            for (RealtimeValue realtimeValue : realtimeValues) {
-                realtimeValueMaintainApi.insert(realtimeValue);
-            }
+            realtimeValueMaintainApi.insert(realtimeValue);
         } finally {
+            realtimeValueMaintainApi.delete(realtimeValue.getKey());
             pointMaintainApi.delete(parentPoint.getKey());
-            for (RealtimeValue realtimeValue : realtimeValues) {
-                realtimeValueMaintainApi.delete(realtimeValue.getKey());
-            }
         }
     }
 

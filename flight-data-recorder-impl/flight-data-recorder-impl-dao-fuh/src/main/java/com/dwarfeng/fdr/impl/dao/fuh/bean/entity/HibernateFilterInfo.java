@@ -5,7 +5,9 @@ import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @IdClass(HibernateUuidKey.class)
@@ -27,7 +29,7 @@ public class HibernateFilterInfo implements Serializable {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "remark", length = Constraints.LENGTH_FILTER_INFO_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK, nullable = true)
     private String remark;
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = true)
@@ -39,6 +41,10 @@ public class HibernateFilterInfo implements Serializable {
             @JoinColumn(name = "point_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
+
+    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilteredValue.class, mappedBy = "filterInfo")
+    private Set<HibernateFilteredValue> filteredValues = new HashSet<>();
 
     public HibernateFilterInfo() {
     }
@@ -105,6 +111,14 @@ public class HibernateFilterInfo implements Serializable {
 
     public void setPoint(HibernatePoint point) {
         this.point = point;
+    }
+
+    public Set<HibernateFilteredValue> getFilteredValues() {
+        return filteredValues;
+    }
+
+    public void setFilteredValues(Set<HibernateFilteredValue> filteredValues) {
+        this.filteredValues = filteredValues;
     }
 
     @Override

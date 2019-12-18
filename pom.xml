@@ -23,6 +23,7 @@
         <!-- 集中定义依赖版本号 -->
         <junit.version>4.12</junit.version>
         <spring.version>5.1.10.RELEASE</spring.version>
+        <spring-kafka.version>2.2.11.RELEASE</spring-kafka.version>
         <mysql.version>8.0.16</mysql.version>
         <fastJson.version>1.2.47</fastJson.version>
         <druid.version>1.0.9</druid.version>
@@ -55,6 +56,7 @@
         <dozer.version>5.5.1</dozer.version>
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <cxf.version>3.1.6</cxf.version>
+        <kafka.version>2.4.0</kafka.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
@@ -219,6 +221,18 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <!-- Spring集成Kafka组件 -->
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring-kafka.version}</version>
+            </dependency>
+            <!-- Kafka组件 -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
             <!-- JSP相关 -->
             <dependency>
                 <groupId>jstl</groupId>
@@ -369,7 +383,22 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-service-record</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-handler-validation</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-handler-fnt</artifactId>
+                <version>alpha-0.0.1.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>flight-data-recorder-impl-handler-event-kafka</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
         </dependencies>

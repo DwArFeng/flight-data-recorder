@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.stack.handler;
 
+import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
@@ -11,7 +12,7 @@ import com.dwarfeng.fdr.stack.exception.ValidationException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface ValidationHandler {
+public interface ValidationHandler extends Handler {
 
     /**
      * 验证UuidKey是否合法。
@@ -92,5 +93,13 @@ public interface ValidationHandler {
      * @throws ValidationException 不合法时抛出的异常。
      */
     void triggeredValueValidation(TriggeredValue triggeredValue) throws ValidationException;
+
+    /**
+     * 验证数据信息是否合法。
+     *
+     * @param dataInfo 指定的数据信息。
+     * @throws ValidationException 数据信息是否合法。
+     */
+    void dataInfoValidation(DataInfo dataInfo) throws ValidationException;
 
 }

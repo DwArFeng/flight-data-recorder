@@ -36,7 +36,7 @@ public class FilterInfoDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -51,9 +51,14 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public FilterInfo get(UuidKey key) throws DaoException {
         try {
+            if (!internalExists(key)) {
+                LOGGER.warn("指定的FilterInfo " + key.toString() + " 不存在, 将抛出异常...");
+                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+            }
+
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateUuidKey);
             return mapper.map(hibernateFilterInfo, FilterInfo.class);
@@ -63,7 +68,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull FilterInfo filterInfo) throws DaoException {
         try {
             if (internalExists(filterInfo.getKey())) {
@@ -81,7 +86,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull FilterInfo filterInfo) throws DaoException {
         try {
             if (!internalExists(filterInfo.getKey())) {
@@ -89,7 +94,10 @@ public class FilterInfoDaoDelegate {
                 throw new IllegalArgumentException("指定的FilterInfo " + filterInfo.toString() + " 不存在");
             }
 
-            HibernateFilterInfo hibernateFilterInfo = mapper.map(filterInfo, HibernateFilterInfo.class);
+            HibernateUuidKey hibernateUuidKey = mapper.map(filterInfo.getKey(), HibernateUuidKey.class);
+            HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateUuidKey);
+            assert hibernateFilterInfo != null;
+            mapper.map(filterInfo, hibernateFilterInfo);
             template.update(hibernateFilterInfo);
             template.flush();
             return filterInfo.getKey();
@@ -99,7 +107,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -109,12 +117,6 @@ public class FilterInfoDaoDelegate {
 
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateUuidKey);
-//            //取消所有与该分类有关的自分类的父项关联。
-//            DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class)
-//                    .add(Restrictions.eq("parentUuid", hibernateUuidKey.getUuid()));
-//            for (Object child : hibernateTemplate.findByCriteria(criteria)) {
-//                ((HibernateFilterInfo) child).setParentUuid(null);
-//            }
             assert hibernateFilterInfo != null;
             template.delete(hibernateFilterInfo);
             template.flush();
@@ -124,8 +126,8 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
-    public List<FilterInfo> getFilterInfos(@NotNull UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    public List<FilterInfo> getFilterInfos(UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class);
             if (Objects.isNull(pointUuidKey)) {
@@ -146,8 +148,8 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
-    public long getFilterInfoCount(@NotNull UuidKey pointUuidKey) throws DaoException {
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    public long getFilterInfoCount(UuidKey pointUuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class);
             if (Objects.isNull(pointUuidKey)) {

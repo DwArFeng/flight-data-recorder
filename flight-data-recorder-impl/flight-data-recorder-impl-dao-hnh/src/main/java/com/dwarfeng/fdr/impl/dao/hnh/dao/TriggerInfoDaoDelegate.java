@@ -36,7 +36,7 @@ public class TriggerInfoDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -51,9 +51,14 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     public TriggerInfo get(UuidKey key) throws DaoException {
         try {
+            if (!internalExists(key)) {
+                LOGGER.warn("指定的TriggerInfo " + key.toString() + " 不存在, 将抛出异常...");
+                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+            }
+
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateTriggerInfo hibernateTriggerInfo = template.get(HibernateTriggerInfo.class, hibernateUuidKey);
             return mapper.map(hibernateTriggerInfo, TriggerInfo.class);
@@ -63,7 +68,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey insert(@NotNull TriggerInfo triggerInfo) throws DaoException {
         try {
             if (internalExists(triggerInfo.getKey())) {
@@ -81,7 +86,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public UuidKey update(@NotNull TriggerInfo triggerInfo) throws DaoException {
         try {
             if (!internalExists(triggerInfo.getKey())) {
@@ -89,7 +94,10 @@ public class TriggerInfoDaoDelegate {
                 throw new IllegalArgumentException("指定的TriggerInfo " + triggerInfo.toString() + " 不存在");
             }
 
-            HibernateTriggerInfo hibernateTriggerInfo = mapper.map(triggerInfo, HibernateTriggerInfo.class);
+            HibernateUuidKey hibernateUuidKey = mapper.map(triggerInfo.getKey(), HibernateUuidKey.class);
+            HibernateTriggerInfo hibernateTriggerInfo = template.get(HibernateTriggerInfo.class, hibernateUuidKey);
+            assert hibernateTriggerInfo != null;
+            mapper.map(triggerInfo, hibernateTriggerInfo);
             template.update(hibernateTriggerInfo);
             template.flush();
             return triggerInfo.getKey();
@@ -99,7 +107,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -109,12 +117,6 @@ public class TriggerInfoDaoDelegate {
 
             HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
             HibernateTriggerInfo hibernateTriggerInfo = template.get(HibernateTriggerInfo.class, hibernateUuidKey);
-//            //取消所有与该分类有关的自分类的父项关联。
-//            DetachedCriteria criteria = DetachedCriteria.forClass(HibernateTriggerInfo.class)
-//                    .add(Restrictions.eq("parentUuid", hibernateUuidKey.getUuid()));
-//            for (Object child : hibernateTemplate.findByCriteria(criteria)) {
-//                ((HibernateTriggerInfo) child).setParentUuid(null);
-//            }
             assert hibernateTriggerInfo != null;
             template.delete(hibernateTriggerInfo);
             template.flush();
@@ -124,8 +126,8 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
-    public List<TriggerInfo> getTriggerInfos(@NotNull UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    public List<TriggerInfo> getTriggerInfos(UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateTriggerInfo.class);
             if (Objects.isNull(pointUuidKey)) {
@@ -146,8 +148,8 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(readOnly = true)
-    public long getTriggerInfoCount(@NotNull UuidKey pointUuidKey) throws DaoException {
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    public long getTriggerInfoCount(UuidKey pointUuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateTriggerInfo.class);
             if (Objects.isNull(pointUuidKey)) {

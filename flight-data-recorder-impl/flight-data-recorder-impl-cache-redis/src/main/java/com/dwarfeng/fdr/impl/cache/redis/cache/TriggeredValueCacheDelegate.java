@@ -29,7 +29,7 @@ public class TriggeredValueCacheDelegate {
     @Value("${cache.format.entity.triggered_value}")
     private String keyFormat;
 
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -39,7 +39,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public TriggeredValue get(@NotNull UuidKey key) throws CacheException {
         try {
@@ -50,7 +50,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, @NotNull TriggeredValue triggeredValue, @Min(0) long timeout) throws CacheException {
         try {
@@ -61,7 +61,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {

@@ -35,7 +35,7 @@ public class PointHasFilterInfoCacheDelegate {
     @Value("${cache.format.one_to_many.point_has_filter_info}")
     private String keyFormat;
 
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -45,7 +45,7 @@ public class PointHasFilterInfoCacheDelegate {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public long size(@NotNull UuidKey key) throws CacheException {
         try {
@@ -55,7 +55,7 @@ public class PointHasFilterInfoCacheDelegate {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public List<FilterInfo> get(@NotNull UuidKey key, @Min(0) int beginIndex, @Min(0) int maxSize) throws CacheException {
         try {
@@ -71,29 +71,36 @@ public class PointHasFilterInfoCacheDelegate {
         }
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
-    public void set(UuidKey key, List<? extends FilterInfo> value, long timeout) throws CacheException {
+    public void set(@NotNull UuidKey key, List<? extends FilterInfo> value, long timeout) throws CacheException {
         try {
             String keyString = uuidKey2String(key);
             template.delete(keyString);
-            template.opsForList().rightPushAll(keyString, toFilterInfos(value));
+            mayRightPushAll(keyString, value);
             template.expire(keyString, timeout, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new CacheException("缓存异常", e);
         }
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
-    public void push(UuidKey key, List<? extends FilterInfo> value, long timeout) throws CacheException {
+    public void push(@NotNull UuidKey key, List<? extends FilterInfo> value, long timeout) throws CacheException {
         try {
             String keyString = uuidKey2String(key);
-            template.opsForList().rightPushAll(keyString, toFilterInfos(value));
+            mayRightPushAll(keyString, value);
             template.expire(keyString, timeout, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new CacheException("缓存异常", e);
         }
+    }
+
+    private void mayRightPushAll(String keyString, List<? extends FilterInfo> value) {
+        if (value.isEmpty()) {
+            return;
+        }
+        template.opsForList().rightPushAll(keyString, toFilterInfos(value));
     }
 
     private List<RedisFilterInfo> toFilterInfos(List<? extends FilterInfo> filterInfos) {
@@ -104,9 +111,9 @@ public class PointHasFilterInfoCacheDelegate {
         return redisFilterInfos;
     }
 
-    @Transactional
+    @Transactional(transactionManager = "daoTransactionManager")
     @TimeAnalyse
-    public void delete(UuidKey key) throws CacheException {
+    public void delete(@NotNull UuidKey key) throws CacheException {
         try {
             template.delete(uuidKey2String(key));
         } catch (Exception e) {

@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
+import com.dwarfeng.fdr.stack.exception.FilterException;
 
 import java.util.function.Consumer;
 
@@ -20,6 +21,7 @@ public interface Filter {
      *
      * @param dataInfo 指定的数据。
      * @param consumer 数据不通过时进行的回调。
+     * @throws FilterException 过滤器异常。
      */
-    void test(DataInfo dataInfo, Consumer<? super FilteredValue> consumer);
+    void test(DataInfo dataInfo, Consumer<? super FilteredValue> consumer) throws FilterException;
 }

@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.exception.TriggerException;
 
 import java.util.function.Consumer;
 
@@ -20,6 +21,7 @@ public interface Trigger {
      *
      * @param dataInfo 指定的数据。
      * @param consumer 数据不通过时进行的回调。
+     * @throws TriggerException 触发器异常。
      */
-    void test(DataInfo dataInfo, Consumer<? super TriggeredValue> consumer);
+    void test(DataInfo dataInfo, Consumer<? super TriggeredValue> consumer) throws TriggerException;
 }
