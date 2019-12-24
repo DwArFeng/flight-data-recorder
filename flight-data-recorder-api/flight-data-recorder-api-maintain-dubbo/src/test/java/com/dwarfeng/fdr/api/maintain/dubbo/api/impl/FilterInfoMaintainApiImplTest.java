@@ -70,7 +70,7 @@ public class FilterInfoMaintainApiImplTest {
             for (FilterInfo filterInfo : filterInfos) {
                 filterInfoMaintainApi.insert(filterInfo);
             }
-            assertEquals(5, filterInfoMaintainApi.getFilterInfos(parentPoint.getKey(), new LookupPagingInfo(0, 0)).getCount());
+            assertEquals(5, filterInfoMaintainApi.getFilterInfos(parentPoint.getKey(), LookupPagingInfo.LOOKUP_ALL).getCount());
         } finally {
             for (FilterInfo filterInfo : filterInfos) {
                 filterInfoMaintainApi.delete(filterInfo.getKey());

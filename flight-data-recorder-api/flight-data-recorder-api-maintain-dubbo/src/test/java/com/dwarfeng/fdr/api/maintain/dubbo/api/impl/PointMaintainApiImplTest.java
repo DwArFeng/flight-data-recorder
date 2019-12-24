@@ -69,7 +69,7 @@ public class PointMaintainApiImplTest {
             for (Point point : points) {
                 pointMaintainApi.insert(point);
             }
-            assertEquals(5, pointMaintainApi.getPoints(parentCategory.getKey(), new LookupPagingInfo(0, 0)).getCount());
+            assertEquals(5, pointMaintainApi.getPoints(parentCategory.getKey(), LookupPagingInfo.LOOKUP_ALL).getCount());
         } finally {
             for (Point point : points) {
                 pointMaintainApi.delete(point.getKey());

@@ -7,7 +7,9 @@ import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.PointHasTriggerInfoCache;
 import com.dwarfeng.fdr.stack.cache.TriggerInfoCache;
+import com.dwarfeng.fdr.stack.cache.TriggeredValueCache;
 import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
+import com.dwarfeng.fdr.stack.dao.TriggeredValueDao;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
@@ -39,6 +41,11 @@ public class TriggerInfoMaintainServiceDelegate {
     private PointHasTriggerInfoCache pointHasTriggerInfoCache;
     @Autowired
     private ValidationHandler validationHandler;
+
+    @Autowired
+    private TriggeredValueDao triggeredValueDao;
+    @Autowired
+    private TriggeredValueCache triggeredValueCache;
 
     @Value("${cache.timeout.entity.trigger_info}")
     private long triggerInfoTimeout;
@@ -141,16 +148,19 @@ public class TriggerInfoMaintainServiceDelegate {
                     LOGGER.debug("清除旧实体 " + oldTriggerInfo.toString() + " 对应的父项缓存...");
                     pointHasTriggerInfoCache.delete(oldTriggerInfo.getPointKey());
                 }
-                LOGGER.debug("将指定的TriggerInfo从缓存中删除...");
+
+                LOGGER.debug("删除触发器信息 " + key.toString() + " 相关联的被过滤数据与相关缓存...");
+                triggeredValueDao.deleteAllByTriggerInfo(key);
+                triggeredValueCache.deleteAllByTriggerInfo(key);
+
+                LOGGER.debug("删除触发器信息 " + key.toString() + " 与缓存...");
                 triggerInfoCache.delete(key);
-                LOGGER.debug("将指定的TriggerInfo从数据访问层中删除...");
                 triggerInfoDao.delete(key);
             }
         } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
-
 
     @TimeAnalyse
     @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
@@ -204,7 +214,7 @@ public class TriggerInfoMaintainServiceDelegate {
             currPage = 0;
             pointHasTriggerInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, triggerInfoFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, triggerInfoFetchSize);
                 List<TriggerInfo> childs = triggerInfoDao.getTriggerInfos(uuidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
                     pointHasTriggerInfoCache.push(uuidKey, childs, pointHasTriggerInfoTimeout);

@@ -4,13 +4,12 @@ import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.sdk.util.ServiceExceptionCodes;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
+import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
+import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
-import com.dwarfeng.fdr.stack.cache.CategoryHasPointCache;
-import com.dwarfeng.fdr.stack.cache.PointCache;
-import com.dwarfeng.fdr.stack.cache.PointHasFilterInfoCache;
-import com.dwarfeng.fdr.stack.cache.PointHasTriggerInfoCache;
-import com.dwarfeng.fdr.stack.dao.PointDao;
+import com.dwarfeng.fdr.stack.cache.*;
+import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
@@ -27,6 +26,8 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @Validated
@@ -46,6 +47,31 @@ public class PointMaintainServiceDelegate {
     private PointHasTriggerInfoCache pointHasTriggerInfoCache;
     @Autowired
     private ValidationHandler validationHandler;
+
+    @Autowired
+    private FilterInfoDao filterInfoDao;
+    @Autowired
+    private FilterInfoCache filterInfoCache;
+    @Autowired
+    private TriggerInfoDao triggerInfoDao;
+    @Autowired
+    private TriggerInfoCache triggerInfoCache;
+    @Autowired
+    private PersistenceValueDao persistenceValueDao;
+    @Autowired
+    private PersistenceValueCache persistenceValueCache;
+    @Autowired
+    private RealtimeValueDao realtimeValueDao;
+    @Autowired
+    private RealtimeValueCache realtimeValueCache;
+    @Autowired
+    private FilteredValueDao filteredValueDao;
+    @Autowired
+    private FilteredValueCache filteredValueCache;
+    @Autowired
+    private TriggeredValueDao triggeredValueDao;
+    @Autowired
+    private TriggeredValueCache triggeredValueCache;
 
     @Value("${cache.timeout.entity.point}")
     private long pointTimeout;
@@ -148,12 +174,54 @@ public class PointMaintainServiceDelegate {
                     LOGGER.debug("清除旧实体 " + oldPoint.toString() + " 对应的父项缓存...");
                     categoryHasPointCache.delete(oldPoint.getCategoryKey());
                 }
-                LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
+
+                LOGGER.debug("查询数据点 " + key.toString() + " 对应的子项过滤器信息...");
+                Set<UuidKey> filterInfos2Delete = filterInfoDao.getFilterInfos(key, LookupPagingInfo.LOOKUP_ALL)
+                        .stream().map(FilterInfo::getKey).collect(Collectors.toSet());
+                LOGGER.debug("查询数据点 " + key.toString() + " 对应的子项触发器信息...");
+                Set<UuidKey> triggerInfos2Delete = triggerInfoDao.getTriggerInfos(key, LookupPagingInfo.LOOKUP_ALL)
+                        .stream().map(TriggerInfo::getKey).collect(Collectors.toSet());
+
+                LOGGER.debug("清除数据点 " + key.toString() + " 对应的子项缓存...");
                 pointHasFilterInfoCache.delete(key);
                 pointHasTriggerInfoCache.delete(key);
-                LOGGER.debug("将指定的Point从缓存中删除...");
+
+                LOGGER.debug("删除数据点 " + key.toString() + " 相关联的被过滤数据与相关缓存...");
+                for (UuidKey filterInfoKey : filterInfos2Delete) {
+                    filteredValueCache.deleteAllByFilterInfo(filterInfoKey);
+                    filteredValueDao.deleteAllByFilterInfo(filterInfoKey);
+                }
+                filteredValueCache.deleteAllByPoint(key);
+                filteredValueDao.deleteAllByPoint(key);
+                LOGGER.debug("删除数据点 " + key.toString() + " 相关联的被触发数据与相关缓存...");
+                for (UuidKey triggerInfoKey : triggerInfos2Delete) {
+                    triggeredValueCache.deleteAllByTriggerInfo(triggerInfoKey);
+                    triggeredValueDao.deleteAllByTriggerInfo(triggerInfoKey);
+                }
+                triggeredValueCache.deleteAllByPoint(key);
+                triggeredValueDao.deleteAllByPoint(key);
+                LOGGER.debug("删除数据点 " + key.toString() + " 相关联的持久化数据与相关缓存...");
+                persistenceValueCache.deleteAll(key);
+                persistenceValueDao.deleteAll(key);
+                LOGGER.debug("删除数据点 " + key.toString() + " 相关联的实时数据与相关缓存...");
+                if (realtimeValueDao.exists(key)) {
+                    realtimeValueCache.delete(key);
+                    realtimeValueDao.delete(key);
+                }
+
+                LOGGER.debug("删除数据点 " + key.toString() + " 相关联的过滤器信息与缓存...");
+                for (UuidKey filterInfoKey : filterInfos2Delete) {
+                    filterInfoCache.delete(filterInfoKey);
+                    filterInfoDao.delete(filterInfoKey);
+                }
+                LOGGER.debug("删除数据点 " + key.toString() + " 相关联的触发器信息与缓存...");
+                for (UuidKey triggerInfoKey : triggerInfos2Delete) {
+                    triggerInfoCache.delete(triggerInfoKey);
+                    triggerInfoDao.delete(triggerInfoKey);
+                }
+
+                LOGGER.debug("删除数据点 " + key.toString() + " 与缓存...");
                 pointCache.delete(key);
-                LOGGER.debug("将指定的Point从数据访问层中删除...");
                 pointDao.delete(key);
             }
         } catch (Exception e) {
@@ -215,7 +283,7 @@ public class PointMaintainServiceDelegate {
             currPage = 0;
             categoryHasPointCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, pointFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, pointFetchSize);
                 List<Point> childs = pointDao.getPoints(uuidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
                     categoryHasPointCache.push(uuidKey, childs, pointHasChildTimeout);

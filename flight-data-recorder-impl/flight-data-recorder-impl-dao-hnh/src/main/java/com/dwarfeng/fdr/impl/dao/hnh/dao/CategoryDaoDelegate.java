@@ -138,7 +138,10 @@ public class CategoryDaoDelegate {
             }
             criteria.addOrder(Order.asc("name"));
             @SuppressWarnings("unchecked")
-            List<HibernateCategory> hibernateResult = (List<HibernateCategory>) template.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+            List<HibernateCategory> hibernateResult = (List<HibernateCategory>) template.findByCriteria(
+                    criteria,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getPage() * lookupPagingInfo.getRows() : -1,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getRows() : -1);
             List<Category> result = new ArrayList<>();
             for (HibernateCategory hibernateCategory : hibernateResult) {
                 result.add(mapper.map(hibernateCategory, Category.class));

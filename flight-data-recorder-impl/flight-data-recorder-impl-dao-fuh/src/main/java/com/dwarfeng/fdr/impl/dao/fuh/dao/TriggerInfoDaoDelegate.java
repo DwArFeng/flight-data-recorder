@@ -136,7 +136,10 @@ public class TriggerInfoDaoDelegate {
                 criteria.add(Restrictions.eq("pointUuid", pointUuidKey.getUuid()));
             }
             @SuppressWarnings("unchecked")
-            List<HibernateTriggerInfo> hibernateResult = (List<HibernateTriggerInfo>) template.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+            List<HibernateTriggerInfo> hibernateResult = (List<HibernateTriggerInfo>) template.findByCriteria(
+                    criteria,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getPage() * lookupPagingInfo.getRows() : -1,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getRows() : -1);
             List<TriggerInfo> result = new ArrayList<>();
             for (HibernateTriggerInfo hibernateTriggerInfo : hibernateResult) {
                 result.add(mapper.map(hibernateTriggerInfo, TriggerInfo.class));

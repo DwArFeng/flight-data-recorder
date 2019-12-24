@@ -70,7 +70,7 @@ public class CategoryDaoImplTest {
             assertTrue(dao.exists(category.getKey()));
         }
         assertEquals(5, dao.getChildCount(parentCategory.getKey()));
-        assertEquals(5, dao.getChilds(parentCategory.getKey(), new LookupPagingInfo(0, 0)).size());
+        assertEquals(5, dao.getChilds(parentCategory.getKey(), LookupPagingInfo.LOOKUP_ALL).size());
         dao.delete(parentCategory.getKey());
         for (Category category : childCategories) {
             dao.delete(category.getKey());

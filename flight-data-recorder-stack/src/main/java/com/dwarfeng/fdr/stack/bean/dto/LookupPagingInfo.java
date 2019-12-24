@@ -8,7 +8,14 @@ package com.dwarfeng.fdr.stack.bean.dto;
  */
 public class LookupPagingInfo implements Dto {
 
-    private static final long serialVersionUID = 7622768435096914114L;
+    public static final LookupPagingInfo LOOKUP_ALL = new LookupPagingInfo(false, 0, 0);
+
+    private static final long serialVersionUID = -5393564201402936618L;
+
+    /**
+     * 是否分页。
+     */
+    private boolean paging;
 
     /**
      * 查询的页数。
@@ -22,9 +29,18 @@ public class LookupPagingInfo implements Dto {
     public LookupPagingInfo() {
     }
 
-    public LookupPagingInfo(int page, int rows) {
+    public LookupPagingInfo(boolean paging, int page, int rows) {
+        this.paging = paging;
         this.page = page;
         this.rows = rows;
+    }
+
+    public boolean isPaging() {
+        return paging;
+    }
+
+    public void setPaging(boolean paging) {
+        this.paging = paging;
     }
 
     public int getPage() {
@@ -46,7 +62,8 @@ public class LookupPagingInfo implements Dto {
     @Override
     public String toString() {
         return "LookupPagingInfo{" +
-                "page=" + page +
+                "paging=" + paging +
+                ", page=" + page +
                 ", rows=" + rows +
                 '}';
     }

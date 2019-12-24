@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.stack.cache;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.exception.CacheException;
 
 /**
  * 被触发数据缓存。
@@ -10,4 +11,8 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
  * @since 0.0.1-alpha
  */
 public interface TriggeredValueCache extends BaseCache<UuidKey, TriggeredValue> {
+
+    void deleteAllByPoint(UuidKey pointKey) throws CacheException;
+
+    void deleteAllByTriggerInfo(UuidKey triggerInfoKey) throws CacheException;
 }

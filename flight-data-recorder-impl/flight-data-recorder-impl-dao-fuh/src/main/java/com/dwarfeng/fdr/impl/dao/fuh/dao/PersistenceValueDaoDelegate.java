@@ -7,15 +7,19 @@ import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.dozer.Mapper;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -28,6 +32,9 @@ public class PersistenceValueDaoDelegate {
     private HibernateTemplate template;
     @Autowired
     private Mapper mapper;
+
+    @Value("${hibernate.batch_delete.persistence_value.size}")
+    private int batchDeleteSize;
 
     @TimeAnalyse
     @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
@@ -114,6 +121,25 @@ public class PersistenceValueDaoDelegate {
             assert hibernatePersistenceValue != null;
             template.delete(hibernatePersistenceValue);
             template.flush();
+        } catch (Exception e) {
+            throw new DaoException("数据访问发生异常", e);
+        }
+    }
+
+    @TimeAnalyse
+    @Transactional(transactionManager = "daoTransactionManager")
+    public void deleteAll(UuidKey pointKey) throws DaoException {
+        try {
+            HibernateUuidKey hibernatePointKey = mapper.map(pointKey, HibernateUuidKey.class);
+
+            DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePersistenceValue.class);
+            criteria.add(Restrictions.eqOrIsNull("pointUuid", hibernatePointKey.getUuid()));
+            List<?> list2Delete = template.findByCriteria(criteria, 0, batchDeleteSize);
+            while (!list2Delete.isEmpty()) {
+                template.deleteAll(list2Delete);
+                template.flush();
+                list2Delete = template.findByCriteria(criteria, 0, batchDeleteSize);
+            }
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
         }

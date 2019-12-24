@@ -1,12 +1,14 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
 import com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisPoint;
+import com.dwarfeng.fdr.impl.cache.redis.formatter.Formatter;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -25,15 +27,18 @@ public class PointCacheDelegate {
     private RedisTemplate<String, RedisPoint> template;
     @Autowired
     private Mapper mapper;
+    @Autowired
+    @Qualifier("uuidKeyFormatter")
+    private Formatter<UuidKey> formatter;
 
-    @Value("${cache.format.entity.point}")
-    private String keyFormat;
+    @Value("${cache.prefix.entity.point}")
+    private String keyPrefix;
 
     @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
-            return template.hasKey(uuidKey2String(key));
+            return template.hasKey(formatter.format(keyPrefix, key));
         } catch (Exception e) {
             throw new CacheException("缓存异常", e);
         }
@@ -43,7 +48,7 @@ public class PointCacheDelegate {
     @TimeAnalyse
     public Point get(@NotNull UuidKey key) throws CacheException {
         try {
-            RedisPoint redisPoint = template.opsForValue().get(uuidKey2String(key));
+            RedisPoint redisPoint = template.opsForValue().get(formatter.format(keyPrefix, key));
             return mapper.map(redisPoint, Point.class);
         } catch (Exception e) {
             throw new CacheException("缓存异常", e);
@@ -55,7 +60,7 @@ public class PointCacheDelegate {
     public void push(@NotNull UuidKey key, @NotNull Point point, @Min(0) long timeout) throws CacheException {
         try {
             RedisPoint redisPoint = mapper.map(point, RedisPoint.class);
-            template.opsForValue().set(uuidKey2String(key), redisPoint, timeout, TimeUnit.MILLISECONDS);
+            template.opsForValue().set(formatter.format(keyPrefix, key), redisPoint, timeout, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new CacheException("缓存异常", e);
         }
@@ -65,14 +70,9 @@ public class PointCacheDelegate {
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {
-            template.delete(uuidKey2String(key));
+            template.delete(formatter.format(keyPrefix, key));
         } catch (Exception e) {
             throw new CacheException("缓存异常", e);
         }
     }
-
-    private String uuidKey2String(UuidKey uuidKey) {
-        return String.format(keyFormat, uuidKey.getUuid());
-    }
-
 }

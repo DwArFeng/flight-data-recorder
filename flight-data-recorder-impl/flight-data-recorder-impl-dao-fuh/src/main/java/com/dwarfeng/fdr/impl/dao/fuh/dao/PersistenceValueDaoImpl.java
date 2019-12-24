@@ -37,4 +37,9 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     public void delete(UuidKey key) throws DaoException {
         delegate.delete(key);
     }
+
+    @Override
+    public void deleteAll(UuidKey pointKey) throws DaoException {
+        delegate.deleteAll(pointKey);
+    }
 }

@@ -385,9 +385,8 @@ public class RecordServiceDelegate {
             triggerInfos = pointHasTriggerInfoCache.get(pointKey, 0, (int) count);
         } else {
             LOGGER.debug("查询指定的TriggerInfo对应的子项...");
-            long count = triggerInfoDao.getTriggerInfoCount(pointKey);
-            triggerInfos = triggerInfoDao.getTriggerInfos(pointKey, new LookupPagingInfo(0, (int) count));
-            if (count > 0) {
+            triggerInfos = triggerInfoDao.getTriggerInfos(pointKey, LookupPagingInfo.LOOKUP_ALL);
+            if (triggerInfos.size() > 0) {
                 for (TriggerInfo triggerInfo : triggerInfos) {
                     LOGGER.debug("将查询到的的实体 " + triggerInfo.toString() + " 插入缓存中...");
                     triggerInfoCache.push(triggerInfo.getKey(), triggerInfo, triggerInfoTimeout);
@@ -412,7 +411,7 @@ public class RecordServiceDelegate {
             currPage = 0;
             pointHasTriggerInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, triggerInfoFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, triggerInfoFetchSize);
                 List<TriggerInfo> childs = triggerInfoDao.getTriggerInfos(uuidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
                     pointHasTriggerInfoCache.push(uuidKey, childs, pointHasTriggerInfoTimeout);
@@ -433,9 +432,8 @@ public class RecordServiceDelegate {
             filterInfos = pointHasFilterInfoCache.get(pointKey, 0, (int) count);
         } else {
             LOGGER.debug("查询指定的FilterInfo对应的子项...");
-            long count = filterInfoDao.getFilterInfoCount(pointKey);
-            filterInfos = filterInfoDao.getFilterInfos(pointKey, new LookupPagingInfo(0, (int) count));
-            if (count > 0) {
+            filterInfos = filterInfoDao.getFilterInfos(pointKey, LookupPagingInfo.LOOKUP_ALL);
+            if (filterInfos.size() > 0) {
                 for (FilterInfo filterInfo : filterInfos) {
                     LOGGER.debug("将查询到的的实体 " + filterInfo.toString() + " 插入缓存中...");
                     filterInfoCache.push(filterInfo.getKey(), filterInfo, filterInfoTimeout);
@@ -460,7 +458,7 @@ public class RecordServiceDelegate {
             currPage = 0;
             pointHasFilterInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, filterInfoFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, filterInfoFetchSize);
                 List<FilterInfo> childs = filterInfoDao.getFilterInfos(uuidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
                     pointHasFilterInfoCache.push(uuidKey, childs, pointHasFilterInfoTimeout);

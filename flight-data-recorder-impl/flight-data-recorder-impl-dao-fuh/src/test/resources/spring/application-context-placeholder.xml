@@ -8,10 +8,10 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 设置配置文件的路径 -->
-    <context:property-placeholder location="classpath:connection/*.properties" local-override="true"
+    <context:property-placeholder location="classpath:hibernate/*.properties" local-override="true"
                                   properties-ref="refProperties"/>
 
     <bean id="refProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations" value="file:conf/connection/*.properties"></property>
+        <property name="locations" value="file:conf/hibernate/*.properties"></property>
     </bean>
 </beans>

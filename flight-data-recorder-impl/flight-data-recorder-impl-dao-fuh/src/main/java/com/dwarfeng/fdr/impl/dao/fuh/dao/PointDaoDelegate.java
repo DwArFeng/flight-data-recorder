@@ -138,7 +138,10 @@ public class PointDaoDelegate {
             }
             criteria.addOrder(Order.asc("name"));
             @SuppressWarnings("unchecked")
-            List<HibernatePoint> hibernateResult = (List<HibernatePoint>) template.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+            List<HibernatePoint> hibernateResult = (List<HibernatePoint>) template.findByCriteria(
+                    criteria,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getPage() * lookupPagingInfo.getRows() : -1,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getRows() : -1);
             List<Point> result = new ArrayList<>();
             for (HibernatePoint hibernatePoint : hibernateResult) {
                 result.add(mapper.map(hibernatePoint, Point.class));

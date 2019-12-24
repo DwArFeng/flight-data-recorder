@@ -33,4 +33,14 @@ public class TriggeredValueCacheImpl implements TriggeredValueCache {
     public void delete(UuidKey key) throws CacheException {
         delegate.delete(key);
     }
+
+    @Override
+    public void deleteAllByPoint(UuidKey pointKey) throws CacheException {
+        delegate.deleteAllByPoint(pointKey);
+    }
+
+    @Override
+    public void deleteAllByTriggerInfo(UuidKey triggerInfoKey) throws CacheException {
+        delegate.deleteAllByTriggerInfo(triggerInfoKey);
+    }
 }

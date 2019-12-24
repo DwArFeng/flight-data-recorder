@@ -70,7 +70,7 @@ public class TriggerInfoMaintainApiImplTest {
             for (TriggerInfo triggerInfo : triggerInfos) {
                 triggerInfoMaintainApi.insert(triggerInfo);
             }
-            assertEquals(5, triggerInfoMaintainApi.getTriggerInfos(parentPoint.getKey(), new LookupPagingInfo(0, 0)).getCount());
+            assertEquals(5, triggerInfoMaintainApi.getTriggerInfos(parentPoint.getKey(), LookupPagingInfo.LOOKUP_ALL).getCount());
         } finally {
             for (TriggerInfo triggerInfo : triggerInfos) {
                 triggerInfoMaintainApi.delete(triggerInfo.getKey());

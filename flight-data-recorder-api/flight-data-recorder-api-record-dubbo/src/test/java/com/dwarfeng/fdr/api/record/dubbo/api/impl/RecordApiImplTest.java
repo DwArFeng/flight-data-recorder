@@ -32,27 +32,42 @@ import java.util.*;
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
 public class RecordApiImplTest {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("pointMaintainService")
     private PointMaintainService pointMaintainService;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("filterInfoMaintainService")
     private FilterInfoMaintainService filterInfoMaintainService;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("triggerInfoMaintainService")
     private TriggerInfoMaintainService triggerInfoMaintainService;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("recordService")
     private RecordService recordService;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("persistenceValueMaintainService")
     private PersistenceValueMaintainService persistenceValueMaintainService;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("realtimeValueMaintainService")
     private RealtimeValueMaintainService realtimeValueMaintainService;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("filteredValueMaintainService")
     private FilteredValueMaintainService filteredValueMaintainService;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     @Qualifier("triggeredValueMaintainService")
     private TriggeredValueMaintainService triggeredValueMaintainService;

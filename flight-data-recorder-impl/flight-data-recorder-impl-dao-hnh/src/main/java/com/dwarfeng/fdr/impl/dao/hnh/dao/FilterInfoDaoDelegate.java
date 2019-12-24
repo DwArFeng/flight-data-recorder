@@ -136,7 +136,10 @@ public class FilterInfoDaoDelegate {
                 criteria.add(Restrictions.eq("pointUuid", pointUuidKey.getUuid()));
             }
             @SuppressWarnings("unchecked")
-            List<HibernateFilterInfo> hibernateResult = (List<HibernateFilterInfo>) template.findByCriteria(criteria, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+            List<HibernateFilterInfo> hibernateResult = (List<HibernateFilterInfo>) template.findByCriteria(
+                    criteria,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getPage() * lookupPagingInfo.getRows() : -1,
+                    lookupPagingInfo.isPaging() ? lookupPagingInfo.getRows() : -1);
             List<FilterInfo> result = new ArrayList<>();
             for (HibernateFilterInfo hibernateFilterInfo : hibernateResult) {
                 result.add(mapper.map(hibernateFilterInfo, FilterInfo.class));

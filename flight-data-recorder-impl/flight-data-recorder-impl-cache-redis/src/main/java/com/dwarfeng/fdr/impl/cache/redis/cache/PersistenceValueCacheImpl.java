@@ -28,9 +28,13 @@ public class PersistenceValueCacheImpl implements PersistenceValueCache {
         delegate.push(key, value, timeout);
     }
 
-
     @Override
     public void delete(UuidKey key) throws CacheException {
         delegate.delete(key);
+    }
+
+    @Override
+    public void deleteAll(UuidKey pointKey) throws CacheException {
+        delegate.deleteAll(pointKey);
     }
 }

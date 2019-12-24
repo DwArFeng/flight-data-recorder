@@ -37,4 +37,14 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     public void delete(UuidKey key) throws DaoException {
         delegate.delete(key);
     }
+
+    @Override
+    public void deleteAllByPoint(UuidKey pointKey) throws DaoException {
+        delegate.deleteAllByPoint(pointKey);
+    }
+
+    @Override
+    public void deleteAllByTriggerInfo(UuidKey triggerInfoKey) throws DaoException {
+        delegate.deleteAllByTriggerInfo(triggerInfoKey);
+    }
 }

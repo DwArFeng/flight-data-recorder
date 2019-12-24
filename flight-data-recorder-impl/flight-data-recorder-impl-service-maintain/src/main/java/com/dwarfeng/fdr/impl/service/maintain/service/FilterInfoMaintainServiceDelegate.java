@@ -6,8 +6,10 @@ import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.FilterInfoCache;
+import com.dwarfeng.fdr.stack.cache.FilteredValueCache;
 import com.dwarfeng.fdr.stack.cache.PointHasFilterInfoCache;
 import com.dwarfeng.fdr.stack.dao.FilterInfoDao;
+import com.dwarfeng.fdr.stack.dao.FilteredValueDao;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
@@ -39,6 +41,11 @@ public class FilterInfoMaintainServiceDelegate {
     private PointHasFilterInfoCache pointHasFilterInfoCache;
     @Autowired
     private ValidationHandler validationHandler;
+
+    @Autowired
+    private FilteredValueDao filteredValueDao;
+    @Autowired
+    private FilteredValueCache filteredValueCache;
 
     @Value("${cache.timeout.entity.filter_info}")
     private long filterInfoTimeout;
@@ -141,9 +148,13 @@ public class FilterInfoMaintainServiceDelegate {
                     LOGGER.debug("清除旧实体 " + oldFilterInfo.toString() + " 对应的父项缓存...");
                     pointHasFilterInfoCache.delete(oldFilterInfo.getPointKey());
                 }
-                LOGGER.debug("将指定的FilterInfo从缓存中删除...");
+
+                LOGGER.debug("删除过滤器信息 " + key.toString() + " 相关联的被过滤数据与相关缓存...");
+                filteredValueDao.deleteAllByFilterInfo(key);
+                filteredValueCache.deleteAllByFilterInfo(key);
+
+                LOGGER.debug("删除过滤器信息 " + key.toString() + " 与缓存...");
                 filterInfoCache.delete(key);
-                LOGGER.debug("将指定的FilterInfo从数据访问层中删除...");
                 filterInfoDao.delete(key);
             }
         } catch (Exception e) {
@@ -205,7 +216,7 @@ public class FilterInfoMaintainServiceDelegate {
             currPage = 0;
             pointHasFilterInfoCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, filterInfoFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, filterInfoFetchSize);
                 List<FilterInfo> childs = filterInfoDao.getFilterInfos(uuidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
                     pointHasFilterInfoCache.push(uuidKey, childs, pointHasFilterInfoTimeout);

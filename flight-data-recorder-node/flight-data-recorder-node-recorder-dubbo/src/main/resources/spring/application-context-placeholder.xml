@@ -10,9 +10,10 @@
     <!-- 设置配置文件的路径 -->
     <context:property-placeholder
             location=
-                    "classpath:connection/*.properties,
-                    classpath:cache/*.properties,
-                    classpath:event/*.properties"
+                    "classpath:dubbo/*.properties,
+                    classpath:hibernate/*.properties,
+                    classpath:redis/*.properties,
+                    classpath:kafka/*.properties"
             local-override="true"
             properties-ref="refProperties"/>
 
@@ -20,9 +21,10 @@
     <bean id="refProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
             <list>
-                <value>file:conf/connection/*.properties</value>
-                <value>file:conf/cache/*.properties</value>
-                <value>file:conf/event/*.properties</value>
+                <value>file:conf/dubbo/*.properties</value>
+                <value>file:conf/hibernate/*.properties</value>
+                <value>file:conf/redis/*.properties</value>
+                <value>file:conf/kafka/*.properties</value>
             </list>
         </property>
     </bean>

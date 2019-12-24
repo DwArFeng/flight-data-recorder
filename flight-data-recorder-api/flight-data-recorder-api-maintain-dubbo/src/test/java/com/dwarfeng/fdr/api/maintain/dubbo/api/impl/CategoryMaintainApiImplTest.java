@@ -63,7 +63,7 @@ public class CategoryMaintainApiImplTest {
             for (Category category : childCategories) {
                 api.insert(category);
             }
-            assertEquals(5, api.getChilds(parentCategory.getKey(), new LookupPagingInfo(0, 0)).getCount());
+            assertEquals(5, api.getChilds(parentCategory.getKey(), LookupPagingInfo.LOOKUP_ALL).getCount());
         } finally {
             for (Category category : childCategories) {
                 api.delete(category.getKey());

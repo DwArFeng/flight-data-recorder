@@ -45,8 +45,8 @@ public class HibernatePersistenceValue implements Serializable {
         return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
     }
 
-    public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setKey(HibernateUuidKey key) {
+        this.uuid = Optional.ofNullable(key).map(HibernateUuidKey::getUuid).orElse(null);
     }
 
     public String getUuid() {
@@ -55,6 +55,14 @@ public class HibernatePersistenceValue implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public HibernateUuidKey getPointKey() {
+        return Optional.ofNullable(pointUuid).map(HibernateUuidKey::new).orElse(null);
+    }
+
+    public void setPointKey(HibernateUuidKey pointKey) {
+        this.pointUuid = Optional.ofNullable(pointKey).map(HibernateUuidKey::getUuid).orElse(null);
     }
 
     public String getPointUuid() {

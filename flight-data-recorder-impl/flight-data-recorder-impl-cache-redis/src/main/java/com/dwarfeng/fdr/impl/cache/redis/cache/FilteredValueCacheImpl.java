@@ -28,9 +28,18 @@ public class FilteredValueCacheImpl implements FilteredValueCache {
         delegate.push(key, value, timeout);
     }
 
-
     @Override
     public void delete(UuidKey key) throws CacheException {
         delegate.delete(key);
+    }
+
+    @Override
+    public void deleteAllByPoint(UuidKey pointKey) throws CacheException {
+        delegate.deleteAllByPoint(pointKey);
+    }
+
+    @Override
+    public void deleteAllByFilterInfo(UuidKey filterInfoKey) throws CacheException {
+        delegate.deleteAllByFilterInfo(filterInfoKey);
     }
 }

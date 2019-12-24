@@ -4,10 +4,13 @@ import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
+import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.cache.CategoryCache;
 import com.dwarfeng.fdr.stack.cache.CategoryHasChildCache;
+import com.dwarfeng.fdr.stack.cache.PointCache;
 import com.dwarfeng.fdr.stack.dao.CategoryDao;
+import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
@@ -39,6 +42,10 @@ public class CategoryMaintainServiceDelegate {
     private CategoryHasChildCache categoryHasChildCache;
     @Autowired
     private ValidationHandler validationHandler;
+    @Autowired
+    private PointDao pointDao;
+    @Autowired
+    private PointCache pointCache;
 
     @Value("${cache.timeout.entity.category}")
     private long categoryTimeout;
@@ -46,6 +53,9 @@ public class CategoryMaintainServiceDelegate {
     private long categoryHasChildTimeout;
     @Value("${cache.batch_fetch_size.category}")
     private int categoryFetchSize;
+
+    @Value("${cache.timeout.entity.point}")
+    private long pointTimeout;
 
     @TimeAnalyse
     @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
@@ -141,6 +151,23 @@ public class CategoryMaintainServiceDelegate {
                     LOGGER.debug("清除旧实体 " + oldCategory.toString() + " 对应的父项缓存...");
                     categoryHasChildCache.delete(oldCategory.getParentKey());
                 }
+
+                List<Category> childCategories = categoryDao.getChilds(key, LookupPagingInfo.LOOKUP_ALL);
+                List<Point> childPoints = pointDao.getPoints(key, LookupPagingInfo.LOOKUP_ALL);
+
+                LOGGER.debug("更新分类 " + key.toString() + " 对应的子项缓存与信息...");
+                for (Category category : childCategories) {
+                    category.setParentKey(null);
+                    categoryCache.push(category.getKey(), category, categoryTimeout);
+                    categoryDao.update(category);
+                }
+                LOGGER.debug("更新分类 " + key.toString() + " 对应的点位缓存与信息...");
+                for (Point point : childPoints) {
+                    point.setCategoryKey(null);
+                    pointCache.push(point.getKey(), point, pointTimeout);
+                    pointDao.update(point);
+                }
+
                 LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
                 categoryHasChildCache.delete(key);
                 LOGGER.debug("将指定的Category从缓存中删除...");
@@ -205,7 +232,7 @@ public class CategoryMaintainServiceDelegate {
             currPage = 0;
             categoryHasChildCache.delete(uuidKey);
             do {
-                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(currPage++, categoryFetchSize);
+                LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, categoryFetchSize);
                 List<Category> childs = categoryDao.getChilds(uuidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
                     categoryHasChildCache.push(uuidKey, childs, categoryHasChildTimeout);

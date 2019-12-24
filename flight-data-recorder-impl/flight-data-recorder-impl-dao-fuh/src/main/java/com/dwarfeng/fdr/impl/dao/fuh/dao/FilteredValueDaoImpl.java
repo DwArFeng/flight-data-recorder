@@ -37,4 +37,14 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     public void delete(UuidKey key) throws DaoException {
         delegate.delete(key);
     }
+
+    @Override
+    public void deleteAllByPoint(UuidKey pointKey) throws DaoException {
+        delegate.deleteAllByPoint(pointKey);
+    }
+
+    @Override
+    public void deleteAllByFilterInfo(UuidKey filterInfoKey) throws DaoException {
+        delegate.deleteAllByFilterInfo(filterInfoKey);
+    }
 }
