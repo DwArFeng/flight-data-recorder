@@ -8,11 +8,8 @@ import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.fdr.stack.handler.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
@@ -23,13 +20,13 @@ import java.util.Set;
 
 @Component
 @Validated
-public class TriggerHandlerDelegate implements ApplicationContextAware {
+public class TriggerHandlerDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggerHandlerDelegate.class);
 
     @Autowired
     private Validator validator;
-
+    @Autowired
     private ApplicationContext applicationContext;
 
     @TimeAnalyse
@@ -66,11 +63,4 @@ public class TriggerHandlerDelegate implements ApplicationContextAware {
 
         return structuredTrigger;
     }
-
-    @Override
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-
-
 }
