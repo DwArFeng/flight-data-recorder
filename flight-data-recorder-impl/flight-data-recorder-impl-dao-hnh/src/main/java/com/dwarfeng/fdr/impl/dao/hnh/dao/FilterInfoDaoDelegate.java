@@ -36,7 +36,7 @@ public class FilterInfoDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -51,7 +51,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public FilterInfo get(UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -68,7 +68,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull FilterInfo filterInfo) throws DaoException {
         try {
             if (internalExists(filterInfo.getKey())) {
@@ -86,7 +86,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull FilterInfo filterInfo) throws DaoException {
         try {
             if (!internalExists(filterInfo.getKey())) {
@@ -107,7 +107,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -126,7 +126,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<FilterInfo> getFilterInfos(UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class);
@@ -151,7 +151,7 @@ public class FilterInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public long getFilterInfoCount(UuidKey pointUuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class);

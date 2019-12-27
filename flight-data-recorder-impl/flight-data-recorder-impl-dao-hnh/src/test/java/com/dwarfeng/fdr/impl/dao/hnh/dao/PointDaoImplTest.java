@@ -65,7 +65,7 @@ public class PointDaoImplTest {
     }
 
     @Test
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void test() throws DaoException {
         categoryDao.insert(parentCategory);
         for (Point point : points) {

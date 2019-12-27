@@ -36,7 +36,7 @@ public class RealtimeValueMaintainServiceDelegate {
     private long realtimeValueTimeout;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public RealtimeValue get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -60,7 +60,7 @@ public class RealtimeValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull RealtimeValue realtimeValue) throws ServiceException {
         try {
             validationHandler.realtimeValueValidation(realtimeValue);
@@ -81,7 +81,7 @@ public class RealtimeValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull RealtimeValue realtimeValue) throws ServiceException {
         try {
             validationHandler.realtimeValueValidation(realtimeValue);
@@ -103,7 +103,7 @@ public class RealtimeValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);

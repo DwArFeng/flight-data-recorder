@@ -81,7 +81,7 @@ public class PointMaintainServiceDelegate {
     private int pointFetchSize;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public Point get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -105,7 +105,7 @@ public class PointMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull Point point) throws ServiceException {
         try {
             validationHandler.pointValidation(point);
@@ -130,7 +130,7 @@ public class PointMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull Point point) throws ServiceException {
         try {
             validationHandler.pointValidation(point);
@@ -160,7 +160,7 @@ public class PointMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -231,7 +231,7 @@ public class PointMaintainServiceDelegate {
 
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PagedData<Point> getPoints(UuidKey categoryUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(categoryUuid);
@@ -271,7 +271,7 @@ public class PointMaintainServiceDelegate {
     }
 
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchPoint2Cache(UuidKey uuidKey) {

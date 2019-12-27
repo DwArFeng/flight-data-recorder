@@ -34,7 +34,7 @@ public class FilterInfoCacheDelegate {
     @Value("${cache.prefix.entity.filter_info}")
     private String keyPrefix;
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -44,7 +44,7 @@ public class FilterInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public FilterInfo get(@NotNull UuidKey key) throws CacheException {
         try {
@@ -55,7 +55,7 @@ public class FilterInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, @NotNull FilterInfo filterInfo, @Min(0) long timeout) throws CacheException {
         try {
@@ -66,7 +66,7 @@ public class FilterInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {

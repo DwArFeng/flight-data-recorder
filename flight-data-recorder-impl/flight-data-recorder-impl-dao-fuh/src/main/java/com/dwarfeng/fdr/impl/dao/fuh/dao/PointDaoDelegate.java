@@ -37,7 +37,7 @@ public class PointDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -52,7 +52,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public Point get(UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -69,7 +69,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull Point point) throws DaoException {
         try {
             if (internalExists(point.getKey())) {
@@ -87,7 +87,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull Point point) throws DaoException {
         try {
             if (!internalExists(point.getKey())) {
@@ -108,7 +108,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -127,7 +127,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<Point> getPoints(UuidKey categoryUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePoint.class);
@@ -153,7 +153,7 @@ public class PointDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public long getPointCount(UuidKey categoryUuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePoint.class);

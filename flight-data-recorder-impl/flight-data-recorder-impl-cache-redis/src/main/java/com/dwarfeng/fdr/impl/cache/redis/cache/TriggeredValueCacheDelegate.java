@@ -37,7 +37,7 @@ public class TriggeredValueCacheDelegate {
     @Value("${cache.prefix.entity.triggered_value}")
     private String keyPrefix;
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -47,7 +47,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public TriggeredValue get(@NotNull UuidKey key) throws CacheException {
         try {
@@ -58,7 +58,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, @NotNull TriggeredValue triggeredValue, @Min(0) long timeout) throws CacheException {
         try {
@@ -69,7 +69,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {
@@ -79,7 +79,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void deleteAllByPoint(UuidKey pointKey) throws CacheException {
         try {
@@ -96,7 +96,7 @@ public class TriggeredValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void deleteAllByTriggerInfo(UuidKey triggerInfoKey) throws CacheException {
         try {

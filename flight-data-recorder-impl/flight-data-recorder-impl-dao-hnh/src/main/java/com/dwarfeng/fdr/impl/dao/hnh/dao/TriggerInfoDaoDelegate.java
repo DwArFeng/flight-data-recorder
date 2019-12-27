@@ -36,7 +36,7 @@ public class TriggerInfoDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -51,7 +51,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public TriggerInfo get(UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -68,7 +68,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull TriggerInfo triggerInfo) throws DaoException {
         try {
             if (internalExists(triggerInfo.getKey())) {
@@ -86,7 +86,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull TriggerInfo triggerInfo) throws DaoException {
         try {
             if (!internalExists(triggerInfo.getKey())) {
@@ -107,7 +107,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -126,7 +126,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<TriggerInfo> getTriggerInfos(UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateTriggerInfo.class);
@@ -151,7 +151,7 @@ public class TriggerInfoDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public long getTriggerInfoCount(UuidKey pointUuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateTriggerInfo.class);

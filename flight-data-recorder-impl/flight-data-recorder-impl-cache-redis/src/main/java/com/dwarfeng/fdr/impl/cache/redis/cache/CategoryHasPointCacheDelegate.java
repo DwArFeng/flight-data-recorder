@@ -40,7 +40,7 @@ public class CategoryHasPointCacheDelegate {
     @Value("${cache.prefix.one_to_many.category_has_point}")
     private String keyPrefix;
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -50,7 +50,7 @@ public class CategoryHasPointCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public long size(@NotNull UuidKey key) throws CacheException {
         try {
@@ -60,7 +60,7 @@ public class CategoryHasPointCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public List<Point> get(@NotNull UuidKey key, @Min(0) int beginIndex, @Min(0) int maxSize) throws CacheException {
         try {
@@ -76,7 +76,7 @@ public class CategoryHasPointCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void set(@NotNull UuidKey key, List<? extends Point> value, long timeout) throws CacheException {
         try {
@@ -89,7 +89,7 @@ public class CategoryHasPointCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, List<? extends Point> value, long timeout) throws CacheException {
         try {
@@ -116,7 +116,7 @@ public class CategoryHasPointCacheDelegate {
         return redisPoints;
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {

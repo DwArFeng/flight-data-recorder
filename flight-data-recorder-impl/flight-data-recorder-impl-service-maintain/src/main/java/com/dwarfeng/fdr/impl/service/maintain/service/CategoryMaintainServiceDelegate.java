@@ -58,7 +58,7 @@ public class CategoryMaintainServiceDelegate {
     private long pointTimeout;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public Category get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -82,7 +82,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull Category category) throws ServiceException {
         try {
             validationHandler.categoryValidation(category);
@@ -107,7 +107,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull Category category) throws ServiceException {
         try {
             validationHandler.categoryValidation(category);
@@ -137,7 +137,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -181,7 +181,7 @@ public class CategoryMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PagedData<Category> getChilds(UuidKey uuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(uuidKey);
@@ -220,7 +220,7 @@ public class CategoryMaintainServiceDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchChild2Cache(UuidKey uuidKey) {

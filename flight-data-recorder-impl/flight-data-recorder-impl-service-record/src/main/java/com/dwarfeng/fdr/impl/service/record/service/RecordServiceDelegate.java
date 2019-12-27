@@ -97,7 +97,7 @@ public class RecordServiceDelegate {
     @Value("${cache.timeout.entity.triggered_value}")
     private long triggeredValueTimeout;
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public RecordResult record(@NotNull DataInfo dataInfo) throws ServiceException {
         //定义变量。
@@ -399,7 +399,7 @@ public class RecordServiceDelegate {
         return triggerInfos;
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchTriggerInfo2Cache(UuidKey uuidKey) {
@@ -446,7 +446,7 @@ public class RecordServiceDelegate {
         return filterInfos;
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchFilterInfo2Cache(UuidKey uuidKey) {

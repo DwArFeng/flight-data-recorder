@@ -37,7 +37,7 @@ public class PersistenceValueCacheDelegate {
     @Value("${cache.prefix.entity.persistence_value}")
     private String keyPrefix;
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -47,7 +47,7 @@ public class PersistenceValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public PersistenceValue get(@NotNull UuidKey key) throws CacheException {
         try {
@@ -58,7 +58,7 @@ public class PersistenceValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, @NotNull PersistenceValue persistenceValue, @Min(0) long timeout) throws CacheException {
         try {
@@ -69,7 +69,7 @@ public class PersistenceValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {
@@ -79,7 +79,7 @@ public class PersistenceValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void deleteAll(UuidKey pointKey) throws CacheException {
         try {

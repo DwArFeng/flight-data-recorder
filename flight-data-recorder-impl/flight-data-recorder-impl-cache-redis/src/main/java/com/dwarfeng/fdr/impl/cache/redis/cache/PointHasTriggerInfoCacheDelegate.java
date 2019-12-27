@@ -40,7 +40,7 @@ public class PointHasTriggerInfoCacheDelegate {
     @Value("${cache.prefix.one_to_many.point_has_trigger_info}")
     private String keyPrefix;
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -50,7 +50,7 @@ public class PointHasTriggerInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public long size(@NotNull UuidKey key) throws CacheException {
         try {
@@ -60,7 +60,7 @@ public class PointHasTriggerInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public List<TriggerInfo> get(@NotNull UuidKey key, @Min(0) int beginIndex, @Min(0) int maxSize) throws CacheException {
         try {
@@ -76,7 +76,7 @@ public class PointHasTriggerInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void set(@NotNull UuidKey key, List<? extends TriggerInfo> value, long timeout) throws CacheException {
         try {
@@ -89,7 +89,7 @@ public class PointHasTriggerInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, List<? extends TriggerInfo> value, long timeout) throws CacheException {
         try {
@@ -116,7 +116,7 @@ public class PointHasTriggerInfoCacheDelegate {
         return redisTriggerInfos;
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {

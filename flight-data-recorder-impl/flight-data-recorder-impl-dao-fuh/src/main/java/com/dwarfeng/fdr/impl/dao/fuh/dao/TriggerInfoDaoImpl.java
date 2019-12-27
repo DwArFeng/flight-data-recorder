@@ -20,47 +20,47 @@ public class TriggerInfoDaoImpl implements TriggerInfoDao {
     private TriggerInfoDaoDelegate delegate;
 
     @Override
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         return delegate.exists(key);
     }
 
     @Override
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public TriggerInfo get(UuidKey key) throws DaoException {
         return delegate.get(key);
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public UuidKey insert(@NotNull TriggerInfo triggerInfo) throws DaoException {
         return delegate.insert(triggerInfo);
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public UuidKey update(@NotNull TriggerInfo triggerInfo) throws DaoException {
         return delegate.update(triggerInfo);
     }
 
     @Override
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws DaoException {
         delegate.delete(key);
     }
 
     @Override
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public List<TriggerInfo> getTriggerInfos(@NotNull UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         return delegate.getTriggerInfos(pointUuidKey, lookupPagingInfo);
     }
 
     @Override
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public long getTriggerInfoCount(@NotNull UuidKey pointUuidKey) throws DaoException {
         return delegate.getTriggerInfoCount(pointUuidKey);

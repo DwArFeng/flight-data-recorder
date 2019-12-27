@@ -55,7 +55,7 @@ public class TriggerInfoMaintainServiceDelegate {
     private int triggerInfoFetchSize;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public TriggerInfo get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -79,7 +79,7 @@ public class TriggerInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull TriggerInfo triggerInfo) throws ServiceException {
         try {
             validationHandler.triggerInfoValidation(triggerInfo);
@@ -104,7 +104,7 @@ public class TriggerInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull TriggerInfo triggerInfo) throws ServiceException {
         try {
             validationHandler.triggerInfoValidation(triggerInfo);
@@ -134,7 +134,7 @@ public class TriggerInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -163,7 +163,7 @@ public class TriggerInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PagedData<TriggerInfo> getTriggerInfos(UuidKey pointUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(pointUuid);
@@ -202,7 +202,7 @@ public class TriggerInfoMaintainServiceDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchTriggerInfo2Cache(UuidKey uuidKey) {

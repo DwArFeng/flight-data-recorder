@@ -59,7 +59,7 @@ public class CategoryDaoImplTest {
     }
 
     @Test
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void test() throws DaoException {
         dao.insert(parentCategory);
         for (Category category : childCategories) {

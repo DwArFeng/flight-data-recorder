@@ -34,7 +34,7 @@ public class RealtimeValueCacheDelegate {
     @Value("${cache.prefix.entity.realtime_value}")
     private String keyPrefix;
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -44,7 +44,7 @@ public class RealtimeValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public RealtimeValue get(@NotNull UuidKey key) throws CacheException {
         try {
@@ -55,7 +55,7 @@ public class RealtimeValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, @NotNull RealtimeValue realtimeValue, @Min(0) long timeout) throws CacheException {
         try {
@@ -66,7 +66,7 @@ public class RealtimeValueCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {

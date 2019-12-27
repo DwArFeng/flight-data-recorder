@@ -36,7 +36,7 @@ public class PersistenceValueMaintainServiceDelegate {
     private long persistenceValueTimeout;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PersistenceValue get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -60,7 +60,7 @@ public class PersistenceValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull PersistenceValue persistenceValue) throws ServiceException {
         try {
             validationHandler.persistenceValueValidation(persistenceValue);
@@ -81,7 +81,7 @@ public class PersistenceValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull PersistenceValue persistenceValue) throws ServiceException {
         try {
             validationHandler.persistenceValueValidation(persistenceValue);
@@ -103,7 +103,7 @@ public class PersistenceValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);

@@ -37,7 +37,7 @@ public class TriggeredValueDaoDelegate {
     private int batchDeleteSize;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -52,7 +52,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public TriggeredValue get(UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -69,7 +69,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull TriggeredValue triggeredValue) throws DaoException {
         try {
             if (internalExists(triggeredValue.getKey())) {
@@ -87,7 +87,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull TriggeredValue triggeredValue) throws DaoException {
         try {
             if (!internalExists(triggeredValue.getKey())) {
@@ -108,7 +108,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -127,7 +127,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public void deleteAllByPoint(UuidKey pointKey) throws DaoException {
         try {
             HibernateUuidKey hibernatePointKey = mapper.map(pointKey, HibernateUuidKey.class);
@@ -146,7 +146,7 @@ public class TriggeredValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public void deleteAllByTriggerInfo(UuidKey triggerInfoKey) throws DaoException {
         try {
             HibernateUuidKey hibernatePointKey = mapper.map(triggerInfoKey, HibernateUuidKey.class);

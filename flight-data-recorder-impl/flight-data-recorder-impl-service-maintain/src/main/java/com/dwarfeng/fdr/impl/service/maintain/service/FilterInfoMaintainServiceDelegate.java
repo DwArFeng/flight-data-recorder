@@ -55,7 +55,7 @@ public class FilterInfoMaintainServiceDelegate {
     private int filterInfoFetchSize;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public FilterInfo get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -79,7 +79,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull FilterInfo filterInfo) throws ServiceException {
         try {
             validationHandler.filterInfoValidation(filterInfo);
@@ -104,7 +104,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull FilterInfo filterInfo) throws ServiceException {
         try {
             validationHandler.filterInfoValidation(filterInfo);
@@ -134,7 +134,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -164,7 +164,7 @@ public class FilterInfoMaintainServiceDelegate {
 
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PagedData<FilterInfo> getFilterInfos(UuidKey pointUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(pointUuid);
@@ -204,7 +204,7 @@ public class FilterInfoMaintainServiceDelegate {
     }
 
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
     public void fetchFilterInfo2Cache(UuidKey uuidKey) {

@@ -37,7 +37,7 @@ public class PersistenceValueDaoDelegate {
     private int batchDeleteSize;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -52,7 +52,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PersistenceValue get(UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -69,7 +69,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull PersistenceValue persistenceValue) throws DaoException {
         try {
             if (internalExists(persistenceValue.getKey())) {
@@ -87,7 +87,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull PersistenceValue persistenceValue) throws DaoException {
         try {
             if (!internalExists(persistenceValue.getKey())) {
@@ -108,7 +108,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -127,7 +127,7 @@ public class PersistenceValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void deleteAll(UuidKey pointKey) throws DaoException {
         try {
             HibernateUuidKey hibernatePointKey = mapper.map(pointKey, HibernateUuidKey.class);

@@ -34,7 +34,7 @@ public class TriggerInfoCacheDelegate {
     @Value("${cache.prefix.entity.trigger_info}")
     private String keyPrefix;
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public boolean exists(@NotNull UuidKey key) throws CacheException {
         try {
@@ -44,7 +44,7 @@ public class TriggerInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
     public TriggerInfo get(@NotNull UuidKey key) throws CacheException {
         try {
@@ -55,7 +55,7 @@ public class TriggerInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void push(@NotNull UuidKey key, @NotNull TriggerInfo triggerInfo, @Min(0) long timeout) throws CacheException {
         try {
@@ -66,7 +66,7 @@ public class TriggerInfoCacheDelegate {
         }
     }
 
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     public void delete(@NotNull UuidKey key) throws CacheException {
         try {

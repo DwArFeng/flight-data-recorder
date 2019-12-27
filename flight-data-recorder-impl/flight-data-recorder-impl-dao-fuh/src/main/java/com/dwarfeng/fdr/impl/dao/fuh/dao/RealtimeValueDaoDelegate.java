@@ -30,7 +30,7 @@ public class RealtimeValueDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -45,7 +45,7 @@ public class RealtimeValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public RealtimeValue get(UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -62,7 +62,7 @@ public class RealtimeValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull RealtimeValue realtimeValue) throws DaoException {
         try {
             if (internalExists(realtimeValue.getKey())) {
@@ -80,7 +80,7 @@ public class RealtimeValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull RealtimeValue realtimeValue) throws DaoException {
         try {
             if (!internalExists(realtimeValue.getKey())) {
@@ -101,7 +101,7 @@ public class RealtimeValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -120,7 +120,7 @@ public class RealtimeValueDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public RealtimeValue getRealtimeValue(UuidKey pointUuidKey) throws DaoException {
         throw new IllegalStateException("not implemented yet."); //TODO
     }

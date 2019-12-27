@@ -37,7 +37,7 @@ public class CategoryDaoDelegate {
     private Mapper mapper;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(@NotNull UuidKey key) throws DaoException {
         try {
             return internalExists(key);
@@ -52,7 +52,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public Category get(UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -69,7 +69,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull Category category) throws DaoException {
         try {
             if (internalExists(category.getKey())) {
@@ -87,7 +87,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull Category category) throws DaoException {
         try {
             if (!internalExists(category.getKey())) {
@@ -108,7 +108,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
@@ -127,7 +127,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<Category> getChilds(UuidKey key, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);
@@ -153,7 +153,7 @@ public class CategoryDaoDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public long getChildCount(UuidKey key) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);

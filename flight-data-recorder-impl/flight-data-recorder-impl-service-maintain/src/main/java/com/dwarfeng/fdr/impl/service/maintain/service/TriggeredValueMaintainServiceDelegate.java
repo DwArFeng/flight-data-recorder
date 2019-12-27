@@ -36,7 +36,7 @@ public class TriggeredValueMaintainServiceDelegate {
     private long triggeredValueTimeout;
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager", readOnly = true)
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public TriggeredValue get(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
@@ -60,7 +60,7 @@ public class TriggeredValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey insert(@NotNull TriggeredValue triggeredValue) throws ServiceException {
         try {
             validationHandler.triggeredValueValidation(triggeredValue);
@@ -81,7 +81,7 @@ public class TriggeredValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public UuidKey update(@NotNull TriggeredValue triggeredValue) throws ServiceException {
         try {
             validationHandler.triggeredValueValidation(triggeredValue);
@@ -103,7 +103,7 @@ public class TriggeredValueMaintainServiceDelegate {
     }
 
     @TimeAnalyse
-    @Transactional(transactionManager = "daoTransactionManager")
+    @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull UuidKey key) throws ServiceException {
         try {
             validationHandler.uuidKeyValidation(key);
