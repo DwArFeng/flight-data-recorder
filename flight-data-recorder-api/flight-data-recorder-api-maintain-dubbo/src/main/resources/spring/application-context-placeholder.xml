@@ -8,7 +8,7 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 设置配置文件的路径 -->
-    <context:property-placeholder location="classpath:connection/*.properties"
+    <context:property-placeholder location="classpath:dubbo/*.properties"
                                   local-override="true"
                                   properties-ref="refProperties"/>
 
@@ -16,7 +16,8 @@
     <bean id="refProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
             <list>
-                <value>file:conf/connection/*.properties</value>
+                <!--suppress SpringXmlModelInspection -->
+                <value>file:conf/dubbo/*.properties</value>
             </list>
         </property>
     </bean>
