@@ -10,8 +10,8 @@ import com.dwarfeng.fdr.stack.exception.TriggerException;
 public abstract class AbstractStructuredTrigger implements StructuredTrigger {
 
     protected Object config;
-    protected String pointUuid;
-    protected String triggerUuid;
+    protected long pointGuid;
+    protected long triggerGuid;
 
     public AbstractStructuredTrigger() {
     }
@@ -22,12 +22,12 @@ public abstract class AbstractStructuredTrigger implements StructuredTrigger {
     }
 
     @Override
-    public void applyPointUuid(String pointUuid) throws TriggerException {
-        this.pointUuid = pointUuid;
+    public void applyPointGuid(long pointGuid) throws TriggerException {
+        this.pointGuid = pointGuid;
     }
 
     @Override
-    public void applyTriggerUuid(String triggerUuid) throws TriggerException {
-        this.triggerUuid = triggerUuid;
+    public void applyTriggerGuid(long triggerGuid) throws TriggerException {
+        this.triggerGuid = triggerGuid;
     }
 }

@@ -1,13 +1,11 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggerInfoMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggeredValueMaintainApi;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -40,7 +37,7 @@ public class TriggeredValueMaintainApiImplTest {
     @Before
     public void setUp() {
         parentPoint = new Point(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent-point",
                 "test-point",
@@ -48,7 +45,7 @@ public class TriggeredValueMaintainApiImplTest {
                 true
         );
         parentTriggerInfo = new TriggerInfo(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 parentPoint.getKey(),
                 true,
                 "parent-trigger-info",
@@ -57,7 +54,7 @@ public class TriggeredValueMaintainApiImplTest {
         triggeredValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             TriggeredValue triggeredValue = new TriggeredValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                    null,
                     parentPoint.getKey(),
                     parentTriggerInfo.getKey(),
                     new Date(),
@@ -78,10 +75,15 @@ public class TriggeredValueMaintainApiImplTest {
     @Test
     public void test() throws ServiceException {
         try {
-            pointMaintainApi.insert(parentPoint);
-            triggerInfoMaintainApi.insert(parentTriggerInfo);
+            parentPoint.setKey(pointMaintainApi.insert(parentPoint));
+            parentTriggerInfo.setKey(triggerInfoMaintainApi.insert(parentTriggerInfo));
+            parentTriggerInfo.setPointKey(parentPoint.getKey());
+            triggerInfoMaintainApi.update(parentTriggerInfo);
             for (TriggeredValue triggeredValue : triggeredValues) {
-                triggeredValueMaintainApi.insert(triggeredValue);
+                triggeredValue.setKey(triggeredValueMaintainApi.insert(triggeredValue));
+                triggeredValue.setPointKey(parentPoint.getKey());
+                triggeredValue.setTriggerKey(parentTriggerInfo.getKey());
+                triggeredValueMaintainApi.update(triggeredValue);
             }
         } finally {
             for (TriggeredValue triggeredValue : triggeredValues) {

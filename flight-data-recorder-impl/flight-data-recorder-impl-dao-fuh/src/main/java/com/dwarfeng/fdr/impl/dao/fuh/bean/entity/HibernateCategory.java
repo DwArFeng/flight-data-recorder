@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@IdClass(HibernateUuidKey.class)
+@IdClass(HibernateGuidKey.class)
 @Table(name = "tbl_category")
 public class HibernateCategory implements Serializable {
 
@@ -18,12 +18,12 @@ public class HibernateCategory implements Serializable {
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
-    private String uuid;
+    @Column(name = "guid", nullable = false, unique = true)
+    private Long guid;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "parent_uuid", columnDefinition = "CHAR(22)")
-    private String parentUuid;
+    @Column(name = "parent_guid")
+    private Long parentGuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
@@ -35,7 +35,7 @@ public class HibernateCategory implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernateCategory.class)
     @JoinColumns({ //
-            @JoinColumn(name = "parent_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "parent_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernateCategory parentCategory;
 
@@ -46,43 +46,39 @@ public class HibernateCategory implements Serializable {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePoint.class, mappedBy = "category")
     private Set<HibernatePoint> points = new HashSet<>();
 
-//    @OneToMany(targetEntity = PointHibernateImpl.class, mappedBy = "category")
-//    @Cascade(CascadeType.MERGE)
-//    private Set<PointHibernateImpl> points = new HashSet<>();
-
     public HibernateCategory() {
     }
 
-    public HibernateUuidKey getKey() {
-        return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getKey() {
+        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setKey(HibernateGuidKey guidKey) {
+        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getUuid() {
-        return uuid;
+    public Long getGuid() {
+        return guid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setGuid(Long guid) {
+        this.guid = guid;
     }
 
-    public HibernateUuidKey getParentKey() {
-        return Optional.ofNullable(parentUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getParentKey() {
+        return Optional.ofNullable(parentGuid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setParentKey(HibernateUuidKey parentKey) {
-        this.parentUuid = Optional.ofNullable(parentKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setParentKey(HibernateGuidKey parentKey) {
+        this.parentGuid = Optional.ofNullable(parentKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getParentUuid() {
-        return parentUuid;
+    public Long getParentGuid() {
+        return parentGuid;
     }
 
-    public void setParentUuid(String parentUuid) {
-        this.parentUuid = parentUuid;
+    public void setParentGuid(Long parentGuid) {
+        this.parentGuid = parentGuid;
     }
 
     public String getName() {
@@ -120,8 +116,8 @@ public class HibernateCategory implements Serializable {
     @Override
     public String toString() {
         return "HibernateCategory{" +
-                "uuid='" + uuid + '\'' +
-                ", parentUuid='" + parentUuid + '\'' +
+                "guid='" + guid + '\'' +
+                ", parentGuid='" + parentGuid + '\'' +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 '}';

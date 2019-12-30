@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateUuidKey.class)
+@IdClass(HibernateGuidKey.class)
 @Table(name = "tbl_triggered_value")
 public class HibernateTriggeredValue implements Serializable {
 
@@ -17,15 +17,15 @@ public class HibernateTriggeredValue implements Serializable {
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
-    private String uuid;
+    @Column(name = "guid", nullable = false, unique = true)
+    private Long guid;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "point_uuid", columnDefinition = "CHAR(22)")
-    private String pointUuid;
+    @Column(name = "point_guid")
+    private Long pointGuid;
 
-    @Column(name = "trigger_uuid", columnDefinition = "CHAR(22)")
-    private String triggerUuid;
+    @Column(name = "trigger_guid")
+    private Long triggerGuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
@@ -40,65 +40,65 @@ public class HibernateTriggeredValue implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "point_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "point_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
     @ManyToOne(targetEntity = HibernateTriggerInfo.class)
     @JoinColumns({ //
-            @JoinColumn(name = "trigger_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "trigger_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernateTriggerInfo triggerInfo;
 
     public HibernateTriggeredValue() {
     }
 
-    public HibernateUuidKey getKey() {
-        return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getKey() {
+        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setKey(HibernateGuidKey guidKey) {
+        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getUuid() {
-        return uuid;
+    public Long getGuid() {
+        return guid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setGuid(Long guid) {
+        this.guid = guid;
     }
 
-    public HibernateUuidKey getPointKey() {
-        return Optional.ofNullable(pointUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getPointKey() {
+        return Optional.ofNullable(pointGuid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setPointKey(HibernateUuidKey uuidKey) {
-        this.pointUuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setPointKey(HibernateGuidKey guidKey) {
+        this.pointGuid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getPointUuid() {
-        return pointUuid;
+    public Long getPointGuid() {
+        return pointGuid;
     }
 
-    public void setPointUuid(String pointUuid) {
-        this.pointUuid = pointUuid;
+    public void setPointGuid(Long pointGuid) {
+        this.pointGuid = pointGuid;
     }
 
-    public HibernateUuidKey getTriggerKey() {
-        return Optional.ofNullable(triggerUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getTriggerKey() {
+        return Optional.ofNullable(triggerGuid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setTriggerKey(HibernateUuidKey uuidKey) {
-        this.triggerUuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setTriggerKey(HibernateGuidKey guidKey) {
+        this.triggerGuid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getTriggerUuid() {
-        return triggerUuid;
+    public Long getTriggerGuid() {
+        return triggerGuid;
     }
 
-    public void setTriggerUuid(String triggerUuid) {
-        this.triggerUuid = triggerUuid;
+    public void setTriggerGuid(Long triggerGuid) {
+        this.triggerGuid = triggerGuid;
     }
 
     public Date getHappenedDate() {
@@ -144,9 +144,9 @@ public class HibernateTriggeredValue implements Serializable {
     @Override
     public String toString() {
         return "HibernateTriggeredValue{" +
-                "uuid='" + uuid + '\'' +
-                ", pointUuid='" + pointUuid + '\'' +
-                ", triggerUuid='" + triggerUuid + '\'' +
+                "guid='" + guid + '\'' +
+                ", pointGuid='" + pointGuid + '\'' +
+                ", triggerGuid='" + triggerGuid + '\'' +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

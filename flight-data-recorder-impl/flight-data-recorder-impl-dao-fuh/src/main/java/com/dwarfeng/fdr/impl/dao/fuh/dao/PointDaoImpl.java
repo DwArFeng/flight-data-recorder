@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.impl.dao.fuh.dao;
 
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,37 +17,37 @@ public class PointDaoImpl implements PointDao {
     private PointDaoDelegate delegate;
 
     @Override
-    public boolean exists(UuidKey key) throws DaoException {
+    public boolean exists(GuidKey key) throws DaoException {
         return delegate.exists(key);
     }
 
     @Override
-    public Point get(UuidKey key) throws DaoException {
+    public Point get(GuidKey key) throws DaoException {
         return delegate.get(key);
     }
 
     @Override
-    public UuidKey insert(Point point) throws DaoException {
+    public GuidKey insert(Point point) throws DaoException {
         return delegate.insert(point);
     }
 
     @Override
-    public UuidKey update(Point point) throws DaoException {
+    public GuidKey update(Point point) throws DaoException {
         return delegate.update(point);
     }
 
     @Override
-    public void delete(UuidKey key) throws DaoException {
+    public void delete(GuidKey key) throws DaoException {
         delegate.delete(key);
     }
 
     @Override
-    public List<Point> getPoints(UuidKey categoryUuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException {
-        return delegate.getPoints(categoryUuidKey, lookupPagingInfo);
+    public List<Point> getPoints(GuidKey categoryGuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException {
+        return delegate.getPoints(categoryGuidKey, lookupPagingInfo);
     }
 
     @Override
-    public long getPointCount(UuidKey categoryUuidKey) throws DaoException {
-        return delegate.getPointCount(categoryUuidKey);
+    public long getPointCount(GuidKey categoryGuidKey) throws DaoException {
+        return delegate.getPointCount(categoryGuidKey);
     }
 }

@@ -2,13 +2,13 @@ package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.cache.RealtimeValueCache;
 import com.dwarfeng.fdr.stack.dao.RealtimeValueDao;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.handler.ValidationHandler;
+import com.dwarfeng.sfds.api.GuidApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,24 +29,24 @@ public class RealtimeValueMaintainServiceDelegate {
     private RealtimeValueDao realtimeValueDao;
     @Autowired
     private RealtimeValueCache realtimeValueCache;
+
     @Autowired
-    private ValidationHandler validationHandler;
+    private GuidApi guidApi;
 
     @Value("${cache.timeout.entity.realtime_value}")
     private long realtimeValueTimeout;
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public RealtimeValue get(@NotNull UuidKey key) throws ServiceException {
+    public RealtimeValue get(@NotNull GuidKey key) throws ServiceException {
         try {
-            validationHandler.uuidKeyValidation(key);
             return internalGet(key);
         } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
 
-    private RealtimeValue internalGet(UuidKey key) throws CacheException, DaoException {
+    private RealtimeValue internalGet(GuidKey key) throws CacheException, DaoException {
         if (realtimeValueCache.exists(key)) {
             LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
             return realtimeValueCache.get(key);
@@ -61,10 +61,8 @@ public class RealtimeValueMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey insert(@NotNull RealtimeValue realtimeValue) throws ServiceException {
+    public GuidKey insert(@NotNull RealtimeValue realtimeValue) throws ServiceException {
         try {
-            validationHandler.realtimeValueValidation(realtimeValue);
-
             if (realtimeValueCache.exists(realtimeValue.getKey()) || realtimeValueDao.exists(realtimeValue.getKey())) {
                 LOGGER.debug("指定的实体 " + realtimeValue.toString() + " 已经存在，无法插入...");
                 throw new IllegalStateException("指定的实体 " + realtimeValue.toString() + " 已经存在，无法插入...");
@@ -82,10 +80,8 @@ public class RealtimeValueMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey update(@NotNull RealtimeValue realtimeValue) throws ServiceException {
+    public GuidKey update(@NotNull RealtimeValue realtimeValue) throws ServiceException {
         try {
-            validationHandler.realtimeValueValidation(realtimeValue);
-
             if (!realtimeValueCache.exists(realtimeValue.getKey()) && !realtimeValueDao.exists(realtimeValue.getKey())) {
                 LOGGER.debug("指定的实体 " + realtimeValue.toString() + " 已经存在，无法更新...");
                 throw new IllegalStateException("指定的实体 " + realtimeValue.toString() + " 已经存在，无法更新...");
@@ -104,10 +100,8 @@ public class RealtimeValueMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public void delete(@NotNull UuidKey key) throws ServiceException {
+    public void delete(@NotNull GuidKey key) throws ServiceException {
         try {
-            validationHandler.uuidKeyValidation(key);
-
             if (!realtimeValueCache.exists(key) && !realtimeValueDao.exists(key)) {
                 LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
                 throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");

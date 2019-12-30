@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 
 /**
  * 过滤器信息。
@@ -8,19 +8,19 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class FilterInfo implements Entity<UuidKey> {
+public class FilterInfo implements Entity<GuidKey> {
 
     private static final long serialVersionUID = 3393705759584503229L;
 
     /**
      * 主键。
      */
-    private UuidKey key;
+    private GuidKey key;
 
     /**
      * 数据点键。
      */
-    private UuidKey pointKey;
+    private GuidKey pointKey;
 
     private boolean enabled;
 
@@ -31,7 +31,7 @@ public class FilterInfo implements Entity<UuidKey> {
     public FilterInfo() {
     }
 
-    public FilterInfo(UuidKey key, UuidKey pointKey, boolean enabled, String remark, String content) {
+    public FilterInfo(GuidKey key, GuidKey pointKey, boolean enabled, String remark, String content) {
         this.key = key;
         this.pointKey = pointKey;
         this.enabled = enabled;
@@ -40,20 +40,20 @@ public class FilterInfo implements Entity<UuidKey> {
     }
 
     @Override
-    public UuidKey getKey() {
+    public GuidKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(UuidKey key) {
+    public void setKey(GuidKey key) {
         this.key = key;
     }
 
-    public UuidKey getPointKey() {
+    public GuidKey getPointKey() {
         return pointKey;
     }
 
-    public void setPointKey(UuidKey pointKey) {
+    public void setPointKey(GuidKey pointKey) {
         this.pointKey = pointKey;
     }
 

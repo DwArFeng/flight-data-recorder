@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@IdClass(HibernateUuidKey.class)
+@IdClass(HibernateGuidKey.class)
 @Table(name = "tbl_filter_info")
 public class HibernateFilterInfo implements Serializable {
 
@@ -18,12 +18,12 @@ public class HibernateFilterInfo implements Serializable {
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
-    private String uuid;
+    @Column(name = "guid", nullable = false, unique = true)
+    private Long guid;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "point_uuid", columnDefinition = "CHAR(22)")
-    private String pointUuid;
+    @Column(name = "point_guid")
+    private Long pointGuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "enabled", nullable = false)
@@ -38,7 +38,7 @@ public class HibernateFilterInfo implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "point_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "point_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
@@ -49,36 +49,36 @@ public class HibernateFilterInfo implements Serializable {
     public HibernateFilterInfo() {
     }
 
-    public String getUuid() {
-        return uuid;
+    public Long getGuid() {
+        return guid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setGuid(Long guid) {
+        this.guid = guid;
     }
 
-    public HibernateUuidKey getKey() {
-        return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getKey() {
+        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setKey(HibernateGuidKey guidKey) {
+        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getPointUuid() {
-        return pointUuid;
+    public Long getPointGuid() {
+        return pointGuid;
     }
 
-    public void setPointUuid(String pointUuid) {
-        this.pointUuid = pointUuid;
+    public void setPointGuid(Long pointGuid) {
+        this.pointGuid = pointGuid;
     }
 
-    public HibernateUuidKey getPointKey() {
-        return Optional.ofNullable(pointUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getPointKey() {
+        return Optional.ofNullable(pointGuid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setPointKey(HibernateUuidKey parentKey) {
-        this.pointUuid = Optional.ofNullable(parentKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setPointKey(HibernateGuidKey parentKey) {
+        this.pointGuid = Optional.ofNullable(parentKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
     public boolean isEnabled() {
@@ -124,8 +124,8 @@ public class HibernateFilterInfo implements Serializable {
     @Override
     public String toString() {
         return "HibernateFilterInfo{" +
-                "uuid='" + uuid + '\'' +
-                ", pointUuid='" + pointUuid + '\'' +
+                "guid='" + guid + '\'' +
+                ", pointGuid='" + pointGuid + '\'' +
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +

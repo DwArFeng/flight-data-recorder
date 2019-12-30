@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.stack.cache;
 
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 
 /**
  * 数据点缓存。
@@ -9,5 +9,5 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface PointCache extends BaseCache<UuidKey, Point> {
+public interface PointCache extends BaseCache<GuidKey, Point> {
 }

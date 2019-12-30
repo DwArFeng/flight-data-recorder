@@ -1,47 +1,42 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
 import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggerInfoMaintainApi;
-import com.dwarfeng.fdr.api.maintain.dubbo.interceptor.DubboInvokeLog;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@DubboInvokeLog
 public class TriggerInfoMaintainApiImpl implements TriggerInfoMaintainApi {
 
     @Autowired
-    @Qualifier("triggerInfoMaintainService")
-    private TriggerInfoMaintainService delegate;
+    private TriggerInfoMaintainApiDelegate delegate;
 
     @Override
-    public PagedData<TriggerInfo> getTriggerInfos(UuidKey pointUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
-        return delegate.getTriggerInfos(pointUuid, lookupPagingInfo);
+    public PagedData<TriggerInfo> getTriggerInfos(GuidKey pointGuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
+        return delegate.getTriggerInfos(pointGuid, lookupPagingInfo);
     }
 
     @Override
-    public TriggerInfo get(UuidKey key) throws ServiceException {
-        return delegate.get(key);
+    public TriggerInfo get(GuidKey guidKey) throws ServiceException {
+        return delegate.get(guidKey);
     }
 
     @Override
-    public UuidKey insert(TriggerInfo element) throws ServiceException {
-        return delegate.insert(element);
+    public GuidKey insert(TriggerInfo triggerInfo) throws ServiceException {
+        return delegate.insert(triggerInfo);
     }
 
     @Override
-    public UuidKey update(TriggerInfo element) throws ServiceException {
-        return delegate.update(element);
+    public GuidKey update(TriggerInfo triggerInfo) throws ServiceException {
+        return delegate.update(triggerInfo);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
-        delegate.delete(key);
+    public void delete(GuidKey guidKey) throws ServiceException {
+        delegate.delete(guidKey);
     }
 }

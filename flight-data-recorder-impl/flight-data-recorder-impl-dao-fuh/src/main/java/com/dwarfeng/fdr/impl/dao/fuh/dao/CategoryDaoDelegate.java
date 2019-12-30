@@ -1,11 +1,11 @@
 package com.dwarfeng.fdr.impl.dao.fuh.dao;
 
 import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernateCategory;
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.dozer.Mapper;
 import org.hibernate.criterion.DetachedCriteria;
@@ -38,7 +38,7 @@ public class CategoryDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public boolean exists(@NotNull UuidKey key) throws DaoException {
+    public boolean exists(@NotNull GuidKey key) throws DaoException {
         try {
             return internalExists(key);
         } catch (Exception e) {
@@ -46,22 +46,22 @@ public class CategoryDaoDelegate {
         }
     }
 
-    private boolean internalExists(UuidKey key) {
-        HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-        return Objects.nonNull(template.get(HibernateCategory.class, hibernateUuidKey));
+    private boolean internalExists(GuidKey key) {
+        HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+        return Objects.nonNull(template.get(HibernateCategory.class, hibernateGuidKey));
     }
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public Category get(UuidKey key) throws DaoException {
+    public Category get(GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的Category " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateGuidKey);
             return mapper.map(hibernateCategory, Category.class);
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -70,7 +70,7 @@ public class CategoryDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey insert(@NotNull Category category) throws DaoException {
+    public GuidKey insert(@NotNull Category category) throws DaoException {
         try {
             if (internalExists(category.getKey())) {
                 LOGGER.warn("指定的Category " + category.toString() + " 已经存在, 将抛出异常...");
@@ -88,17 +88,17 @@ public class CategoryDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey update(@NotNull Category category) throws DaoException {
+    public GuidKey update(@NotNull Category category) throws DaoException {
         try {
             if (!internalExists(category.getKey())) {
                 LOGGER.warn("指定的Category " + category.toString() + " 不存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的Category " + category.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(category.getKey(), HibernateUuidKey.class);
-            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(category.getKey(), HibernateGuidKey.class);
+            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateGuidKey);
             assert hibernateCategory != null;
-            mapper.map(category, hibernateUuidKey);
+            mapper.map(category, hibernateCategory);
             template.update(hibernateCategory);
             template.flush();
             return category.getKey();
@@ -109,15 +109,15 @@ public class CategoryDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public void delete(@NotNull UuidKey key) throws DaoException {
+    public void delete(@NotNull GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的Category " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernateCategory hibernateCategory = template.get(HibernateCategory.class, hibernateGuidKey);
             assert hibernateCategory != null;
             template.delete(hibernateCategory);
             template.flush();
@@ -128,13 +128,13 @@ public class CategoryDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<Category> getChilds(UuidKey key, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
+    public List<Category> getChilds(GuidKey key, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);
             if (Objects.isNull(key)) {
-                criteria.add(Restrictions.isNull("parentUuid"));
+                criteria.add(Restrictions.isNull("parentGuid"));
             } else {
-                criteria.add(Restrictions.eq("parentUuid", key.getUuid()));
+                criteria.add(Restrictions.eq("parentGuid", key.getGuid()));
             }
             criteria.addOrder(Order.asc("name"));
             @SuppressWarnings("unchecked")
@@ -154,13 +154,13 @@ public class CategoryDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public long getChildCount(UuidKey key) throws DaoException {
+    public long getChildCount(GuidKey key) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateCategory.class);
             if (Objects.isNull(key)) {
-                criteria.add(Restrictions.isNull("parentUuid"));
+                criteria.add(Restrictions.isNull("parentGuid"));
             } else {
-                criteria.add(Restrictions.eq("parentUuid", key.getUuid()));
+                criteria.add(Restrictions.eq("parentGuid", key.getGuid()));
             }
             criteria.setProjection(Projections.rowCount());
             return template.findByCriteria(criteria).stream().findFirst().map(Long.class::cast).orElse(0L);

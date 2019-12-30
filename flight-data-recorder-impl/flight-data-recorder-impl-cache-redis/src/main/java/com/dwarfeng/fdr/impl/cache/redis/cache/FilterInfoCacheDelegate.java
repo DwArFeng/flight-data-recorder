@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisFilterInfo;
 import com.dwarfeng.fdr.impl.cache.redis.formatter.Formatter;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +28,15 @@ public class FilterInfoCacheDelegate {
     @Autowired
     private Mapper mapper;
     @Autowired
-    @Qualifier("uuidKeyFormatter")
-    private Formatter<UuidKey> formatter;
+    @Qualifier("guidKeyFormatter")
+    private Formatter<GuidKey> formatter;
 
     @Value("${cache.prefix.entity.filter_info}")
     private String keyPrefix;
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public boolean exists(@NotNull UuidKey key) throws CacheException {
+    public boolean exists(@NotNull GuidKey key) throws CacheException {
         try {
             return template.hasKey(formatter.format(keyPrefix, key));
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class FilterInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public FilterInfo get(@NotNull UuidKey key) throws CacheException {
+    public FilterInfo get(@NotNull GuidKey key) throws CacheException {
         try {
             RedisFilterInfo redisFilter = template.opsForValue().get(formatter.format(keyPrefix, key));
             return mapper.map(redisFilter, FilterInfo.class);
@@ -57,7 +57,7 @@ public class FilterInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void push(@NotNull UuidKey key, @NotNull FilterInfo filterInfo, @Min(0) long timeout) throws CacheException {
+    public void push(@NotNull GuidKey key, @NotNull FilterInfo filterInfo, @Min(0) long timeout) throws CacheException {
         try {
             RedisFilterInfo redisFilterInfo = mapper.map(filterInfo, RedisFilterInfo.class);
             template.opsForValue().set(formatter.format(keyPrefix, key), redisFilterInfo, timeout, TimeUnit.MILLISECONDS);
@@ -68,7 +68,7 @@ public class FilterInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void delete(@NotNull UuidKey key) throws CacheException {
+    public void delete(@NotNull GuidKey key) throws CacheException {
         try {
             template.delete(formatter.format(keyPrefix, key));
         } catch (Exception e) {

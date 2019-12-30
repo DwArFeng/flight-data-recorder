@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.service.maintain.service;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import com.dwarfeng.fdr.stack.service.FilterInfoMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +16,27 @@ public class FilterInfoMaintainServiceImpl implements FilterInfoMaintainService 
     private FilterInfoMaintainServiceDelegate delegate;
 
     @Override
-    public FilterInfo get(UuidKey key) throws ServiceException {
+    public FilterInfo get(GuidKey key) throws ServiceException {
         return delegate.get(key);
     }
 
     @Override
-    public UuidKey insert(FilterInfo filterInfo) throws ServiceException {
+    public GuidKey insert(FilterInfo filterInfo) throws ServiceException {
         return delegate.insert(filterInfo);
     }
 
     @Override
-    public UuidKey update(FilterInfo filterInfo) throws ServiceException {
+    public GuidKey update(FilterInfo filterInfo) throws ServiceException {
         return delegate.update(filterInfo);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
+    public void delete(GuidKey key) throws ServiceException {
         delegate.delete(key);
     }
 
     @Override
-    public PagedData<FilterInfo> getFilterInfos(UuidKey categoryUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
-        return delegate.getFilterInfos(categoryUuid, lookupPagingInfo);
+    public PagedData<FilterInfo> getFilterInfos(GuidKey categoryGuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
+        return delegate.getFilterInfos(categoryGuid, lookupPagingInfo);
     }
 }

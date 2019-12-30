@@ -15,7 +15,7 @@ public class DataInfo implements Dto {
     /**
      * 数据点的UUID。
      */
-    private String pointUuid;
+    private long pointGuid;
 
     /**
      * 数据的文本格式值。
@@ -30,18 +30,18 @@ public class DataInfo implements Dto {
     public DataInfo() {
     }
 
-    public DataInfo(String pointUuid, String value, Date happenedDate) {
-        this.pointUuid = pointUuid;
+    public DataInfo(long pointGuid, String value, Date happenedDate) {
+        this.pointGuid = pointGuid;
         this.value = value;
         this.happenedDate = happenedDate;
     }
 
-    public String getPointUuid() {
-        return pointUuid;
+    public long getPointGuid() {
+        return pointGuid;
     }
 
-    public void setPointUuid(String pointUuid) {
-        this.pointUuid = pointUuid;
+    public void setPointGuid(long pointGuid) {
+        this.pointGuid = pointGuid;
     }
 
     public String getValue() {
@@ -63,7 +63,7 @@ public class DataInfo implements Dto {
     @Override
     public String toString() {
         return "DataInfo{" +
-                "pointUuid='" + pointUuid + '\'' +
+                "pointGuid='" + pointGuid + '\'' +
                 ", value='" + value + '\'' +
                 ", happenedDate=" + happenedDate +
                 '}';

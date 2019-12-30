@@ -13,7 +13,7 @@ public class FilterHandlerImpl implements FilterHandler {
     private FilterHandlerDelegate delegate;
 
     @Override
-    public Filter make(String pointUuid, String filterUuid, String content) throws FilterException {
-        return delegate.make(pointUuid, filterUuid, content);
+    public Filter make(long pointGuid, long filterGuid, String content) throws FilterException {
+        return delegate.make(pointGuid, filterGuid, content);
     }
 }

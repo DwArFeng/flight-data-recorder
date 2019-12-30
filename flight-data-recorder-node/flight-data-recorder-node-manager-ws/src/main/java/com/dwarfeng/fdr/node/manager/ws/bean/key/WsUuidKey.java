@@ -1,7 +1,5 @@
 package com.dwarfeng.fdr.node.manager.ws.bean.key;
 
-import com.dwarfeng.fdr.sdk.validation.DenseUUID;
-
 import java.io.Serializable;
 
 /**
@@ -10,8 +8,8 @@ import java.io.Serializable;
  */
 public class WsUuidKey implements Serializable {
 
-    @DenseUUID
-    private String uuid;
+    private static final long serialVersionUID = 5159671998585587561L;
 
+    private String uuid;
 
 }

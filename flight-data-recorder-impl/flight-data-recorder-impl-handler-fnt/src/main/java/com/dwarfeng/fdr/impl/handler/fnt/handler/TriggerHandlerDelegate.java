@@ -30,7 +30,7 @@ public class TriggerHandlerDelegate {
     private ApplicationContext applicationContext;
 
     @TimeAnalyse
-    public Trigger make(@NotNull String pointUuid, @NotNull String triggerUuid, @NotNull String content) throws TriggerException {
+    public Trigger make(@NotNull long pointGuid, @NotNull long triggerGuid, @NotNull String content) throws TriggerException {
         LOGGER.debug("1. 将content以JSON方式转化为StructuredTriggerInfo对象...");
         StructuredTriggerInfo structuredTriggerInfo = null;
         try {
@@ -57,8 +57,8 @@ public class TriggerHandlerDelegate {
         }
 
         LOGGER.debug("4. StructuredTrigger应用配置信息...");
-        structuredTrigger.applyPointUuid(pointUuid);
-        structuredTrigger.applyTriggerUuid(triggerUuid);
+        structuredTrigger.applyPointGuid(pointGuid);
+        structuredTrigger.applyTriggerGuid(triggerGuid);
         structuredTrigger.applyConfig(structuredTriggerInfo.getConfig());
 
         return structuredTrigger;

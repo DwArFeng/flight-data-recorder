@@ -1,11 +1,9 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.RealtimeValueMaintainApi;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -16,7 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
-import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -31,9 +28,9 @@ public class RealtimeValueMaintainApiImplTest {
     private RealtimeValue realtimeValue;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         parentPoint = new Point(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent-point",
                 "test-point",
@@ -48,7 +45,7 @@ public class RealtimeValueMaintainApiImplTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         parentPoint = null;
         realtimeValue = null;
     }
@@ -56,7 +53,8 @@ public class RealtimeValueMaintainApiImplTest {
     @Test
     public void test() throws ServiceException {
         try {
-            pointMaintainApi.insert(parentPoint);
+            parentPoint.setKey(pointMaintainApi.insert(parentPoint));
+            realtimeValue.setKey(parentPoint.getKey());
             realtimeValueMaintainApi.insert(realtimeValue);
         } finally {
             realtimeValueMaintainApi.delete(realtimeValue.getKey());

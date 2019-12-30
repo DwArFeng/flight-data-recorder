@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.service.maintain.service;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import com.dwarfeng.fdr.stack.service.CategoryMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +16,27 @@ public class CategoryMaintainServiceImpl implements CategoryMaintainService {
     private CategoryMaintainServiceDelegate delegate;
 
     @Override
-    public Category get(UuidKey key) throws ServiceException {
+    public Category get(GuidKey key) throws ServiceException {
         return delegate.get(key);
     }
 
     @Override
-    public UuidKey insert(Category category) throws ServiceException {
+    public GuidKey insert(Category category) throws ServiceException {
         return delegate.insert(category);
     }
 
     @Override
-    public UuidKey update(Category category) throws ServiceException {
+    public GuidKey update(Category category) throws ServiceException {
         return delegate.update(category);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
+    public void delete(GuidKey key) throws ServiceException {
         delegate.delete(key);
     }
 
     @Override
-    public PagedData<Category> getChilds(UuidKey uuidKey, LookupPagingInfo lookupPagingInfo) throws ServiceException {
-        return delegate.getChilds(uuidKey, lookupPagingInfo);
+    public PagedData<Category> getChilds(GuidKey guidKey, LookupPagingInfo lookupPagingInfo) throws ServiceException {
+        return delegate.getChilds(guidKey, lookupPagingInfo);
     }
 }

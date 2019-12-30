@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@IdClass(HibernateUuidKey.class)
+@IdClass(HibernateGuidKey.class)
 @Table(name = "tbl_point")
 public class HibernatePoint implements Serializable {
 
@@ -18,12 +18,12 @@ public class HibernatePoint implements Serializable {
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
-    private String uuid;
+    @Column(name = "guid", nullable = false, unique = true)
+    private Long guid;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "category_uuid", columnDefinition = "CHAR(22)")
-    private String categoryUuid;
+    @Column(name = "category_guid")
+    private Long categoryGuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
@@ -41,7 +41,7 @@ public class HibernatePoint implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernateCategory.class)
     @JoinColumns({ //
-            @JoinColumn(name = "category_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "category_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernateCategory category;
 
@@ -64,43 +64,39 @@ public class HibernatePoint implements Serializable {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggeredValue.class, mappedBy = "point")
     private Set<HibernateTriggeredValue> triggeredValues = new HashSet<>();
 
-//    @OneToMany(targetEntity = PointHibernateImpl.class, mappedBy = "category")
-//    @Cascade(CascadeType.MERGE)
-//    private Set<PointHibernateImpl> points = new HashSet<>();
-
     public HibernatePoint() {
     }
 
-    public HibernateUuidKey getKey() {
-        return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getKey() {
+        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setKey(HibernateGuidKey guidKey) {
+        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getUuid() {
-        return uuid;
+    public Long getGuid() {
+        return guid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setGuid(Long guid) {
+        this.guid = guid;
     }
 
-    public HibernateUuidKey getCategoryKey() {
-        return Optional.ofNullable(categoryUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getCategoryKey() {
+        return Optional.ofNullable(categoryGuid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setCategoryKey(HibernateUuidKey parentKey) {
-        this.categoryUuid = Optional.ofNullable(parentKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setCategoryKey(HibernateGuidKey parentKey) {
+        this.categoryGuid = Optional.ofNullable(parentKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getCategoryUuid() {
-        return categoryUuid;
+    public Long getCategoryGuid() {
+        return categoryGuid;
     }
 
-    public void setCategoryUuid(String categoryUuid) {
-        this.categoryUuid = categoryUuid;
+    public void setCategoryGuid(Long categoryGuid) {
+        this.categoryGuid = categoryGuid;
     }
 
     public String getName() {
@@ -194,8 +190,8 @@ public class HibernatePoint implements Serializable {
     @Override
     public String toString() {
         return "HibernatePoint{" +
-                "uuid='" + uuid + '\'' +
-                ", categoryUuid='" + categoryUuid + '\'' +
+                "guid='" + guid + '\'' +
+                ", categoryGuid='" + categoryGuid + '\'' +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 ", persistenceEnabled=" + persistenceEnabled +

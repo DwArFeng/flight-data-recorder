@@ -1,38 +1,33 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
 import com.dwarfeng.fdr.api.maintain.dubbo.api.FilteredValueMaintainApi;
-import com.dwarfeng.fdr.api.maintain.dubbo.interceptor.DubboInvokeLog;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@DubboInvokeLog
 public class FilteredValueMaintainApiImpl implements FilteredValueMaintainApi {
 
     @Autowired
-    @Qualifier("filteredValueMaintainService")
-    private FilteredValueMaintainService delegate;
+    private FilteredValueMaintainApiDelegate delegate;
 
     @Override
-    public FilteredValue get(UuidKey key) throws ServiceException {
-        return delegate.get(key);
+    public FilteredValue get(GuidKey guidKey) throws ServiceException {
+        return delegate.get(guidKey);
     }
 
-    public UuidKey insert(FilteredValue element) throws ServiceException {
-        return delegate.insert(element);
+    public GuidKey insert(FilteredValue filteredValue) throws ServiceException {
+        return delegate.insert(filteredValue);
     }
 
-    public UuidKey update(FilteredValue element) throws ServiceException {
-        return delegate.update(element);
+    public GuidKey update(FilteredValue filteredValue) throws ServiceException {
+        return delegate.update(filteredValue);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
-        delegate.delete(key);
+    public void delete(GuidKey guidKey) throws ServiceException {
+        delegate.delete(guidKey);
     }
 }

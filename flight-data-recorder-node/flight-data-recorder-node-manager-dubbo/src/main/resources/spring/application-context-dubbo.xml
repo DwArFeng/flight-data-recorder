@@ -18,7 +18,7 @@
     <!-- dubbo协议 -->
     <dubbo:protocol name="dubbo" port="${dubbo.port}"/>
 
-    <!-- 向注册中心注册暴露服务地址,注册服务 -->
+    <!-- 向注册中心注册暴露服务地址,注册提供者服务 -->
     <dubbo:service interface="com.dwarfeng.fdr.stack.service.CategoryMaintainService"
                    ref="categoryMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.fdr.stack.service.PointMaintainService"
@@ -35,4 +35,7 @@
                    ref="realtimeValueMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService"
                    ref="triggeredValueMaintainServiceImpl"/>
+
+    <!-- 向注册中心注册暴露服务地址,注册消费者服务 -->
+    <dubbo:reference id="guidService" interface="com.dwarfeng.sfds.stack.service.GuidService"/>
 </beans>

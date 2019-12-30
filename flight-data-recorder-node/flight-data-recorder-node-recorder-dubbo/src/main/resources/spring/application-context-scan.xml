@@ -10,7 +10,6 @@
     <!--扫描service的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.service.record.service"/>
     <!--扫描handler的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.validation.handler"/>
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fnt.handler"/>
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.fnt.preset"/>
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.event.kafka.handler"/>
@@ -23,4 +22,6 @@
     <context:component-scan base-package="com.dwarfeng.fdr.node.recorder.dubbo.configuration"/>
     <!--扫描aop增强所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.sdk.interceptor"/>
+    <!--扫描GuidApi所在的包。 -->
+    <context:component-scan base-package="com.dwarfeng.sfds.api.impl"/>
 </beans>

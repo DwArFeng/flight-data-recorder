@@ -1,20 +1,20 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
-import com.dwarfeng.fdr.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisGuidKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RedisPersistenceValue implements Entity<RedisUuidKey> {
+public class RedisPersistenceValue implements Serializable {
 
     private static final long serialVersionUID = 3792689493415676501L;
 
     @JSONField(name = "key", ordinal = 1)
-    private RedisUuidKey key;
+    private RedisGuidKey key;
 
     @JSONField(name = "point_key", ordinal = 2)
-    private RedisUuidKey pointKey;
+    private RedisGuidKey pointKey;
 
     @JSONField(name = "happened_date", ordinal = 3)
     private Date happenedDate;
@@ -25,28 +25,26 @@ public class RedisPersistenceValue implements Entity<RedisUuidKey> {
     public RedisPersistenceValue() {
     }
 
-    public RedisPersistenceValue(RedisUuidKey key, RedisUuidKey pointKey, Date happenedDate, String value) {
+    public RedisPersistenceValue(RedisGuidKey key, RedisGuidKey pointKey, Date happenedDate, String value) {
         this.key = key;
         this.pointKey = pointKey;
         this.happenedDate = happenedDate;
         this.value = value;
     }
 
-    @Override
-    public RedisUuidKey getKey() {
+    public RedisGuidKey getKey() {
         return key;
     }
 
-    @Override
-    public void setKey(RedisUuidKey key) {
+    public void setKey(RedisGuidKey key) {
         this.key = key;
     }
 
-    public RedisUuidKey getPointKey() {
+    public RedisGuidKey getPointKey() {
         return pointKey;
     }
 
-    public void setPointKey(RedisUuidKey pointKey) {
+    public void setPointKey(RedisGuidKey pointKey) {
         this.pointKey = pointKey;
     }
 

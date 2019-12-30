@@ -30,7 +30,7 @@ public class FilterHandlerDelegate {
     private ApplicationContext applicationContext;
 
     @TimeAnalyse
-    public Filter make(@NotNull String pointUuid, @NotNull String filterUuid, @NotNull String content) throws FilterException {
+    public Filter make(@NotNull long pointGuid, @NotNull long filterGuid, @NotNull String content) throws FilterException {
         LOGGER.debug("1. 将content以JSON方式转化为StructuredFilterInfo对象...");
         StructuredFilterInfo structuredFilterInfo = null;
         try {
@@ -57,8 +57,8 @@ public class FilterHandlerDelegate {
         }
 
         LOGGER.debug("4. StructuredFilter应用配置信息...");
-        structuredFilter.applyPointUuid(pointUuid);
-        structuredFilter.applyFilterUuid(filterUuid);
+        structuredFilter.applyPointGuid(pointGuid);
+        structuredFilter.applyFilterGuid(filterGuid);
         structuredFilter.applyConfig(structuredFilterInfo.getConfig());
 
         return structuredFilter;

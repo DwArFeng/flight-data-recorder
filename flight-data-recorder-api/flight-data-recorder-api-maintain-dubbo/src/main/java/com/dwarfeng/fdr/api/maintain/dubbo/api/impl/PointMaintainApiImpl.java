@@ -1,47 +1,42 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
-import com.dwarfeng.fdr.api.maintain.dubbo.interceptor.DubboInvokeLog;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@DubboInvokeLog
 public class PointMaintainApiImpl implements PointMaintainApi {
 
     @Autowired
-    @Qualifier("pointMaintainService")
-    private PointMaintainService delegate;
+    private PointMaintainApiDelegate delegate;
 
     @Override
-    public PagedData<Point> getPoints(UuidKey pointUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
-        return delegate.getPoints(pointUuid, lookupPagingInfo);
+    public PagedData<Point> getPoints(GuidKey pointGuidKey, LookupPagingInfo lookupPagingInfo) throws ServiceException {
+        return delegate.getPoints(pointGuidKey, lookupPagingInfo);
     }
 
     @Override
-    public Point get(UuidKey key) throws ServiceException {
-        return delegate.get(key);
+    public Point get(GuidKey guidKey) throws ServiceException {
+        return delegate.get(guidKey);
     }
 
     @Override
-    public UuidKey insert(Point element) throws ServiceException {
-        return delegate.insert(element);
+    public GuidKey insert(Point point) throws ServiceException {
+        return delegate.insert(point);
     }
 
     @Override
-    public UuidKey update(Point element) throws ServiceException {
-        return delegate.update(element);
+    public GuidKey update(Point point) throws ServiceException {
+        return delegate.update(point);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
-        delegate.delete(key);
+    public void delete(GuidKey guidKey) throws ServiceException {
+        delegate.delete(guidKey);
     }
 }

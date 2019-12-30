@@ -1,11 +1,11 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
 import com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisFilteredValue;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisGuidKey;
 import com.dwarfeng.fdr.impl.cache.redis.formatter.Formatter;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +31,15 @@ public class FilteredValueCacheDelegate {
     @Autowired
     private Mapper mapper;
     @Autowired
-    @Qualifier("uuidKeyFormatter")
-    private Formatter<UuidKey> formatter;
+    @Qualifier("guidKeyFormatter")
+    private Formatter<GuidKey> formatter;
 
     @Value("${cache.prefix.entity.filtered_value}")
     private String keyPrefix;
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public boolean exists(@NotNull UuidKey key) throws CacheException {
+    public boolean exists(@NotNull GuidKey key) throws CacheException {
         try {
             return template.hasKey(formatter.format(keyPrefix, key));
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class FilteredValueCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public FilteredValue get(@NotNull UuidKey key) throws CacheException {
+    public FilteredValue get(@NotNull GuidKey key) throws CacheException {
         try {
             RedisFilteredValue redisFilteredValue = template.opsForValue().get(formatter.format(keyPrefix, key));
             return mapper.map(redisFilteredValue, FilteredValue.class);
@@ -60,7 +60,7 @@ public class FilteredValueCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void push(@NotNull UuidKey key, @NotNull FilteredValue filteredValue, @Min(0) long timeout) throws CacheException {
+    public void push(@NotNull GuidKey key, @NotNull FilteredValue filteredValue, @Min(0) long timeout) throws CacheException {
         try {
             RedisFilteredValue redisFilteredValue = mapper.map(filteredValue, RedisFilteredValue.class);
             template.opsForValue().set(formatter.format(keyPrefix, key), redisFilteredValue, timeout, TimeUnit.MILLISECONDS);
@@ -71,7 +71,7 @@ public class FilteredValueCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void delete(@NotNull UuidKey key) throws CacheException {
+    public void delete(@NotNull GuidKey key) throws CacheException {
         try {
             template.delete(formatter.format(keyPrefix, key));
         } catch (Exception e) {
@@ -81,13 +81,13 @@ public class FilteredValueCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void deleteAllByPoint(UuidKey pointKey) throws CacheException {
+    public void deleteAllByPoint(GuidKey pointKey) throws CacheException {
         try {
-            RedisUuidKey redisUuidKey = mapper.map(pointKey, RedisUuidKey.class);
+            RedisGuidKey redisGuidKey = mapper.map(pointKey, RedisGuidKey.class);
             Set<String> keys = template.keys(keyPrefix + "*");
             for (String key : keys) {
                 RedisFilteredValue redisFilteredValue = template.opsForValue().get(key);
-                if (Objects.equals(redisUuidKey, redisFilteredValue.getPointKey())) {
+                if (Objects.equals(redisGuidKey, redisFilteredValue.getPointKey())) {
                     template.delete(key);
                 }
             }
@@ -98,13 +98,13 @@ public class FilteredValueCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void deleteAllByFilterInfo(UuidKey filterInfoKey) throws CacheException {
+    public void deleteAllByFilterInfo(GuidKey filterInfoKey) throws CacheException {
         try {
-            RedisUuidKey redisUuidKey = mapper.map(filterInfoKey, RedisUuidKey.class);
+            RedisGuidKey redisGuidKey = mapper.map(filterInfoKey, RedisGuidKey.class);
             Set<String> keys = template.keys(keyPrefix + "*");
             for (String key : keys) {
                 RedisFilteredValue redisFilteredValue = template.opsForValue().get(key);
-                if (Objects.equals(redisUuidKey, redisFilteredValue.getFilterKey())) {
+                if (Objects.equals(redisGuidKey, redisFilteredValue.getFilterKey())) {
                     template.delete(key);
                 }
             }

@@ -1,11 +1,11 @@
 package com.dwarfeng.fdr.impl.dao.hnh.dao;
 
 import com.dwarfeng.fdr.impl.dao.hnh.bean.entity.HibernatePoint;
-import com.dwarfeng.fdr.impl.dao.hnh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.hnh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.dozer.Mapper;
 import org.hibernate.criterion.DetachedCriteria;
@@ -38,7 +38,7 @@ public class PointDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public boolean exists(@NotNull UuidKey key) throws DaoException {
+    public boolean exists(@NotNull GuidKey key) throws DaoException {
         try {
             return internalExists(key);
         } catch (Exception e) {
@@ -46,22 +46,22 @@ public class PointDaoDelegate {
         }
     }
 
-    private boolean internalExists(UuidKey key) {
-        HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-        return Objects.nonNull(template.get(HibernatePoint.class, hibernateUuidKey));
+    private boolean internalExists(GuidKey key) {
+        HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+        return Objects.nonNull(template.get(HibernatePoint.class, hibernateGuidKey));
     }
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public Point get(UuidKey key) throws DaoException {
+    public Point get(GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的Point " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateGuidKey);
             return mapper.map(hibernatePoint, Point.class);
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -70,7 +70,7 @@ public class PointDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey insert(@NotNull Point point) throws DaoException {
+    public GuidKey insert(@NotNull Point point) throws DaoException {
         try {
             if (internalExists(point.getKey())) {
                 LOGGER.warn("指定的Point " + point.toString() + " 已经存在, 将抛出异常...");
@@ -88,15 +88,15 @@ public class PointDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey update(@NotNull Point point) throws DaoException {
+    public GuidKey update(@NotNull Point point) throws DaoException {
         try {
             if (!internalExists(point.getKey())) {
                 LOGGER.warn("指定的Point " + point.toString() + " 不存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的Point " + point.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(point.getKey(), HibernateUuidKey.class);
-            HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(point.getKey(), HibernateGuidKey.class);
+            HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateGuidKey);
             assert hibernatePoint != null;
             mapper.map(point, hibernatePoint);
             template.update(hibernatePoint);
@@ -109,15 +109,15 @@ public class PointDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public void delete(@NotNull UuidKey key) throws DaoException {
+    public void delete(@NotNull GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的Point " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernatePoint hibernatePoint = template.get(HibernatePoint.class, hibernateGuidKey);
             assert hibernatePoint != null;
             template.delete(hibernatePoint);
             template.flush();
@@ -128,13 +128,13 @@ public class PointDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<Point> getPoints(UuidKey categoryUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
+    public List<Point> getPoints(GuidKey categoryGuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePoint.class);
-            if (Objects.isNull(categoryUuidKey)) {
-                criteria.add(Restrictions.isNull("categoryUuid"));
+            if (Objects.isNull(categoryGuidKey)) {
+                criteria.add(Restrictions.isNull("categoryGuid"));
             } else {
-                criteria.add(Restrictions.eq("categoryUuid", categoryUuidKey.getUuid()));
+                criteria.add(Restrictions.eq("categoryGuid", categoryGuidKey.getGuid()));
             }
             criteria.addOrder(Order.asc("name"));
             @SuppressWarnings("unchecked")
@@ -154,13 +154,13 @@ public class PointDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public long getPointCount(UuidKey categoryUuidKey) throws DaoException {
+    public long getPointCount(GuidKey categoryGuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernatePoint.class);
-            if (Objects.isNull(categoryUuidKey)) {
-                criteria.add(Restrictions.isNull("categoryUuid"));
+            if (Objects.isNull(categoryGuidKey)) {
+                criteria.add(Restrictions.isNull("categoryGuid"));
             } else {
-                criteria.add(Restrictions.eq("categoryUuid", categoryUuidKey.getUuid()));
+                criteria.add(Restrictions.eq("categoryGuid", categoryGuidKey.getGuid()));
             }
             criteria.setProjection(Projections.rowCount());
             return template.findByCriteria(criteria).stream().findFirst().map(Long.class::cast).orElse(0L);

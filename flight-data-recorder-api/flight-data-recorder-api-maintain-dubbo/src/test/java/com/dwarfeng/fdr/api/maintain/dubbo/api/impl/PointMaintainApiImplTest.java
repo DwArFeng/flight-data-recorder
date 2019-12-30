@@ -1,12 +1,10 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.CategoryMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,7 +34,7 @@ public class PointMaintainApiImplTest {
     @Before
     public void setUp() {
         parentCategory = new Category(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent",
                 "test-parent"
@@ -45,7 +42,7 @@ public class PointMaintainApiImplTest {
         points = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Point point = new Point(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                    null,
                     parentCategory.getKey(),
                     "point-" + (i + 1),
                     "test-point",
@@ -65,9 +62,11 @@ public class PointMaintainApiImplTest {
     @Test
     public void test() throws ServiceException {
         try {
-            categoryMaintainApi.insert(parentCategory);
+            parentCategory.setKey(categoryMaintainApi.insert(parentCategory));
             for (Point point : points) {
-                pointMaintainApi.insert(point);
+                point.setKey(pointMaintainApi.insert(point));
+                point.setCategoryKey(parentCategory.getKey());
+                pointMaintainApi.update(point);
             }
             assertEquals(5, pointMaintainApi.getPoints(parentCategory.getKey(), LookupPagingInfo.LOOKUP_ALL).getCount());
         } finally {

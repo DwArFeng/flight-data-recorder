@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +14,22 @@ public class PersistenceValueMaintainServiceImpl implements PersistenceValueMain
     private PersistenceValueMaintainServiceDelegate delegate;
 
     @Override
-    public PersistenceValue get(UuidKey key) throws ServiceException {
+    public PersistenceValue get(GuidKey key) throws ServiceException {
         return delegate.get(key);
     }
 
     @Override
-    public UuidKey insert(PersistenceValue persistenceValue) throws ServiceException {
+    public GuidKey insert(PersistenceValue persistenceValue) throws ServiceException {
         return delegate.insert(persistenceValue);
     }
 
     @Override
-    public UuidKey update(PersistenceValue persistenceValue) throws ServiceException {
+    public GuidKey update(PersistenceValue persistenceValue) throws ServiceException {
         return delegate.update(persistenceValue);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
+    public void delete(GuidKey key) throws ServiceException {
         delegate.delete(key);
     }
 }

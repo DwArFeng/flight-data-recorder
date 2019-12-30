@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.stack.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 
 /**
  * 持久化数据维护服务。
@@ -9,6 +9,6 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface PersistenceValueMaintainService extends EntityCrudService<UuidKey, PersistenceValue> {
+public interface PersistenceValueMaintainService extends EntityCrudService<GuidKey, PersistenceValue> {
 
 }

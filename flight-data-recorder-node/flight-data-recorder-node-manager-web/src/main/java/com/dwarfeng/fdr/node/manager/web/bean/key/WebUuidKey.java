@@ -1,7 +1,5 @@
 package com.dwarfeng.fdr.node.manager.web.bean.key;
 
-import com.dwarfeng.fdr.sdk.validation.DenseUUID;
-
 import java.io.Serializable;
 
 /**
@@ -12,13 +10,12 @@ public class WebUuidKey implements Serializable {
 
     private static final long serialVersionUID = -5675443791545234988L;
 
-    @DenseUUID
     private String uuid;
 
     public WebUuidKey() {
     }
 
-    public WebUuidKey(@DenseUUID String uuid) {
+    public WebUuidKey(String uuid) {
         this.uuid = uuid;
     }
 

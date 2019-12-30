@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api;
 
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 
 /**
  * 实时数据维护服务。
@@ -9,6 +9,6 @@ import com.dwarfeng.fdr.stack.bean.key.UuidKey;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface RealtimeValueMaintainApi extends EntityCrudApi<UuidKey, RealtimeValue> {
+public interface RealtimeValueMaintainApi extends EntityCrudApi<GuidKey, RealtimeValue> {
 
 }

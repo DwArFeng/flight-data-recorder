@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.stack.dao;
 
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.List;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface FilterInfoDao extends BaseDao<UuidKey, FilterInfo> {
+public interface FilterInfoDao extends BaseDao<GuidKey, FilterInfo> {
 
-    List<FilterInfo> getFilterInfos(UuidKey pointUuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException;
+    List<FilterInfo> getFilterInfos(GuidKey pointGuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException;
 
-    long getFilterInfoCount(UuidKey pointUuidKey) throws DaoException;
+    long getFilterInfoCount(GuidKey pointGuidKey) throws DaoException;
 
 }

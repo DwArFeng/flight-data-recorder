@@ -1,10 +1,10 @@
 package com.dwarfeng.fdr.impl.dao.fuh.dao;
 
 import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernateRealtimeValue;
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class RealtimeValueDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public boolean exists(@NotNull UuidKey key) throws DaoException {
+    public boolean exists(@NotNull GuidKey key) throws DaoException {
         try {
             return internalExists(key);
         } catch (Exception e) {
@@ -39,22 +39,22 @@ public class RealtimeValueDaoDelegate {
         }
     }
 
-    private boolean internalExists(UuidKey key) {
-        HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-        return Objects.nonNull(template.get(HibernateRealtimeValue.class, hibernateUuidKey));
+    private boolean internalExists(GuidKey key) {
+        HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+        return Objects.nonNull(template.get(HibernateRealtimeValue.class, hibernateGuidKey));
     }
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public RealtimeValue get(UuidKey key) throws DaoException {
+    public RealtimeValue get(GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的RealtimeValue " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateRealtimeValue hibernateRealtimeValue = template.get(HibernateRealtimeValue.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernateRealtimeValue hibernateRealtimeValue = template.get(HibernateRealtimeValue.class, hibernateGuidKey);
             return mapper.map(hibernateRealtimeValue, RealtimeValue.class);
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -63,7 +63,7 @@ public class RealtimeValueDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey insert(@NotNull RealtimeValue realtimeValue) throws DaoException {
+    public GuidKey insert(@NotNull RealtimeValue realtimeValue) throws DaoException {
         try {
             if (internalExists(realtimeValue.getKey())) {
                 LOGGER.warn("指定的RealtimeValue " + realtimeValue.toString() + " 已经存在, 将抛出异常...");
@@ -81,15 +81,15 @@ public class RealtimeValueDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey update(@NotNull RealtimeValue realtimeValue) throws DaoException {
+    public GuidKey update(@NotNull RealtimeValue realtimeValue) throws DaoException {
         try {
             if (!internalExists(realtimeValue.getKey())) {
                 LOGGER.warn("指定的RealtimeValue " + realtimeValue.toString() + " 不存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的RealtimeValue " + realtimeValue.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(realtimeValue.getKey(), HibernateUuidKey.class);
-            HibernateRealtimeValue hibernateRealtimeValue = template.get(HibernateRealtimeValue.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(realtimeValue.getKey(), HibernateGuidKey.class);
+            HibernateRealtimeValue hibernateRealtimeValue = template.get(HibernateRealtimeValue.class, hibernateGuidKey);
             assert hibernateRealtimeValue != null;
             mapper.map(realtimeValue, hibernateRealtimeValue);
             template.update(hibernateRealtimeValue);
@@ -102,15 +102,15 @@ public class RealtimeValueDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public void delete(@NotNull UuidKey key) throws DaoException {
+    public void delete(@NotNull GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的RealtimeValue " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateRealtimeValue hibernateRealtimeValue = template.get(HibernateRealtimeValue.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernateRealtimeValue hibernateRealtimeValue = template.get(HibernateRealtimeValue.class, hibernateGuidKey);
             assert hibernateRealtimeValue != null;
             template.delete(hibernateRealtimeValue);
             template.flush();
@@ -121,7 +121,7 @@ public class RealtimeValueDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public RealtimeValue getRealtimeValue(UuidKey pointUuidKey) throws DaoException {
+    public RealtimeValue getRealtimeValue(GuidKey pointGuidKey) throws DaoException {
         throw new IllegalStateException("not implemented yet."); //TODO
     }
 }

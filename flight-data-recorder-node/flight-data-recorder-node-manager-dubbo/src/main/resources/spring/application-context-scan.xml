@@ -9,8 +9,6 @@
 
     <!--扫描service的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.service.maintain.service"/>
-    <!--扫描handler的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.validation.handler"/>
     <!--扫描dao的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.dao.fuh.dao"/>
     <!--扫描cache的实现包。 -->
@@ -20,4 +18,6 @@
     <context:component-scan base-package="com.dwarfeng.fdr.node.manager.dubbo.configuration"/>
     <!--扫描aop增强所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.sdk.interceptor"/>
+    <!--扫描GuidApi所在的包。 -->
+    <context:component-scan base-package="com.dwarfeng.sfds.api.impl"/>
 </beans>

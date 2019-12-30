@@ -1,10 +1,9 @@
 package com.dwarfeng.fdr.impl.handler.fnt.preset;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.FilterException;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -18,7 +17,6 @@ import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 @Component("integerFilter")
@@ -66,9 +64,9 @@ public class IntegerFilter extends AbstractStructuredFilter {
         if (!NumberUtils.isDigits(value)) {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字, 不能通过过滤...");
             FilteredValue filteredValue = new FilteredValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
-                    new UuidKey(pointUuid),
-                    new UuidKey(filterUuid),
+                    null,
+                    new GuidKey(pointGuid),
+                    new GuidKey(filterGuid),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值不是数字"
@@ -85,9 +83,9 @@ public class IntegerFilter extends AbstractStructuredFilter {
         } catch (NumberFormatException e) {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过整型数范围, 不能通过过滤...", e);
             FilteredValue filteredValue = new FilteredValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
-                    new UuidKey(pointUuid),
-                    new UuidKey(filterUuid),
+                    null,
+                    new GuidKey(pointGuid),
+                    new GuidKey(filterGuid),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值不是数字或超过整型数范围"
@@ -102,9 +100,9 @@ public class IntegerFilter extends AbstractStructuredFilter {
                 (!castedConfig.getCanEqualsMin() && intValue <= castedConfig.getMin())) {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 小于(或小于等于等于)最小值, 不能通过过滤...");
             FilteredValue filteredValue = new FilteredValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
-                    new UuidKey(pointUuid),
-                    new UuidKey(filterUuid),
+                    null,
+                    new GuidKey(pointGuid),
+                    new GuidKey(filterGuid),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值小于(或小于等于等于)最小值"
@@ -119,9 +117,9 @@ public class IntegerFilter extends AbstractStructuredFilter {
                 (!castedConfig.getCanEqualsMax() && intValue >= castedConfig.getMax())) {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 大于(或大于等于等于)最大值, 不能通过过滤...");
             FilteredValue filteredValue = new FilteredValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
-                    new UuidKey(pointUuid),
-                    new UuidKey(filterUuid),
+                    null,
+                    new GuidKey(pointGuid),
+                    new GuidKey(filterGuid),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值大于(或大于等于等于)最大值"

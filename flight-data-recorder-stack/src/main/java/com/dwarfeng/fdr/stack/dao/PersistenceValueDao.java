@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.stack.dao;
 
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 
 /**
@@ -10,8 +10,8 @@ import com.dwarfeng.fdr.stack.exception.DaoException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface PersistenceValueDao extends BaseDao<UuidKey, PersistenceValue> {
+public interface PersistenceValueDao extends BaseDao<GuidKey, PersistenceValue> {
 
-    void deleteAll(UuidKey pointKey) throws DaoException;
+    void deleteAll(GuidKey pointKey) throws DaoException;
 
 }

@@ -58,6 +58,7 @@
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <cxf.version>3.1.6</cxf.version>
         <kafka.version>2.4.0</kafka.version>
+        <snowflake.version>0.0.1.a</snowflake.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
@@ -351,6 +352,12 @@
                 <artifactId>cxf-rt-transports-http</artifactId>
                 <version>${cxf.version}</version>
             </dependency>
+            <!-- SnowFlake服务 -->
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>snowflake-distributed-service-api</artifactId>
+                <version>${snowflake.version}</version>
+            </dependency>
             <!-- 程序自身组件 -->
             <dependency>
                 <groupId>com.dwarfeng</groupId>
@@ -390,11 +397,6 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-service-record</artifactId>
-                <version>alpha-0.0.1.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-handler-validation</artifactId>
                 <version>alpha-0.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>

@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.stack.service;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 
 /**
@@ -12,8 +12,8 @@ import com.dwarfeng.fdr.stack.exception.ServiceException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface CategoryMaintainService extends EntityCrudService<UuidKey, Category> {
+public interface CategoryMaintainService extends EntityCrudService<GuidKey, Category> {
 
-    PagedData<Category> getChilds(UuidKey uuidKey, LookupPagingInfo lookupPagingInfo) throws ServiceException;
+    PagedData<Category> getChilds(GuidKey guidKey, LookupPagingInfo lookupPagingInfo) throws ServiceException;
 
 }

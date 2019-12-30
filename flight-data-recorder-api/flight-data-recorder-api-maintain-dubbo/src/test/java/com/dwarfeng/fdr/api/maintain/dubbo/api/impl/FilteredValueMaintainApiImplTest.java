@@ -1,13 +1,11 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.FilterInfoMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.FilteredValueMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -38,9 +35,9 @@ public class FilteredValueMaintainApiImplTest {
     private List<FilteredValue> filteredValues;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         parentPoint = new Point(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent-point",
                 "test-point",
@@ -48,7 +45,7 @@ public class FilteredValueMaintainApiImplTest {
                 true
         );
         parentFilterInfo = new FilterInfo(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 parentPoint.getKey(),
                 true,
                 "parent-filter-info",
@@ -57,7 +54,7 @@ public class FilteredValueMaintainApiImplTest {
         filteredValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             FilteredValue filteredValue = new FilteredValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                    null,
                     parentPoint.getKey(),
                     parentFilterInfo.getKey(),
                     new Date(),
@@ -69,7 +66,7 @@ public class FilteredValueMaintainApiImplTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         parentPoint = null;
         parentFilterInfo = null;
         filteredValues.clear();
@@ -78,10 +75,15 @@ public class FilteredValueMaintainApiImplTest {
     @Test
     public void test() throws ServiceException {
         try {
-            pointMaintainApi.insert(parentPoint);
-            filterInfoMaintainApi.insert(parentFilterInfo);
+            parentPoint.setKey(pointMaintainApi.insert(parentPoint));
+            parentFilterInfo.setKey(filterInfoMaintainApi.insert(parentFilterInfo));
+            parentFilterInfo.setPointKey(parentPoint.getKey());
+            filterInfoMaintainApi.update(parentFilterInfo);
             for (FilteredValue filteredValue : filteredValues) {
-                filteredValueMaintainApi.insert(filteredValue);
+                filteredValue.setKey(filteredValueMaintainApi.insert(filteredValue));
+                filteredValue.setPointKey(parentPoint.getKey());
+                filteredValue.setFilterKey(parentFilterInfo.getKey());
+                filteredValueMaintainApi.update(filteredValue);
             }
         } finally {
             for (FilteredValue filteredValue : filteredValues) {

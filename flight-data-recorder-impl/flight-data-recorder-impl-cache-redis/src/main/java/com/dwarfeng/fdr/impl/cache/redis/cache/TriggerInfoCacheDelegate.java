@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisTriggerInfo;
 import com.dwarfeng.fdr.impl.cache.redis.formatter.Formatter;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +28,15 @@ public class TriggerInfoCacheDelegate {
     @Autowired
     private Mapper mapper;
     @Autowired
-    @Qualifier("uuidKeyFormatter")
-    private Formatter<UuidKey> formatter;
+    @Qualifier("guidKeyFormatter")
+    private Formatter<GuidKey> formatter;
 
     @Value("${cache.prefix.entity.trigger_info}")
     private String keyPrefix;
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public boolean exists(@NotNull UuidKey key) throws CacheException {
+    public boolean exists(@NotNull GuidKey key) throws CacheException {
         try {
             return template.hasKey(formatter.format(keyPrefix, key));
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class TriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public TriggerInfo get(@NotNull UuidKey key) throws CacheException {
+    public TriggerInfo get(@NotNull GuidKey key) throws CacheException {
         try {
             RedisTriggerInfo redisTrigger = template.opsForValue().get(formatter.format(keyPrefix, key));
             return mapper.map(redisTrigger, TriggerInfo.class);
@@ -57,7 +57,7 @@ public class TriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void push(@NotNull UuidKey key, @NotNull TriggerInfo triggerInfo, @Min(0) long timeout) throws CacheException {
+    public void push(@NotNull GuidKey key, @NotNull TriggerInfo triggerInfo, @Min(0) long timeout) throws CacheException {
         try {
             RedisTriggerInfo redisTriggerInfo = mapper.map(triggerInfo, RedisTriggerInfo.class);
             template.opsForValue().set(formatter.format(keyPrefix, key), redisTriggerInfo, timeout, TimeUnit.MILLISECONDS);
@@ -68,7 +68,7 @@ public class TriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void delete(@NotNull UuidKey key) throws CacheException {
+    public void delete(@NotNull GuidKey key) throws CacheException {
         try {
             template.delete(formatter.format(keyPrefix, key));
         } catch (Exception e) {

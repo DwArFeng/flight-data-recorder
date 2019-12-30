@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateUuidKey.class)
+@IdClass(HibernateGuidKey.class)
 @Table(name = "tbl_realtime_value")
 public class HibernateRealtimeValue implements Serializable {
 
@@ -17,8 +17,8 @@ public class HibernateRealtimeValue implements Serializable {
 
     // -----------------------------------------------------------主键兼外键-----------------------------------------------------------
     @Id
-    @Column(name = "uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
-    private String uuid;
+    @Column(name = "guid", nullable = false, unique = true)
+    private Long guid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
@@ -30,27 +30,27 @@ public class HibernateRealtimeValue implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @OneToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
     public HibernateRealtimeValue() {
     }
 
-    public HibernateUuidKey getKey() {
-        return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getKey() {
+        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setKey(HibernateGuidKey guidKey) {
+        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getUuid() {
-        return uuid;
+    public Long getGuid() {
+        return guid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setGuid(Long guid) {
+        this.guid = guid;
     }
 
     public Date getHappenedDate() {
@@ -80,7 +80,7 @@ public class HibernateRealtimeValue implements Serializable {
     @Override
     public String toString() {
         return "HibernateRealtimeValue{" +
-                "uuid='" + uuid + '\'' +
+                "guid='" + guid + '\'' +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 '}';

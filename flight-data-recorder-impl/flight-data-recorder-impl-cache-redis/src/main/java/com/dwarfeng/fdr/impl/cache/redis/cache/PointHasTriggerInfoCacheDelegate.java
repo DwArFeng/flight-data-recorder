@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisTriggerInfo;
 import com.dwarfeng.fdr.impl.cache.redis.formatter.Formatter;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -34,15 +34,15 @@ public class PointHasTriggerInfoCacheDelegate {
     @Autowired
     private Mapper mapper;
     @Autowired
-    @Qualifier("uuidKeyFormatter")
-    private Formatter<UuidKey> formatter;
+    @Qualifier("guidKeyFormatter")
+    private Formatter<GuidKey> formatter;
 
     @Value("${cache.prefix.one_to_many.point_has_trigger_info}")
     private String keyPrefix;
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public boolean exists(@NotNull UuidKey key) throws CacheException {
+    public boolean exists(@NotNull GuidKey key) throws CacheException {
         try {
             return template.hasKey(formatter.format(keyPrefix, key));
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class PointHasTriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public long size(@NotNull UuidKey key) throws CacheException {
+    public long size(@NotNull GuidKey key) throws CacheException {
         try {
             return template.opsForList().size(formatter.format(keyPrefix, key));
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class PointHasTriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public List<TriggerInfo> get(@NotNull UuidKey key, @Min(0) int beginIndex, @Min(0) int maxSize) throws CacheException {
+    public List<TriggerInfo> get(@NotNull GuidKey key, @Min(0) int beginIndex, @Min(0) int maxSize) throws CacheException {
         try {
             Long totleSize = template.opsForList().size(formatter.format(keyPrefix, key));
             List<RedisTriggerInfo> redisTriggerInfos = template.opsForList().range(formatter.format(keyPrefix, key), beginIndex, Math.max(totleSize, beginIndex + maxSize) - 1);
@@ -78,7 +78,7 @@ public class PointHasTriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void set(@NotNull UuidKey key, List<? extends TriggerInfo> value, long timeout) throws CacheException {
+    public void set(@NotNull GuidKey key, List<? extends TriggerInfo> value, long timeout) throws CacheException {
         try {
             String keyString = formatter.format(keyPrefix, key);
             template.delete(keyString);
@@ -91,7 +91,7 @@ public class PointHasTriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void push(@NotNull UuidKey key, List<? extends TriggerInfo> value, long timeout) throws CacheException {
+    public void push(@NotNull GuidKey key, List<? extends TriggerInfo> value, long timeout) throws CacheException {
         try {
             String keyString = formatter.format(keyPrefix, key);
             mayRightPushAll(keyString, value);
@@ -118,7 +118,7 @@ public class PointHasTriggerInfoCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
-    public void delete(@NotNull UuidKey key) throws CacheException {
+    public void delete(@NotNull GuidKey key) throws CacheException {
         try {
             template.delete(formatter.format(keyPrefix, key));
         } catch (Exception e) {

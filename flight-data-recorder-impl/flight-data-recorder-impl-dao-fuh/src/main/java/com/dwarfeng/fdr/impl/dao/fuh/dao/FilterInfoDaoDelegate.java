@@ -1,11 +1,11 @@
 package com.dwarfeng.fdr.impl.dao.fuh.dao;
 
 import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernateFilterInfo;
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.dozer.Mapper;
 import org.hibernate.criterion.DetachedCriteria;
@@ -37,7 +37,7 @@ public class FilterInfoDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public boolean exists(@NotNull UuidKey key) throws DaoException {
+    public boolean exists(@NotNull GuidKey key) throws DaoException {
         try {
             return internalExists(key);
         } catch (Exception e) {
@@ -45,22 +45,22 @@ public class FilterInfoDaoDelegate {
         }
     }
 
-    private boolean internalExists(UuidKey key) {
-        HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-        return Objects.nonNull(template.get(HibernateFilterInfo.class, hibernateUuidKey));
+    private boolean internalExists(GuidKey key) {
+        HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+        return Objects.nonNull(template.get(HibernateFilterInfo.class, hibernateGuidKey));
     }
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public FilterInfo get(UuidKey key) throws DaoException {
+    public FilterInfo get(GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的FilterInfo " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateGuidKey);
             return mapper.map(hibernateFilterInfo, FilterInfo.class);
         } catch (Exception e) {
             throw new DaoException("数据访问发生异常", e);
@@ -69,7 +69,7 @@ public class FilterInfoDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey insert(@NotNull FilterInfo filterInfo) throws DaoException {
+    public GuidKey insert(@NotNull FilterInfo filterInfo) throws DaoException {
         try {
             if (internalExists(filterInfo.getKey())) {
                 LOGGER.warn("指定的FilterInfo " + filterInfo.toString() + " 已经存在, 将抛出异常...");
@@ -87,15 +87,15 @@ public class FilterInfoDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey update(@NotNull FilterInfo filterInfo) throws DaoException {
+    public GuidKey update(@NotNull FilterInfo filterInfo) throws DaoException {
         try {
             if (!internalExists(filterInfo.getKey())) {
                 LOGGER.warn("指定的FilterInfo " + filterInfo.toString() + " 不存在, 将抛出异常...");
                 throw new IllegalArgumentException("指定的FilterInfo " + filterInfo.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(filterInfo.getKey(), HibernateUuidKey.class);
-            HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(filterInfo.getKey(), HibernateGuidKey.class);
+            HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateGuidKey);
             assert hibernateFilterInfo != null;
             mapper.map(filterInfo, hibernateFilterInfo);
             template.update(hibernateFilterInfo);
@@ -108,15 +108,15 @@ public class FilterInfoDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public void delete(@NotNull UuidKey key) throws DaoException {
+    public void delete(@NotNull GuidKey key) throws DaoException {
         try {
             if (!internalExists(key)) {
                 LOGGER.warn("指定的FilterInfo " + key.toString() + " 不存在, 将抛出异常...");
-                throw new IllegalArgumentException("指定的UuidKey " + key.toString() + " 不存在");
+                throw new IllegalArgumentException("指定的GuidKey " + key.toString() + " 不存在");
             }
 
-            HibernateUuidKey hibernateUuidKey = mapper.map(key, HibernateUuidKey.class);
-            HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateUuidKey);
+            HibernateGuidKey hibernateGuidKey = mapper.map(key, HibernateGuidKey.class);
+            HibernateFilterInfo hibernateFilterInfo = template.get(HibernateFilterInfo.class, hibernateGuidKey);
             assert hibernateFilterInfo != null;
             template.delete(hibernateFilterInfo);
             template.flush();
@@ -127,13 +127,13 @@ public class FilterInfoDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<FilterInfo> getFilterInfos(UuidKey pointUuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
+    public List<FilterInfo> getFilterInfos(GuidKey pointGuidKey, @NotNull LookupPagingInfo lookupPagingInfo) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class);
-            if (Objects.isNull(pointUuidKey)) {
-                criteria.add(Restrictions.isNull("pointUuid"));
+            if (Objects.isNull(pointGuidKey)) {
+                criteria.add(Restrictions.isNull("pointGuid"));
             } else {
-                criteria.add(Restrictions.eq("pointUuid", pointUuidKey.getUuid()));
+                criteria.add(Restrictions.eq("pointGuid", pointGuidKey.getGuid()));
             }
             @SuppressWarnings("unchecked")
             List<HibernateFilterInfo> hibernateResult = (List<HibernateFilterInfo>) template.findByCriteria(
@@ -152,13 +152,13 @@ public class FilterInfoDaoDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public long getFilterInfoCount(UuidKey pointUuidKey) throws DaoException {
+    public long getFilterInfoCount(GuidKey pointGuidKey) throws DaoException {
         try {
             DetachedCriteria criteria = DetachedCriteria.forClass(HibernateFilterInfo.class);
-            if (Objects.isNull(pointUuidKey)) {
-                criteria.add(Restrictions.isNull("pointUuid"));
+            if (Objects.isNull(pointGuidKey)) {
+                criteria.add(Restrictions.isNull("pointGuid"));
             } else {
-                criteria.add(Restrictions.eq("pointUuid", pointUuidKey.getUuid()));
+                criteria.add(Restrictions.eq("pointGuid", pointGuidKey.getGuid()));
             }
             criteria.setProjection(Projections.rowCount());
             return template.findByCriteria(criteria).stream().findFirst().map(Long.class::cast).orElse(0L);

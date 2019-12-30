@@ -1,23 +1,23 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
-import com.dwarfeng.fdr.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisGuidKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RedisTriggeredValue implements Entity<RedisUuidKey> {
+public class RedisTriggeredValue implements Serializable {
 
     private static final long serialVersionUID = 333024773948079348L;
 
     @JSONField(name = "key", ordinal = 1)
-    private RedisUuidKey key;
+    private RedisGuidKey key;
 
     @JSONField(name = "point_key", ordinal = 2)
-    private RedisUuidKey pointKey;
+    private RedisGuidKey pointKey;
 
     @JSONField(name = "trigger_key", ordinal = 3)
-    private RedisUuidKey triggerKey;
+    private RedisGuidKey triggerKey;
 
     @JSONField(name = "happened_date", ordinal = 4)
     private Date happenedDate;
@@ -31,7 +31,7 @@ public class RedisTriggeredValue implements Entity<RedisUuidKey> {
     public RedisTriggeredValue() {
     }
 
-    public RedisTriggeredValue(RedisUuidKey key, RedisUuidKey pointKey, RedisUuidKey triggerKey, Date happenedDate, String value, String message) {
+    public RedisTriggeredValue(RedisGuidKey key, RedisGuidKey pointKey, RedisGuidKey triggerKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
         this.triggerKey = triggerKey;
@@ -40,29 +40,27 @@ public class RedisTriggeredValue implements Entity<RedisUuidKey> {
         this.message = message;
     }
 
-    @Override
-    public RedisUuidKey getKey() {
+    public RedisGuidKey getKey() {
         return key;
     }
 
-    @Override
-    public void setKey(RedisUuidKey key) {
+    public void setKey(RedisGuidKey key) {
         this.key = key;
     }
 
-    public RedisUuidKey getPointKey() {
+    public RedisGuidKey getPointKey() {
         return pointKey;
     }
 
-    public void setPointKey(RedisUuidKey pointKey) {
+    public void setPointKey(RedisGuidKey pointKey) {
         this.pointKey = pointKey;
     }
 
-    public RedisUuidKey getTriggerKey() {
+    public RedisGuidKey getTriggerKey() {
         return triggerKey;
     }
 
-    public void setTriggerKey(RedisUuidKey triggerKey) {
+    public void setTriggerKey(RedisGuidKey triggerKey) {
         this.triggerKey = triggerKey;
     }
 

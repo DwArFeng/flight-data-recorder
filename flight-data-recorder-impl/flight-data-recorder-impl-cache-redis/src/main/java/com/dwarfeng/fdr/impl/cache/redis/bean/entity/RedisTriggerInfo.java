@@ -1,8 +1,9 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
-import com.dwarfeng.fdr.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisGuidKey;
+
+import java.io.Serializable;
 
 /**
  * Redis数据点对象。
@@ -10,15 +11,15 @@ import com.dwarfeng.fdr.stack.bean.entity.Entity;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class RedisTriggerInfo implements Entity<RedisUuidKey> {
+public class RedisTriggerInfo implements Serializable {
 
     private static final long serialVersionUID = -7563795664602239319L;
 
     @JSONField(name = "key", ordinal = 1)
-    private RedisUuidKey key;
+    private RedisGuidKey key;
 
     @JSONField(name = "point_key", ordinal = 2)
-    private RedisUuidKey pointKey;
+    private RedisGuidKey pointKey;
 
     @JSONField(name = "enabled", ordinal = 3)
     private boolean enabled;
@@ -32,21 +33,19 @@ public class RedisTriggerInfo implements Entity<RedisUuidKey> {
     public RedisTriggerInfo() {
     }
 
-    @Override
-    public RedisUuidKey getKey() {
+    public RedisGuidKey getKey() {
         return key;
     }
 
-    @Override
-    public void setKey(RedisUuidKey key) {
+    public void setKey(RedisGuidKey key) {
         this.key = key;
     }
 
-    public RedisUuidKey getPointKey() {
+    public RedisGuidKey getPointKey() {
         return pointKey;
     }
 
-    public void setPointKey(RedisUuidKey pointKey) {
+    public void setPointKey(RedisGuidKey pointKey) {
         this.pointKey = pointKey;
     }
 

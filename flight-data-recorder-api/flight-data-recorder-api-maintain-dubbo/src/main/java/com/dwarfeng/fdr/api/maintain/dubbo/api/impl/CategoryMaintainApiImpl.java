@@ -1,47 +1,42 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
 import com.dwarfeng.fdr.api.maintain.dubbo.api.CategoryMaintainApi;
-import com.dwarfeng.fdr.api.maintain.dubbo.interceptor.DubboInvokeLog;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.service.CategoryMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@DubboInvokeLog
 public class CategoryMaintainApiImpl implements CategoryMaintainApi {
 
     @Autowired
-    @Qualifier("categoryMaintainService")
-    private CategoryMaintainService delegate;
+    private CategoryMaintainApiDelegate delegate;
 
     @Override
-    public PagedData<Category> getChilds(UuidKey uuidKey, LookupPagingInfo lookupPagingInfo) throws ServiceException {
-        return delegate.getChilds(uuidKey, lookupPagingInfo);
+    public PagedData<Category> getChilds(GuidKey guidKey, LookupPagingInfo lookupPagingInfo) throws ServiceException {
+        return delegate.getChilds(guidKey, lookupPagingInfo);
     }
 
     @Override
-    public Category get(UuidKey key) throws ServiceException {
-        return delegate.get(key);
+    public Category get(GuidKey guidKey) throws ServiceException {
+        return delegate.get(guidKey);
     }
 
     @Override
-    public UuidKey insert(Category element) throws ServiceException {
-        return delegate.insert(element);
+    public GuidKey insert(Category category) throws ServiceException {
+        return delegate.insert(category);
     }
 
     @Override
-    public UuidKey update(Category element) throws ServiceException {
-        return delegate.update(element);
+    public GuidKey update(Category category) throws ServiceException {
+        return delegate.update(category);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
-        delegate.delete(key);
+    public void delete(GuidKey guidKey) throws ServiceException {
+        delegate.delete(guidKey);
     }
 }

@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.stack.dao;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 
 /**
@@ -10,9 +10,9 @@ import com.dwarfeng.fdr.stack.exception.DaoException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface TriggeredValueDao extends BaseDao<UuidKey, TriggeredValue> {
+public interface TriggeredValueDao extends BaseDao<GuidKey, TriggeredValue> {
 
-    void deleteAllByPoint(UuidKey pointKey) throws DaoException;
+    void deleteAllByPoint(GuidKey pointKey) throws DaoException;
 
-    void deleteAllByTriggerInfo(UuidKey triggerInfoKey) throws DaoException;
+    void deleteAllByTriggerInfo(GuidKey triggerInfoKey) throws DaoException;
 }

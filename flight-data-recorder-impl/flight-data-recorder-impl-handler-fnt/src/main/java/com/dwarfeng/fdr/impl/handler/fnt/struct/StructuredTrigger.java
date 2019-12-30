@@ -11,7 +11,7 @@ public interface StructuredTrigger extends Trigger {
 
     void applyConfig(Object config) throws TriggerException;
 
-    void applyPointUuid(String pointUuid) throws TriggerException;
+    void applyPointGuid(long pointGuid) throws TriggerException;
 
-    void applyTriggerUuid(String triggerUuid) throws TriggerException;
+    void applyTriggerGuid(long triggerGuid) throws TriggerException;
 }

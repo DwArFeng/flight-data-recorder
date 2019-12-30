@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 
 import java.util.Date;
 
@@ -10,14 +10,14 @@ import java.util.Date;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class RealtimeValue implements Entity<UuidKey> {
+public class RealtimeValue implements Entity<GuidKey> {
 
     private static final long serialVersionUID = -5851108509570366034L;
 
     /**
      * 主键。
      */
-    private UuidKey key;
+    private GuidKey key;
 
     private Date happenedDate;
 
@@ -26,19 +26,19 @@ public class RealtimeValue implements Entity<UuidKey> {
     public RealtimeValue() {
     }
 
-    public RealtimeValue(UuidKey key, Date happenedDate, String value) {
+    public RealtimeValue(GuidKey key, Date happenedDate, String value) {
         this.key = key;
         this.happenedDate = happenedDate;
         this.value = value;
     }
 
     @Override
-    public UuidKey getKey() {
+    public GuidKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(UuidKey key) {
+    public void setKey(GuidKey key) {
         this.key = key;
     }
 

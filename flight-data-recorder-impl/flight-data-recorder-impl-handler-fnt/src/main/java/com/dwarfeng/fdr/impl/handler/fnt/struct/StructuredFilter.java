@@ -11,7 +11,7 @@ public interface StructuredFilter extends Filter {
 
     void applyConfig(Object config) throws FilterException;
 
-    void applyPointUuid(String pointUuid) throws FilterException;
+    void applyPointGuid(long pointGuid) throws FilterException;
 
-    void applyFilterUuid(String filterUuid) throws FilterException;
+    void applyFilterGuid(long filterGuid) throws FilterException;
 }

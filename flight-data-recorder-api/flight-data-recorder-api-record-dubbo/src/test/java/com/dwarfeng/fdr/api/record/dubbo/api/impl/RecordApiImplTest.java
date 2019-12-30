@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.api.record.dubbo.api.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dwarfeng.dutil.basic.io.CT;
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
+import com.dwarfeng.fdr.api.record.dubbo.api.RecordApi;
 import com.dwarfeng.fdr.impl.handler.event.kafka.bean.entity.KafkaTriggeredValue;
 import com.dwarfeng.fdr.impl.handler.fnt.preset.IntegerFilter;
 import com.dwarfeng.fdr.impl.handler.fnt.preset.IntegerRangeTrigger;
@@ -12,7 +12,6 @@ import com.dwarfeng.fdr.impl.handler.fnt.struct.StructuredTriggerInfo;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.dto.RecordResult;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import com.dwarfeng.fdr.stack.service.*;
 import org.junit.After;
@@ -26,7 +25,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -49,11 +51,6 @@ public class RecordApiImplTest {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
-    @Qualifier("recordService")
-    private RecordService recordService;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
     @Qualifier("persistenceValueMaintainService")
     private PersistenceValueMaintainService persistenceValueMaintainService;
 
@@ -72,6 +69,9 @@ public class RecordApiImplTest {
     @Qualifier("triggeredValueMaintainService")
     private TriggeredValueMaintainService triggeredValueMaintainService;
 
+    @Autowired
+    private RecordApi recordApi;
+
     private Point point;
     private List<PersistenceValue> persistenceValues;
     private RealtimeValue realtimeValue;
@@ -84,7 +84,7 @@ public class RecordApiImplTest {
     @Before
     public void setUp() {
         point = new Point(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent-point",
                 "test-point",
@@ -115,7 +115,7 @@ public class RecordApiImplTest {
                 config
         );
         FilterInfo filterInfo = new FilterInfo(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 point.getKey(),
                 true,
                 "This is a test",
@@ -134,7 +134,7 @@ public class RecordApiImplTest {
                 config
         );
         filterInfo = new FilterInfo(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 point.getKey(),
                 true,
                 "This is a test",
@@ -155,7 +155,7 @@ public class RecordApiImplTest {
                 config
         );
         TriggerInfo triggerInfo = new TriggerInfo(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 point.getKey(),
                 true,
                 "This is a test",
@@ -177,27 +177,31 @@ public class RecordApiImplTest {
 
     @Test
     public void record() throws ServiceException {
-        pointMaintainService.insert(point);
+        point.setKey(pointMaintainService.insert(point));
         for (FilterInfo filterInfo : filterInfos) {
-            filterInfoMaintainService.insert(filterInfo);
+            filterInfo.setKey(filterInfoMaintainService.insert(filterInfo));
+            filterInfo.setPointKey(point.getKey());
+            filterInfoMaintainService.update(filterInfo);
         }
         for (TriggerInfo triggerInfo : triggerInfos) {
-            triggerInfoMaintainService.insert(triggerInfo);
+            triggerInfo.setKey(triggerInfoMaintainService.insert(triggerInfo));
+            triggerInfo.setPointKey(point.getKey());
+            triggerInfoMaintainService.update(triggerInfo);
         }
         try {
-            record(new DataInfo(point.getKey().getUuid(), "aaa", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "bbb", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "ccc", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "112", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "113", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "114", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "115", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "116", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "1000", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "1001", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "1002", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "1003", new Date()));
-            record(new DataInfo(point.getKey().getUuid(), "1004", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "aaa", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "bbb", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "ccc", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "112", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "113", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "114", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "115", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "116", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "1000", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "1001", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "1002", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "1003", new Date()));
+            record(new DataInfo(point.getKey().getGuid(), "1004", new Date()));
         } finally {
             for (FilteredValue filteredValue : filteredValues) {
                 filteredValueMaintainService.delete(filteredValue.getKey());
@@ -222,7 +226,7 @@ public class RecordApiImplTest {
     }
 
     private void record(DataInfo dataInfo) throws ServiceException {
-        RecordResult recordResult = recordService.record(dataInfo);
+        RecordResult recordResult = recordApi.record(dataInfo);
         if (recordResult.isFiltered()) {
             filteredValues.add(recordResult.getFilteredValue());
         }

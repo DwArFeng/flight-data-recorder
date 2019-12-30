@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.stack.service;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 
 /**
@@ -12,8 +12,8 @@ import com.dwarfeng.fdr.stack.exception.ServiceException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface TriggerInfoMaintainService extends EntityCrudService<UuidKey, TriggerInfo> {
+public interface TriggerInfoMaintainService extends EntityCrudService<GuidKey, TriggerInfo> {
 
-    PagedData<TriggerInfo> getTriggerInfos(UuidKey pointUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException;
+    PagedData<TriggerInfo> getTriggerInfos(GuidKey pointGuid, LookupPagingInfo lookupPagingInfo) throws ServiceException;
 
 }

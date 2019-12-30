@@ -15,25 +15,21 @@ public final class ServiceExceptionCodes {
      */
     public static final ServiceException.Code UNDEFINE = new ServiceException.Code(0, "undefine");
     /**
-     * 参数验证失败。
+     * GUID生成失败
      */
-    public static final ServiceException.Code VALIDATION_FAILED = new ServiceException.Code(100, "validation failed");
+    public static final ServiceException.Code GUID_FETCH_FAILED = new ServiceException.Code(100, "guid fetch failed");
     /**
      * 缓存异常。
      */
-    public static final ServiceException.Code CACHE_FAILED = new ServiceException.Code(101, "cache failed");
+    public static final ServiceException.Code CACHE_FAILED = new ServiceException.Code(110, "cache failed");
     /**
      * 数据访问层异常。
      */
-    public static final ServiceException.Code DAO_FAILED = new ServiceException.Code(101, "dao failed");
-//    /**
-//     * 过滤器构造失败。
-//     */
-//    public static final ServiceException.Code FILTER_MAKE_FAILED = new ServiceException.Code(102, "filter make failed");
-//    /**
-//     * 触发器构造失败。
-//     */
-//    public static final ServiceException.Code TRIGGER_MAKE_FAILED = new ServiceException.Code(103, "trigger make failed");
+    public static final ServiceException.Code DAO_FAILED = new ServiceException.Code(120, "dao failed");
+    /**
+     * 参数验证失败。
+     */
+    public static final ServiceException.Code PARAM_VALIDATION_FAILED = new ServiceException.Code(130, "param validation failed");
 
     private ServiceExceptionCodes() {
         throw new IllegalStateException("禁止实例化");

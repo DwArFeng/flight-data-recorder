@@ -13,7 +13,7 @@ public class TriggerHandlerImpl implements TriggerHandler {
     private TriggerHandlerDelegate delegate;
 
     @Override
-    public Trigger make(String pointUuid, String triggerUuid, String content) throws TriggerException {
-        return delegate.make(pointUuid, triggerUuid, content);
+    public Trigger make(long pointGuid, long triggerGuid, String content) throws TriggerException {
+        return delegate.make(pointGuid, triggerGuid, content);
     }
 }

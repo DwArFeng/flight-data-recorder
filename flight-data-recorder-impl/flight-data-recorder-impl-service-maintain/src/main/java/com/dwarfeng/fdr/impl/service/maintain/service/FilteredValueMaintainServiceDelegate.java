@@ -1,14 +1,15 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
+import com.dwarfeng.fdr.sdk.util.ServiceExceptionCodes;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.cache.FilteredValueCache;
 import com.dwarfeng.fdr.stack.dao.FilteredValueDao;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.handler.ValidationHandler;
+import com.dwarfeng.sfds.api.GuidApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Component
 @Validated
@@ -29,24 +31,24 @@ public class FilteredValueMaintainServiceDelegate {
     private FilteredValueDao filteredValueDao;
     @Autowired
     private FilteredValueCache filteredValueCache;
+
     @Autowired
-    private ValidationHandler validationHandler;
+    private GuidApi guidApi;
 
     @Value("${cache.timeout.entity.filtered_value}")
     private long filteredValueTimeout;
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public FilteredValue get(@NotNull UuidKey key) throws ServiceException {
+    public FilteredValue get(@NotNull GuidKey key) throws ServiceException {
         try {
-            validationHandler.uuidKeyValidation(key);
             return internalGet(key);
         } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
 
-    private FilteredValue internalGet(UuidKey key) throws CacheException, DaoException {
+    private FilteredValue internalGet(GuidKey key) throws CacheException, DaoException {
         if (filteredValueCache.exists(key)) {
             LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
             return filteredValueCache.get(key);
@@ -61,10 +63,11 @@ public class FilteredValueMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey insert(@NotNull FilteredValue filteredValue) throws ServiceException {
-        try {
-            validationHandler.filteredValueValidation(filteredValue);
+    public GuidKey insert(@NotNull FilteredValue filteredValue) throws ServiceException {
+        //如果实体中没有主键，则向主键服务请求一个主键。
+        maySetGuid(filteredValue);
 
+        try {
             if (filteredValueCache.exists(filteredValue.getKey()) || filteredValueDao.exists(filteredValue.getKey())) {
                 LOGGER.debug("指定的实体 " + filteredValue.toString() + " 已经存在，无法插入...");
                 throw new IllegalStateException("指定的实体 " + filteredValue.toString() + " 已经存在，无法插入...");
@@ -80,12 +83,24 @@ public class FilteredValueMaintainServiceDelegate {
         }
     }
 
+    private void maySetGuid(FilteredValue filteredValue) throws ServiceException {
+        if (Objects.isNull(filteredValue.getKey())) {
+            LOGGER.debug("实体 " + filteredValue.toString() + "没有主键，将从服务中获取GUID...");
+            try {
+                long guid = guidApi.nextGuid();
+                LOGGER.debug("从服务中获取了guid: " + guid);
+                filteredValue.setKey(new GuidKey(guid));
+            } catch (Exception e) {
+                LOGGER.warn("主键获取失败，将抛出异常...", e);
+                throw new ServiceException(ServiceExceptionCodes.GUID_FETCH_FAILED);
+            }
+        }
+    }
+
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey update(@NotNull FilteredValue filteredValue) throws ServiceException {
+    public GuidKey update(@NotNull FilteredValue filteredValue) throws ServiceException {
         try {
-            validationHandler.filteredValueValidation(filteredValue);
-
             if (!filteredValueCache.exists(filteredValue.getKey()) && !filteredValueDao.exists(filteredValue.getKey())) {
                 LOGGER.debug("指定的实体 " + filteredValue.toString() + " 已经存在，无法更新...");
                 throw new IllegalStateException("指定的实体 " + filteredValue.toString() + " 已经存在，无法更新...");
@@ -104,10 +119,8 @@ public class FilteredValueMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public void delete(@NotNull UuidKey key) throws ServiceException {
+    public void delete(@NotNull GuidKey key) throws ServiceException {
         try {
-            validationHandler.uuidKeyValidation(key);
-
             if (!filteredValueCache.exists(key) && !filteredValueDao.exists(key)) {
                 LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
                 throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");

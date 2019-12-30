@@ -1,22 +1,22 @@
 package com.dwarfeng.fdr.stack.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 
 /**
  * 数据点。
  */
-public class Point implements Entity<UuidKey> {
+public class Point implements Entity<GuidKey> {
 
     private static final long serialVersionUID = 9116129592160719291L;
 
     /**
      * 主键。
      */
-    private UuidKey key;
+    private GuidKey key;
     /**
      * 所属分类主键。
      */
-    private UuidKey categoryKey;
+    private GuidKey categoryKey;
     /**
      * 数据点的名称。
      */
@@ -37,7 +37,7 @@ public class Point implements Entity<UuidKey> {
     public Point() {
     }
 
-    public Point(UuidKey key, UuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public Point(GuidKey key, GuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
         this.key = key;
         this.categoryKey = categoryKey;
         this.name = name;
@@ -47,20 +47,20 @@ public class Point implements Entity<UuidKey> {
     }
 
     @Override
-    public UuidKey getKey() {
+    public GuidKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(UuidKey key) {
+    public void setKey(GuidKey key) {
         this.key = key;
     }
 
-    public UuidKey getCategoryKey() {
+    public GuidKey getCategoryKey() {
         return categoryKey;
     }
 
-    public void setCategoryKey(UuidKey categoryKey) {
+    public void setCategoryKey(GuidKey categoryKey) {
         this.categoryKey = categoryKey;
     }
 

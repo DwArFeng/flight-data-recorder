@@ -1,11 +1,9 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PersistenceValueMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -33,9 +30,9 @@ public class PersistenceValueMaintainApiImplTest {
     private List<PersistenceValue> persistenceValues;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         parentPoint = new Point(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent-point",
                 "test-point",
@@ -45,7 +42,7 @@ public class PersistenceValueMaintainApiImplTest {
         persistenceValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             PersistenceValue persistenceValue = new PersistenceValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                    null,
                     parentPoint.getKey(),
                     new Date(),
                     "persistemce-value-" + i
@@ -55,7 +52,7 @@ public class PersistenceValueMaintainApiImplTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         parentPoint = null;
         persistenceValues.clear();
     }
@@ -63,9 +60,11 @@ public class PersistenceValueMaintainApiImplTest {
     @Test
     public void test() throws ServiceException {
         try {
-            pointMaintainApi.insert(parentPoint);
+            parentPoint.setKey(pointMaintainApi.insert(parentPoint));
             for (PersistenceValue persistenceValue : persistenceValues) {
-                persistenceValueMaintainApi.insert(persistenceValue);
+                persistenceValue.setKey(persistenceValueMaintainApi.insert(persistenceValue));
+                persistenceValue.setPointKey(parentPoint.getKey());
+                persistenceValueMaintainApi.update(persistenceValue);
             }
         } finally {
             for (PersistenceValue persistenceValue : persistenceValues) {

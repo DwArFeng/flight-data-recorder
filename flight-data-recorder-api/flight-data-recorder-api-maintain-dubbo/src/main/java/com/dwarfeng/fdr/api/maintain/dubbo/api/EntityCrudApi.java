@@ -1,7 +1,5 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api;
 
-import com.dwarfeng.fdr.stack.bean.entity.Entity;
-import com.dwarfeng.fdr.stack.bean.key.Key;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import com.dwarfeng.fdr.stack.service.Service;
 
@@ -11,7 +9,7 @@ import com.dwarfeng.fdr.stack.service.Service;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface EntityCrudApi<K extends Key, E extends Entity<K>> extends Service {
+public interface EntityCrudApi<K, E> extends Service {
 
     /**
      * 获取实体。

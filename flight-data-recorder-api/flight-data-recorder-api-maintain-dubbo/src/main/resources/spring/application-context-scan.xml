@@ -9,8 +9,6 @@
 
     <!--扫描api的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.api.maintain.dubbo.api.impl"/>
-    <!--扫描api-aop增强所在的包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.api.maintain.dubbo.interceptor"/>
     <!--扫描aop增强所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.sdk.interceptor"/>
 </beans>

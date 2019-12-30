@@ -1,8 +1,9 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
-import com.dwarfeng.fdr.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisGuidKey;
+
+import java.io.Serializable;
 
 /**
  * Redis分类对象。
@@ -10,15 +11,15 @@ import com.dwarfeng.fdr.stack.bean.entity.Entity;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class RedisCategory implements Entity<RedisUuidKey> {
+public class RedisCategory implements Serializable {
 
     private static final long serialVersionUID = -8187976428762830248L;
 
     @JSONField(name = "key", ordinal = 1)
-    private RedisUuidKey key;
+    private RedisGuidKey key;
 
     @JSONField(name = "parent_key", ordinal = 2)
-    private RedisUuidKey parentKey;
+    private RedisGuidKey parentKey;
 
     @JSONField(name = "name", ordinal = 3)
     private String name;
@@ -29,26 +30,26 @@ public class RedisCategory implements Entity<RedisUuidKey> {
     public RedisCategory() {
     }
 
-    public RedisCategory(RedisUuidKey key, RedisUuidKey parentKey, String name, String remark) {
+    public RedisCategory(RedisGuidKey key, RedisGuidKey parentKey, String name, String remark) {
         this.key = key;
         this.parentKey = parentKey;
         this.name = name;
         this.remark = remark;
     }
 
-    public RedisUuidKey getKey() {
+    public RedisGuidKey getKey() {
         return key;
     }
 
-    public void setKey(RedisUuidKey key) {
+    public void setKey(RedisGuidKey key) {
         this.key = key;
     }
 
-    public RedisUuidKey getParentKey() {
+    public RedisGuidKey getParentKey() {
         return parentKey;
     }
 
-    public void setParentKey(RedisUuidKey parentKey) {
+    public void setParentKey(RedisGuidKey parentKey) {
         this.parentKey = parentKey;
     }
 

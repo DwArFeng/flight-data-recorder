@@ -1,17 +1,17 @@
 package com.dwarfeng.fdr.impl.service.record.service;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.sdk.util.ServiceExceptionCodes;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.dto.RecordResult;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.cache.*;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.fdr.stack.exception.*;
 import com.dwarfeng.fdr.stack.handler.*;
+import com.dwarfeng.sfds.api.GuidApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 @Component
@@ -33,8 +33,6 @@ public class RecordServiceDelegate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordServiceDelegate.class);
 
-    @Autowired
-    private ValidationHandler validationHandler;
     @Autowired
     private PointDao pointDao;
     @Autowired
@@ -73,6 +71,8 @@ public class RecordServiceDelegate {
     private TriggerHandler triggerHandler;
     @Autowired
     private EventHandler eventHandler;
+    @Autowired
+    private GuidApi guidApi;
 
     @Value("${cache.timeout.entity.point}")
     private long pointTimeout;
@@ -101,13 +101,13 @@ public class RecordServiceDelegate {
     @TimeAnalyse
     public RecordResult record(@NotNull DataInfo dataInfo) throws ServiceException {
         //定义变量。
-        UuidKey pointKey;
+        GuidKey pointKey;
         Point point;
         List<FilterInfo> filterInfos;
         List<TriggerInfo> triggerInfos;
         List<Filter> filters = new ArrayList<>();
         List<Trigger> triggers = new ArrayList<>();
-        //待返回结果。
+        //定义待返回结果。
         RecordResult recordResult = new RecordResult(
                 dataInfo,
                 false,
@@ -122,64 +122,52 @@ public class RecordServiceDelegate {
 
         /*
          * 数据记录详细逻辑。
-         *   1. 判断数据是否合法。
-         *   2. 获得数据点。
-         *   3. 获得数据点的所有过滤器信息。
-         *   4. 取出数据点的所有触发器信息。
-         *   5. 过滤器信息构造过滤器。
-         *   6. 触发器信息构造触发器。
-         *   7. 过滤器进行过滤，判断不通过的情况。
-         *   8. 如果通过过滤且数据点允许持久化，生成持久化数据值。
-         *   9. 如果通过过滤且数据点允许实时记录，生成实时数据。
-         *   10. 如果通过过滤，处理所有触发器，获取所有触发器信息。
-         *   11. 处理记录结果并返回。
+         *   1. 获得数据点。
+         *   2. 获得数据点的所有过滤器信息。
+         *   3. 取出数据点的所有触发器信息。
+         *   4. 过滤器信息构造过滤器。
+         *   5. 触发器信息构造触发器。
+         *   6. 过滤器进行过滤，判断不通过的情况。
+         *   7. 如果通过过滤且数据点允许持久化，生成持久化数据值。
+         *   8. 如果通过过滤且数据点允许实时记录，生成实时数据。
+         *   9. 如果通过过滤，处理所有触发器，获取所有触发器信息。
+         *   10. 处理记录结果并返回。
          */
-
-        //1. 判断数据是否合法。
+        //1. 获得数据点。
+        pointKey = new GuidKey(dataInfo.getPointGuid());
         try {
-            LOGGER.debug("1. 判断数据是否合法...");
-            validationHandler.dataInfoValidation(dataInfo);
-        } catch (ValidationException e) {
-            LOGGER.warn("传入数据 " + dataInfo + " 验证失败，将抛出异常...");
-            throw new ServiceException(e);
-        }
-
-        pointKey = new UuidKey(dataInfo.getPointUuid());
-
-        //2. 获得数据点。
-        try {
-            LOGGER.debug("2. 获得数据点...");
+            LOGGER.debug("1. 获得数据点...");
             point = getPoint(pointKey);
         } catch (CacheException | DaoException e) {
             LOGGER.warn("数据点实体 " + pointKey + " 获取失败，将抛出异常...");
             throw new ServiceException(e);
         }
-        //3. 获得数据点的所有过滤器信息。
+        //2. 获得数据点的所有过滤器信息。
         try {
-            LOGGER.debug("3. 获得数据点的所有过滤器信息...");
+            LOGGER.debug("2. 获得数据点的所有过滤器信息...");
             filterInfos = getFilterInfos(pointKey);
         } catch (CacheException | DaoException e) {
             LOGGER.warn("数据点实体 " + pointKey + " 对应的过滤器列表获取失败，将抛出异常...");
             throw new ServiceException(e);
         }
-        //4. 取出数据点的所有触发器信息。
+        //3. 取出数据点的所有触发器信息。
         try {
-            LOGGER.debug("4. 取出数据点的所有触发器信息...");
+            LOGGER.debug("3. 取出数据点的所有触发器信息...");
             triggerInfos = getTriggerInfos(pointKey);
         } catch (CacheException | DaoException e) {
             LOGGER.warn("数据点实体 " + pointKey + " 对应的触发器列表获取失败，将抛出异常...");
             throw new ServiceException(e);
         }
 
-        //5. 过滤器信息构造过滤器。
+        //4. 过滤器信息构造过滤器。
         try {
-            LOGGER.debug("5. 过滤器信息构造过滤器...");
+            LOGGER.debug("4. 过滤器信息构造过滤器...");
             for (FilterInfo filterInfo : filterInfos) {
                 if (filterInfo.isEnabled()) {
                     LOGGER.debug("过滤器信息 " + filterInfo.toString() + " 使能, 将构造过滤器...");
                     filters.add(filterHandler.make(
-                            filterInfo.getPointKey().getUuid(),
-                            filterInfo.getKey().getUuid(),
+                            filterInfo.getPointKey().getGuid(),
+                            filterInfo.getKey().getGuid(),
                             filterInfo.getContent()
                     ));
                 } else {
@@ -190,15 +178,15 @@ public class RecordServiceDelegate {
             LOGGER.warn("过滤器构造失败, 将抛出异常...");
             throw new ServiceException(e);
         }
-        //6. 触发器信息构造触发器。
+        //5. 触发器信息构造触发器。
         try {
-            LOGGER.debug("6. 触发器信息构造触发器...");
+            LOGGER.debug("5. 触发器信息构造触发器...");
             for (TriggerInfo triggerInfo : triggerInfos) {
                 if (triggerInfo.isEnabled()) {
                     LOGGER.debug("触发器信息 " + triggerInfo.toString() + " 使能, 将构造触发器...");
                     triggers.add(triggerHandler.make(
-                            triggerInfo.getPointKey().getUuid(),
-                            triggerInfo.getKey().getUuid(),
+                            triggerInfo.getPointKey().getGuid(),
+                            triggerInfo.getKey().getGuid(),
                             triggerInfo.getContent()
                     ));
                 } else {
@@ -210,7 +198,7 @@ public class RecordServiceDelegate {
             throw new ServiceException(e);
         }
 
-        //7. 过滤器进行过滤，判断不通过的情况。
+        //6. 过滤器进行过滤，判断不通过的情况。
         try {
             for (Filter filter : filters) {
                 LOGGER.debug("6. 过滤器进行过滤，判断不通过的情况...");
@@ -228,38 +216,43 @@ public class RecordServiceDelegate {
             throw new ServiceException(e);
         }
 
-        //8. 如果通过过滤且数据点允许持久化，生成持久化数据值。
+        //7. 如果通过过滤且数据点允许持久化，生成持久化数据值。
         if (!recordResult.isFiltered() && point.isPersistenceEnabled()) {
-            LOGGER.debug("8. 如果通过过滤且数据点允许持久化，生成持久化数据值... 满足");
+            LOGGER.debug("7. 如果通过过滤且数据点允许持久化，生成持久化数据值... 满足");
             recordResult.setPersistenceRecorded(true);
             recordResult.setPersistenceValue(new PersistenceValue(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                    null,
                     pointKey,
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue()
             ));
         } else {
-            LOGGER.debug("8. 如果通过过滤且数据点允许持久化，生成持久化数据值... 不满足");
+            LOGGER.debug("7. 如果通过过滤且数据点允许持久化，生成持久化数据值... 不满足");
         }
 
-        //9. 如果通过过滤且数据点允许实时记录，生成实时数据。
+        //8. 如果通过过滤且数据点允许实时记录，生成实时数据。
         if (!recordResult.isFiltered() && point.isRealtimeEnabled()) {
-            LOGGER.debug("9. 如果通过过滤且数据点允许实时记录，生成实时数据... 满足");
-            recordResult.setRealtimeRecorded(true);
-            recordResult.setRealtimeValue(new RealtimeValue(
-                    pointKey,
-                    dataInfo.getHappenedDate(),
-                    dataInfo.getValue()
-            ));
+            LOGGER.debug("8. 如果通过过滤且数据点允许实时记录，生成实时数据... 满足");
+            RealtimeValue realtimeValue = getRealtimeValueOrNull(pointKey);
+            if (Objects.isNull(realtimeValue) || realtimeValue.getHappenedDate().getTime() < dataInfo.getHappenedDate().getTime()) {
+                LOGGER.debug("8.1 如果数据点在此之前没有实时数据或旧的实时数据发生时间小于新的实时数据，生成实时数据... 满足");
+                recordResult.setRealtimeRecorded(true);
+                recordResult.setRealtimeValue(new RealtimeValue(
+                        pointKey,
+                        dataInfo.getHappenedDate(),
+                        dataInfo.getValue()
+                ));
+            } else {
+                LOGGER.debug("8.1 如果数据点在此之前没有实时数据或旧的实时数据发生时间小于新的实时数据，生成实时数据... 不满足");
+            }
         } else {
-            LOGGER.debug("9. 如果通过过滤且数据点允许实时记录，生成实时数据... 不满足");
+            LOGGER.debug("8. 如果通过过滤且数据点允许实时记录，生成实时数据... 不满足");
         }
 
-        //10. 如果通过过滤，处理所有触发器，获取所有触发器信息。
-
+        //9. 如果通过过滤，处理所有触发器，获取所有触发器信息。
         if (!recordResult.isFiltered()) {
             try {
-                LOGGER.debug("10. 如果通过过滤，处理所有触发器，获取所有触发器信息... 满足");
+                LOGGER.debug("9. 如果通过过滤，处理所有触发器，获取所有触发器信息... 满足");
                 for (Trigger trigger : triggers) {
                     TriggeredValueConsumer consumer = new TriggeredValueConsumer();
                     trigger.test(dataInfo, consumer);
@@ -274,11 +267,11 @@ public class RecordServiceDelegate {
                 throw new ServiceException(e);
             }
         } else {
-            LOGGER.debug("11. 如果通过过滤，处理所有触发器，获取所有触发器信息... 不满足");
+            LOGGER.debug("9. 如果通过过滤，处理所有触发器，获取所有触发器信息... 不满足");
         }
 
-        //11. 处理记录结果并返回。
-        LOGGER.debug("11. 处理记录结果并返回...");
+        //10. 处理记录结果并返回。
+        LOGGER.debug("10. 处理记录结果并返回...");
         try {
             return processRecordResult(recordResult);
         } catch (Exception e) {
@@ -287,7 +280,7 @@ public class RecordServiceDelegate {
         }
     }
 
-    public RecordResult processRecordResult(RecordResult recordResult) throws DaoException, CacheException, ValidationException, EventException {
+    public RecordResult processRecordResult(RecordResult recordResult) throws DaoException, CacheException, EventException, ServiceException {
         if (recordResult.isFiltered()) {
             LOGGER.debug("检测到数据点被过滤, 记录被过滤信息...");
             insertFilteredValue(recordResult.getFilteredValue());
@@ -315,9 +308,30 @@ public class RecordServiceDelegate {
     }
 
     @TimeAnalyse
-    public void insertFilteredValue(FilteredValue filteredValue) throws ValidationException, CacheException, DaoException {
-        validationHandler.filteredValueValidation(filteredValue);
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public RealtimeValue getRealtimeValueOrNull(GuidKey key) throws ServiceException {
+        try {
+            if (realtimeValueCache.exists(key)) {
+                LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
+                return realtimeValueCache.get(key);
+            } else if (!realtimeValueDao.exists(key)) {
+                LOGGER.debug("未能在持久层中找到 " + key.toString() + " 对应的值，返回null...");
+                return null;
+            } else {
+                LOGGER.debug("未能在缓存中发现 " + key.toString() + " 对应的值，读取数据访问层...");
+                RealtimeValue realtimeValue = realtimeValueDao.get(key);
+                LOGGER.debug("将读取到的值 " + realtimeValue.toString() + " 回写到缓存中...");
+                realtimeValueCache.push(key, realtimeValue, realtimeValueTimeout);
+                return realtimeValue;
+            }
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+    }
 
+    @TimeAnalyse
+    public void insertFilteredValue(FilteredValue filteredValue) throws CacheException, DaoException, ServiceException {
+        maySetGuid(filteredValue);
         if (filteredValueCache.exists(filteredValue.getKey()) || filteredValueDao.exists(filteredValue.getKey())) {
             LOGGER.debug("指定的实体 " + filteredValue.toString() + " 已经存在，无法插入...");
             throw new IllegalStateException("指定的实体 " + filteredValue.toString() + " 已经存在，无法插入...");
@@ -330,9 +344,8 @@ public class RecordServiceDelegate {
     }
 
     @TimeAnalyse
-    public void insertPersistenceValue(PersistenceValue persistenceValue) throws ValidationException, CacheException, DaoException {
-        validationHandler.persistenceValueValidation(persistenceValue);
-
+    public void insertPersistenceValue(PersistenceValue persistenceValue) throws CacheException, DaoException, ServiceException {
+        maySetGuid(persistenceValue);
         if (persistenceValueCache.exists(persistenceValue.getKey()) || persistenceValueDao.exists(persistenceValue.getKey())) {
             LOGGER.debug("指定的实体 " + persistenceValue.toString() + " 已经存在，无法插入...");
             throw new IllegalStateException("指定的实体 " + persistenceValue.toString() + " 已经存在，无法插入...");
@@ -345,9 +358,7 @@ public class RecordServiceDelegate {
     }
 
     @TimeAnalyse
-    public void insertOrUpdateRealtimeValue(RealtimeValue realtimeValue) throws ValidationException, CacheException, DaoException {
-        validationHandler.realtimeValueValidation(realtimeValue);
-
+    public void insertOrUpdateRealtimeValue(RealtimeValue realtimeValue) throws CacheException, DaoException {
         if (realtimeValueCache.exists(realtimeValue.getKey()) || realtimeValueDao.exists(realtimeValue.getKey())) {
             LOGGER.debug("指定的实体 " + realtimeValue.toString() + " 已经存在，执行更新操作...");
             realtimeValueDao.update(realtimeValue);
@@ -361,9 +372,8 @@ public class RecordServiceDelegate {
     }
 
     @TimeAnalyse
-    public void insertTriggeredValue(TriggeredValue triggeredValue) throws ValidationException, CacheException, DaoException {
-        validationHandler.triggeredValueValidation(triggeredValue);
-
+    public void insertTriggeredValue(TriggeredValue triggeredValue) throws CacheException, DaoException, ServiceException {
+        maySetGuid(triggeredValue);
         if (triggeredValueCache.exists(triggeredValue.getKey()) || triggeredValueDao.exists(triggeredValue.getKey())) {
             LOGGER.debug("指定的实体 " + triggeredValue.toString() + " 已经存在，无法插入...");
             throw new IllegalStateException("指定的实体 " + triggeredValue.toString() + " 已经存在，无法插入...");
@@ -375,8 +385,22 @@ public class RecordServiceDelegate {
         }
     }
 
+    private void maySetGuid(Entity<GuidKey> entity) throws ServiceException {
+        if (Objects.isNull(entity.getKey())) {
+            LOGGER.debug("实体 " + entity.toString() + "没有主键，将从服务中获取GUID...");
+            try {
+                long guid = guidApi.nextGuid();
+                LOGGER.debug("从服务中获取了guid: " + guid);
+                entity.setKey(new GuidKey(guid));
+            } catch (Exception e) {
+                LOGGER.warn("主键获取失败，将抛出异常...", e);
+                throw new ServiceException(ServiceExceptionCodes.GUID_FETCH_FAILED);
+            }
+        }
+    }
+
     @TimeAnalyse
-    public List<TriggerInfo> getTriggerInfos(UuidKey pointKey) throws CacheException, DaoException {
+    public List<TriggerInfo> getTriggerInfos(GuidKey pointKey) throws CacheException, DaoException {
         List<TriggerInfo> triggerInfos;
 
         if (pointHasTriggerInfoCache.exists(pointKey)) {
@@ -402,28 +426,28 @@ public class RecordServiceDelegate {
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
-    public void fetchTriggerInfo2Cache(UuidKey uuidKey) {
+    public void fetchTriggerInfo2Cache(GuidKey guidKey) {
         try {
             int totlePage;
             int currPage;
-            long count = triggerInfoDao.getTriggerInfoCount(uuidKey);
+            long count = triggerInfoDao.getTriggerInfoCount(guidKey);
             totlePage = Math.max((int) Math.ceil((double) count / triggerInfoFetchSize), 1);
             currPage = 0;
-            pointHasTriggerInfoCache.delete(uuidKey);
+            pointHasTriggerInfoCache.delete(guidKey);
             do {
                 LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, triggerInfoFetchSize);
-                List<TriggerInfo> childs = triggerInfoDao.getTriggerInfos(uuidKey, lookupPagingInfo);
+                List<TriggerInfo> childs = triggerInfoDao.getTriggerInfos(guidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
-                    pointHasTriggerInfoCache.push(uuidKey, childs, pointHasTriggerInfoTimeout);
+                    pointHasTriggerInfoCache.push(guidKey, childs, pointHasTriggerInfoTimeout);
                 }
             } while (currPage < totlePage);
         } catch (Exception e) {
-            LOGGER.warn("将分类 " + uuidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);
+            LOGGER.warn("将分类 " + guidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);
         }
     }
 
     @TimeAnalyse
-    public List<FilterInfo> getFilterInfos(UuidKey pointKey) throws CacheException, DaoException {
+    public List<FilterInfo> getFilterInfos(GuidKey pointKey) throws CacheException, DaoException {
         List<FilterInfo> filterInfos;
 
         if (pointHasFilterInfoCache.exists(pointKey)) {
@@ -449,28 +473,28 @@ public class RecordServiceDelegate {
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
-    public void fetchFilterInfo2Cache(UuidKey uuidKey) {
+    public void fetchFilterInfo2Cache(GuidKey guidKey) {
         try {
             int totlePage;
             int currPage;
-            long count = filterInfoDao.getFilterInfoCount(uuidKey);
+            long count = filterInfoDao.getFilterInfoCount(guidKey);
             totlePage = Math.max((int) Math.ceil((double) count / filterInfoFetchSize), 1);
             currPage = 0;
-            pointHasFilterInfoCache.delete(uuidKey);
+            pointHasFilterInfoCache.delete(guidKey);
             do {
                 LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, filterInfoFetchSize);
-                List<FilterInfo> childs = filterInfoDao.getFilterInfos(uuidKey, lookupPagingInfo);
+                List<FilterInfo> childs = filterInfoDao.getFilterInfos(guidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
-                    pointHasFilterInfoCache.push(uuidKey, childs, pointHasFilterInfoTimeout);
+                    pointHasFilterInfoCache.push(guidKey, childs, pointHasFilterInfoTimeout);
                 }
             } while (currPage < totlePage);
         } catch (Exception e) {
-            LOGGER.warn("将分类 " + uuidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);
+            LOGGER.warn("将分类 " + guidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);
         }
     }
 
     @TimeAnalyse
-    public Point getPoint(UuidKey key) throws CacheException, DaoException {
+    public Point getPoint(GuidKey key) throws CacheException, DaoException {
         if (pointCache.exists(key)) {
             LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
             return pointCache.get(key);

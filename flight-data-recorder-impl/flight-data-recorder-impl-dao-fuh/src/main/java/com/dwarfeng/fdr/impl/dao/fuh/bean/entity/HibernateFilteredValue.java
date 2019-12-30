@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateUuidKey;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateUuidKey.class)
+@IdClass(HibernateGuidKey.class)
 @Table(name = "tbl_filtered_value")
 public class HibernateFilteredValue implements Serializable {
 
@@ -17,15 +17,15 @@ public class HibernateFilteredValue implements Serializable {
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "uuid", columnDefinition = "CHAR(22)", nullable = false, unique = true)
-    private String uuid;
+    @Column(name = "guid", nullable = false, unique = true)
+    private Long guid;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "point_uuid", columnDefinition = "CHAR(22)")
-    private String pointUuid;
+    @Column(name = "point_guid")
+    private Long pointGuid;
 
-    @Column(name = "filter_uuid", columnDefinition = "CHAR(22)")
-    private String filterUuid;
+    @Column(name = "filter_guid")
+    private Long filterGuid;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
@@ -40,65 +40,65 @@ public class HibernateFilteredValue implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "point_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "point_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
     @ManyToOne(targetEntity = HibernateFilterInfo.class)
     @JoinColumns({ //
-            @JoinColumn(name = "filter_uuid", referencedColumnName = "uuid", insertable = false, updatable = false), //
+            @JoinColumn(name = "filter_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
     })
     private HibernateFilterInfo filterInfo;
 
     public HibernateFilteredValue() {
     }
 
-    public HibernateUuidKey getKey() {
-        return Optional.ofNullable(uuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getKey() {
+        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setKey(HibernateUuidKey uuidKey) {
-        this.uuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setKey(HibernateGuidKey guidKey) {
+        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getUuid() {
-        return uuid;
+    public Long getGuid() {
+        return guid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setGuid(Long guid) {
+        this.guid = guid;
     }
 
-    public HibernateUuidKey getPointKey() {
-        return Optional.ofNullable(pointUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getPointKey() {
+        return Optional.ofNullable(pointGuid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setPointKey(HibernateUuidKey uuidKey) {
-        this.pointUuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setPointKey(HibernateGuidKey guidKey) {
+        this.pointGuid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getPointUuid() {
-        return pointUuid;
+    public Long getPointGuid() {
+        return pointGuid;
     }
 
-    public void setPointUuid(String pointUuid) {
-        this.pointUuid = pointUuid;
+    public void setPointGuid(Long pointGuid) {
+        this.pointGuid = pointGuid;
     }
 
-    public HibernateUuidKey getFilterKey() {
-        return Optional.ofNullable(filterUuid).map(HibernateUuidKey::new).orElse(null);
+    public HibernateGuidKey getFilterKey() {
+        return Optional.ofNullable(filterGuid).map(HibernateGuidKey::new).orElse(null);
     }
 
-    public void setFilterKey(HibernateUuidKey uuidKey) {
-        this.filterUuid = Optional.ofNullable(uuidKey).map(HibernateUuidKey::getUuid).orElse(null);
+    public void setFilterKey(HibernateGuidKey guidKey) {
+        this.filterGuid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
     }
 
-    public String getFilterUuid() {
-        return filterUuid;
+    public Long getFilterGuid() {
+        return filterGuid;
     }
 
-    public void setFilterUuid(String filterUuid) {
-        this.filterUuid = filterUuid;
+    public void setFilterGuid(Long filterGuid) {
+        this.filterGuid = filterGuid;
     }
 
     public Date getHappenedDate() {
@@ -144,9 +144,9 @@ public class HibernateFilteredValue implements Serializable {
     @Override
     public String toString() {
         return "HibernateFilteredValue{" +
-                "uuid='" + uuid + '\'' +
-                ", pointUuid='" + pointUuid + '\'' +
-                ", filterUuid='" + filterUuid + '\'' +
+                "guid='" + guid + '\'' +
+                ", pointGuid='" + pointGuid + '\'' +
+                ", filterGuid='" + filterGuid + '\'' +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

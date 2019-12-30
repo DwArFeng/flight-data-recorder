@@ -1,40 +1,35 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
 import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggeredValueMaintainApi;
-import com.dwarfeng.fdr.api.maintain.dubbo.interceptor.DubboInvokeLog;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@DubboInvokeLog
 public class TriggeredValueMaintainApiImpl implements TriggeredValueMaintainApi {
 
     @Autowired
-    @Qualifier("triggeredValueMaintainService")
-    private TriggeredValueMaintainService delegate;
+    private TriggeredValueMaintainApiDelegate delegate;
 
     @Override
-    public TriggeredValue get(UuidKey key) throws ServiceException {
-        return delegate.get(key);
+    public TriggeredValue get(GuidKey guidKey) throws ServiceException {
+        return delegate.get(guidKey);
     }
 
     @Override
-    public UuidKey insert(TriggeredValue element) throws ServiceException {
-        return delegate.insert(element);
+    public GuidKey insert(TriggeredValue triggeredValue) throws ServiceException {
+        return delegate.insert(triggeredValue);
     }
 
     @Override
-    public UuidKey update(TriggeredValue element) throws ServiceException {
-        return delegate.update(element);
+    public GuidKey update(TriggeredValue triggeredValue) throws ServiceException {
+        return delegate.update(triggeredValue);
     }
 
     @Override
-    public void delete(UuidKey key) throws ServiceException {
-        delegate.delete(key);
+    public void delete(GuidKey guidKey) throws ServiceException {
+        delegate.delete(guidKey);
     }
 }

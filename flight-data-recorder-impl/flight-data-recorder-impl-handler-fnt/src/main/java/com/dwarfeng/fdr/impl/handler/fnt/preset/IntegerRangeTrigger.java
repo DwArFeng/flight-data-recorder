@@ -1,10 +1,9 @@
 package com.dwarfeng.fdr.impl.handler.fnt.preset;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 @Component("integerRangeTrigger")
@@ -65,8 +63,8 @@ public class IntegerRangeTrigger extends AbstractStructuredTrigger {
         try {
             intValue = Integer.parseInt(dataInfo.getValue());
         } catch (NumberFormatException e) {
-            LOGGER.warn("测试数据值 " + dataInfo.getValue() + " 转换异常, 数据点 " + pointUuid + " 是否配置了IntegerTrigger过滤器? 将抛出异常...", e);
-            throw new TriggerException("测试数据值 " + dataInfo.getValue() + " 转换异常, 数据点 " + pointUuid + " 是否配置了IntegerTrigger过滤器?");
+            LOGGER.warn("测试数据值 " + dataInfo.getValue() + " 转换异常, 数据点 " + pointGuid + " 是否配置了IntegerTrigger过滤器? 将抛出异常...", e);
+            throw new TriggerException("测试数据值 " + dataInfo.getValue() + " 转换异常, 数据点 " + pointGuid + " 是否配置了IntegerTrigger过滤器?");
         }
 
         if ((castedConfig.getCanEqualsMin() && intValue < castedConfig.getMin()) ||
@@ -83,9 +81,9 @@ public class IntegerRangeTrigger extends AbstractStructuredTrigger {
 
         LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 在最大值与最小值之间, 进行触发...");
         TriggeredValue triggeredValue = new TriggeredValue(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
-                new UuidKey(pointUuid),
-                new UuidKey(triggerUuid),
+                null,
+                new GuidKey(pointGuid),
+                new GuidKey(triggerGuid),
                 dataInfo.getHappenedDate(),
                 dataInfo.getValue(),
                 String.format("数据值大于(或等于)%d且小于(或等于)%d", castedConfig.getMin(), castedConfig.getMax())

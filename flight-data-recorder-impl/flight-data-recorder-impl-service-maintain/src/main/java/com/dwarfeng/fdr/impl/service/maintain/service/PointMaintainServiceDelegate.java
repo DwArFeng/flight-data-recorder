@@ -7,13 +7,13 @@ import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.cache.*;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.fdr.stack.handler.ValidationHandler;
+import com.dwarfeng.sfds.api.GuidApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +45,6 @@ public class PointMaintainServiceDelegate {
     private PointHasFilterInfoCache pointHasFilterInfoCache;
     @Autowired
     private PointHasTriggerInfoCache pointHasTriggerInfoCache;
-    @Autowired
-    private ValidationHandler validationHandler;
 
     @Autowired
     private FilterInfoDao filterInfoDao;
@@ -73,6 +71,9 @@ public class PointMaintainServiceDelegate {
     @Autowired
     private TriggeredValueCache triggeredValueCache;
 
+    @Autowired
+    private GuidApi guidApi;
+
     @Value("${cache.timeout.entity.point}")
     private long pointTimeout;
     @Value("${cache.timeout.one_to_many.category_has_point}")
@@ -82,16 +83,15 @@ public class PointMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public Point get(@NotNull UuidKey key) throws ServiceException {
+    public Point get(@NotNull GuidKey key) throws ServiceException {
         try {
-            validationHandler.uuidKeyValidation(key);
             return internalGet(key);
         } catch (Exception e) {
             throw new ServiceException(e);
         }
     }
 
-    private Point internalGet(UuidKey key) throws CacheException, DaoException {
+    private Point internalGet(GuidKey key) throws CacheException, DaoException {
         if (pointCache.exists(key)) {
             LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
             return pointCache.get(key);
@@ -106,10 +106,11 @@ public class PointMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey insert(@NotNull Point point) throws ServiceException {
-        try {
-            validationHandler.pointValidation(point);
+    public GuidKey insert(@NotNull Point point) throws ServiceException {
+        //如果实体中没有主键，则向主键服务请求一个主键。
+        maySetGuid(point);
 
+        try {
             if (pointCache.exists(point.getKey()) || pointDao.exists(point.getKey())) {
                 LOGGER.debug("指定的实体 " + point.toString() + " 已经存在，无法插入...");
                 throw new IllegalStateException("指定的实体 " + point.toString() + " 已经存在，无法插入...");
@@ -129,12 +130,24 @@ public class PointMaintainServiceDelegate {
         }
     }
 
+    private void maySetGuid(Point point) throws ServiceException {
+        if (Objects.isNull(point.getKey())) {
+            LOGGER.debug("实体 " + point.toString() + "没有主键，将从服务中获取GUID...");
+            try {
+                long guid = guidApi.nextGuid();
+                LOGGER.debug("从服务中获取了guid: " + guid);
+                point.setKey(new GuidKey(guid));
+            } catch (Exception e) {
+                LOGGER.warn("主键获取失败，将抛出异常...", e);
+                throw new ServiceException(ServiceExceptionCodes.GUID_FETCH_FAILED);
+            }
+        }
+    }
+
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public UuidKey update(@NotNull Point point) throws ServiceException {
+    public GuidKey update(@NotNull Point point) throws ServiceException {
         try {
-            validationHandler.pointValidation(point);
-
             if (!pointCache.exists(point.getKey()) && !pointDao.exists(point.getKey())) {
                 LOGGER.debug("指定的实体 " + point.toString() + " 已经存在，无法更新...");
                 throw new IllegalStateException("指定的实体 " + point.toString() + " 已经存在，无法更新...");
@@ -161,10 +174,8 @@ public class PointMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
-    public void delete(@NotNull UuidKey key) throws ServiceException {
+    public void delete(@NotNull GuidKey key) throws ServiceException {
         try {
-            validationHandler.uuidKeyValidation(key);
-
             if (!pointCache.exists(key) && !pointDao.exists(key)) {
                 LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
                 throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");
@@ -176,10 +187,10 @@ public class PointMaintainServiceDelegate {
                 }
 
                 LOGGER.debug("查询数据点 " + key.toString() + " 对应的子项过滤器信息...");
-                Set<UuidKey> filterInfos2Delete = filterInfoDao.getFilterInfos(key, LookupPagingInfo.LOOKUP_ALL)
+                Set<GuidKey> filterInfos2Delete = filterInfoDao.getFilterInfos(key, LookupPagingInfo.LOOKUP_ALL)
                         .stream().map(FilterInfo::getKey).collect(Collectors.toSet());
                 LOGGER.debug("查询数据点 " + key.toString() + " 对应的子项触发器信息...");
-                Set<UuidKey> triggerInfos2Delete = triggerInfoDao.getTriggerInfos(key, LookupPagingInfo.LOOKUP_ALL)
+                Set<GuidKey> triggerInfos2Delete = triggerInfoDao.getTriggerInfos(key, LookupPagingInfo.LOOKUP_ALL)
                         .stream().map(TriggerInfo::getKey).collect(Collectors.toSet());
 
                 LOGGER.debug("清除数据点 " + key.toString() + " 对应的子项缓存...");
@@ -187,14 +198,14 @@ public class PointMaintainServiceDelegate {
                 pointHasTriggerInfoCache.delete(key);
 
                 LOGGER.debug("删除数据点 " + key.toString() + " 相关联的被过滤数据与相关缓存...");
-                for (UuidKey filterInfoKey : filterInfos2Delete) {
+                for (GuidKey filterInfoKey : filterInfos2Delete) {
                     filteredValueCache.deleteAllByFilterInfo(filterInfoKey);
                     filteredValueDao.deleteAllByFilterInfo(filterInfoKey);
                 }
                 filteredValueCache.deleteAllByPoint(key);
                 filteredValueDao.deleteAllByPoint(key);
                 LOGGER.debug("删除数据点 " + key.toString() + " 相关联的被触发数据与相关缓存...");
-                for (UuidKey triggerInfoKey : triggerInfos2Delete) {
+                for (GuidKey triggerInfoKey : triggerInfos2Delete) {
                     triggeredValueCache.deleteAllByTriggerInfo(triggerInfoKey);
                     triggeredValueDao.deleteAllByTriggerInfo(triggerInfoKey);
                 }
@@ -210,12 +221,12 @@ public class PointMaintainServiceDelegate {
                 }
 
                 LOGGER.debug("删除数据点 " + key.toString() + " 相关联的过滤器信息与缓存...");
-                for (UuidKey filterInfoKey : filterInfos2Delete) {
+                for (GuidKey filterInfoKey : filterInfos2Delete) {
                     filterInfoCache.delete(filterInfoKey);
                     filterInfoDao.delete(filterInfoKey);
                 }
                 LOGGER.debug("删除数据点 " + key.toString() + " 相关联的触发器信息与缓存...");
-                for (UuidKey triggerInfoKey : triggerInfos2Delete) {
+                for (GuidKey triggerInfoKey : triggerInfos2Delete) {
                     triggerInfoCache.delete(triggerInfoKey);
                     triggerInfoDao.delete(triggerInfoKey);
                 }
@@ -232,30 +243,27 @@ public class PointMaintainServiceDelegate {
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public PagedData<Point> getPoints(UuidKey categoryUuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
+    public PagedData<Point> getPoints(GuidKey categoryGuid, LookupPagingInfo lookupPagingInfo) throws ServiceException {
         try {
-            validationHandler.uuidKeyValidation(categoryUuid);
-            validationHandler.lookupPagingInfoValidation(lookupPagingInfo);
-
             //定义中间变量。
             List<Point> categories;
             long count;
 
-            if (categoryHasPointCache.exists(categoryUuid)) {
-                LOGGER.debug("在缓存中发现了 " + categoryUuid.toString() + " 对应的子项列表，直接返回缓存中的值...");
-                categories = categoryHasPointCache.get(categoryUuid, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
-                count = categoryHasPointCache.size(categoryUuid);
+            if (categoryHasPointCache.exists(categoryGuid)) {
+                LOGGER.debug("在缓存中发现了 " + categoryGuid.toString() + " 对应的子项列表，直接返回缓存中的值...");
+                categories = categoryHasPointCache.get(categoryGuid, lookupPagingInfo.getPage() * lookupPagingInfo.getRows(), lookupPagingInfo.getRows());
+                count = categoryHasPointCache.size(categoryGuid);
             } else {
                 LOGGER.debug("查询指定的Point对应的子项...");
-                categories = pointDao.getPoints(categoryUuid, lookupPagingInfo);
-                count = pointDao.getPointCount(categoryUuid);
+                categories = pointDao.getPoints(categoryGuid, lookupPagingInfo);
+                count = pointDao.getPointCount(categoryGuid);
                 if (count > 0) {
                     for (Point point : categories) {
                         LOGGER.debug("将查询到的的实体 " + point.toString() + " 插入缓存中...");
                         pointCache.push(point.getKey(), point, pointTimeout);
                     }
-                    LOGGER.debug("抓取实体 " + categoryUuid.toString() + " 对应的子项并插入缓存...");
-                    fetchPoint2Cache(categoryUuid);
+                    LOGGER.debug("抓取实体 " + categoryGuid.toString() + " 对应的子项并插入缓存...");
+                    fetchPoint2Cache(categoryGuid);
                 }
             }
             return new PagedData<>(
@@ -274,23 +282,23 @@ public class PointMaintainServiceDelegate {
     @Transactional(transactionManager = "hibernateTransactionManager")
     @TimeAnalyse
     @Async
-    public void fetchPoint2Cache(UuidKey uuidKey) {
+    public void fetchPoint2Cache(GuidKey guidKey) {
         try {
             int totlePage;
             int currPage;
-            long count = pointDao.getPointCount(uuidKey);
+            long count = pointDao.getPointCount(guidKey);
             totlePage = Math.max((int) Math.ceil((double) count / pointFetchSize), 1);
             currPage = 0;
-            categoryHasPointCache.delete(uuidKey);
+            categoryHasPointCache.delete(guidKey);
             do {
                 LookupPagingInfo lookupPagingInfo = new LookupPagingInfo(true, currPage++, pointFetchSize);
-                List<Point> childs = pointDao.getPoints(uuidKey, lookupPagingInfo);
+                List<Point> childs = pointDao.getPoints(guidKey, lookupPagingInfo);
                 if (childs.size() > 0) {
-                    categoryHasPointCache.push(uuidKey, childs, pointHasChildTimeout);
+                    categoryHasPointCache.push(guidKey, childs, pointHasChildTimeout);
                 }
             } while (currPage < totlePage);
         } catch (Exception e) {
-            LOGGER.warn("将分类 " + uuidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);
+            LOGGER.warn("将分类 " + guidKey.toString() + " 的子项添加进入缓存时发生异常，异常信息如下", e);
         }
     }
 }

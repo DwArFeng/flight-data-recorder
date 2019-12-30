@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.stack.dao;
 
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.List;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface TriggerInfoDao extends BaseDao<UuidKey, TriggerInfo> {
+public interface TriggerInfoDao extends BaseDao<GuidKey, TriggerInfo> {
 
-    List<TriggerInfo> getTriggerInfos(UuidKey pointUuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException;
+    List<TriggerInfo> getTriggerInfos(GuidKey pointGuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException;
 
-    long getTriggerInfoCount(UuidKey pointUuidKey) throws DaoException;
+    long getTriggerInfoCount(GuidKey pointGuidKey) throws DaoException;
 
 }

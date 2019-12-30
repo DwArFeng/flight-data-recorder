@@ -1,8 +1,9 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
-import com.dwarfeng.fdr.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisGuidKey;
+
+import java.io.Serializable;
 
 /**
  * Redis数据点对象。
@@ -10,15 +11,15 @@ import com.dwarfeng.fdr.stack.bean.entity.Entity;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class RedisPoint implements Entity<RedisUuidKey> {
+public class RedisPoint implements Serializable {
 
     private static final long serialVersionUID = -6727125091352050788L;
 
     @JSONField(name = "key", ordinal = 1)
-    private RedisUuidKey key;
+    private RedisGuidKey key;
 
     @JSONField(name = "catgory_key", ordinal = 2)
-    private RedisUuidKey categoryKey;
+    private RedisGuidKey categoryKey;
 
     @JSONField(name = "name", ordinal = 3)
     private String name;
@@ -35,7 +36,7 @@ public class RedisPoint implements Entity<RedisUuidKey> {
     public RedisPoint() {
     }
 
-    public RedisPoint(RedisUuidKey key, RedisUuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public RedisPoint(RedisGuidKey key, RedisGuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
         this.key = key;
         this.categoryKey = categoryKey;
         this.name = name;
@@ -44,19 +45,19 @@ public class RedisPoint implements Entity<RedisUuidKey> {
         this.realtimeEnabled = realtimeEnabled;
     }
 
-    public RedisUuidKey getKey() {
+    public RedisGuidKey getKey() {
         return key;
     }
 
-    public void setKey(RedisUuidKey key) {
+    public void setKey(RedisGuidKey key) {
         this.key = key;
     }
 
-    public RedisUuidKey getCategoryKey() {
+    public RedisGuidKey getCategoryKey() {
         return categoryKey;
     }
 
-    public void setCategoryKey(RedisUuidKey categoryKey) {
+    public void setCategoryKey(RedisGuidKey categoryKey) {
         this.categoryKey = categoryKey;
     }
 

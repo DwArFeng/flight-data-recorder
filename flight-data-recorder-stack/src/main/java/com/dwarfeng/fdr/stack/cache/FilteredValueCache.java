@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.stack.cache;
 
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 
 /**
@@ -10,9 +10,9 @@ import com.dwarfeng.fdr.stack.exception.CacheException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface FilteredValueCache extends BaseCache<UuidKey, FilteredValue> {
+public interface FilteredValueCache extends BaseCache<GuidKey, FilteredValue> {
 
-    void deleteAllByPoint(UuidKey pointKey) throws CacheException;
+    void deleteAllByPoint(GuidKey pointKey) throws CacheException;
 
-    void deleteAllByFilterInfo(UuidKey filterInfoKey) throws CacheException;
+    void deleteAllByFilterInfo(GuidKey filterInfoKey) throws CacheException;
 }

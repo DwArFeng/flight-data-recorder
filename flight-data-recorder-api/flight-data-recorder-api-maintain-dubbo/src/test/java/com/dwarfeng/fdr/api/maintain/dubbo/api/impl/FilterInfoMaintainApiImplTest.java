@@ -1,12 +1,10 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.FilterInfoMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,9 +32,9 @@ public class FilterInfoMaintainApiImplTest {
     private List<FilterInfo> filterInfos;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         parentPoint = new Point(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent-point",
                 "test-point",
@@ -47,7 +44,7 @@ public class FilterInfoMaintainApiImplTest {
         filterInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             FilterInfo filterInfo = new FilterInfo(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                    null,
                     parentPoint.getKey(),
                     true,
                     "filter-info-" + i,
@@ -58,7 +55,7 @@ public class FilterInfoMaintainApiImplTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         parentPoint = null;
         filterInfos.clear();
     }
@@ -66,9 +63,11 @@ public class FilterInfoMaintainApiImplTest {
     @Test
     public void test() throws ServiceException {
         try {
-            pointMaintainApi.insert(parentPoint);
+            parentPoint.setKey(pointMaintainApi.insert(parentPoint));
             for (FilterInfo filterInfo : filterInfos) {
-                filterInfoMaintainApi.insert(filterInfo);
+                filterInfo.setKey(filterInfoMaintainApi.insert(filterInfo));
+                filterInfo.setPointKey(parentPoint.getKey());
+                filterInfoMaintainApi.update(filterInfo);
             }
             assertEquals(5, filterInfoMaintainApi.getFilterInfos(parentPoint.getKey(), LookupPagingInfo.LOOKUP_ALL).getCount());
         } finally {

@@ -1,17 +1,17 @@
 package com.dwarfeng.fdr.impl.cache.redis.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisUuidKey;
-import com.dwarfeng.fdr.stack.bean.entity.Entity;
+import com.dwarfeng.fdr.impl.cache.redis.bean.key.RedisGuidKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RedisRealtimeValue implements Entity<RedisUuidKey> {
+public class RedisRealtimeValue implements Serializable {
 
     private static final long serialVersionUID = 2093936111729327278L;
 
     @JSONField(name = "key", ordinal = 1)
-    private RedisUuidKey key;
+    private RedisGuidKey key;
 
     @JSONField(name = "happened_date", ordinal = 3)
     private Date happenedDate;
@@ -22,19 +22,17 @@ public class RedisRealtimeValue implements Entity<RedisUuidKey> {
     public RedisRealtimeValue() {
     }
 
-    public RedisRealtimeValue(RedisUuidKey key, Date happenedDate, String value) {
+    public RedisRealtimeValue(RedisGuidKey key, Date happenedDate, String value) {
         this.key = key;
         this.happenedDate = happenedDate;
         this.value = value;
     }
 
-    @Override
-    public RedisUuidKey getKey() {
+    public RedisGuidKey getKey() {
         return key;
     }
 
-    @Override
-    public void setKey(RedisUuidKey key) {
+    public void setKey(RedisGuidKey key) {
         this.key = key;
     }
 

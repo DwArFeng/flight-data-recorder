@@ -1,12 +1,10 @@
 package com.dwarfeng.fdr.api.maintain.dubbo.api.impl;
 
-import com.dwarfeng.dutil.basic.str.UUIDUtil;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.PointMaintainApi;
 import com.dwarfeng.fdr.api.maintain.dubbo.api.TriggerInfoMaintainApi;
 import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
@@ -18,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,7 +34,7 @@ public class TriggerInfoMaintainApiImplTest {
     @Before
     public void setUp() {
         parentPoint = new Point(
-                new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                null,
                 null,
                 "parent-point",
                 "test-point",
@@ -47,7 +44,7 @@ public class TriggerInfoMaintainApiImplTest {
         triggerInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             TriggerInfo triggerInfo = new TriggerInfo(
-                    new UuidKey(UUIDUtil.toDenseString(UUID.randomUUID())),
+                    null,
                     parentPoint.getKey(),
                     true,
                     "trigger-info-" + i,
@@ -66,9 +63,11 @@ public class TriggerInfoMaintainApiImplTest {
     @Test
     public void test() throws ServiceException {
         try {
-            pointMaintainApi.insert(parentPoint);
+            parentPoint.setKey(pointMaintainApi.insert(parentPoint));
             for (TriggerInfo triggerInfo : triggerInfos) {
-                triggerInfoMaintainApi.insert(triggerInfo);
+                triggerInfo.setKey(triggerInfoMaintainApi.insert(triggerInfo));
+                triggerInfo.setPointKey(parentPoint.getKey());
+                triggerInfoMaintainApi.update(triggerInfo);
             }
             assertEquals(5, triggerInfoMaintainApi.getTriggerInfos(parentPoint.getKey(), LookupPagingInfo.LOOKUP_ALL).getCount());
         } finally {

@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.dao.fuh.dao;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.bean.key.UuidKey;
+import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.dao.TriggeredValueDao;
 import com.dwarfeng.fdr.stack.exception.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,37 +14,37 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     private TriggeredValueDaoDelegate delegate;
 
     @Override
-    public boolean exists(UuidKey key) throws DaoException {
+    public boolean exists(GuidKey key) throws DaoException {
         return delegate.exists(key);
     }
 
     @Override
-    public TriggeredValue get(UuidKey key) throws DaoException {
+    public TriggeredValue get(GuidKey key) throws DaoException {
         return delegate.get(key);
     }
 
     @Override
-    public UuidKey insert(TriggeredValue triggeredValue) throws DaoException {
+    public GuidKey insert(TriggeredValue triggeredValue) throws DaoException {
         return delegate.insert(triggeredValue);
     }
 
     @Override
-    public UuidKey update(TriggeredValue triggeredValue) throws DaoException {
+    public GuidKey update(TriggeredValue triggeredValue) throws DaoException {
         return delegate.update(triggeredValue);
     }
 
     @Override
-    public void delete(UuidKey key) throws DaoException {
+    public void delete(GuidKey key) throws DaoException {
         delegate.delete(key);
     }
 
     @Override
-    public void deleteAllByPoint(UuidKey pointKey) throws DaoException {
+    public void deleteAllByPoint(GuidKey pointKey) throws DaoException {
         delegate.deleteAllByPoint(pointKey);
     }
 
     @Override
-    public void deleteAllByTriggerInfo(UuidKey triggerInfoKey) throws DaoException {
+    public void deleteAllByTriggerInfo(GuidKey triggerInfoKey) throws DaoException {
         delegate.deleteAllByTriggerInfo(triggerInfoKey);
     }
 }
