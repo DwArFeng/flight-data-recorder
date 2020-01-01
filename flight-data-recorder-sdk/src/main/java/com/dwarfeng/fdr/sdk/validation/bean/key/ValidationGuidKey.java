@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.sdk.validation.bean.key;
 
+import com.dwarfeng.fdr.sdk.validation.group.Insert;
+
 import javax.validation.constraints.Positive;
 import javax.validation.groups.Default;
 import java.io.Serializable;
@@ -7,9 +9,9 @@ import java.util.Objects;
 
 public class ValidationGuidKey implements Serializable {
 
-    private static final long serialVersionUID = -4517482416919778277L;
-
-    @Positive(groups = {Default.class})
+    private static final long serialVersionUID = 3506606009628766644L;
+    
+    @Positive(groups = {Default.class, Insert.class})
     private long guid;
 
     public ValidationGuidKey() {
