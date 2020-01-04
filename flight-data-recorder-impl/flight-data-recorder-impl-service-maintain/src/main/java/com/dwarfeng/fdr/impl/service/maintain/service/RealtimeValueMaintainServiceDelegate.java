@@ -1,18 +1,11 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
+import com.dwarfeng.fdr.sdk.crud.RealtimeValueCrudHelper;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.bean.key.GuidKey;
-import com.dwarfeng.fdr.stack.cache.RealtimeValueCache;
-import com.dwarfeng.fdr.stack.dao.RealtimeValueDao;
-import com.dwarfeng.fdr.stack.exception.CacheException;
-import com.dwarfeng.fdr.stack.exception.DaoException;
 import com.dwarfeng.fdr.stack.exception.ServiceException;
-import com.dwarfeng.sfds.api.GuidApi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -23,39 +16,16 @@ import javax.validation.constraints.NotNull;
 @Validated
 public class RealtimeValueMaintainServiceDelegate {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RealtimeValueMaintainServiceDelegate.class);
-
     @Autowired
-    private RealtimeValueDao realtimeValueDao;
-    @Autowired
-    private RealtimeValueCache realtimeValueCache;
-
-    @Autowired
-    private GuidApi guidApi;
-
-    @Value("${cache.timeout.entity.realtime_value}")
-    private long realtimeValueTimeout;
+    private RealtimeValueCrudHelper helper;
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public RealtimeValue get(@NotNull GuidKey key) throws ServiceException {
         try {
-            return internalGet(key);
+            return helper.noAdviseGet(key);
         } catch (Exception e) {
             throw new ServiceException(e);
-        }
-    }
-
-    private RealtimeValue internalGet(GuidKey key) throws CacheException, DaoException {
-        if (realtimeValueCache.exists(key)) {
-            LOGGER.debug("在缓存中发现了 " + key.toString() + " 对应的值，直接返回该值...");
-            return realtimeValueCache.get(key);
-        } else {
-            LOGGER.debug("未能在缓存中发现 " + key.toString() + " 对应的值，读取数据访问层...");
-            RealtimeValue realtimeValue = realtimeValueDao.get(key);
-            LOGGER.debug("将读取到的值 " + realtimeValue.toString() + " 回写到缓存中...");
-            realtimeValueCache.push(key, realtimeValue, realtimeValueTimeout);
-            return realtimeValue;
         }
     }
 
@@ -63,16 +33,7 @@ public class RealtimeValueMaintainServiceDelegate {
     @Transactional(transactionManager = "hibernateTransactionManager")
     public GuidKey insert(@NotNull RealtimeValue realtimeValue) throws ServiceException {
         try {
-            if (realtimeValueCache.exists(realtimeValue.getKey()) || realtimeValueDao.exists(realtimeValue.getKey())) {
-                LOGGER.debug("指定的实体 " + realtimeValue.toString() + " 已经存在，无法插入...");
-                throw new IllegalStateException("指定的实体 " + realtimeValue.toString() + " 已经存在，无法插入...");
-            } else {
-                LOGGER.debug("将指定的实体 " + realtimeValue.toString() + " 插入数据访问层中...");
-                realtimeValueDao.insert(realtimeValue);
-                LOGGER.debug("将指定的实体 " + realtimeValue.toString() + " 插入缓存中...");
-                realtimeValueCache.push(realtimeValue.getKey(), realtimeValue, realtimeValueTimeout);
-                return realtimeValue.getKey();
-            }
+            return helper.noAdviseInsert(realtimeValue);
         } catch (Exception e) {
             throw new ServiceException(e);
         }
@@ -82,17 +43,7 @@ public class RealtimeValueMaintainServiceDelegate {
     @Transactional(transactionManager = "hibernateTransactionManager")
     public GuidKey update(@NotNull RealtimeValue realtimeValue) throws ServiceException {
         try {
-            if (!realtimeValueCache.exists(realtimeValue.getKey()) && !realtimeValueDao.exists(realtimeValue.getKey())) {
-                LOGGER.debug("指定的实体 " + realtimeValue.toString() + " 已经存在，无法更新...");
-                throw new IllegalStateException("指定的实体 " + realtimeValue.toString() + " 已经存在，无法更新...");
-            } else {
-                RealtimeValue oldRealtimeValue = internalGet(realtimeValue.getKey());
-                LOGGER.debug("将指定的实体 " + realtimeValue.toString() + " 插入数据访问层中...");
-                realtimeValueDao.update(realtimeValue);
-                LOGGER.debug("将指定的实体 " + realtimeValue.toString() + " 插入缓存中...");
-                realtimeValueCache.push(realtimeValue.getKey(), realtimeValue, realtimeValueTimeout);
-                return realtimeValue.getKey();
-            }
+            return helper.noAdviseUpdate(realtimeValue);
         } catch (Exception e) {
             throw new ServiceException(e);
         }
@@ -102,17 +53,7 @@ public class RealtimeValueMaintainServiceDelegate {
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(@NotNull GuidKey key) throws ServiceException {
         try {
-            if (!realtimeValueCache.exists(key) && !realtimeValueDao.exists(key)) {
-                LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
-                throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");
-            } else {
-                RealtimeValue oldRealtimeValue = internalGet(key);
-                LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
-                LOGGER.debug("将指定的RealtimeValue从缓存中删除...");
-                realtimeValueCache.delete(key);
-                LOGGER.debug("将指定的RealtimeValue从数据访问层中删除...");
-                realtimeValueDao.delete(key);
-            }
+            helper.noAdviseDelete(key);
         } catch (Exception e) {
             throw new ServiceException(e);
         }

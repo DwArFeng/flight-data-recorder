@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.stack.cache;
 
+import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.exception.CacheException;
 
 import java.util.List;
@@ -30,13 +31,12 @@ public interface OneToManyCache<K, V> extends Cache {
     /**
      * 获取缓存中指定的键对应的值。
      *
-     * @param key        指定的键。
-     * @param beginIndex 指定的起始元素。
-     * @param maxSize    指定的最大数量。
+     * @param key              指定的键。
+     * @param lookupPagingInfo 分页信息。
      * @return 对应的值组成的列表。
      * @throws CacheException 缓存异常。
      */
-    List<V> get(K key, int beginIndex, int maxSize) throws CacheException;
+    List<V> get(K key, LookupPagingInfo lookupPagingInfo) throws CacheException;
 
     /**
      * 向缓存中指定的键设置值。

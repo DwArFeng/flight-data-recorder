@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.cache.redis.cache;
 import com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisCategory;
 import com.dwarfeng.fdr.impl.cache.redis.formatter.Formatter;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
+import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
 import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,10 +62,18 @@ public class CategoryHasChildCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public List<Category> get(@NotNull GuidKey key, @Min(0) int beginIndex, @Min(0) int maxSize) throws CacheException {
+    public List<Category> get(@NotNull GuidKey key, @NotNull LookupPagingInfo lookupPagingInfo) throws CacheException {
         try {
             Long totleSize = template.opsForList().size(formatter.format(keyPrefix, key));
-            List<RedisCategory> redisCategories = template.opsForList().range(formatter.format(keyPrefix, key), beginIndex, Math.max(totleSize, beginIndex + maxSize) - 1);
+            List<RedisCategory> redisCategories;
+            if (lookupPagingInfo.isPaging()) {
+                long beginIndex = lookupPagingInfo.getRows() * lookupPagingInfo.getPage();
+                long endIndex = Math.max(totleSize, beginIndex + lookupPagingInfo.getRows()) - 1;
+                redisCategories = template.opsForList().range(formatter.format(keyPrefix, key), beginIndex, endIndex);
+            } else {
+                long size = Math.toIntExact(template.opsForList().size(formatter.format(keyPrefix, key)));
+                redisCategories = template.opsForList().range(formatter.format(keyPrefix, key), 0, size);
+            }
             List<Category> categories = new ArrayList<>();
             for (RedisCategory redisCategory : redisCategories) {
                 categories.add(mapper.map(redisCategory, Category.class));

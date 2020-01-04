@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.cache.redis.cache;
 
+import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.cache.PointHasFilterInfoCache;
@@ -26,8 +27,8 @@ public class PointHasFilterInfoCacheImpl implements PointHasFilterInfoCache {
     }
 
     @Override
-    public List<FilterInfo> get(GuidKey key, int beginIndex, int maxSize) throws CacheException {
-        return delegate.get(key, beginIndex, maxSize);
+    public List<FilterInfo> get(GuidKey key, LookupPagingInfo lookupPagingInfo) throws CacheException {
+        return delegate.get(key, lookupPagingInfo);
     }
 
     @Override

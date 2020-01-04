@@ -18,5 +18,4 @@ public interface FilterInfoDao extends BaseDao<GuidKey, FilterInfo> {
     List<FilterInfo> getFilterInfos(GuidKey pointGuidKey, LookupPagingInfo lookupPagingInfo) throws DaoException;
 
     long getFilterInfoCount(GuidKey pointGuidKey) throws DaoException;
-
 }

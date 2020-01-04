@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.cache.redis.cache;
 import com.dwarfeng.fdr.impl.cache.redis.bean.entity.RedisPoint;
 import com.dwarfeng.fdr.impl.cache.redis.formatter.Formatter;
 import com.dwarfeng.fdr.sdk.interceptor.TimeAnalyse;
+import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.CacheException;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,10 +62,18 @@ public class CategoryHasPointCacheDelegate {
 
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     @TimeAnalyse
-    public List<Point> get(@NotNull GuidKey key, @Min(0) int beginIndex, @Min(0) int maxSize) throws CacheException {
+    public List<Point> get(@NotNull GuidKey key, @NotNull LookupPagingInfo lookupPagingInfo) throws CacheException {
         try {
             Long totleSize = template.opsForList().size(formatter.format(keyPrefix, key));
-            List<RedisPoint> redisPoints = template.opsForList().range(formatter.format(keyPrefix, key), beginIndex, Math.max(totleSize, beginIndex + maxSize) - 1);
+            List<RedisPoint> redisPoints;
+            if (lookupPagingInfo.isPaging()) {
+                long beginIndex = lookupPagingInfo.getRows() * lookupPagingInfo.getPage();
+                long endIndex = Math.max(totleSize, beginIndex + lookupPagingInfo.getRows()) - 1;
+                redisPoints = template.opsForList().range(formatter.format(keyPrefix, key), beginIndex, endIndex);
+            } else {
+                long size = Math.toIntExact(template.opsForList().size(formatter.format(keyPrefix, key)));
+                redisPoints = template.opsForList().range(formatter.format(keyPrefix, key), 0, size);
+            }
             List<Point> points = new ArrayList<>();
             for (RedisPoint redisPoint : redisPoints) {
                 points.add(mapper.map(redisPoint, Point.class));
