@@ -1,23 +1,23 @@
 package com.dwarfeng.fdr.impl.handler.event.kafka.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.impl.handler.event.kafka.bean.key.KafkaUuidKey;
+import com.dwarfeng.fdr.impl.handler.event.kafka.bean.key.KafkaGuidKey;
 import com.dwarfeng.fdr.stack.bean.entity.Entity;
 
 import java.util.Date;
 
-public class KafkaTriggeredValue implements Entity<KafkaUuidKey> {
+public class KafkaTriggeredValue implements Entity<KafkaGuidKey> {
 
     private static final long serialVersionUID = 1179465468881533540L;
 
     @JSONField(name = "key", ordinal = 1)
-    private KafkaUuidKey key;
+    private KafkaGuidKey key;
 
     @JSONField(name = "point_key", ordinal = 2)
-    private KafkaUuidKey pointKey;
+    private KafkaGuidKey pointKey;
 
     @JSONField(name = "trigger_key", ordinal = 3)
-    private KafkaUuidKey triggerKey;
+    private KafkaGuidKey triggerKey;
 
     @JSONField(name = "happened_date", ordinal = 4)
     private Date happenedDate;
@@ -31,7 +31,7 @@ public class KafkaTriggeredValue implements Entity<KafkaUuidKey> {
     public KafkaTriggeredValue() {
     }
 
-    public KafkaTriggeredValue(KafkaUuidKey key, KafkaUuidKey pointKey, KafkaUuidKey triggerKey, Date happenedDate, String value, String message) {
+    public KafkaTriggeredValue(KafkaGuidKey key, KafkaGuidKey pointKey, KafkaGuidKey triggerKey, Date happenedDate, String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
         this.triggerKey = triggerKey;
@@ -41,28 +41,28 @@ public class KafkaTriggeredValue implements Entity<KafkaUuidKey> {
     }
 
     @Override
-    public KafkaUuidKey getKey() {
+    public KafkaGuidKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(KafkaUuidKey key) {
+    public void setKey(KafkaGuidKey key) {
         this.key = key;
     }
 
-    public KafkaUuidKey getPointKey() {
+    public KafkaGuidKey getPointKey() {
         return pointKey;
     }
 
-    public void setPointKey(KafkaUuidKey pointKey) {
+    public void setPointKey(KafkaGuidKey pointKey) {
         this.pointKey = pointKey;
     }
 
-    public KafkaUuidKey getTriggerKey() {
+    public KafkaGuidKey getTriggerKey() {
         return triggerKey;
     }
 
-    public void setTriggerKey(KafkaUuidKey triggerKey) {
+    public void setTriggerKey(KafkaGuidKey triggerKey) {
         this.triggerKey = triggerKey;
     }
 
