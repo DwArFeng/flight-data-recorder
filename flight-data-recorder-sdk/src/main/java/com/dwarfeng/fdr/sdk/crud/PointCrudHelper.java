@@ -37,8 +37,6 @@ public class PointCrudHelper {
     @Autowired
     private PointCache pointCache;
     @Autowired
-    private CategoryHasPointCache categoryHasPointCache;
-    @Autowired
     private PointHasFilterInfoCache pointHasFilterInfoCache;
     @Autowired
     private PointHasTriggerInfoCache pointHasTriggerInfoCache;
@@ -73,10 +71,6 @@ public class PointCrudHelper {
 
     @Value("${cache.timeout.entity.point}")
     private long pointTimeout;
-    @Value("${cache.timeout.one_to_many.category_has_point}")
-    private long pointHasChildTimeout;
-    @Value("${cache.batch_fetch_size.point}")
-    private int pointFetchSize;
 
     @TimeAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
@@ -123,10 +117,6 @@ public class PointCrudHelper {
             pointDao.insert(point);
             LOGGER.debug("将指定的实体 " + point.toString() + " 插入缓存中...");
             pointCache.push(point.getKey(), point, pointTimeout);
-            if (Objects.nonNull(point.getCategoryKey())) {
-                LOGGER.debug("清除实体 " + point.toString() + " 对应的父项缓存...");
-                categoryHasPointCache.delete(point.getCategoryKey());
-            }
             return point.getKey();
         }
     }
@@ -155,19 +145,10 @@ public class PointCrudHelper {
             LOGGER.debug("指定的实体 " + point.toString() + " 已经存在，无法更新...");
             throw new IllegalStateException("指定的实体 " + point.toString() + " 已经存在，无法更新...");
         } else {
-            Point oldPoint = noAdviseGet(point.getKey());
-            if (Objects.nonNull(oldPoint.getCategoryKey())) {
-                LOGGER.debug("清除旧实体 " + oldPoint.toString() + " 对应的父项缓存...");
-                categoryHasPointCache.delete(oldPoint.getCategoryKey());
-            }
             LOGGER.debug("将指定的实体 " + point.toString() + " 插入数据访问层中...");
             pointDao.update(point);
             LOGGER.debug("将指定的实体 " + point.toString() + " 插入缓存中...");
             pointCache.push(point.getKey(), point, pointTimeout);
-            if (Objects.nonNull(point.getCategoryKey())) {
-                LOGGER.debug("清除新实体 " + point.toString() + " 对应的父项缓存...");
-                categoryHasPointCache.delete(point.getCategoryKey());
-            }
             return point.getKey();
         }
     }
@@ -187,12 +168,6 @@ public class PointCrudHelper {
             LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
             throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");
         } else {
-            Point oldPoint = noAdviseGet(key);
-            if (Objects.nonNull(oldPoint.getCategoryKey())) {
-                LOGGER.debug("清除旧实体 " + oldPoint.toString() + " 对应的父项缓存...");
-                categoryHasPointCache.delete(oldPoint.getCategoryKey());
-            }
-
             LOGGER.debug("查询数据点 " + key.toString() + " 对应的子项过滤器信息...");
             Set<GuidKey> filterInfos2Delete = filterInfoDao.getFilterInfos(key, LookupPagingInfo.LOOKUP_ALL)
                     .stream().map(FilterInfo::getKey).collect(Collectors.toSet());

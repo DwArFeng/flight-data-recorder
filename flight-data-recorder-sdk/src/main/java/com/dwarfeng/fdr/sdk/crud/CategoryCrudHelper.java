@@ -6,8 +6,6 @@ import com.dwarfeng.fdr.stack.bean.entity.Category;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.cache.CategoryCache;
-import com.dwarfeng.fdr.stack.cache.CategoryHasChildCache;
-import com.dwarfeng.fdr.stack.cache.CategoryHasPointCache;
 import com.dwarfeng.fdr.stack.cache.PointCache;
 import com.dwarfeng.fdr.stack.dao.CategoryDao;
 import com.dwarfeng.fdr.stack.dao.PointDao;
@@ -38,10 +36,6 @@ public class CategoryCrudHelper {
     @Autowired
     private CategoryCache categoryCache;
     @Autowired
-    private CategoryHasChildCache categoryHasChildCache;
-    @Autowired
-    private CategoryHasPointCache categoryHasPointCache;
-    @Autowired
     private PointDao pointDao;
     @Autowired
     private PointCache pointCache;
@@ -51,10 +45,6 @@ public class CategoryCrudHelper {
 
     @Value("${cache.timeout.entity.category}")
     private long categoryTimeout;
-    @Value("${cache.timeout.one_to_many.category_has_child}")
-    private long categoryHasChildTimeout;
-    @Value("${cache.batch_fetch_size.category}")
-    private int categoryFetchSize;
 
     @Value("${cache.timeout.entity.point}")
     private long pointTimeout;
@@ -104,10 +94,6 @@ public class CategoryCrudHelper {
             categoryDao.insert(category);
             LOGGER.debug("将指定的实体 " + category.toString() + " 插入缓存中...");
             categoryCache.push(category.getKey(), category, categoryTimeout);
-            if (Objects.nonNull(category.getParentKey())) {
-                LOGGER.debug("清除实体 " + category.toString() + " 对应的父项缓存...");
-                categoryHasChildCache.delete(category.getParentKey());
-            }
             return category.getKey();
         }
     }
@@ -137,18 +123,10 @@ public class CategoryCrudHelper {
             throw new IllegalStateException("指定的实体 " + category.toString() + " 已经存在，无法更新...");
         } else {
             Category oldCategory = noAdviseGet(category.getKey());
-            if (Objects.nonNull(oldCategory.getParentKey())) {
-                LOGGER.debug("清除旧实体 " + oldCategory.toString() + " 对应的父项缓存...");
-                categoryHasChildCache.delete(oldCategory.getParentKey());
-            }
             LOGGER.debug("将指定的实体 " + category.toString() + " 插入数据访问层中...");
             categoryDao.update(category);
             LOGGER.debug("将指定的实体 " + category.toString() + " 插入缓存中...");
             categoryCache.push(category.getKey(), category, categoryTimeout);
-            if (Objects.nonNull(category.getParentKey())) {
-                LOGGER.debug("清除新实体 " + category.toString() + " 对应的父项缓存...");
-                categoryHasChildCache.delete(category.getParentKey());
-            }
             return category.getKey();
         }
     }
@@ -169,12 +147,6 @@ public class CategoryCrudHelper {
             LOGGER.debug("指定的键 " + key.toString() + " 不存在，无法删除...");
             throw new IllegalStateException("指定的键 " + key.toString() + " 不存在，无法删除...");
         } else {
-            Category oldCategory = noAdviseGet(key);
-            if (Objects.nonNull(oldCategory.getParentKey())) {
-                LOGGER.debug("清除旧实体 " + oldCategory.toString() + " 对应的父项缓存...");
-                categoryHasChildCache.delete(oldCategory.getParentKey());
-            }
-
             List<Category> childCategories = categoryDao.getChilds(key, LookupPagingInfo.LOOKUP_ALL);
             List<Point> childPoints = pointDao.getPoints(key, LookupPagingInfo.LOOKUP_ALL);
 
@@ -191,9 +163,6 @@ public class CategoryCrudHelper {
                 pointDao.update(point);
             }
 
-            LOGGER.debug("清除实体 " + key.toString() + " 对应的子项缓存...");
-            categoryHasChildCache.delete(key);
-            categoryHasPointCache.delete(key);
             LOGGER.debug("将指定的Category从缓存中删除...");
             categoryCache.delete(key);
             LOGGER.debug("将指定的Category从数据访问层中删除...");

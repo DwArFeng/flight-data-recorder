@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 @Validated
 public class PointHasFilterInfoCacheDelegate {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryHasPointCacheDelegate.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PointHasFilterInfoCacheDelegate.class);
 
     @Autowired
     private RedisTemplate<String, RedisFilterInfo> template;
