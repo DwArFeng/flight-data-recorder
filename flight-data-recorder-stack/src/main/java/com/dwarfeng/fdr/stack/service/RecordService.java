@@ -2,7 +2,8 @@ package com.dwarfeng.fdr.stack.service;
 
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.dto.RecordResult;
-import com.dwarfeng.fdr.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.Service;
 
 /**
  * 数据记录服务。
@@ -20,5 +21,4 @@ public interface RecordService extends Service {
      * @throws ServiceException 服务异常。
      */
     RecordResult record(DataInfo dataInfo) throws ServiceException;
-
 }

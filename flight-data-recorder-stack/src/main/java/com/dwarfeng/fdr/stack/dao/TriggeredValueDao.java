@@ -1,8 +1,9 @@
 package com.dwarfeng.fdr.stack.dao;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
-import com.dwarfeng.fdr.stack.exception.DaoException;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.PresetDeleteDao;
 
 /**
  * 实时数据数据访问层。
@@ -10,9 +11,5 @@ import com.dwarfeng.fdr.stack.exception.DaoException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface TriggeredValueDao extends BaseDao<GuidKey, TriggeredValue> {
-
-    void deleteAllByPoint(GuidKey pointKey) throws DaoException;
-
-    void deleteAllByTriggerInfo(GuidKey triggerInfoKey) throws DaoException;
+public interface TriggeredValueDao extends BatchBaseDao<LongIdKey, TriggeredValue>, PresetDeleteDao<LongIdKey, TriggeredValue> {
 }

@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.stack.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
+import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 import java.util.Date;
 
@@ -10,19 +11,19 @@ import java.util.Date;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public class PersistenceValue implements Entity<GuidKey> {
+public class PersistenceValue implements Entity<LongIdKey> {
 
     private static final long serialVersionUID = -2096752760200032911L;
 
     /**
      * 主键。
      */
-    private GuidKey key;
+    private LongIdKey key;
 
     /**
      * 数据点外键。
      */
-    private GuidKey pointKey;
+    private LongIdKey pointKey;
 
     private Date happenedDate;
 
@@ -31,7 +32,7 @@ public class PersistenceValue implements Entity<GuidKey> {
     public PersistenceValue() {
     }
 
-    public PersistenceValue(GuidKey key, GuidKey pointKey, Date happenedDate, String value) {
+    public PersistenceValue(LongIdKey key, LongIdKey pointKey, Date happenedDate, String value) {
         this.key = key;
         this.pointKey = pointKey;
         this.happenedDate = happenedDate;
@@ -39,20 +40,20 @@ public class PersistenceValue implements Entity<GuidKey> {
     }
 
     @Override
-    public GuidKey getKey() {
+    public LongIdKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(GuidKey key) {
+    public void setKey(LongIdKey key) {
         this.key = key;
     }
 
-    public GuidKey getPointKey() {
+    public LongIdKey getPointKey() {
         return pointKey;
     }
 
-    public void setPointKey(GuidKey pointKey) {
+    public void setPointKey(LongIdKey pointKey) {
         this.pointKey = pointKey;
     }
 

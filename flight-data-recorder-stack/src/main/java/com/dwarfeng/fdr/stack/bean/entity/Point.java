@@ -1,22 +1,23 @@
 package com.dwarfeng.fdr.stack.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
+import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 /**
  * 数据点。
  */
-public class Point implements Entity<GuidKey> {
+public class Point implements Entity<LongIdKey> {
 
     private static final long serialVersionUID = 9116129592160719291L;
 
     /**
      * 主键。
      */
-    private GuidKey key;
+    private LongIdKey key;
     /**
      * 所属分类主键。
      */
-    private GuidKey categoryKey;
+    private LongIdKey categoryKey;
     /**
      * 数据点的名称。
      */
@@ -37,7 +38,7 @@ public class Point implements Entity<GuidKey> {
     public Point() {
     }
 
-    public Point(GuidKey key, GuidKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public Point(LongIdKey key, LongIdKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
         this.key = key;
         this.categoryKey = categoryKey;
         this.name = name;
@@ -47,20 +48,20 @@ public class Point implements Entity<GuidKey> {
     }
 
     @Override
-    public GuidKey getKey() {
+    public LongIdKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(GuidKey key) {
+    public void setKey(LongIdKey key) {
         this.key = key;
     }
 
-    public GuidKey getCategoryKey() {
+    public LongIdKey getCategoryKey() {
         return categoryKey;
     }
 
-    public void setCategoryKey(GuidKey categoryKey) {
+    public void setCategoryKey(LongIdKey categoryKey) {
         this.categoryKey = categoryKey;
     }
 

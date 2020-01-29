@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
+import com.dwarfeng.subgrade.stack.bean.dto.Dto;
+
 import java.util.Date;
 
 /**
@@ -15,7 +17,7 @@ public class DataInfo implements Dto {
     /**
      * 数据点的UUID。
      */
-    private long pointGuid;
+    private long pointLongId;
 
     /**
      * 数据的文本格式值。
@@ -30,18 +32,18 @@ public class DataInfo implements Dto {
     public DataInfo() {
     }
 
-    public DataInfo(long pointGuid, String value, Date happenedDate) {
-        this.pointGuid = pointGuid;
+    public DataInfo(long pointLongId, String value, Date happenedDate) {
+        this.pointLongId = pointLongId;
         this.value = value;
         this.happenedDate = happenedDate;
     }
 
-    public long getPointGuid() {
-        return pointGuid;
+    public long getPointLongId() {
+        return pointLongId;
     }
 
-    public void setPointGuid(long pointGuid) {
-        this.pointGuid = pointGuid;
+    public void setPointLongId(long pointLongId) {
+        this.pointLongId = pointLongId;
     }
 
     public String getValue() {
@@ -63,7 +65,7 @@ public class DataInfo implements Dto {
     @Override
     public String toString() {
         return "DataInfo{" +
-                "pointGuid='" + pointGuid + '\'' +
+                "pointLongId=" + pointLongId +
                 ", value='" + value + '\'' +
                 ", happenedDate=" + happenedDate +
                 '}';

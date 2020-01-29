@@ -10,8 +10,8 @@ import com.dwarfeng.fdr.stack.exception.FilterException;
 public abstract class AbstractStructuredFilter implements StructuredFilter {
 
     protected Object config;
-    protected long pointGuid;
-    protected long filterGuid;
+    protected long pointLongId;
+    protected long filterLongId;
 
     public AbstractStructuredFilter() {
     }
@@ -23,11 +23,11 @@ public abstract class AbstractStructuredFilter implements StructuredFilter {
 
     @Override
     public void applyPointGuid(long pointGuid) throws FilterException {
-        this.pointGuid = pointGuid;
+        this.pointLongId = pointGuid;
     }
 
     @Override
     public void applyFilterGuid(long filterGuid) throws FilterException {
-        this.filterGuid = filterGuid;
+        this.filterLongId = filterGuid;
     }
 }

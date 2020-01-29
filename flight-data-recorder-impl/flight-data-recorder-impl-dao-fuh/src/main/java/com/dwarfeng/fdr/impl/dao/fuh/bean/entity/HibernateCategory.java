@@ -1,29 +1,29 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
+import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@IdClass(HibernateGuidKey.class)
+@IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_category")
-public class HibernateCategory implements Serializable {
+public class HibernateCategory implements Bean {
 
     private static final long serialVersionUID = 6680055254581597361L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "guid", nullable = false, unique = true)
-    private Long guid;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long longId;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "parent_guid")
-    private Long parentGuid;
+    @Column(name = "parent_id")
+    private Long parentLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
@@ -35,7 +35,7 @@ public class HibernateCategory implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernateCategory.class)
     @JoinColumns({ //
-            @JoinColumn(name = "parent_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
+            @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateCategory parentCategory;
 
@@ -49,36 +49,36 @@ public class HibernateCategory implements Serializable {
     public HibernateCategory() {
     }
 
-    public HibernateGuidKey getKey() {
-        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getKey() {
+        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setKey(HibernateGuidKey guidKey) {
-        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setKey(HibernateLongIdKey idKey) {
+        this.longId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getGuid() {
-        return guid;
+    public Long getLongId() {
+        return longId;
     }
 
-    public void setGuid(Long guid) {
-        this.guid = guid;
+    public void setLongId(Long id) {
+        this.longId = id;
     }
 
-    public HibernateGuidKey getParentKey() {
-        return Optional.ofNullable(parentGuid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getParentKey() {
+        return Optional.ofNullable(parentLongId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setParentKey(HibernateGuidKey parentKey) {
-        this.parentGuid = Optional.ofNullable(parentKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setParentKey(HibernateLongIdKey parentKey) {
+        this.parentLongId = Optional.ofNullable(parentKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getParentGuid() {
-        return parentGuid;
+    public Long getParentLongId() {
+        return parentLongId;
     }
 
-    public void setParentGuid(Long parentGuid) {
-        this.parentGuid = parentGuid;
+    public void setParentLongId(Long parentGuid) {
+        this.parentLongId = parentGuid;
     }
 
     public String getName() {
@@ -116,8 +116,8 @@ public class HibernateCategory implements Serializable {
     @Override
     public String toString() {
         return "HibernateCategory{" +
-                "guid='" + guid + '\'' +
-                ", parentGuid='" + parentGuid + '\'' +
+                "longId=" + longId +
+                ", parentLongId=" + parentLongId +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 '}';

@@ -1,24 +1,24 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
+import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateGuidKey.class)
+@IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_realtime_value")
-public class HibernateRealtimeValue implements Serializable {
+public class HibernateRealtimeValue implements Bean {
 
     private static final long serialVersionUID = -8314417056307226854L;
 
     // -----------------------------------------------------------主键兼外键-----------------------------------------------------------
     @Id
-    @Column(name = "guid", nullable = false, unique = true)
-    private Long guid;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long longId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
@@ -30,27 +30,27 @@ public class HibernateRealtimeValue implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @OneToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "guid", referencedColumnName = "guid", insertable = false, updatable = false), //
+            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
     public HibernateRealtimeValue() {
     }
 
-    public HibernateGuidKey getKey() {
-        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getKey() {
+        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setKey(HibernateGuidKey guidKey) {
-        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setKey(HibernateLongIdKey idKey) {
+        this.longId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getGuid() {
-        return guid;
+    public Long getLongId() {
+        return longId;
     }
 
-    public void setGuid(Long guid) {
-        this.guid = guid;
+    public void setLongId(Long id) {
+        this.longId = id;
     }
 
     public Date getHappenedDate() {
@@ -80,7 +80,7 @@ public class HibernateRealtimeValue implements Serializable {
     @Override
     public String toString() {
         return "HibernateRealtimeValue{" +
-                "guid='" + guid + '\'' +
+                "longId=" + longId +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 '}';

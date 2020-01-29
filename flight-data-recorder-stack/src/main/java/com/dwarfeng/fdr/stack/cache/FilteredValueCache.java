@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.stack.cache;
 
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
-import com.dwarfeng.fdr.stack.exception.CacheException;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 
 /**
  * 被过滤数据缓存。
@@ -10,9 +10,5 @@ import com.dwarfeng.fdr.stack.exception.CacheException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface FilteredValueCache extends BaseCache<GuidKey, FilteredValue> {
-
-    void deleteAllByPoint(GuidKey pointKey) throws CacheException;
-
-    void deleteAllByFilterInfo(GuidKey filterInfoKey) throws CacheException;
+public interface FilteredValueCache extends BatchBaseCache<LongIdKey, FilteredValue> {
 }

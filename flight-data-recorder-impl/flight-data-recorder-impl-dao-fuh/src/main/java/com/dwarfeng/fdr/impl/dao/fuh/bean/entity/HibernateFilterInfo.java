@@ -1,29 +1,29 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
+import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@IdClass(HibernateGuidKey.class)
+@IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_filter_info")
-public class HibernateFilterInfo implements Serializable {
+public class HibernateFilterInfo implements Bean {
 
     private static final long serialVersionUID = 4918058731153688475L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "guid", nullable = false, unique = true)
-    private Long guid;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long longId;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "point_guid")
-    private Long pointGuid;
+    @Column(name = "point_id")
+    private Long pointLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "enabled", nullable = false)
@@ -38,7 +38,7 @@ public class HibernateFilterInfo implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "point_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
+            @JoinColumn(name = "point_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
@@ -49,36 +49,36 @@ public class HibernateFilterInfo implements Serializable {
     public HibernateFilterInfo() {
     }
 
-    public Long getGuid() {
-        return guid;
+    public Long getLongId() {
+        return longId;
     }
 
-    public void setGuid(Long guid) {
-        this.guid = guid;
+    public void setLongId(Long id) {
+        this.longId = id;
     }
 
-    public HibernateGuidKey getKey() {
-        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getKey() {
+        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setKey(HibernateGuidKey guidKey) {
-        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setKey(HibernateLongIdKey idKey) {
+        this.longId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getPointGuid() {
-        return pointGuid;
+    public Long getPointLongId() {
+        return pointLongId;
     }
 
-    public void setPointGuid(Long pointGuid) {
-        this.pointGuid = pointGuid;
+    public void setPointLongId(Long pointGuid) {
+        this.pointLongId = pointGuid;
     }
 
-    public HibernateGuidKey getPointKey() {
-        return Optional.ofNullable(pointGuid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getPointKey() {
+        return Optional.ofNullable(pointLongId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setPointKey(HibernateGuidKey parentKey) {
-        this.pointGuid = Optional.ofNullable(parentKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setPointKey(HibernateLongIdKey parentKey) {
+        this.pointLongId = Optional.ofNullable(parentKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
     public boolean isEnabled() {
@@ -124,12 +124,11 @@ public class HibernateFilterInfo implements Serializable {
     @Override
     public String toString() {
         return "HibernateFilterInfo{" +
-                "guid='" + guid + '\'' +
-                ", pointGuid='" + pointGuid + '\'' +
+                "longId=" + longId +
+                ", pointLongId=" + pointLongId +
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
-                ", point=" + point +
                 '}';
     }
 }

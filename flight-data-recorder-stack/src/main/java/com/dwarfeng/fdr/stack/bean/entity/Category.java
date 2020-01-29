@@ -1,22 +1,23 @@
 package com.dwarfeng.fdr.stack.bean.entity;
 
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
+import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 /**
  * 分类。
  */
-public class Category implements Entity<GuidKey> {
+public class Category implements Entity<LongIdKey> {
 
     private static final long serialVersionUID = 270451223976111366L;
 
     /**
      * 主键。
      */
-    private GuidKey key;
+    private LongIdKey key;
     /**
      * 父项。
      */
-    private GuidKey parentKey;
+    private LongIdKey parentKey;
     /**
      * 名称。
      */
@@ -29,7 +30,7 @@ public class Category implements Entity<GuidKey> {
     public Category() {
     }
 
-    public Category(GuidKey key, GuidKey parentKey, String name, String remark) {
+    public Category(LongIdKey key, LongIdKey parentKey, String name, String remark) {
         this.key = key;
         this.parentKey = parentKey;
         this.name = name;
@@ -37,20 +38,20 @@ public class Category implements Entity<GuidKey> {
     }
 
     @Override
-    public GuidKey getKey() {
+    public LongIdKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(GuidKey key) {
+    public void setKey(LongIdKey key) {
         this.key = key;
     }
 
-    public GuidKey getParentKey() {
+    public LongIdKey getParentKey() {
         return parentKey;
     }
 
-    public void setParentKey(GuidKey parentKey) {
+    public void setParentKey(LongIdKey parentKey) {
         this.parentKey = parentKey;
     }
 

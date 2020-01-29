@@ -26,9 +26,7 @@
     </properties>
 
     <modules>
-        <module>flight-data-recorder-node-manager-web</module>
-        <module>flight-data-recorder-node-manager-ws</module>
-        <module>flight-data-recorder-node-manager-dubbo</module>
-        <module>flight-data-recorder-node-recorder-dubbo</module>
+        <module>flight-data-recorder-node-manager-fuh</module>
+        <module>flight-data-recorder-node-recorder-fuh</module>
     </modules>
 </project>

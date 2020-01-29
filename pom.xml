@@ -58,7 +58,8 @@
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <cxf.version>3.1.6</cxf.version>
         <kafka.version>2.4.0</kafka.version>
-        <snowflake.version>0.0.1.a</snowflake.version>
+        <snowflake.version>1.1.0.a</snowflake.version>
+        <subgrade.version>beta-0.0.6.a-SNAPSHOT</subgrade.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>
@@ -358,6 +359,22 @@
                 <artifactId>snowflake-distributed-service-api</artifactId>
                 <version>${snowflake.version}</version>
             </dependency>
+            <!-- subgrade组件 -->
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>subgrade-stack</artifactId>
+                <version>${subgrade.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>subgrade-sdk</artifactId>
+                <version>${subgrade.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>subgrade-impl</artifactId>
+                <version>${subgrade.version}</version>
+            </dependency>
             <!-- 程序自身组件 -->
             <dependency>
                 <groupId>com.dwarfeng</groupId>
@@ -439,6 +456,5 @@
         <module>flight-data-recorder-impl</module>
         <module>flight-data-recorder-sdk</module>
         <module>flight-data-recorder-node</module>
-        <module>flight-data-recorder-api</module>
     </modules>
 </project>

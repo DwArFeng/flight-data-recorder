@@ -1,8 +1,8 @@
 package com.dwarfeng.fdr.stack.cache;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
-import com.dwarfeng.fdr.stack.exception.CacheException;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 
 /**
  * 被触发数据缓存。
@@ -10,9 +10,5 @@ import com.dwarfeng.fdr.stack.exception.CacheException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface TriggeredValueCache extends BaseCache<GuidKey, TriggeredValue> {
-
-    void deleteAllByPoint(GuidKey pointKey) throws CacheException;
-
-    void deleteAllByTriggerInfo(GuidKey triggerInfoKey) throws CacheException;
+public interface TriggeredValueCache extends BatchBaseCache<LongIdKey, TriggeredValue> {
 }

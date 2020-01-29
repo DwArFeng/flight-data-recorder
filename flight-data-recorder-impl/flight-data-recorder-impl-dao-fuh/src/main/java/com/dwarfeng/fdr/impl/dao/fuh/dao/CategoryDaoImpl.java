@@ -1,12 +1,18 @@
 package com.dwarfeng.fdr.impl.dao.fuh.dao;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
+import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernateCategory;
 import com.dwarfeng.fdr.stack.bean.entity.Category;
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.dao.CategoryDao;
-import com.dwarfeng.fdr.stack.exception.DaoException;
+import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernatePresetDeleteDao;
+import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.sdk.interceptor.BehaviorAnalyse;
+import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,40 +20,112 @@ import java.util.List;
 public class CategoryDaoImpl implements CategoryDao {
 
     @Autowired
-    private CategoryDaoDelegate delegate;
+    private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, Category, HibernateCategory> batchBaseDao;
+    @Autowired
+    private HibernatePresetDeleteDao<LongIdKey, Category, HibernateCategory> presetDeleteDao;
 
     @Override
-    public boolean exists(GuidKey key) throws DaoException {
-        return delegate.exists(key);
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public LongIdKey insert(Category element) throws DaoException {
+        return batchBaseDao.insert(element);
     }
 
     @Override
-    public Category get(GuidKey key) throws DaoException {
-        return delegate.get(key);
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void update(Category element) throws DaoException {
+        batchBaseDao.update(element);
     }
 
     @Override
-    public GuidKey insert(Category category) throws DaoException {
-        return delegate.insert(category);
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void delete(LongIdKey key) throws DaoException {
+        batchBaseDao.delete(key);
     }
 
     @Override
-    public GuidKey update(Category category) throws DaoException {
-        return delegate.update(category);
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public boolean exists(LongIdKey key) throws DaoException {
+        return batchBaseDao.exists(key);
     }
 
     @Override
-    public void delete(GuidKey key) throws DaoException {
-        delegate.delete(key);
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public Category get(LongIdKey key) throws DaoException {
+        return batchBaseDao.get(key);
     }
 
     @Override
-    public List<Category> getChilds(GuidKey guidKey, LookupPagingInfo lookupPagingInfo) throws DaoException {
-        return delegate.getChilds(guidKey, lookupPagingInfo);
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public List<LongIdKey> batchInsert(List<Category> elements) throws DaoException {
+        return batchBaseDao.batchInsert(elements);
     }
 
     @Override
-    public long getChildCount(GuidKey guidKey) throws DaoException {
-        return delegate.getChildCount(guidKey);
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void batchUpdate(List<Category> elements) throws DaoException {
+        batchBaseDao.batchUpdate(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void batchDelete(List<LongIdKey> keys) throws DaoException {
+        batchBaseDao.batchDelete(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public boolean allExists(List<LongIdKey> keys) throws DaoException {
+        return batchBaseDao.allExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public boolean nonExists(List<LongIdKey> keys) throws DaoException {
+        return batchBaseDao.nonExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<Category> batchGet(List<LongIdKey> keys) {
+        return batchBaseDao.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<Category> lookup(String preset, Object[] objs) throws DaoException {
+        return presetDeleteDao.lookup(preset, objs);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<Category> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
+        return presetDeleteDao.lookup(preset, objs, pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public int lookupCount(String preset, Object[] objs) throws DaoException {
+        return presetDeleteDao.lookupCount(preset, objs);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public List<LongIdKey> lookupDelete(String preset, Object[] objs) throws DaoException {
+        return presetDeleteDao.lookupDelete(preset, objs);
     }
 }

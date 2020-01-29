@@ -1,31 +1,31 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
+import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateGuidKey.class)
+@IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_filtered_value")
-public class HibernateFilteredValue implements Serializable {
+public class HibernateFilteredValue implements Bean {
 
     private static final long serialVersionUID = 4923865131580198476L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "guid", nullable = false, unique = true)
-    private Long guid;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long longId;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "point_guid")
-    private Long pointGuid;
+    @Column(name = "point_id")
+    private Long pointLongId;
 
-    @Column(name = "filter_guid")
-    private Long filterGuid;
+    @Column(name = "filter_id")
+    private Long filterLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
@@ -40,65 +40,65 @@ public class HibernateFilteredValue implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "point_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
+            @JoinColumn(name = "point_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
     @ManyToOne(targetEntity = HibernateFilterInfo.class)
     @JoinColumns({ //
-            @JoinColumn(name = "filter_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
+            @JoinColumn(name = "filter_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateFilterInfo filterInfo;
 
     public HibernateFilteredValue() {
     }
 
-    public HibernateGuidKey getKey() {
-        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getKey() {
+        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setKey(HibernateGuidKey guidKey) {
-        this.guid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setKey(HibernateLongIdKey idKey) {
+        this.longId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getGuid() {
-        return guid;
+    public Long getLongId() {
+        return longId;
     }
 
-    public void setGuid(Long guid) {
-        this.guid = guid;
+    public void setLongId(Long id) {
+        this.longId = id;
     }
 
-    public HibernateGuidKey getPointKey() {
-        return Optional.ofNullable(pointGuid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getPointKey() {
+        return Optional.ofNullable(pointLongId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setPointKey(HibernateGuidKey guidKey) {
-        this.pointGuid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setPointKey(HibernateLongIdKey idKey) {
+        this.pointLongId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getPointGuid() {
-        return pointGuid;
+    public Long getPointLongId() {
+        return pointLongId;
     }
 
-    public void setPointGuid(Long pointGuid) {
-        this.pointGuid = pointGuid;
+    public void setPointLongId(Long pointGuid) {
+        this.pointLongId = pointGuid;
     }
 
-    public HibernateGuidKey getFilterKey() {
-        return Optional.ofNullable(filterGuid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getFilterKey() {
+        return Optional.ofNullable(filterLongId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setFilterKey(HibernateGuidKey guidKey) {
-        this.filterGuid = Optional.ofNullable(guidKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setFilterKey(HibernateLongIdKey idKey) {
+        this.filterLongId = Optional.ofNullable(idKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getFilterGuid() {
-        return filterGuid;
+    public Long getFilterLongId() {
+        return filterLongId;
     }
 
-    public void setFilterGuid(Long filterGuid) {
-        this.filterGuid = filterGuid;
+    public void setFilterLongId(Long filterGuid) {
+        this.filterLongId = filterGuid;
     }
 
     public Date getHappenedDate() {
@@ -144,9 +144,9 @@ public class HibernateFilteredValue implements Serializable {
     @Override
     public String toString() {
         return "HibernateFilteredValue{" +
-                "guid='" + guid + '\'' +
-                ", pointGuid='" + pointGuid + '\'' +
-                ", filterGuid='" + filterGuid + '\'' +
+                "longId=" + longId +
+                ", pointLongId=" + pointLongId +
+                ", filterLongId=" + filterLongId +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 ", message='" + message + '\'' +

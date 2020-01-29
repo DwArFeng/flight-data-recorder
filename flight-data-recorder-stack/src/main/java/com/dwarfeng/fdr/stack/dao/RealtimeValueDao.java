@@ -1,7 +1,8 @@
 package com.dwarfeng.fdr.stack.dao;
 
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
 
 /**
  * 实时数据数据访问层。
@@ -9,6 +10,5 @@ import com.dwarfeng.fdr.stack.bean.key.GuidKey;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface RealtimeValueDao extends BaseDao<GuidKey, RealtimeValue> {
-
+public interface RealtimeValueDao extends BatchBaseDao<LongIdKey, RealtimeValue> {
 }

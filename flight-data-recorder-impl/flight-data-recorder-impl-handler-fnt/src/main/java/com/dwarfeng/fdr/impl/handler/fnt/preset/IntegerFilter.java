@@ -3,8 +3,8 @@ package com.dwarfeng.fdr.impl.handler.fnt.preset;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
 import com.dwarfeng.fdr.stack.exception.FilterException;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,8 +65,8 @@ public class IntegerFilter extends AbstractStructuredFilter {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字, 不能通过过滤...");
             FilteredValue filteredValue = new FilteredValue(
                     null,
-                    new GuidKey(pointGuid),
-                    new GuidKey(filterGuid),
+                    new LongIdKey(pointLongId),
+                    new LongIdKey(filterLongId),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值不是数字"
@@ -84,8 +84,8 @@ public class IntegerFilter extends AbstractStructuredFilter {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过整型数范围, 不能通过过滤...", e);
             FilteredValue filteredValue = new FilteredValue(
                     null,
-                    new GuidKey(pointGuid),
-                    new GuidKey(filterGuid),
+                    new LongIdKey(pointLongId),
+                    new LongIdKey(filterLongId),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值不是数字或超过整型数范围"
@@ -101,8 +101,8 @@ public class IntegerFilter extends AbstractStructuredFilter {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 小于(或小于等于等于)最小值, 不能通过过滤...");
             FilteredValue filteredValue = new FilteredValue(
                     null,
-                    new GuidKey(pointGuid),
-                    new GuidKey(filterGuid),
+                    new LongIdKey(pointLongId),
+                    new LongIdKey(filterLongId),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值小于(或小于等于等于)最小值"
@@ -118,8 +118,8 @@ public class IntegerFilter extends AbstractStructuredFilter {
             LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 大于(或大于等于等于)最大值, 不能通过过滤...");
             FilteredValue filteredValue = new FilteredValue(
                     null,
-                    new GuidKey(pointGuid),
-                    new GuidKey(filterGuid),
+                    new LongIdKey(pointLongId),
+                    new LongIdKey(filterLongId),
                     dataInfo.getHappenedDate(),
                     dataInfo.getValue(),
                     "数据值大于(或大于等于等于)最大值"

@@ -1,10 +1,9 @@
 package com.dwarfeng.fdr.stack.service;
 
-import com.dwarfeng.fdr.stack.bean.dto.LookupPagingInfo;
-import com.dwarfeng.fdr.stack.bean.dto.PagedData;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.key.GuidKey;
-import com.dwarfeng.fdr.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.service.CrudService;
+import com.dwarfeng.subgrade.stack.service.PresetDeleteService;
 
 /**
  * 数据点维护服务。
@@ -12,8 +11,8 @@ import com.dwarfeng.fdr.stack.exception.ServiceException;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface PointMaintainService extends EntityCrudService<GuidKey, Point> {
+public interface PointMaintainService extends CrudService<LongIdKey, Point>, PresetDeleteService<Point> {
 
-    PagedData<Point> getPoints(GuidKey categoryGuid, LookupPagingInfo lookupPagingInfo) throws ServiceException;
-
+    String CHILD_FOR_CATEGORY = "child_for_category";
+    String CHILD_FOR_CATEGORY_SET = "child_for_category_set";
 }

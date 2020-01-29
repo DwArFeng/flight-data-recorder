@@ -1,28 +1,28 @@
 package com.dwarfeng.fdr.impl.dao.fuh.bean.entity;
 
-import com.dwarfeng.fdr.impl.dao.fuh.bean.key.HibernateGuidKey;
 import com.dwarfeng.fdr.sdk.util.Constraints;
+import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateGuidKey.class)
+@IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_persistence_value")
-public class HibernatePersistenceValue implements Serializable {
+public class HibernatePersistenceValue implements Bean {
 
     private static final long serialVersionUID = 4923865131580198476L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "guid", nullable = false, unique = true)
-    private Long guid;
+    @Column(name = "id", nullable = false, unique = true)
+    private Long longId;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "point_guid")
-    private Long pointGuid;
+    @Column(name = "point_id")
+    private Long pointLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
@@ -34,43 +34,43 @@ public class HibernatePersistenceValue implements Serializable {
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
     @JoinColumns({ //
-            @JoinColumn(name = "point_guid", referencedColumnName = "guid", insertable = false, updatable = false), //
+            @JoinColumn(name = "point_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
 
     public HibernatePersistenceValue() {
     }
 
-    public HibernateGuidKey getKey() {
-        return Optional.ofNullable(guid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getKey() {
+        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setKey(HibernateGuidKey key) {
-        this.guid = Optional.ofNullable(key).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setKey(HibernateLongIdKey key) {
+        this.longId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getGuid() {
-        return guid;
+    public Long getLongId() {
+        return longId;
     }
 
-    public void setGuid(Long guid) {
-        this.guid = guid;
+    public void setLongId(Long id) {
+        this.longId = id;
     }
 
-    public HibernateGuidKey getPointKey() {
-        return Optional.ofNullable(pointGuid).map(HibernateGuidKey::new).orElse(null);
+    public HibernateLongIdKey getPointKey() {
+        return Optional.ofNullable(pointLongId).map(HibernateLongIdKey::new).orElse(null);
     }
 
-    public void setPointKey(HibernateGuidKey pointKey) {
-        this.pointGuid = Optional.ofNullable(pointKey).map(HibernateGuidKey::getGuid).orElse(null);
+    public void setPointKey(HibernateLongIdKey pointKey) {
+        this.pointLongId = Optional.ofNullable(pointKey).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public Long getPointGuid() {
-        return pointGuid;
+    public Long getPointLongId() {
+        return pointLongId;
     }
 
-    public void setPointGuid(Long pointGuid) {
-        this.pointGuid = pointGuid;
+    public void setPointLongId(Long pointGuid) {
+        this.pointLongId = pointGuid;
     }
 
     public Date getHappenedDate() {
@@ -100,8 +100,8 @@ public class HibernatePersistenceValue implements Serializable {
     @Override
     public String toString() {
         return "HibernatePersistenceValue{" +
-                "guid='" + guid + '\'' +
-                ", pointGuid='" + pointGuid + '\'' +
+                "longId=" + longId +
+                ", pointLongId=" + pointLongId +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +
                 '}';

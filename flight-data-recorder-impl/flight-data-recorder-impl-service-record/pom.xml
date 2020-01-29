@@ -137,6 +137,11 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-impl-cache-redis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

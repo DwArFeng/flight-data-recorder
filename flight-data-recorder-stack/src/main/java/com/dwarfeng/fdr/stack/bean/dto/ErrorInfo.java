@@ -1,5 +1,7 @@
 package com.dwarfeng.fdr.stack.bean.dto;
 
+import com.dwarfeng.subgrade.stack.bean.dto.Dto;
+
 /**
  * 错误信息。
  *
