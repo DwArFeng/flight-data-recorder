@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Arrays;
@@ -25,6 +26,7 @@ public class PointPresetCriteriaMaker implements PresetCriteriaMaker {
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
         }
+        detachedCriteria.addOrder(Order.asc("longId"));
     }
 
     private void childForParent(DetachedCriteria detachedCriteria, Object[] objects) {
