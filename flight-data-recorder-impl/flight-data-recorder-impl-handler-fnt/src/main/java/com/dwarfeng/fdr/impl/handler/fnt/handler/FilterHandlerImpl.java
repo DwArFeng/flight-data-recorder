@@ -6,7 +6,7 @@ import com.dwarfeng.fdr.impl.handler.fnt.struct.StructuredFilterInfo;
 import com.dwarfeng.fdr.stack.exception.FilterException;
 import com.dwarfeng.fdr.stack.handler.Filter;
 import com.dwarfeng.fdr.stack.handler.FilterHandler;
-import com.dwarfeng.subgrade.sdk.interceptor.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class FilterHandlerImpl implements FilterHandler {
     @BehaviorAnalyse
     public Filter make(@NotNull long pointGuid, @NotNull long filterGuid, @NotNull String content) throws FilterException {
         LOGGER.debug("1. 将content以JSON方式转化为StructuredFilterInfo对象...");
-        StructuredFilterInfo structuredFilterInfo = null;
+        StructuredFilterInfo structuredFilterInfo;
         try {
             structuredFilterInfo = JSONObject.parseObject(content, StructuredFilterInfo.class);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class FilterHandlerImpl implements FilterHandler {
         }
 
         LOGGER.debug("3. 根据StructuredFilterInfo提供的BeanId获取StructuredFilter...");
-        StructuredFilter structuredFilter = null;
+        StructuredFilter structuredFilter;
         try {
             structuredFilter = applicationContext.getBean(structuredFilterInfo.getBeanId(), StructuredFilter.class);
         } catch (Exception e) {

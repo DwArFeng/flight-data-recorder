@@ -6,7 +6,7 @@ import com.dwarfeng.fdr.impl.handler.fnt.struct.StructuredTriggerInfo;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.fdr.stack.handler.Trigger;
 import com.dwarfeng.fdr.stack.handler.TriggerHandler;
-import com.dwarfeng.subgrade.sdk.interceptor.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class TriggerHandlerImpl implements TriggerHandler {
     @BehaviorAnalyse
     public Trigger make(@NotNull long pointGuid, @NotNull long triggerGuid, @NotNull String content) throws TriggerException {
         LOGGER.debug("1. 将content以JSON方式转化为StructuredTriggerInfo对象...");
-        StructuredTriggerInfo structuredTriggerInfo = null;
+        StructuredTriggerInfo structuredTriggerInfo;
         try {
             structuredTriggerInfo = JSONObject.parseObject(content, StructuredTriggerInfo.class);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class TriggerHandlerImpl implements TriggerHandler {
         }
 
         LOGGER.debug("3. 根据StructuredTriggerInfo提供的BeanId获取StructuredTrigger...");
-        StructuredTrigger structuredTrigger = null;
+        StructuredTrigger structuredTrigger;
         try {
             structuredTrigger = applicationContext.getBean(structuredTriggerInfo.getBeanId(), StructuredTrigger.class);
         } catch (Exception e) {

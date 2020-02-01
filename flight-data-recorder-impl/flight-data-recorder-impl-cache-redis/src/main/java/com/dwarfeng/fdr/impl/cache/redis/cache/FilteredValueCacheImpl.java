@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.cache.FilteredValueCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
-import com.dwarfeng.subgrade.sdk.interceptor.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.beans.factory.annotation.Autowired;

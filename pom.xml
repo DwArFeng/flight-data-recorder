@@ -59,7 +59,7 @@
         <cxf.version>3.1.6</cxf.version>
         <kafka.version>2.4.0</kafka.version>
         <snowflake.version>1.1.0.a</snowflake.version>
-        <subgrade.version>beta-0.0.6.a-SNAPSHOT</subgrade.version>
+        <subgrade.version>beta-0.0.7.a</subgrade.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <tomcat7-maven-plugin.version>2.2</tomcat7-maven-plugin.version>

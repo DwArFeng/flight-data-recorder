@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.cache.EnabledFilterInfoCache;
 import com.dwarfeng.subgrade.impl.cache.RedisKeyListCache;
-import com.dwarfeng.subgrade.sdk.interceptor.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;

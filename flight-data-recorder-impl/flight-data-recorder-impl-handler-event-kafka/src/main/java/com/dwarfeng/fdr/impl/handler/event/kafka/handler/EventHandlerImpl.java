@@ -2,9 +2,8 @@ package com.dwarfeng.fdr.impl.handler.event.kafka.handler;
 
 import com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggeredValue;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
-import com.dwarfeng.fdr.stack.exception.EventException;
 import com.dwarfeng.fdr.stack.handler.EventHandler;
-import com.dwarfeng.subgrade.sdk.interceptor.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class EventHandlerImpl implements EventHandler {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "kafkaTransactionManager")
-    public void fireDataTriggered(@NotNull TriggeredValue triggeredValue) throws EventException {
+    public void fireDataTriggered(@NotNull TriggeredValue triggeredValue) {
         FastJsonTriggeredValue fastJsonTriggeredValue = mapper.map(triggeredValue, FastJsonTriggeredValue.class);
         template.send(dataTriggeredTopic, fastJsonTriggeredValue);
     }
