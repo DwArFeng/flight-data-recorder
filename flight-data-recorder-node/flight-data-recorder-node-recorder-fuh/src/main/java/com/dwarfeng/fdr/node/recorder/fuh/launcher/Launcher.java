@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.node.recorder.dubbo.launcher;
+package com.dwarfeng.fdr.node.recorder.fuh.launcher;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

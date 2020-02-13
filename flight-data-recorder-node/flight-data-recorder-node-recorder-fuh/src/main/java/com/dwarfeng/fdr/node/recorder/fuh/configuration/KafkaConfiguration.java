@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.node.recorder.dubbo.configuration;
+package com.dwarfeng.fdr.node.recorder.fuh.configuration;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.slf4j.Logger;

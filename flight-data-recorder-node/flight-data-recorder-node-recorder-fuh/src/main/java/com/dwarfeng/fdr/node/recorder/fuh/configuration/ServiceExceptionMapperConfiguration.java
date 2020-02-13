@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.node.recorder.dubbo.configuration;
+package com.dwarfeng.fdr.node.recorder.fuh.configuration;
 
 import com.dwarfeng.subgrade.impl.exception.MapServiceExceptionMapper;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;

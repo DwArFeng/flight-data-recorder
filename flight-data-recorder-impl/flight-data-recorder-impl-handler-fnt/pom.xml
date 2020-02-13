@@ -7,7 +7,7 @@
     <parent>
         <artifactId>flight-data-recorder-impl</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>alpha-0.0.1.a-SNAPSHOT</version>
+        <version>1.0.0.a</version>
     </parent>
 
     <artifactId>flight-data-recorder-impl-handler-fnt</artifactId>

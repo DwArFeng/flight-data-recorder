@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.node.recorder.dubbo.configuration;
+package com.dwarfeng.fdr.node.recorder.fuh.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

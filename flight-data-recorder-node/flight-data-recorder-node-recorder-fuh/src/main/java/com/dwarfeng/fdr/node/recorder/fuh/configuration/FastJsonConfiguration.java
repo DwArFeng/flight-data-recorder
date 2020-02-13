@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.node.recorder.dubbo.configuration;
+package com.dwarfeng.fdr.node.recorder.fuh.configuration;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.dwarfeng.fdr.impl.handler.fnt.preset.BlankConfig;

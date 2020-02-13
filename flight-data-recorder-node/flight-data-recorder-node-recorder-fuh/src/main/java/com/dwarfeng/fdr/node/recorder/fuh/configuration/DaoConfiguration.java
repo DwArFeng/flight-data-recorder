@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.node.recorder.dubbo.configuration;
+package com.dwarfeng.fdr.node.recorder.fuh.configuration;
 
 import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.*;
 import com.dwarfeng.fdr.impl.dao.fuh.dao.preset.*;

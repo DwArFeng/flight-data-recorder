@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.node.recorder.dubbo.configuration;
+package com.dwarfeng.fdr.node.recorder.fuh.configuration;
 
 import com.dwarfeng.fdr.sdk.bean.entity.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
