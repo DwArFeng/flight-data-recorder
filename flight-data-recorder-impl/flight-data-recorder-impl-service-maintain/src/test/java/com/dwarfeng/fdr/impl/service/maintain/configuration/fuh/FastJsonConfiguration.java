@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.service.maintain.configuration.fuh;
 
 import com.alibaba.fastjson.parser.ParserConfig;
+import com.dwarfeng.fdr.sdk.bean.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -16,14 +17,14 @@ public class FastJsonConfiguration {
 
     public FastJsonConfiguration() {
         LOGGER.info("正在配置 FastJson autotype 白名单");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonCategory");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonPoint");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilterInfo");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggerInfo");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilteredValue");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonPersistenceValue");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue");
-        ParserConfig.getGlobalInstance().addAccept("com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggeredValue");
+        ParserConfig.getGlobalInstance().addAccept(FastJsonCategory.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonPoint.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonFilterInfo.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerInfo.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonFilteredValue.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonPersistenceValue.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonRealtimeValue.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonTriggeredValue.class.getCanonicalName());
         LOGGER.debug("FastJson autotype 白名单配置完毕");
     }
 }
