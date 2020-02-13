@@ -12,6 +12,7 @@
             location=
                     "classpath:hibernate/*.properties,
                     classpath:dubbo/*.properties,
+                    classpath:fdr/*.properties,
                     classpath:redis/*.properties"
             local-override="true"
             properties-ref="refProperties"/>
@@ -24,6 +25,8 @@
                 <value>file:conf/test.hibernate/*.properties</value>
                 <!--suppress SpringXmlModelInspection -->
                 <value>file:conf/test.dubbo/*.properties</value>
+                <!--suppress SpringXmlModelInspection -->
+                <value>file:conf/test.fdr/*.properties</value>
                 <!--suppress SpringXmlModelInspection -->
                 <value>file:conf/test.redis/*.properties</value>
             </list>
