@@ -5,7 +5,7 @@
                         http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
     <!-- FastJSON序列化器-->
-    <bean id="fastJsonRedisSerializer" class="com.dwarfeng.fdr.sdk.serialize.FastJsonRedisSerializer">
+    <bean id="fastJsonRedisSerializer" class="com.dwarfeng.subgrade.sdk.redis.serialize.FastJsonRedisSerializer">
         <constructor-arg name="clazz" ref="objectClazz"/>
     </bean>
     <bean id="objectClazz" class="java.lang.Class" factory-method="forName">
