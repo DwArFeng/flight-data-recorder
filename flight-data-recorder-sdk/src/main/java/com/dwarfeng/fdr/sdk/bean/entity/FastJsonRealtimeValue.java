@@ -54,7 +54,7 @@ public class FastJsonRealtimeValue implements Bean {
 
     @Override
     public String toString() {
-        return "RedisRealtimeValue{" +
+        return "FastJsonRealtimeValue{" +
                 "key=" + key +
                 ", happenedDate=" + happenedDate +
                 ", value='" + value + '\'' +

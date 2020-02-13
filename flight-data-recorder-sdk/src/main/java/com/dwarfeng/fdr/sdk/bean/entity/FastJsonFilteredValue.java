@@ -90,7 +90,7 @@ public class FastJsonFilteredValue implements Bean {
 
     @Override
     public String toString() {
-        return "RedisFilteredValue{" +
+        return "FastJsonFilteredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
                 ", filterKey=" + filterKey +

@@ -5,7 +5,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 /**
- * Redis分类对象。
+ * FastJson分类对象。
  *
  * @author DwArFeng
  * @since 0.0.1-alpha
@@ -70,7 +70,7 @@ public class FastJsonCategory implements Bean {
 
     @Override
     public String toString() {
-        return "RedisCategory{" +
+        return "FastJsonCategory{" +
                 "key=" + key +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +

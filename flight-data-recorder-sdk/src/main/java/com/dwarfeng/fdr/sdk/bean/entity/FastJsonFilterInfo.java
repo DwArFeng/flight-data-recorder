@@ -5,7 +5,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 /**
- * Redis数据点对象。
+ * FastJson数据点对象。
  *
  * @author DwArFeng
  * @since 0.0.1-alpha
@@ -74,7 +74,7 @@ public class FastJsonFilterInfo implements Bean {
 
     @Override
     public String toString() {
-        return "RedisFilterInfo{" +
+        return "FastJsonFilterInfo{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
                 ", enabled=" + enabled +

@@ -121,12 +121,4 @@ public class TriggerInfoDaoImpl implements TriggerInfoDao {
     public int lookupCount(String preset, Object[] objs) throws DaoException {
         return presetDeleteDao.lookupCount(preset, objs);
     }
-
-    @Override
-    @BehaviorAnalyse
-    @Transactional(transactionManager = "hibernateTransactionManager")
-    public List<LongIdKey> lookupDelete(String preset, Object[] objs) throws DaoException {
-        return presetDeleteDao.lookupDelete(preset, objs);
-    }
-
 }

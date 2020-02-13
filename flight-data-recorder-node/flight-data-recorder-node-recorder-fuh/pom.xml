@@ -97,6 +97,10 @@
         </dependency>
         <dependency>
             <groupId>com.dwarfeng</groupId>
+            <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
             <artifactId>flight-data-recorder-impl-service-record</artifactId>
         </dependency>
     </dependencies>

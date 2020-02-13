@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.stack.dao;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
-import com.dwarfeng.subgrade.stack.dao.PresetDeleteDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 
 /**
  * 持久化数据数据访问层。
@@ -11,5 +11,5 @@ import com.dwarfeng.subgrade.stack.dao.PresetDeleteDao;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface PersistenceValueDao extends BatchBaseDao<LongIdKey, PersistenceValue>, PresetDeleteDao<LongIdKey, PersistenceValue> {
+public interface PersistenceValueDao extends BatchBaseDao<LongIdKey, PersistenceValue>, PresetLookupDao<PersistenceValue> {
 }

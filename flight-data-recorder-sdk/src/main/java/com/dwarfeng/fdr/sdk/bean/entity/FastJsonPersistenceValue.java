@@ -66,7 +66,7 @@ public class FastJsonPersistenceValue implements Bean {
 
     @Override
     public String toString() {
-        return "RedisPersistenceValue{" +
+        return "FastJsonPersistenceValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
                 ", happenedDate=" + happenedDate +

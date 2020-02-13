@@ -90,7 +90,7 @@ public class FastJsonTriggeredValue implements Bean {
 
     @Override
     public String toString() {
-        return "RedisTriggeredValue{" +
+        return "FastJsonTriggeredValue{" +
                 "key=" + key +
                 ", pointKey=" + pointKey +
                 ", triggerKey=" + triggerKey +

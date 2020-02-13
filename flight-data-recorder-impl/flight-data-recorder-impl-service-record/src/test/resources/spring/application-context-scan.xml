@@ -21,5 +21,5 @@
     <!--扫描配置类所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.service.record.configuration.fuh"/>
     <!--扫描aop增强所在的包。 -->
-    <context:component-scan base-package="com.dwarfeng.subgrade.sdk.interceptor"/>
+    <context:component-scan base-package="com.dwarfeng.subgrade.sdk.interceptor.analyse"/>
 </beans>
