@@ -6,12 +6,14 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Component
 public class TriggeredValuePresetCriteriaMaker implements PresetCriteriaMaker {
 
     @Override
@@ -29,43 +31,51 @@ public class TriggeredValuePresetCriteriaMaker implements PresetCriteriaMaker {
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
         }
-        detachedCriteria.addOrder(Order.asc("longId"));
     }
 
     private void childForPoint(DetachedCriteria detachedCriteria, Object[] objects) {
-        Object object = objects[0];
-        if (Objects.isNull(object)) {
-            detachedCriteria.add(Restrictions.isNull("pointLongId"));
-        } else if (object instanceof LongIdKey) {
-            detachedCriteria.add(Restrictions.eqOrIsNull("pointLongId", ((LongIdKey) object).getLongId()));
-        } else {
+        try {
+            if (Objects.isNull(objects[0])) {
+                detachedCriteria.add(Restrictions.isNull("pointLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objects[0];
+                detachedCriteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
+            }
+            detachedCriteria.addOrder(Order.asc("longId"));
+        } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
     }
 
     private void childForTrigger(DetachedCriteria detachedCriteria, Object[] objects) {
-        Object object = objects[0];
-        if (Objects.isNull(object)) {
-            detachedCriteria.add(Restrictions.isNull("triggerLongId"));
-        } else if (object instanceof LongIdKey) {
-            detachedCriteria.add(Restrictions.eqOrIsNull("triggerLongId", ((LongIdKey) object).getLongId()));
-        } else {
+        try {
+            if (Objects.isNull(objects[0])) {
+                detachedCriteria.add(Restrictions.isNull("triggerLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objects[0];
+                detachedCriteria.add(Restrictions.eqOrIsNull("triggerLongId", longIdKey.getLongId()));
+            }
+            detachedCriteria.addOrder(Order.asc("longId"));
+        } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
     }
 
     private void childForTriggerSet(DetachedCriteria detachedCriteria, Object[] objects) {
-        Object object = objects[0];
-        if (Objects.isNull(object)) {
-            detachedCriteria.add(Restrictions.isNull("triggerLongId"));
-        } else if (object instanceof List) {
-            if (((List<?>) object).isEmpty()) {
-                detachedCriteria.add(Restrictions.isNull("longId"));
+        try {
+            if (Objects.isNull(objects[0])) {
+                detachedCriteria.add(Restrictions.isNull("triggerLongId"));
             } else {
                 //noinspection unchecked
-                detachedCriteria.add(Restrictions.in("triggerLongId", longList((List<LongIdKey>) object)));
+                List<LongIdKey> longIdKeys = (List<LongIdKey>) objects[0];
+                if (longIdKeys.isEmpty()) {
+                    detachedCriteria.add(Restrictions.isNull("longId"));
+                } else {
+                    detachedCriteria.add(Restrictions.in("triggerLongId", longList(longIdKeys)));
+                }
             }
-        } else {
+            detachedCriteria.addOrder(Order.asc("longId"));
+        } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
     }

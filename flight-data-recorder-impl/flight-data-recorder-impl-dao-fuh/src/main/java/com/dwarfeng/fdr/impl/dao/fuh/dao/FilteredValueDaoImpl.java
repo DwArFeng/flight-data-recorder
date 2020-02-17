@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernateFilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.dao.FilteredValueDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetDeleteDao;
+import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -22,7 +22,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     @Autowired
     private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue> batchBaseDao;
     @Autowired
-    private HibernatePresetDeleteDao<LongIdKey, FilteredValue, HibernateFilteredValue> presetDeleteDao;
+    private HibernatePresetLookupDao<FilteredValue, HibernateFilteredValue> presetLookupDao;
 
     @Override
     @BehaviorAnalyse
@@ -105,20 +105,20 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<FilteredValue> lookup(String preset, Object[] objs) throws DaoException {
-        return presetDeleteDao.lookup(preset, objs);
+        return presetLookupDao.lookup(preset, objs);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<FilteredValue> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
-        return presetDeleteDao.lookup(preset, objs, pagingInfo);
+        return presetLookupDao.lookup(preset, objs, pagingInfo);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public int lookupCount(String preset, Object[] objs) throws DaoException {
-        return presetDeleteDao.lookupCount(preset, objs);
+        return presetLookupDao.lookupCount(preset, objs);
     }
 }

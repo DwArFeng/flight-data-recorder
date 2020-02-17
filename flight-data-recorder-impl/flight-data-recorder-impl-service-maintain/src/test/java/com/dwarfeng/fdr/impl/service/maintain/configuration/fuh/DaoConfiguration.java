@@ -5,7 +5,7 @@ import com.dwarfeng.fdr.impl.dao.fuh.dao.preset.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetDeleteDao;
+import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.dozer.Mapper;
@@ -22,6 +22,21 @@ public class DaoConfiguration {
     @Autowired
     private Mapper mapper;
 
+    @Autowired
+    private CategoryPresetCriteriaMaker categoryPresetCriteriaMaker;
+    @Autowired
+    private FilteredValuePresetCriteriaMaker filteredValuePresetCriteriaMaker;
+    @Autowired
+    private FilterInfoPresetCriteriaMaker filterInfoPresetCriteriaMaker;
+    @Autowired
+    private PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker;
+    @Autowired
+    private PointPresetCriteriaMaker pointPresetCriteriaMaker;
+    @Autowired
+    private TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker;
+    @Autowired
+    private TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker;
+
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, Category, HibernateCategory> categoryHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
@@ -33,12 +48,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetDeleteDao<LongIdKey, Category, HibernateCategory> categoryHibernatePresetDeleteDao() {
-        return new HibernatePresetDeleteDao<>(
+    public HibernatePresetLookupDao<Category, HibernateCategory> categoryHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(Category.class, HibernateCategory.class, mapper),
                 HibernateCategory.class,
-                new CategoryPresetCriteriaMaker()
+                categoryPresetCriteriaMaker
         );
     }
 
@@ -53,12 +68,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetDeleteDao<LongIdKey, FilteredValue, HibernateFilteredValue> filteredValueHibernatePresetDeleteDao() {
-        return new HibernatePresetDeleteDao<>(
+    public HibernatePresetLookupDao<FilteredValue, HibernateFilteredValue> filteredValueHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
                 HibernateFilteredValue.class,
-                new FilteredValuePresetCriteriaMaker()
+                filteredValuePresetCriteriaMaker
         );
     }
 
@@ -73,12 +88,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetDeleteDao<LongIdKey, FilterInfo, HibernateFilterInfo> filterInfoHibernatePresetDeleteDao() {
-        return new HibernatePresetDeleteDao<>(
+    public HibernatePresetLookupDao<FilterInfo, HibernateFilterInfo> filterInfoHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, mapper),
                 HibernateFilterInfo.class,
-                new FilterInfoPresetCriteriaMaker()
+                filterInfoPresetCriteriaMaker
         );
     }
 
@@ -93,12 +108,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetDeleteDao<LongIdKey, PersistenceValue, HibernatePersistenceValue> persistenceValueHibernatePresetDeleteDao() {
-        return new HibernatePresetDeleteDao<>(
+    public HibernatePresetLookupDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
                 HibernatePersistenceValue.class,
-                new PersistenceValuePresetCriteriaMaker()
+                persistenceValuePresetCriteriaMaker
         );
     }
 
@@ -113,12 +128,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetDeleteDao<LongIdKey, Point, HibernatePoint> pointHibernatePresetDeleteDao() {
-        return new HibernatePresetDeleteDao<>(
+    public HibernatePresetLookupDao<Point, HibernatePoint> pointHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
                 HibernatePoint.class,
-                new PointPresetCriteriaMaker()
+                pointPresetCriteriaMaker
         );
     }
 
@@ -143,12 +158,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetDeleteDao<LongIdKey, TriggeredValue, HibernateTriggeredValue> triggeredValueHibernatePresetDeleteDao() {
-        return new HibernatePresetDeleteDao<>(
+    public HibernatePresetLookupDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
                 HibernateTriggeredValue.class,
-                new TriggeredValuePresetCriteriaMaker()
+                triggeredValuePresetCriteriaMaker
         );
     }
 
@@ -163,12 +178,12 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetDeleteDao<LongIdKey, TriggerInfo, HibernateTriggerInfo> triggerInfoHibernatePresetDeleteDao() {
-        return new HibernatePresetDeleteDao<>(
+    public HibernatePresetLookupDao<TriggerInfo, HibernateTriggerInfo> triggerInfoHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
                 HibernateTriggerInfo.class,
-                new TriggerInfoPresetCriteriaMaker()
+                triggerInfoPresetCriteriaMaker
         );
     }
 }
