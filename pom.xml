@@ -21,6 +21,7 @@
         <!-- 进行资源的统一声明 -->
         <!-- 进行版本声明 -->
         <!-- 集中定义依赖版本号 -->
+        <javassist.version>3.23.2-GA</javassist.version>
         <junit.version>4.12</junit.version>
         <spring.version>5.2.3.RELEASE</spring.version>
         <spring-kafka.version>2.2.11.RELEASE</spring-kafka.version>
@@ -50,12 +51,12 @@
         <el.version>3.0.0</el.version>
         <hibernate-validator.version>6.0.18.Final</hibernate-validator.version>
         <log4j2.version>2.12.1</log4j2.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>1.7.5</slf4j.version>
         <dozer.version>5.5.1</dozer.version>
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <kafka.version>2.4.0</kafka.version>
         <snowflake.version>1.1.0.a</snowflake.version>
-        <subgrade.version>beta-0.2.2.a</subgrade.version>
+        <subgrade.version>beta-0.2.5.a-SNAPSHOT</subgrade.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -67,6 +68,12 @@
     <!-- 只定义依赖的版本，并不实际依赖 -->
     <dependencyManagement>
         <dependencies>
+            <!-- javassist组件 -->
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${javassist.version}</version>
+            </dependency>
             <!-- AspectJ组件 -->
             <dependency>
                 <groupId>org.aspectj</groupId>
@@ -148,6 +155,11 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
             <!-- MySql连接器 -->
             <dependency>
                 <groupId>mysql</groupId>
@@ -161,6 +173,11 @@
                 <version>${druid.version}</version>
             </dependency>
             <!-- Spring -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
@@ -281,6 +298,12 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>jboss-logging</artifactId>
+                        <groupId>org.jboss.logging</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- Hibernate验证器 -->
             <dependency>
