@@ -5,7 +5,7 @@
 
     <groupId>com.dwarfeng</groupId>
     <artifactId>flight-data-recorder</artifactId>
-    <version>1.0.0.a</version>
+    <version>1.1.0.a-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -342,12 +342,12 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-stack</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-sdk</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
@@ -357,7 +357,7 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-dao-fuh</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
@@ -367,27 +367,27 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-cache-redis</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-service-record</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-handler-fnt</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>flight-data-recorder-impl-handler-event-kafka</artifactId>
-                <version>1.0.0.a</version>
+                <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
