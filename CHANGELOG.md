@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 添加 FastJsonDataInfo 和 JSFixedFastJsonDataInfo。
 
 #### Bug修复
 
