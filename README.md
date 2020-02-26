@@ -1,3 +1,3 @@
-# account-keeper
+# flight-date-recorder
 
-密码维护与登录验证的解决方案。
+开箱即用的数据收集、过滤、触发的解决方案。
