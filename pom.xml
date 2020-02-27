@@ -56,7 +56,7 @@
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <kafka.version>2.4.0</kafka.version>
         <snowflake.version>1.1.0.a</snowflake.version>
-        <subgrade.version>beta-0.2.5.a-SNAPSHOT</subgrade.version>
+        <subgrade.version>beta-0.3.0.a-SNAPSHOT</subgrade.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -272,6 +272,16 @@
                 <groupId>com.101tec</groupId>
                 <artifactId>zkclient</artifactId>
                 <version>${zkclient.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>slf4j-log4j12</artifactId>
+                        <groupId>org.slf4j</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>log4j</artifactId>
+                        <groupId>log4j</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.noggit</groupId>
@@ -374,42 +384,12 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-bean-common</artifactId>
-                <version>alpha-0.0.1.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-dao-fuh</artifactId>
+                <artifactId>flight-data-recorder-impl</artifactId>
                 <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-dao-hnh</artifactId>
-                <version>alpha-0.0.1.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-cache-redis</artifactId>
-                <version>1.1.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-service-maintain</artifactId>
-                <version>1.1.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-service-record</artifactId>
-                <version>1.1.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-handler-fnt</artifactId>
-                <version>1.1.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl-handler-event-kafka</artifactId>
+                <artifactId>flight-data-recorder-node</artifactId>
                 <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
         </dependencies>

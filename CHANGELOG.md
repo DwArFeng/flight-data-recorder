@@ -5,6 +5,7 @@
 #### 功能构建
 
 - 添加 FastJsonDataInfo 和 JSFixedFastJsonDataInfo。
+- 改造项目结构。
 
 #### Bug修复
 
