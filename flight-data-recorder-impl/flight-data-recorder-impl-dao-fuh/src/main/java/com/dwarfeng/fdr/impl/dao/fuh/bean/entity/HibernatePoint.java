@@ -21,10 +21,6 @@ public class HibernatePoint implements Bean {
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "category_id")
-    private Long categoryLongId;
-
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "name", length = Constraints.LENGTH_NAME, nullable = false)
     private String name;
@@ -37,13 +33,6 @@ public class HibernatePoint implements Bean {
 
     @Column(name = "realtime_enabled", nullable = false)
     private boolean realtimeEnabled;
-
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
-    @ManyToOne(targetEntity = HibernateCategory.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "category_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateCategory category;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilterInfo.class, mappedBy = "point")
@@ -83,22 +72,6 @@ public class HibernatePoint implements Bean {
         this.longId = id;
     }
 
-    public HibernateLongIdKey getCategoryKey() {
-        return Optional.ofNullable(categoryLongId).map(HibernateLongIdKey::new).orElse(null);
-    }
-
-    public void setCategoryKey(HibernateLongIdKey parentKey) {
-        this.categoryLongId = Optional.ofNullable(parentKey).map(HibernateLongIdKey::getLongId).orElse(null);
-    }
-
-    public Long getCategoryLongId() {
-        return categoryLongId;
-    }
-
-    public void setCategoryLongId(Long categoryGuid) {
-        this.categoryLongId = categoryGuid;
-    }
-
     public String getName() {
         return name;
     }
@@ -129,14 +102,6 @@ public class HibernatePoint implements Bean {
 
     public void setRealtimeEnabled(boolean realtimeEnabled) {
         this.realtimeEnabled = realtimeEnabled;
-    }
-
-    public HibernateCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(HibernateCategory category) {
-        this.category = category;
     }
 
     public Set<HibernateFilterInfo> getFilterInfos() {
@@ -191,7 +156,6 @@ public class HibernatePoint implements Bean {
     public String toString() {
         return "HibernatePoint{" +
                 "longId=" + longId +
-                ", categoryLongId=" + categoryLongId +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 ", persistenceEnabled=" + persistenceEnabled +

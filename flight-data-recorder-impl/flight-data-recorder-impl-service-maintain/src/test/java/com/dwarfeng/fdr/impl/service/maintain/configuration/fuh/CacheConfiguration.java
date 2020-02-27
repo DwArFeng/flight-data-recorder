@@ -40,16 +40,6 @@ public class CacheConfiguration {
     private String triggerInfoPrefix;
 
     @Bean
-    public RedisBatchBaseCache<LongIdKey, Category, FastJsonCategory> categoryRedisBatchBaseCache() {
-        //noinspection unchecked
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonCategory>) template,
-                new LongIdStringKeyFormatter(categoryPrefix),
-                new DozerBeanTransformer<>(Category.class, FastJsonCategory.class, mapper)
-        );
-    }
-
-    @Bean
     public RedisBatchBaseCache<LongIdKey, FilteredValue, FastJsonFilteredValue> filteredValueRedisBatchBaseCache() {
         //noinspection unchecked
         return new RedisBatchBaseCache<>(

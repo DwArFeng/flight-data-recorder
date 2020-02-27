@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.service.maintain.service;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -19,7 +19,7 @@ public class PointMaintainServiceImpl implements PointMaintainService {
     @Autowired
     private CustomCrudService<LongIdKey, Point> crudDelegate;
     @Autowired
-    private DaoOnlyPresetLookupService<Point> lookupDelegate;
+    private DaoOnlyEntireLookupService<Point> lookupDelegate;
 
     @Override
     @BehaviorAnalyse
@@ -93,15 +93,15 @@ public class PointMaintainServiceImpl implements PointMaintainService {
 
     @Override
     @BehaviorAnalyse
-    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public PagedData<Point> lookup(String preset, Object[] objs) throws ServiceException {
-        return lookupDelegate.lookup(preset, objs);
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public PagedData<Point> lookup() throws ServiceException {
+        return lookupDelegate.lookup();
     }
 
     @Override
     @BehaviorAnalyse
-    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public PagedData<Point> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
-        return lookupDelegate.lookup(preset, objs, pagingInfo);
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public PagedData<Point> lookup(PagingInfo pagingInfo) throws ServiceException {
+        return lookupDelegate.lookup(pagingInfo);
     }
 }

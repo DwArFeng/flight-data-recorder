@@ -38,7 +38,6 @@ public class FilteredValueMaintainServiceImplTest {
     public void setUp() {
         parentPoint = new Point(
                 null,
-                null,
                 "parent-point",
                 "test-point",
                 true,

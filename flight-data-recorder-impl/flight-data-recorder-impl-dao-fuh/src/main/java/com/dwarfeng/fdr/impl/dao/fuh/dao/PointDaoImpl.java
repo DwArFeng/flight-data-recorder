@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.impl.dao.fuh.bean.entity.HibernatePoint;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.dao.PointDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -22,7 +22,7 @@ public class PointDaoImpl implements PointDao {
     @Autowired
     private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, Point, HibernatePoint> batchBaseDao;
     @Autowired
-    private HibernatePresetLookupDao<Point, HibernatePoint> presetLookupDao;
+    private HibernateEntireLookupDao<Point, HibernatePoint> entireLookupDao;
 
     @Override
     @BehaviorAnalyse
@@ -104,21 +104,21 @@ public class PointDaoImpl implements PointDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<Point> lookup(String preset, Object[] objs) throws DaoException {
-        return presetLookupDao.lookup(preset, objs);
+    public List<Point> lookup() throws DaoException {
+        return entireLookupDao.lookup();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<Point> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
-        return presetLookupDao.lookup(preset, objs, pagingInfo);
+    public List<Point> lookup(PagingInfo pagingInfo) throws DaoException {
+        return entireLookupDao.lookup(pagingInfo);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public int lookupCount(String preset, Object[] objs) throws DaoException {
-        return presetLookupDao.lookupCount(preset, objs);
+    public int lookupCount() throws DaoException {
+        return entireLookupDao.lookupCount();
     }
 }

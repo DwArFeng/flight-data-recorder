@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
 import com.dwarfeng.subgrade.impl.service.CustomCrudService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -18,10 +19,6 @@ public class ServiceConfiguration {
 
     @Autowired
     private ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
-    @Autowired
-    private CategoryCrudOperation categoryCrudOperation;
-    @Autowired
-    private CategoryDao categoryDao;
     @Autowired
     private FilteredValueCrudOperation filteredValueCrudOperation;
     @Autowired
@@ -52,25 +49,6 @@ public class ServiceConfiguration {
     @Bean
     public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
         return new SnowFlakeLongIdKeyFetcher();
-    }
-
-    @Bean
-    public CustomCrudService<LongIdKey, Category> categoryCustomCrudService() {
-        return new CustomCrudService<>(
-                categoryCrudOperation,
-                longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public DaoOnlyPresetLookupService<Category> categoryDaoOnlyPresetLookupService() {
-        return new DaoOnlyPresetLookupService<>(
-                categoryDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
     }
 
     @Bean
@@ -141,8 +119,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public DaoOnlyPresetLookupService<Point> pointDaoOnlyPresetLookupService() {
-        return new DaoOnlyPresetLookupService<>(
+    public DaoOnlyEntireLookupService<Point> pointDaoOnlyPresetLookupService() {
+        return new DaoOnlyEntireLookupService<>(
                 pointDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN

@@ -41,7 +41,6 @@ public class EnabledFilterInfoLookupServiceImplTest {
     public void setUp() {
         parentPoint = new Point(
                 null,
-                null,
                 "parent-point",
                 "test-point",
                 true,

@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.impl.dao.fuh.dao.preset.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -23,39 +24,15 @@ public class DaoConfiguration {
     private Mapper mapper;
 
     @Autowired
-    private CategoryPresetCriteriaMaker categoryPresetCriteriaMaker;
-    @Autowired
     private FilteredValuePresetCriteriaMaker filteredValuePresetCriteriaMaker;
     @Autowired
     private FilterInfoPresetCriteriaMaker filterInfoPresetCriteriaMaker;
     @Autowired
     private PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker;
     @Autowired
-    private PointPresetCriteriaMaker pointPresetCriteriaMaker;
-    @Autowired
     private TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker;
     @Autowired
     private TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker;
-
-    @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, Category, HibernateCategory> categoryHibernateBatchBaseDao() {
-        return new HibernateBatchBaseDao<>(
-                template,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
-                new DozerBeanTransformer<>(Category.class, HibernateCategory.class, mapper),
-                HibernateCategory.class
-        );
-    }
-
-    @Bean
-    public HibernatePresetLookupDao<Category, HibernateCategory> categoryHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
-                template,
-                new DozerBeanTransformer<>(Category.class, HibernateCategory.class, mapper),
-                HibernateCategory.class,
-                categoryPresetCriteriaMaker
-        );
-    }
 
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchBaseDao() {
@@ -128,12 +105,11 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernatePresetLookupDao<Point, HibernatePoint> pointHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
+    public HibernateEntireLookupDao<Point, HibernatePoint> pointHibernatePresetLookupDao() {
+        return new HibernateEntireLookupDao<>(
                 template,
                 new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
-                HibernatePoint.class,
-                pointPresetCriteriaMaker
+                HibernatePoint.class
         );
     }
 

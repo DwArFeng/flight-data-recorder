@@ -22,8 +22,6 @@ public class CacheConfiguration {
     @Autowired
     private Mapper mapper;
 
-    @Value("${cache.prefix.entity.category}")
-    private String categoryPrefix;
     @Value("${cache.prefix.entity.filtered_value}")
     private String filteredValuePrefix;
     @Value("${cache.prefix.entity.filter_info}")
@@ -38,16 +36,6 @@ public class CacheConfiguration {
     private String triggeredValuePrefix;
     @Value("${cache.prefix.entity.trigger_info}")
     private String triggerInfoPrefix;
-
-    @Bean
-    public RedisBatchBaseCache<LongIdKey, Category, FastJsonCategory> categoryRedisBatchBaseCache() {
-        //noinspection unchecked
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonCategory>) template,
-                new LongIdStringKeyFormatter(categoryPrefix),
-                new DozerBeanTransformer<>(Category.class, FastJsonCategory.class, mapper)
-        );
-    }
 
     @Bean
     public RedisBatchBaseCache<LongIdKey, FilteredValue, FastJsonFilteredValue> filteredValueRedisBatchBaseCache() {

@@ -15,10 +15,6 @@ public class Point implements Entity<LongIdKey> {
      */
     private LongIdKey key;
     /**
-     * 所属分类主键。
-     */
-    private LongIdKey categoryKey;
-    /**
      * 数据点的名称。
      */
     private String name;
@@ -38,9 +34,8 @@ public class Point implements Entity<LongIdKey> {
     public Point() {
     }
 
-    public Point(LongIdKey key, LongIdKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public Point(LongIdKey key, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
         this.key = key;
-        this.categoryKey = categoryKey;
         this.name = name;
         this.remark = remark;
         this.persistenceEnabled = persistenceEnabled;
@@ -55,14 +50,6 @@ public class Point implements Entity<LongIdKey> {
     @Override
     public void setKey(LongIdKey key) {
         this.key = key;
-    }
-
-    public LongIdKey getCategoryKey() {
-        return categoryKey;
-    }
-
-    public void setCategoryKey(LongIdKey categoryKey) {
-        this.categoryKey = categoryKey;
     }
 
     public String getName() {
@@ -101,7 +88,6 @@ public class Point implements Entity<LongIdKey> {
     public String toString() {
         return "Point{" +
                 "key=" + key +
-                ", categoryKey=" + categoryKey +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 ", persistenceEnabled=" + persistenceEnabled +

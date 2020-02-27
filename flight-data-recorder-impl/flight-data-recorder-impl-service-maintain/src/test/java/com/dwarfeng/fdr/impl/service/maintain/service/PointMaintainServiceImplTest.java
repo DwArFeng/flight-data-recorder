@@ -1,8 +1,6 @@
 package com.dwarfeng.fdr.impl.service.maintain.service;
 
-import com.dwarfeng.fdr.stack.bean.entity.Category;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.service.CategoryMaintainService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.junit.After;
@@ -23,26 +21,16 @@ import static org.junit.Assert.assertEquals;
 public class PointMaintainServiceImplTest {
 
     @Autowired
-    private CategoryMaintainService categoryMaintainService;
-    @Autowired
     private PointMaintainService pointMaintainService;
 
-    private Category parentCategory;
     private List<Point> points;
 
     @Before
     public void setUp() {
-        parentCategory = new Category(
-                null,
-                null,
-                "parent",
-                "test-parent"
-        );
         points = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Point point = new Point(
                     null,
-                    parentCategory.getKey(),
                     "point-" + (i + 1),
                     "test-point",
                     true,
@@ -54,25 +42,21 @@ public class PointMaintainServiceImplTest {
 
     @After
     public void tearDown() {
-        parentCategory = null;
         points.clear();
     }
 
     @Test
     public void test() throws ServiceException {
         try {
-            parentCategory.setKey(categoryMaintainService.insert(parentCategory));
             for (Point point : points) {
                 point.setKey(pointMaintainService.insert(point));
-                point.setCategoryKey(parentCategory.getKey());
                 pointMaintainService.update(point);
             }
-            assertEquals(5, pointMaintainService.lookup(PointMaintainService.CHILD_FOR_CATEGORY, new Object[]{parentCategory.getKey()}).getCount());
+            assertEquals(5, pointMaintainService.lookup().getCount());
         } finally {
             for (Point point : points) {
                 pointMaintainService.delete(point.getKey());
             }
-            categoryMaintainService.delete(parentCategory.getKey());
         }
     }
 

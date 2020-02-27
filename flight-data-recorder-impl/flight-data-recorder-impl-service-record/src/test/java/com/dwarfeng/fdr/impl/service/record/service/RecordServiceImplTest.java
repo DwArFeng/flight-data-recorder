@@ -63,7 +63,6 @@ public class RecordServiceImplTest {
     public void setUp() {
         point = new Point(
                 null,
-                null,
                 "parent-point",
                 "test-point",
                 true,
