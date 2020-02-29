@@ -6,6 +6,7 @@
 
 - 添加 FastJsonDataInfo 和 JSFixedFastJsonDataInfo。
 - 改造项目结构。
+- 将RealtimeValue存储方式改为Redis数据库。
 
 #### Bug修复
 

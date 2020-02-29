@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.conf;
+package com.dwarfeng.fdr.impl.fuhconf;
 
 import com.dwarfeng.fdr.impl.service.operation.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;

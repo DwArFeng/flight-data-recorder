@@ -1,10 +1,9 @@
 package com.dwarfeng.fdr.impl.fuhdao;
 
-import com.dwarfeng.fdr.impl.fuhbean.entity.HibernateRealtimeValue;
+import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.dao.RealtimeValueDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.impl.dao.RedisBatchBaseDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
@@ -18,7 +17,7 @@ import java.util.List;
 public class RealtimeValueDaoImpl implements RealtimeValueDao {
 
     @Autowired
-    private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, RealtimeValue, HibernateRealtimeValue> batchBaseDao;
+    private RedisBatchBaseDao<LongIdKey, RealtimeValue, FastJsonRealtimeValue> batchBaseDao;
 
     @Override
     @BehaviorAnalyse
@@ -93,7 +92,7 @@ public class RealtimeValueDaoImpl implements RealtimeValueDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<RealtimeValue> batchGet(List<LongIdKey> keys) {
+    public List<RealtimeValue> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 }

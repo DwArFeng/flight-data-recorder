@@ -47,9 +47,6 @@ public class HibernatePoint implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePersistenceValue.class, mappedBy = "point")
     private Set<HibernatePersistenceValue> persistenceValues = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateRealtimeValue.class, mappedBy = "point")
-    private HibernateRealtimeValue realtimeValue;
-
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggeredValue.class, mappedBy = "point")
     private Set<HibernateTriggeredValue> triggeredValues = new HashSet<>();
 
@@ -134,14 +131,6 @@ public class HibernatePoint implements Bean {
 
     public void setPersistenceValues(Set<HibernatePersistenceValue> persistenceValues) {
         this.persistenceValues = persistenceValues;
-    }
-
-    public HibernateRealtimeValue getRealtimeValue() {
-        return realtimeValue;
-    }
-
-    public void setRealtimeValue(HibernateRealtimeValue realtimeValue) {
-        this.realtimeValue = realtimeValue;
     }
 
     public Set<HibernateTriggeredValue> getTriggeredValues() {

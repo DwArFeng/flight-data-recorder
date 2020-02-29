@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.conf;
+package com.dwarfeng.fdr.impl.fuhconf;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

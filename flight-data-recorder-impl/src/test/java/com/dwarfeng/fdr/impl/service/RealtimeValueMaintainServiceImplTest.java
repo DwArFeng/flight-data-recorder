@@ -60,5 +60,4 @@ public class RealtimeValueMaintainServiceImplTest {
             pointMaintainService.delete(parentPoint.getKey());
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.conf;
+package com.dwarfeng.fdr.impl.fuhconf;
 
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.dwarfeng.fdr.impl.handler.preset.BlankConfig;

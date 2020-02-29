@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.conf;
+package com.dwarfeng.fdr.impl.fuhconf;
 
 import com.dwarfeng.subgrade.impl.exception.MapServiceExceptionMapper;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;

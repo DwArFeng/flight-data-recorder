@@ -22,8 +22,6 @@ public class CacheConfiguration {
     @Autowired
     private Mapper mapper;
 
-    @Value("${cache.prefix.entity.category}")
-    private String categoryPrefix;
     @Value("${cache.prefix.entity.filtered_value}")
     private String filteredValuePrefix;
     @Value("${cache.prefix.entity.filter_info}")
