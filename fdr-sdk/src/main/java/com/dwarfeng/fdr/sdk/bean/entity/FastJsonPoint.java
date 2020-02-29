@@ -17,27 +17,23 @@ public class FastJsonPoint implements Bean {
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
 
-    @JSONField(name = "catgory_key", ordinal = 2)
-    private FastJsonLongIdKey categoryKey;
-
-    @JSONField(name = "name", ordinal = 3)
+    @JSONField(name = "name", ordinal = 2)
     private String name;
 
-    @JSONField(name = "remark", ordinal = 4)
+    @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
-    @JSONField(name = "persistence_enabled", ordinal = 5)
+    @JSONField(name = "persistence_enabled", ordinal = 4)
     private boolean persistenceEnabled;
 
-    @JSONField(name = "realtime_enabled", ordinal = 6)
+    @JSONField(name = "realtime_enabled", ordinal = 5)
     private boolean realtimeEnabled;
 
     public FastJsonPoint() {
     }
 
-    public FastJsonPoint(FastJsonLongIdKey key, FastJsonLongIdKey categoryKey, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
+    public FastJsonPoint(FastJsonLongIdKey key, String name, String remark, boolean persistenceEnabled, boolean realtimeEnabled) {
         this.key = key;
-        this.categoryKey = categoryKey;
         this.name = name;
         this.remark = remark;
         this.persistenceEnabled = persistenceEnabled;
@@ -50,14 +46,6 @@ public class FastJsonPoint implements Bean {
 
     public void setKey(FastJsonLongIdKey key) {
         this.key = key;
-    }
-
-    public FastJsonLongIdKey getCategoryKey() {
-        return categoryKey;
-    }
-
-    public void setCategoryKey(FastJsonLongIdKey categoryKey) {
-        this.categoryKey = categoryKey;
     }
 
     public String getName() {
@@ -96,7 +84,6 @@ public class FastJsonPoint implements Bean {
     public String toString() {
         return "FastJsonPoint{" +
                 "key=" + key +
-                ", categoryKey=" + categoryKey +
                 ", name='" + name + '\'' +
                 ", remark='" + remark + '\'' +
                 ", persistenceEnabled=" + persistenceEnabled +
