@@ -102,5 +102,4 @@ public class EnabledFilterInfoLookupServiceImplTest {
             pointMaintainService.delete(parentPoint.getKey());
         }
     }
-
 }

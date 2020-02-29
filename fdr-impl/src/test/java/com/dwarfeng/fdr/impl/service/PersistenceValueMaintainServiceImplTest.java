@@ -72,5 +72,4 @@ public class PersistenceValueMaintainServiceImplTest {
             pointMaintainService.delete(parentPoint.getKey());
         }
     }
-
 }

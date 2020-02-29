@@ -92,5 +92,4 @@ public class TriggeredValueMaintainServiceImplTest {
             pointMaintainService.delete(parentPoint.getKey());
         }
     }
-
 }

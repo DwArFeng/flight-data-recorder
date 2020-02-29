@@ -75,5 +75,4 @@ public class TriggerInfoMaintainServiceImplTest {
             pointMaintainService.delete(parentPoint.getKey());
         }
     }
-
 }

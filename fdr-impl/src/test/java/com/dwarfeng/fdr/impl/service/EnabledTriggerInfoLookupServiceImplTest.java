@@ -102,5 +102,4 @@ public class EnabledTriggerInfoLookupServiceImplTest {
             pointMaintainService.delete(parentPoint.getKey());
         }
     }
-
 }
