@@ -64,7 +64,7 @@
             </props>
         </property>
         <!-- 扫描实体包 -->
-        <property name="packagesToScan" value="com.dwarfeng.fdr.impl.dao.fuh.bean.entity"/>
+        <property name="packagesToScan" value="com.dwarfeng.fdr.impl.fuhbean.entity"/>
         <!-- 扫描hbm.xml文件 -->
         <!-- <property name="mappingLocations" value="classpath:entity/*.hbm.xml"></property> -->
     </bean>
