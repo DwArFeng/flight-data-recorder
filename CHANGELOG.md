@@ -4,6 +4,7 @@
 
 #### 功能构建
 
+- 工程名称更改为fdr。
 - 添加 FastJsonDataInfo 和 JSFixedFastJsonDataInfo。
 - 改造项目结构。
 - 将RealtimeValue存储方式改为Redis数据库。

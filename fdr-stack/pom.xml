@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>com.dwarfeng</groupId>
-        <artifactId>flight-data-recorder</artifactId>
+        <artifactId>fdr</artifactId>
         <version>1.1.0.a-SNAPSHOT</version>
     </parent>
 
-    <artifactId>flight-data-recorder-stack</artifactId>
-    <name>flight-data-recorder-stack</name>
+    <artifactId>fdr-stack</artifactId>
+    <name>fdr-stack</name>
     <url>http://maven.apache.org</url>
 
     <properties>

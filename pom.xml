@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dwarfeng</groupId>
-    <artifactId>flight-data-recorder</artifactId>
+    <artifactId>fdr</artifactId>
     <version>1.1.0.a-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
-    <name>flight-data-recorder</name>
+    <name>fdr</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -374,22 +374,22 @@
             <!-- 程序自身组件 -->
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-stack</artifactId>
+                <artifactId>fdr-stack</artifactId>
                 <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-sdk</artifactId>
+                <artifactId>fdr-sdk</artifactId>
                 <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-impl</artifactId>
+                <artifactId>fdr-impl</artifactId>
                 <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
-                <artifactId>flight-data-recorder-node</artifactId>
+                <artifactId>fdr-node</artifactId>
                 <version>1.1.0.a-SNAPSHOT</version>
             </dependency>
         </dependencies>
@@ -423,9 +423,9 @@
     </build>
 
     <modules>
-        <module>flight-data-recorder-stack</module>
-        <module>flight-data-recorder-impl</module>
-        <module>flight-data-recorder-sdk</module>
-        <module>flight-data-recorder-node</module>
+        <module>fdr-stack</module>
+        <module>fdr-impl</module>
+        <module>fdr-sdk</module>
+        <module>fdr-node</module>
     </modules>
 </project>

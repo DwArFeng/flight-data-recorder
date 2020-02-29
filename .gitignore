@@ -52,11 +52,11 @@ buildNumber.properties
 #################
 ## Logger Files
 #################
-/flight-data-recorder-impl/logs/
-/flight-data-recorder-node/logs/
+/fdr-impl/logs/
+/fdr-node/logs/
 
 #################
 ## Configuration Files
 #################
-/flight-data-recorder-impl/conf/
-/flight-data-recorder-node/conf/
+/fdr-impl/conf/
+/fdr-node/conf/
