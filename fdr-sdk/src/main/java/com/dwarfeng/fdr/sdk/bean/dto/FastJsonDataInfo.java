@@ -4,8 +4,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
-import javax.annotation.Nonnull;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 适用于FastJson的DataInfo。
@@ -23,7 +23,10 @@ public class FastJsonDataInfo implements Dto {
      * @param dataInfo 指定的 DataInfo.
      * @return 通过指定的 DataInfo 生成对应的 FastJsonDataInfo。
      */
-    public static FastJsonDataInfo of(@Nonnull DataInfo dataInfo) {
+    public static FastJsonDataInfo of(DataInfo dataInfo) {
+        if (Objects.isNull(dataInfo)) {
+            return null;
+        }
         return new FastJsonDataInfo(
                 dataInfo.getPointLongId(),
                 dataInfo.getValue(),
