@@ -120,8 +120,17 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public DaoOnlyEntireLookupService<Point> pointDaoOnlyPresetLookupService() {
+    public DaoOnlyEntireLookupService<Point> pointDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
+                pointDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<Point> pointDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
                 pointDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN

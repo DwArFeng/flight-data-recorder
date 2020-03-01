@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
 import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 
 /**
  * 数据点数据访问层。
@@ -11,5 +12,5 @@ import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface PointDao extends BatchBaseDao<LongIdKey, Point>, EntireLookupDao<Point> {
+public interface PointDao extends BatchBaseDao<LongIdKey, Point>, EntireLookupDao<Point>, PresetLookupDao<Point> {
 }

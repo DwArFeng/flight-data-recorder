@@ -19,6 +19,12 @@ public class ServiceConfiguration {
 
     @Autowired
     private ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
+
+    @Bean
+    public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
+        return new SnowFlakeLongIdKeyFetcher();
+    }
+
     @Autowired
     private FilteredValueCrudOperation filteredValueCrudOperation;
     @Autowired
@@ -45,11 +51,6 @@ public class ServiceConfiguration {
     private TriggerInfoCrudOperation triggerInfoCrudOperation;
     @Autowired
     private TriggerInfoDao triggerInfoDao;
-
-    @Bean
-    public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
-        return new SnowFlakeLongIdKeyFetcher();
-    }
 
     @Bean
     public CustomCrudService<LongIdKey, FilteredValue> filteredValueCustomCrudService() {
@@ -119,8 +120,17 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public DaoOnlyEntireLookupService<Point> pointDaoOnlyPresetLookupService() {
+    public DaoOnlyEntireLookupService<Point> pointDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
+                pointDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<Point> pointDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
                 pointDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN

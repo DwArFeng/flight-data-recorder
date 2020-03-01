@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -17,91 +18,107 @@ import org.springframework.transaction.annotation.Transactional;
 public class PointMaintainServiceImpl implements PointMaintainService {
 
     @Autowired
-    private CustomCrudService<LongIdKey, Point> crudDelegate;
+    private CustomCrudService<LongIdKey, Point> crudService;
     @Autowired
-    private DaoOnlyEntireLookupService<Point> lookupDelegate;
+    private DaoOnlyEntireLookupService<Point> entireLookupService;
+    @Autowired
+    private DaoOnlyPresetLookupService<Point> presetLookupService;
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(LongIdKey key) throws ServiceException {
-        return crudDelegate.exists(key);
+        return crudService.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public Point get(LongIdKey key) throws ServiceException {
-        return crudDelegate.get(key);
+        return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insert(Point element) throws ServiceException {
-        return crudDelegate.insert(element);
+        return crudService.insert(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void update(Point element) throws ServiceException {
-        crudDelegate.update(element);
+        crudService.update(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(LongIdKey key) throws ServiceException {
-        crudDelegate.delete(key);
+        crudService.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public Point getIfExists(LongIdKey key) throws ServiceException {
-        return crudDelegate.getIfExists(key);
+        return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insertIfNotExists(Point element) throws ServiceException {
-        return crudDelegate.insertIfNotExists(element);
+        return crudService.insertIfNotExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void updateIfExists(Point element) throws ServiceException {
-        crudDelegate.updateIfExists(element);
+        crudService.updateIfExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void deleteIfExists(LongIdKey key) throws ServiceException {
-        crudDelegate.deleteIfExists(key);
+        crudService.deleteIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insertOrUpdate(Point element) throws ServiceException {
-        return crudDelegate.insertOrUpdate(element);
+        return crudService.insertOrUpdate(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public PagedData<Point> lookup() throws ServiceException {
-        return lookupDelegate.lookup();
+        return entireLookupService.lookup();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public PagedData<Point> lookup(PagingInfo pagingInfo) throws ServiceException {
-        return lookupDelegate.lookup(pagingInfo);
+        return entireLookupService.lookup(pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public PagedData<Point> lookup(String preset, Object[] objs) throws ServiceException {
+        return presetLookupService.lookup(preset, objs);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public PagedData<Point> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+        return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 }

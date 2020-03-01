@@ -37,6 +37,8 @@ public class DaoConfiguration {
     @Autowired
     private PersistenceValuePresetCriteriaMaker persistenceValuePresetCriteriaMaker;
     @Autowired
+    private PointPresetCriteriaMaker pointPresetCriteriaMaker;
+    @Autowired
     private TriggeredValuePresetCriteriaMaker triggeredValuePresetCriteriaMaker;
     @Autowired
     private TriggerInfoPresetCriteriaMaker triggerInfoPresetCriteriaMaker;
@@ -117,11 +119,21 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateEntireLookupDao<Point, HibernatePoint> pointHibernatePresetLookupDao() {
+    public HibernateEntireLookupDao<Point, HibernatePoint> pointHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
                 HibernatePoint.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<Point, HibernatePoint> pointHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
+                HibernatePoint.class,
+                pointPresetCriteriaMaker
         );
     }
 
