@@ -9,7 +9,7 @@
 - 改造项目结构。
 - 将RealtimeValue存储方式改为Redis数据库。
 - 增加Point实体的预设查询。
-- 升级subgrade版本至beta-0.3.0.a。
+- 升级subgrade版本至beta-0.3.1.b。
 
 #### Bug修复
 
