@@ -66,7 +66,7 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
             if (Objects.isNull(objects[0])) {
                 detachedCriteria.add(Restrictions.isNull("filterLongId"));
             } else {
-                //noinspection unchecked
+                @SuppressWarnings("unchecked")
                 List<LongIdKey> longIdKeys = (List<LongIdKey>) objects[0];
                 if (longIdKeys.isEmpty()) {
                     detachedCriteria.add(Restrictions.isNull("longId"));

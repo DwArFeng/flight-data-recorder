@@ -15,6 +15,7 @@
 #### Bug修复
 
 - 解决依赖冲突。
+- 将//noinspection替换为@SupressWarning。
 
 #### 功能移除
 

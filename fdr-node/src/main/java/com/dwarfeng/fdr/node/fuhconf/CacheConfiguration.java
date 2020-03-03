@@ -38,8 +38,8 @@ public class CacheConfiguration {
     private String triggerInfoPrefix;
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, FilteredValue, FastJsonFilteredValue> filteredValueRedisBatchBaseCache() {
-        //noinspection unchecked
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonFilteredValue>) template,
                 new LongIdStringKeyFormatter(filteredValuePrefix),
@@ -48,8 +48,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, FilterInfo, FastJsonFilterInfo> filterInfoRedisBatchBaseCache() {
-        //noinspection unchecked
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonFilterInfo>) template,
                 new LongIdStringKeyFormatter(filterInfoPrefix),
@@ -58,8 +58,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, PersistenceValue, FastJsonPersistenceValue> persistenceValueRedisBatchBaseCache() {
-        //noinspection unchecked
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonPersistenceValue>) template,
                 new LongIdStringKeyFormatter(persistenceValuePrefix),
@@ -68,8 +68,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, Point, FastJsonPoint> pointRedisBatchBaseCache() {
-        //noinspection unchecked
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonPoint>) template,
                 new LongIdStringKeyFormatter(pointPrefix),
@@ -78,8 +78,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, RealtimeValue, FastJsonRealtimeValue> realtimeValueRedisBatchBaseCache() {
-        //noinspection unchecked
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonRealtimeValue>) template,
                 new LongIdStringKeyFormatter(realtimeValuePrefix),
@@ -88,8 +88,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, TriggeredValue, FastJsonTriggeredValue> triggeredValueRedisBatchBaseCache() {
-        //noinspection unchecked
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonTriggeredValue>) template,
                 new LongIdStringKeyFormatter(triggeredValuePrefix),
@@ -98,8 +98,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> triggerInfoRedisBatchBaseCache() {
-        //noinspection unchecked
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonTriggerInfo>) template,
                 new LongIdStringKeyFormatter(triggerInfoPrefix),
@@ -108,8 +108,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisKeyListCache<LongIdKey, FilterInfo, FastJsonFilterInfo> filterInfoEnabledRedisKeyListCache() {
-        //noinspection unchecked
         return new RedisKeyListCache<>(
                 (RedisTemplate<String, FastJsonFilterInfo>) template,
                 new LongIdStringKeyFormatter(filterInfoPrefix),
@@ -118,8 +118,8 @@ public class CacheConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisKeyListCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> triggerInfoEnabledRedisKeyListCache() {
-        //noinspection unchecked
         return new RedisKeyListCache<>(
                 (RedisTemplate<String, FastJsonTriggerInfo>) template,
                 new LongIdStringKeyFormatter(triggerInfoPrefix),

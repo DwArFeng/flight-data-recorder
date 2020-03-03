@@ -138,8 +138,8 @@ public class DaoConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
     public RedisBatchBaseDao<LongIdKey, RealtimeValue, FastJsonRealtimeValue> realtimeValueRedisBatchBaseDao() {
-        //noinspection unchecked
         return new RedisBatchBaseDao<>(
                 (RedisTemplate<String, FastJsonRealtimeValue>) redisTemplate,
                 new LongIdStringKeyFormatter(realtimeValuePrefix),
