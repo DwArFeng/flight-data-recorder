@@ -29,6 +29,9 @@ public class FastJsonFilterInfo implements Bean {
     @JSONField(name = "content", ordinal = 5)
     private String content;
 
+    @JSONField(name = "type", ordinal = 6)
+    private String type;
+
     public FastJsonFilterInfo() {
     }
 
@@ -72,6 +75,14 @@ public class FastJsonFilterInfo implements Bean {
         this.content = content;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "FastJsonFilterInfo{" +
@@ -80,6 +91,7 @@ public class FastJsonFilterInfo implements Bean {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

@@ -24,8 +24,8 @@ public class PointPresetCriteriaMaker implements PresetCriteriaMaker {
 
     private void nameLike(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
-            String name = (String) objects[0];
-            detachedCriteria.add(Restrictions.like("name", name, MatchMode.ANYWHERE));
+            String pattern = (String) objects[0];
+            detachedCriteria.add(Restrictions.like("name", pattern, MatchMode.ANYWHERE));
             detachedCriteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));

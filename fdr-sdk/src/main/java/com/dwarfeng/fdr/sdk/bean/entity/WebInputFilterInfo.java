@@ -6,6 +6,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
@@ -19,7 +20,8 @@ public class WebInputFilterInfo implements Bean {
                 WebInputLongIdKey.toStackBean(webInputFilterInfo.getPointKey()),
                 webInputFilterInfo.isEnabled(),
                 webInputFilterInfo.getContent(),
-                webInputFilterInfo.getRemark()
+                webInputFilterInfo.getRemark(),
+                webInputFilterInfo.getType()
         );
     }
 
@@ -41,6 +43,11 @@ public class WebInputFilterInfo implements Bean {
     @JSONField(name = "content")
     @NotNull
     private String content;
+
+    @JSONField(name = "type")
+    @NotNull
+    @NotEmpty
+    private String type;
 
     public WebInputFilterInfo() {
     }
@@ -85,6 +92,14 @@ public class WebInputFilterInfo implements Bean {
         this.content = content;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "WebInputFilterInfo{" +
@@ -93,6 +108,7 @@ public class WebInputFilterInfo implements Bean {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

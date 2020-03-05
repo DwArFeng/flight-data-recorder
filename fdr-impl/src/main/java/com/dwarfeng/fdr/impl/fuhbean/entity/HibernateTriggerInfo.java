@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_trigger_info")
 public class HibernateTriggerInfo implements Bean {
 
-    private static final long serialVersionUID = -1622721129538827725L;
+    private static final long serialVersionUID = 6652827108821405232L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -29,11 +29,14 @@ public class HibernateTriggerInfo implements Bean {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "remark", length = Constraints.LENGTH_REMARK, nullable = true)
+    @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    @Column(name = "content", columnDefinition = "TEXT", nullable = true)
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
+
+    @Column(name = "type", length = Constraints.LENGTH_TYPE)
+    private String type;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernatePoint.class)
@@ -89,6 +92,14 @@ public class HibernateTriggerInfo implements Bean {
         this.enabled = enabled;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -97,12 +108,12 @@ public class HibernateTriggerInfo implements Bean {
         this.remark = remark;
     }
 
-    public String getContent() {
-        return content;
+    public String getType() {
+        return type;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public HibernatePoint getPoint() {
@@ -129,6 +140,7 @@ public class HibernateTriggerInfo implements Bean {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

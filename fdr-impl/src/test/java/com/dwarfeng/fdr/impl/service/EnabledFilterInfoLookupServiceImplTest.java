@@ -53,7 +53,8 @@ public class EnabledFilterInfoLookupServiceImplTest {
                     parentPoint.getKey(),
                     true,
                     "filter-info-enabled-" + i,
-                    "this is a test"
+                    "this is a test",
+                    "test"
             );
             filterInfos.add(filterInfo);
         }
@@ -63,7 +64,8 @@ public class EnabledFilterInfoLookupServiceImplTest {
                     parentPoint.getKey(),
                     false,
                     "filter-info-disabled-" + i,
-                    "this is a test"
+                    "this is a test",
+                    "test"
             );
             filterInfos.add(filterInfo);
         }

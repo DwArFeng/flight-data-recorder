@@ -3,10 +3,13 @@ package com.dwarfeng.fdr.impl.fuhconf;
 import com.dwarfeng.fdr.sdk.bean.entity.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
+import com.dwarfeng.subgrade.impl.cache.RedisBaseCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.impl.cache.RedisKeyListCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
+import com.dwarfeng.subgrade.sdk.redis.formatter.StringIdStringKeyFormatter;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +39,10 @@ public class CacheConfiguration {
     private String triggeredValuePrefix;
     @Value("${cache.prefix.entity.trigger_info}")
     private String triggerInfoPrefix;
+    @Value("${cache.prefix.entity.filter_support}")
+    private String filterSupportPrefix;
+    @Value("${cache.prefix.entity.trigger_support}")
+    private String triggerSupportPrefix;
 
     @Bean
     @SuppressWarnings("unchecked")
@@ -124,6 +131,26 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonTriggerInfo>) template,
                 new LongIdStringKeyFormatter(triggerInfoPrefix),
                 new DozerBeanTransformer<>(TriggerInfo.class, FastJsonTriggerInfo.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBaseCache<StringIdKey, FilterSupport, FastJsonFilterSupport> filterSupportRedisBaseCache() {
+        return new RedisBaseCache<>(
+                (RedisTemplate<String, FastJsonFilterSupport>) template,
+                new StringIdStringKeyFormatter(filterSupportPrefix),
+                new DozerBeanTransformer<>(FilterSupport.class, FastJsonFilterSupport.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBaseCache<StringIdKey, TriggerSupport, FastJsonTriggerSupport> triggerSupportRedisBaseCache() {
+        return new RedisBaseCache<>(
+                (RedisTemplate<String, FastJsonTriggerSupport>) template,
+                new StringIdStringKeyFormatter(triggerSupportPrefix),
+                new DozerBeanTransformer<>(TriggerSupport.class, FastJsonTriggerSupport.class, mapper)
         );
     }
 }

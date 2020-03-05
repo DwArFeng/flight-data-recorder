@@ -12,7 +12,7 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
  */
 public class FastJsonTriggerInfo implements Bean {
 
-    private static final long serialVersionUID = -7563795664602239319L;
+    private static final long serialVersionUID = 635115142498652853L;
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
@@ -28,6 +28,9 @@ public class FastJsonTriggerInfo implements Bean {
 
     @JSONField(name = "content", ordinal = 5)
     private String content;
+
+    @JSONField(name = "type", ordinal = 6)
+    private String type;
 
     public FastJsonTriggerInfo() {
     }
@@ -72,6 +75,14 @@ public class FastJsonTriggerInfo implements Bean {
         this.content = content;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "FastJsonTriggerInfo{" +
@@ -80,6 +91,7 @@ public class FastJsonTriggerInfo implements Bean {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

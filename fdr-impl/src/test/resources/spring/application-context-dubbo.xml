@@ -18,7 +18,6 @@
     <!-- dubbo协议 -->
     <dubbo:protocol name="dubbo" port="${dubbo.port}" host="${dubbo.host}"/>
 
-
     <!-- 向注册中心注册暴露服务地址,注册消费者服务 -->
     <dubbo:reference id="longIdService" interface="com.dwarfeng.sfds.stack.service.LongIdService"/>
 </beans>

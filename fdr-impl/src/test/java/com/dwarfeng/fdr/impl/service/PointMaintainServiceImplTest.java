@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,13 +46,14 @@ public class PointMaintainServiceImplTest {
     }
 
     @Test
-    public void test() throws ServiceException {
+    public void test() throws Exception {
         try {
             for (Point point : points) {
                 point.setKey(pointMaintainService.insert(point));
                 pointMaintainService.update(point);
+                Point testPoint = pointMaintainService.get(point.getKey());
+                assertEquals(BeanUtils.describe(point), BeanUtils.describe(testPoint));
             }
-            assertEquals(5, pointMaintainService.lookup().getCount());
         } finally {
             for (Point point : points) {
                 pointMaintainService.delete(point.getKey());

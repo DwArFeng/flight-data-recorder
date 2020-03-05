@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
 import com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,8 @@ public class TriggerInfoMaintainServiceImplTest {
                     parentPoint.getKey(),
                     true,
                     "trigger-info-" + i,
-                    "this is a test"
+                    "this is a test",
+                    "test"
             );
             triggerInfos.add(triggerInfo);
         }
@@ -59,15 +60,16 @@ public class TriggerInfoMaintainServiceImplTest {
     }
 
     @Test
-    public void test() throws ServiceException {
+    public void test() throws Exception {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));
             for (TriggerInfo triggerInfo : triggerInfos) {
                 triggerInfo.setKey(triggerInfoMaintainService.insert(triggerInfo));
                 triggerInfo.setPointKey(parentPoint.getKey());
                 triggerInfoMaintainService.update(triggerInfo);
+                TriggerInfo testTriggerInfo = triggerInfoMaintainService.get(triggerInfo.getKey());
+                assertEquals(BeanUtils.describe(triggerInfo), BeanUtils.describe(testTriggerInfo));
             }
-            assertEquals(5, triggerInfoMaintainService.lookup(TriggerInfoMaintainService.CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}).getCount());
         } finally {
             for (TriggerInfo triggerInfo : triggerInfos) {
                 triggerInfoMaintainService.delete(triggerInfo.getKey());

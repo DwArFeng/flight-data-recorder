@@ -1,12 +1,9 @@
 package com.dwarfeng.fdr.impl.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.dwarfeng.dutil.basic.io.CT;
-import com.dwarfeng.fdr.impl.handler.preset.IntegerFilter;
-import com.dwarfeng.fdr.impl.handler.preset.IntegerRangeTrigger;
-import com.dwarfeng.fdr.impl.handler.struct.StructuredFilterInfo;
-import com.dwarfeng.fdr.impl.handler.struct.StructuredTriggerInfo;
+import com.dwarfeng.fdr.impl.handler.preset.RangedIntegerFilterMaker;
+import com.dwarfeng.fdr.impl.handler.preset.RangedIntegerTriggerMaker;
 import com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggeredValue;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.dto.RecordResult;
@@ -81,62 +78,53 @@ public class RecordServiceImplTest {
     }
 
     private void makeFilterInfo() {
-        IntegerFilter.Config config = new IntegerFilter.Config(
+        RangedIntegerFilterMaker.Config config = new RangedIntegerFilterMaker.Config(
                 Integer.MIN_VALUE,
                 true,
                 Integer.MAX_VALUE,
                 true
-        );
-        StructuredFilterInfo structuredFilterInfo = new StructuredFilterInfo(
-                "integerFilter",
-                config
         );
         FilterInfo filterInfo = new FilterInfo(
                 null,
                 point.getKey(),
                 true,
                 "This is a test",
-                JSONObject.toJSONString(structuredFilterInfo, SerializerFeature.WriteClassName)
+                JSONObject.toJSONString(config),
+                RangedIntegerFilterMaker.SUPPORT_TYPE
         );
         filterInfos.add(filterInfo);
 
-        config = new IntegerFilter.Config(
+        config = new RangedIntegerFilterMaker.Config(
                 Integer.MIN_VALUE,
                 true,
                 1000,
                 true
-        );
-        structuredFilterInfo = new StructuredFilterInfo(
-                "integerFilter",
-                config
         );
         filterInfo = new FilterInfo(
                 null,
                 point.getKey(),
                 true,
                 "This is a test",
-                JSONObject.toJSONString(structuredFilterInfo, SerializerFeature.WriteClassName)
+                JSONObject.toJSONString(config),
+                RangedIntegerFilterMaker.SUPPORT_TYPE
         );
         filterInfos.add(filterInfo);
     }
 
     private void makeTriggerInfo() {
-        IntegerRangeTrigger.Config config = new IntegerRangeTrigger.Config(
+        RangedIntegerTriggerMaker.Config config = new RangedIntegerTriggerMaker.Config(
                 Integer.MIN_VALUE,
                 true,
                 1000,
                 false
-        );
-        StructuredTriggerInfo structuredTriggerInfo = new StructuredTriggerInfo(
-                "integerRangeTrigger",
-                config
         );
         TriggerInfo triggerInfo = new TriggerInfo(
                 null,
                 point.getKey(),
                 true,
                 "This is a test",
-                JSONObject.toJSONString(structuredTriggerInfo, SerializerFeature.WriteClassName)
+                JSONObject.toJSONString(config),
+                RangedIntegerTriggerMaker.SUPPORT_TYPE
         );
         triggerInfos.add(triggerInfo);
     }
@@ -153,7 +141,7 @@ public class RecordServiceImplTest {
     }
 
     @Test
-    public void record() throws ServiceException {
+    public void record() throws Exception {
         point.setKey(pointMaintainService.insert(point));
         for (FilterInfo filterInfo : filterInfos) {
             filterInfo.setKey(filterInfoMaintainService.insert(filterInfo));
@@ -200,6 +188,7 @@ public class RecordServiceImplTest {
             }
             pointMaintainService.delete(point.getKey());
         }
+        Thread.sleep(2000L);
     }
 
     private void record(DataInfo dataInfo) throws ServiceException {

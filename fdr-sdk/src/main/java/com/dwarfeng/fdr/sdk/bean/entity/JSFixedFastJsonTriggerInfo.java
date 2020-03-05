@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class JSFixedFastJsonTriggerInfo implements Bean {
 
-    private static final long serialVersionUID = -2584284497317555023L;
+    private static final long serialVersionUID = -3853321213360199542L;
 
     public static JSFixedFastJsonTriggerInfo of(TriggerInfo triggerInfo) {
         if (Objects.isNull(triggerInfo)) {
@@ -20,7 +20,8 @@ public class JSFixedFastJsonTriggerInfo implements Bean {
                 JSFixedFastJsonLongIdKey.of(triggerInfo.getPointKey()),
                 triggerInfo.isEnabled(),
                 triggerInfo.getRemark(),
-                triggerInfo.getContent()
+                triggerInfo.getContent(),
+                triggerInfo.getType()
         );
     }
 
@@ -39,17 +40,21 @@ public class JSFixedFastJsonTriggerInfo implements Bean {
     @JSONField(name = "content", ordinal = 5)
     private String content;
 
+    @JSONField(name = "type", ordinal = 6)
+    private String type;
+
     public JSFixedFastJsonTriggerInfo() {
     }
 
     public JSFixedFastJsonTriggerInfo(
             JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey pointKey, boolean enabled, String remark,
-            String content) {
+            String content, String type) {
         this.key = key;
         this.pointKey = pointKey;
         this.enabled = enabled;
         this.remark = remark;
         this.content = content;
+        this.type = type;
     }
 
     public JSFixedFastJsonLongIdKey getKey() {
@@ -92,6 +97,14 @@ public class JSFixedFastJsonTriggerInfo implements Bean {
         this.content = content;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "JSFixedFastJsonTriggerInfo{" +
@@ -100,6 +113,7 @@ public class JSFixedFastJsonTriggerInfo implements Bean {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

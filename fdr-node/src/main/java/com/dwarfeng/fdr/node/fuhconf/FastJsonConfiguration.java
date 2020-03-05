@@ -1,11 +1,6 @@
 package com.dwarfeng.fdr.node.fuhconf;
 
 import com.alibaba.fastjson.parser.ParserConfig;
-import com.dwarfeng.fdr.impl.handler.preset.BlankConfig;
-import com.dwarfeng.fdr.impl.handler.preset.IntegerFilter;
-import com.dwarfeng.fdr.impl.handler.preset.IntegerRangeTrigger;
-import com.dwarfeng.fdr.impl.handler.struct.StructuredFilterInfo;
-import com.dwarfeng.fdr.impl.handler.struct.StructuredTriggerInfo;
 import com.dwarfeng.fdr.sdk.bean.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +25,8 @@ public class FastJsonConfiguration {
         ParserConfig.getGlobalInstance().addAccept(FastJsonPersistenceValue.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonRealtimeValue.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonTriggeredValue.class.getCanonicalName());
-        //过滤器与触发器结构化对象。
-        ParserConfig.getGlobalInstance().addAccept(StructuredFilterInfo.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(StructuredTriggerInfo.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(BlankConfig.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(IntegerFilter.Config.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(IntegerRangeTrigger.Config.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonFilterSupport.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerSupport.class.getCanonicalName());
         LOGGER.debug("FastJson autotype 白名单配置完毕");
     }
 }

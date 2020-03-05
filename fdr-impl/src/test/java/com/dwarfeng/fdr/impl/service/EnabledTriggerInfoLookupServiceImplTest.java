@@ -53,7 +53,8 @@ public class EnabledTriggerInfoLookupServiceImplTest {
                     parentPoint.getKey(),
                     true,
                     "trigger-info-enabled-" + i,
-                    "this is a test"
+                    "this is a test",
+                    "test"
             );
             triggerInfos.add(triggerInfo);
         }
@@ -63,7 +64,8 @@ public class EnabledTriggerInfoLookupServiceImplTest {
                     parentPoint.getKey(),
                     false,
                     "trigger-info-disabled-" + i,
-                    "this is a test"
+                    "this is a test",
+                    "test"
             );
             triggerInfos.add(triggerInfo);
         }

@@ -48,7 +48,8 @@ public class TriggeredValueMaintainServiceImplTest {
                 parentPoint.getKey(),
                 true,
                 "parent-trigger-info",
-                "this is a test"
+                "this is a test",
+                "test"
         );
         triggeredValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {

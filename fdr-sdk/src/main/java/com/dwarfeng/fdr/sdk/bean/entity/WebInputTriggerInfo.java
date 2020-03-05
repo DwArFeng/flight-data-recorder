@@ -6,20 +6,22 @@ import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
 
 public class WebInputTriggerInfo implements Bean {
 
-    private static final long serialVersionUID = -8261477737142595158L;
+    private static final long serialVersionUID = 7612877731858879613L;
 
     public static TriggerInfo toStackBean(WebInputTriggerInfo webInputTriggerInfo) {
         return new TriggerInfo(
                 WebInputLongIdKey.toStackBean(webInputTriggerInfo.getKey()),
                 WebInputLongIdKey.toStackBean(webInputTriggerInfo.getPointKey()),
                 webInputTriggerInfo.isEnabled(),
+                webInputTriggerInfo.getContent(),
                 webInputTriggerInfo.getRemark(),
-                webInputTriggerInfo.getContent()
+                webInputTriggerInfo.getType()
         );
     }
 
@@ -41,6 +43,11 @@ public class WebInputTriggerInfo implements Bean {
     @JSONField(name = "content")
     @NotNull
     private String content;
+
+    @JSONField(name = "type")
+    @NotNull
+    @NotEmpty
+    private String type;
 
     public WebInputTriggerInfo() {
     }
@@ -85,6 +92,14 @@ public class WebInputTriggerInfo implements Bean {
         this.content = content;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "WebInputTriggerInfo{" +
@@ -93,6 +108,7 @@ public class WebInputTriggerInfo implements Bean {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

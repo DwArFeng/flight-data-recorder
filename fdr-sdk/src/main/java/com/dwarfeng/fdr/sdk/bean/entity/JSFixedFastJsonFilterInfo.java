@@ -20,7 +20,8 @@ public class JSFixedFastJsonFilterInfo implements Bean {
                 JSFixedFastJsonLongIdKey.of(filterInfo.getPointKey()),
                 filterInfo.isEnabled(),
                 filterInfo.getRemark(),
-                filterInfo.getContent()
+                filterInfo.getContent(),
+                filterInfo.getType()
         );
     }
 
@@ -39,17 +40,21 @@ public class JSFixedFastJsonFilterInfo implements Bean {
     @JSONField(name = "content", ordinal = 5)
     private String content;
 
+    @JSONField(name = "type", ordinal = 6)
+    private String type;
+
     public JSFixedFastJsonFilterInfo() {
     }
 
     public JSFixedFastJsonFilterInfo(
             JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey pointKey, boolean enabled, String remark,
-            String content) {
+            String content, String type) {
         this.key = key;
         this.pointKey = pointKey;
         this.enabled = enabled;
         this.remark = remark;
         this.content = content;
+        this.type = type;
     }
 
     public JSFixedFastJsonLongIdKey getKey() {
@@ -92,6 +97,14 @@ public class JSFixedFastJsonFilterInfo implements Bean {
         this.content = content;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "JSFixedFastJsonFilterInfo{" +
@@ -100,6 +113,7 @@ public class JSFixedFastJsonFilterInfo implements Bean {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

@@ -13,31 +13,23 @@ public class FilterInfo implements Entity<LongIdKey> {
 
     private static final long serialVersionUID = 3393705759584503229L;
 
-    /**
-     * 主键。
-     */
     private LongIdKey key;
-
-    /**
-     * 数据点键。
-     */
     private LongIdKey pointKey;
-
     private boolean enabled;
-
     private String remark;
-
     private String content;
+    private String type;
 
     public FilterInfo() {
     }
 
-    public FilterInfo(LongIdKey key, LongIdKey pointKey, boolean enabled, String remark, String content) {
+    public FilterInfo(LongIdKey key, LongIdKey pointKey, boolean enabled, String remark, String content, String type) {
         this.key = key;
         this.pointKey = pointKey;
         this.enabled = enabled;
         this.remark = remark;
         this.content = content;
+        this.type = type;
     }
 
     @Override
@@ -82,6 +74,14 @@ public class FilterInfo implements Entity<LongIdKey> {
         this.content = content;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "FilterInfo{" +
@@ -90,6 +90,7 @@ public class FilterInfo implements Entity<LongIdKey> {
                 ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 ", content='" + content + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

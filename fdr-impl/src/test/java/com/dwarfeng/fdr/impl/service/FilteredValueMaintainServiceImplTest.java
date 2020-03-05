@@ -48,7 +48,8 @@ public class FilteredValueMaintainServiceImplTest {
                 parentPoint.getKey(),
                 true,
                 "parent-filter-info",
-                "this is a test"
+                "this is a test",
+                "test"
         );
         filteredValues = new ArrayList<>();
         for (int i = 0; i < 5; i++) {

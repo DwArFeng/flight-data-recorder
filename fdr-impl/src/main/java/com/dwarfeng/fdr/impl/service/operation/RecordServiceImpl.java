@@ -3,7 +3,6 @@ package com.dwarfeng.fdr.impl.service.operation;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.dto.RecordResult;
 import com.dwarfeng.fdr.stack.bean.entity.*;
-import com.dwarfeng.fdr.stack.exception.EventException;
 import com.dwarfeng.fdr.stack.exception.FilterException;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 import com.dwarfeng.fdr.stack.handler.*;
@@ -130,11 +129,7 @@ public class RecordServiceImpl implements RecordService {
             for (FilterInfo filterInfo : filterInfos) {
                 if (filterInfo.isEnabled()) {
                     LOGGER.debug("过滤器信息 " + filterInfo.toString() + " 使能, 将构造过滤器...");
-                    filters.add(filterHandler.make(
-                            filterInfo.getPointKey().getLongId(),
-                            filterInfo.getKey().getLongId(),
-                            filterInfo.getContent()
-                    ));
+                    filters.add(filterHandler.make(filterInfo));
                 } else {
                     LOGGER.debug("过滤器信息 " + filterInfo.toString() + " 未使能, 将忽略...");
                 }
@@ -149,11 +144,7 @@ public class RecordServiceImpl implements RecordService {
             for (TriggerInfo triggerInfo : triggerInfos) {
                 if (triggerInfo.isEnabled()) {
                     LOGGER.debug("触发器信息 " + triggerInfo.toString() + " 使能, 将构造触发器...");
-                    triggers.add(triggerHandler.make(
-                            triggerInfo.getPointKey().getLongId(),
-                            triggerInfo.getKey().getLongId(),
-                            triggerInfo.getContent()
-                    ));
+                    triggers.add(triggerHandler.make(triggerInfo));
                 } else {
                     LOGGER.debug("触发器信息 " + triggerInfo.toString() + " 未使能, 将忽略...");
                 }
@@ -248,7 +239,7 @@ public class RecordServiceImpl implements RecordService {
         }
     }
 
-    public RecordResult processRecordResult(RecordResult recordResult) throws EventException, ServiceException {
+    private RecordResult processRecordResult(RecordResult recordResult) throws Exception {
         if (recordResult.isFiltered()) {
             LOGGER.debug("检测到数据点被过滤, 记录被过滤信息...");
             filteredValueMaintainService.insert(recordResult.getFilteredValue());

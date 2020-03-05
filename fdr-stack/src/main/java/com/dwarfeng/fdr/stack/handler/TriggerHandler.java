@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.stack.handler;
 
+import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 
 /**
@@ -11,13 +12,11 @@ import com.dwarfeng.fdr.stack.exception.TriggerException;
 public interface TriggerHandler extends Handler {
 
     /**
-     * 根据指定的内容文本生成一个触发器。
+     * 通过指定的触发器信息构造一个触发器。
      *
-     * @param pointGuid   数据点的UUID。
-     * @param triggerGuid 触发器的UUID。
-     * @param content     指定的文本。
-     * @return 通过指定的文本生成的触发器。
-     * @throws TriggerException 触发器生成异常。
+     * @param filterInfo 指定的触发器信息。
+     * @return 构造的触发器。
+     * @throws TriggerException 触发器异常。
      */
-    Trigger make(long pointGuid, long triggerGuid, String content) throws TriggerException;
+    Trigger make(TriggerInfo filterInfo) throws TriggerException;
 }

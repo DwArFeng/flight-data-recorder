@@ -4,7 +4,7 @@ import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.FilterInfoMaintainService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,8 @@ public class FilterInfoMaintainServiceImplTest {
                     parentPoint.getKey(),
                     true,
                     "filter-info-" + i,
-                    "this is a test"
+                    "this is a test",
+                    "test"
             );
             filterInfos.add(filterInfo);
         }
@@ -59,15 +60,16 @@ public class FilterInfoMaintainServiceImplTest {
     }
 
     @Test
-    public void test() throws ServiceException {
+    public void test() throws Exception {
         try {
             parentPoint.setKey(pointMaintainService.insert(parentPoint));
             for (FilterInfo filterInfo : filterInfos) {
                 filterInfo.setKey(filterInfoMaintainService.insert(filterInfo));
                 filterInfo.setPointKey(parentPoint.getKey());
                 filterInfoMaintainService.update(filterInfo);
+                FilterInfo testFilterInfo = filterInfoMaintainService.get(filterInfo.getKey());
+                assertEquals(BeanUtils.describe(filterInfo), BeanUtils.describe(testFilterInfo));
             }
-            assertEquals(5, filterInfoMaintainService.lookup(FilterInfoMaintainService.CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}).getCount());
         } finally {
             for (FilterInfo filterInfo : filterInfos) {
                 filterInfoMaintainService.delete(filterInfo.getKey());

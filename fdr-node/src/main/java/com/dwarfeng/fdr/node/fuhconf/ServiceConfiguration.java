@@ -2,15 +2,21 @@ package com.dwarfeng.fdr.node.fuhconf;
 
 import com.dwarfeng.fdr.impl.service.operation.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
+import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
+import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
+import com.dwarfeng.subgrade.impl.bean.key.ExceptionKeyFetcher;
 import com.dwarfeng.subgrade.impl.service.CustomCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.impl.service.GeneralCrudService;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -51,6 +57,19 @@ public class ServiceConfiguration {
     private TriggerInfoCrudOperation triggerInfoCrudOperation;
     @Autowired
     private TriggerInfoDao triggerInfoDao;
+    @Autowired
+    private FilterSupportCache filterSupportCache;
+    @Autowired
+    private FilterSupportDao filterSupportDao;
+    @Autowired
+    private TriggerSupportCache triggerSupportCache;
+    @Autowired
+    private TriggerSupportDao triggerSupportDao;
+
+    @Value("${cache.timeout.entity.filter_support}")
+    private long filterSupportTimeout;
+    @Value("${cache.timeout.entity.trigger_support}")
+    private long triggerSupportTimeout;
 
     @Bean
     public CustomCrudService<LongIdKey, FilteredValue> filteredValueCustomCrudService() {
@@ -180,6 +199,66 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<TriggerInfo> triggerInfoDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 triggerInfoDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralCrudService<StringIdKey, FilterSupport> filterSupportGeneralCrudService() {
+        return new GeneralCrudService<>(
+                filterSupportDao,
+                filterSupportCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                filterSupportTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<FilterSupport> filterSupportDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                filterSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<FilterSupport> filterSupportDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                filterSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralCrudService<StringIdKey, TriggerSupport> triggerSupportGeneralCrudService() {
+        return new GeneralCrudService<>(
+                triggerSupportDao,
+                triggerSupportCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                triggerSupportTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<TriggerSupport> triggerSupportDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                triggerSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<TriggerSupport> triggerSupportDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                triggerSupportDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
