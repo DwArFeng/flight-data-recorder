@@ -11,10 +11,12 @@
 - 增加Point实体的预设查询。
 - 升级subgrade版本至beta-0.3.1.b。
 - 升级subgrade版本至1.2.3.a。
+- 完善过滤器和触发器的工作方式。
 
 #### Bug修复
 
 - 解决依赖冲突。
+- 修正装配文件错误的位置。
 - 将//noinspection替换为@SupressWarning。
 
 #### 功能移除

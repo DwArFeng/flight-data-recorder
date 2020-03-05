@@ -127,6 +127,8 @@
                             <descriptors>
                                 <descriptor>src/assembly/assembly.xml</descriptor>
                             </descriptors>
+                            <tarLongFileMode>gnu</tarLongFileMode>
+                            <attach>false</attach>
                         </configuration>
                     </execution>
                 </executions>
