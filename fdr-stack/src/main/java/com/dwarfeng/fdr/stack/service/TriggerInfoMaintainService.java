@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.stack.service;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.service.CrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
 import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 
 /**
@@ -11,7 +12,8 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
  * @author DwArFeng
  * @since 0.0.1-alpha
  */
-public interface TriggerInfoMaintainService extends CrudService<LongIdKey, TriggerInfo>, PresetLookupService<TriggerInfo> {
+public interface TriggerInfoMaintainService extends CrudService<LongIdKey, TriggerInfo>,
+        EntireLookupService<TriggerInfo>, PresetLookupService<TriggerInfo> {
 
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_POINT_SET = "child_for_point_set";

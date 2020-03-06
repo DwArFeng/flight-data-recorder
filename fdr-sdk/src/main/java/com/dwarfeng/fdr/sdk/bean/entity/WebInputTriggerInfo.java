@@ -19,8 +19,8 @@ public class WebInputTriggerInfo implements Bean {
                 WebInputLongIdKey.toStackBean(webInputTriggerInfo.getKey()),
                 WebInputLongIdKey.toStackBean(webInputTriggerInfo.getPointKey()),
                 webInputTriggerInfo.isEnabled(),
-                webInputTriggerInfo.getContent(),
                 webInputTriggerInfo.getRemark(),
+                webInputTriggerInfo.getContent(),
                 webInputTriggerInfo.getType()
         );
     }

@@ -248,4 +248,22 @@ public class DaoConfiguration {
                 triggerSupportPresetCriteriaMaker
         );
     }
+
+    @Bean
+    public HibernateEntireLookupDao<FilterInfo, HibernateFilterInfo> filterInfoHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, mapper),
+                HibernateFilterInfo.class
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<TriggerInfo, HibernateTriggerInfo> triggerInfoHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
+                HibernateTriggerInfo.class
+        );
+    }
 }

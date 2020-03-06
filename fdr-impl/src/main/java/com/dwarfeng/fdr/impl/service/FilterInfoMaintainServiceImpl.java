@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.service;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.service.FilterInfoMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomCrudService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,7 +20,9 @@ public class FilterInfoMaintainServiceImpl implements FilterInfoMaintainService 
     @Autowired
     private CustomCrudService<LongIdKey, FilterInfo> crudDelegate;
     @Autowired
-    private DaoOnlyPresetLookupService<FilterInfo> lookupDelegate;
+    private DaoOnlyEntireLookupService<FilterInfo> entireLookupService;
+    @Autowired
+    private DaoOnlyPresetLookupService<FilterInfo> presetLookupService;
 
     @Override
     @BehaviorAnalyse
@@ -94,14 +97,28 @@ public class FilterInfoMaintainServiceImpl implements FilterInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public PagedData<FilterInfo> lookup() throws ServiceException {
+        return entireLookupService.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public PagedData<FilterInfo> lookup(PagingInfo pagingInfo) throws ServiceException {
+        return entireLookupService.lookup(pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PagedData<FilterInfo> lookup(String preset, Object[] objs) throws ServiceException {
-        return lookupDelegate.lookup(preset, objs);
+        return presetLookupService.lookup(preset, objs);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PagedData<FilterInfo> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
-        return lookupDelegate.lookup(preset, objs, pagingInfo);
+        return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 }

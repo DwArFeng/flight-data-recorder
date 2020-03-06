@@ -19,8 +19,8 @@ public class WebInputFilterInfo implements Bean {
                 WebInputLongIdKey.toStackBean(webInputFilterInfo.getKey()),
                 WebInputLongIdKey.toStackBean(webInputFilterInfo.getPointKey()),
                 webInputFilterInfo.isEnabled(),
-                webInputFilterInfo.getContent(),
                 webInputFilterInfo.getRemark(),
+                webInputFilterInfo.getContent(),
                 webInputFilterInfo.getType()
         );
     }
