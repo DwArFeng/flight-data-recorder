@@ -4,7 +4,7 @@ package com.dwarfeng.fdr.stack.exception;
  * 过滤器构造异常。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public class FilterMakeException extends FilterException {
 

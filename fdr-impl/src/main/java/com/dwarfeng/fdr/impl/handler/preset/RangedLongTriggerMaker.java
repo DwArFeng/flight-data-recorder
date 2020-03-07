@@ -24,7 +24,7 @@ import java.util.Objects;
  * 具有范围的 Long过滤器制造器。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 @Component
 public class RangedLongTriggerMaker implements TriggerMaker {

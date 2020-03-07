@@ -7,7 +7,7 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  * 触发器序列版本。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public class TriggerSerialVersion implements Entity<LongIdKey> {
 

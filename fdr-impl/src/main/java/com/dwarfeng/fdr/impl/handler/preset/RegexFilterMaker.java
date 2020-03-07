@@ -24,7 +24,7 @@ import java.util.Objects;
  * 正则表达式过滤器制造器。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 @Component
 public class RegexFilterMaker implements FilterMaker {

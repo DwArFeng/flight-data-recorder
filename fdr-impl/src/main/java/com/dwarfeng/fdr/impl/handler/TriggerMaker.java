@@ -8,7 +8,7 @@ import com.dwarfeng.fdr.stack.handler.Trigger;
  * 触发器制造器。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public interface TriggerMaker {
 

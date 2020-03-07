@@ -4,7 +4,7 @@ package com.dwarfeng.fdr.stack.exception;
  * 触发器构造异常。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public class TriggerMakeException extends TriggerException {
 

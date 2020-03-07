@@ -22,7 +22,7 @@ import java.util.Objects;
  * Long过滤器制造器。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 @Component
 public class LongFilterMaker implements FilterMaker {

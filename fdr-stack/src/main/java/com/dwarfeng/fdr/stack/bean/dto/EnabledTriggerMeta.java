@@ -9,7 +9,7 @@ import java.util.List;
  * 生效触发器元数据。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public class EnabledTriggerMeta implements Dto {
 

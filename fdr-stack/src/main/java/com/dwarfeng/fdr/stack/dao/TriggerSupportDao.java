@@ -10,7 +10,7 @@ import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
  * 触发器支持数据访问层。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public interface TriggerSupportDao extends BaseDao<StringIdKey, TriggerSupport>, EntireLookupDao<TriggerSupport>,
         PresetLookupDao<TriggerSupport> {

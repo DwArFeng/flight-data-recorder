@@ -7,7 +7,7 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  * 触发器支持。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public class TriggerSupport implements Entity<StringIdKey> {
 

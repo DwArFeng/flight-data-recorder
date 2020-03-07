@@ -4,7 +4,7 @@ package com.dwarfeng.fdr.stack.exception;
  * 不支持的触发器类型。
  *
  * @author DwArFeng
- * @since 1.1.0.a
+ * @since 1.1.0
  */
 public class UnsupportedTriggerTypeException extends TriggerException {
 
