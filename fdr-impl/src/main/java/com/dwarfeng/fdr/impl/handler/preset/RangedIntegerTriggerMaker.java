@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * 具有范围的 Integer过滤器制造器。
@@ -93,7 +92,7 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
         }
 
         @Override
-        public void test(DataInfo dataInfo, Consumer<? super TriggeredValue> consumer) throws TriggerException {
+        public TriggeredValue test(DataInfo dataInfo) throws TriggerException {
             try {
                 LOGGER.debug("测试数据点 " + dataInfo.toString() + "...");
                 int integerValue = Integer.parseInt(dataInfo.getValue());
@@ -102,17 +101,17 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
                 if ((config.getCanEqualsMin() && integerValue < config.getMin()) ||
                         (!config.getCanEqualsMin() && integerValue <= config.getMin())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 小于(或小于等于等于)最小值, 不进行触发...");
-                    return;
+                    return null;
                 }
                 if ((config.getCanEqualsMax() && integerValue > config.getMax()) ||
                         (!config.getCanEqualsMax() && integerValue >= config.getMax())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 大于(或大于等于等于)最大值, 不进行触发...");
-                    return;
+                    return null;
                 }
 
                 // 触发判据。
                 LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 在最大值与最小值之间, 进行触发...");
-                TriggeredValue triggeredValue = new TriggeredValue(
+                return new TriggeredValue(
                         null,
                         pointKey,
                         triggerInfoKey,
@@ -120,9 +119,6 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
                         dataInfo.getValue(),
                         String.format("数据值大于(或等于)%d且小于(或等于)%d", config.getMin(), config.getMax())
                 );
-                if (Objects.nonNull(consumer)) {
-                    consumer.accept(triggeredValue);
-                }
             } catch (Exception e) {
                 throw new TriggerException(e);
             }

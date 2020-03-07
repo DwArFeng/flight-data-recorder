@@ -22,6 +22,7 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(TriggerException.class, ServiceExceptionCodes.TRIGGER_FAILED);
         destination.put(TriggerMakeException.class, ServiceExceptionCodes.TRIGGER_MAKE_FAILED);
         destination.put(UnsupportedTriggerTypeException.class, ServiceExceptionCodes.TRIGGER_TYPE_UNSUPPORTED);
+        destination.put(PointNotExistsException.class, ServiceExceptionCodes.POINT_NOT_EXISTS);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

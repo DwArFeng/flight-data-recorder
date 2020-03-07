@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * 正则表达式过滤器制造器。
@@ -88,13 +87,13 @@ public class RegexFilterMaker implements FilterMaker {
         }
 
         @Override
-        public void test(DataInfo dataInfo, Consumer<? super FilteredValue> consumer) throws FilterException {
+        public FilteredValue test(DataInfo dataInfo) throws FilterException {
             try {
                 String value = dataInfo.getValue();
                 if (!value.matches(config.getPattern())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不能匹配正则表达式 " + config.getPattern()
                             + ", 不能通过过滤...");
-                    FilteredValue filteredValue = new FilteredValue(
+                    return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
@@ -102,12 +101,10 @@ public class RegexFilterMaker implements FilterMaker {
                             dataInfo.getValue(),
                             "数据值不是数字"
                     );
-                    if (Objects.nonNull(consumer)) {
-                        consumer.accept(filteredValue);
-                    }
-                    return;
+
                 }
                 LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 通过过滤器...");
+                return null;
             } catch (Exception e) {
                 throw new FilterException(e);
             }

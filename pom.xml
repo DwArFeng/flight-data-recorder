@@ -56,7 +56,7 @@
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <kafka.version>2.4.0</kafka.version>
         <snowflake.version>1.2.3.a</snowflake.version>
-        <subgrade.version>beta-0.3.1.b</subgrade.version>
+        <subgrade.version>beta-0.3.1.c</subgrade.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>

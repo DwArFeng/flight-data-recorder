@@ -4,8 +4,6 @@ import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.exception.FilterException;
 
-import java.util.function.Consumer;
-
 /**
  * 过滤器。
  *
@@ -17,11 +15,11 @@ public interface Filter {
     /**
      * 测试一个数据是否能通过过滤器。
      *
-     * <p> 如果指定的数据不能通过过滤器，则执行指定的消费者进行回调。</>
+     * <p> 如果指定的数据不能通过过滤器，则返回被过滤的数据值;否则返回 null。</>
      *
      * @param dataInfo 指定的数据。
-     * @param consumer 数据不通过时进行的回调。
+     * @return 被过滤的数据值，其主键为 null 即可。
      * @throws FilterException 过滤器异常。
      */
-    void test(DataInfo dataInfo, Consumer<? super FilteredValue> consumer) throws FilterException;
+    FilteredValue test(DataInfo dataInfo) throws FilterException;
 }

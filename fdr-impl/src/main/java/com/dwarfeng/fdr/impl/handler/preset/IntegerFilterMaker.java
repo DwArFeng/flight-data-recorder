@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * Integer过滤器制造器。
@@ -84,14 +83,14 @@ public class IntegerFilterMaker implements FilterMaker {
         }
 
         @Override
-        public void test(DataInfo dataInfo, Consumer<? super FilteredValue> consumer) throws FilterException {
+        public FilteredValue test(DataInfo dataInfo) throws FilterException {
             try {
                 String value = dataInfo.getValue();
                 try {
                     Integer.parseInt(value);
                 } catch (NumberFormatException e) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过整型数范围, 不能通过过滤...", e);
-                    FilteredValue filteredValue = new FilteredValue(
+                    return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
@@ -99,12 +98,9 @@ public class IntegerFilterMaker implements FilterMaker {
                             dataInfo.getValue(),
                             "数据值不是数字或超过整型数范围"
                     );
-                    if (Objects.nonNull(consumer)) {
-                        consumer.accept(filteredValue);
-                    }
-                    return;
                 }
                 LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 通过过滤器...");
+                return null;
             } catch (Exception e) {
                 throw new FilterException(e);
             }

@@ -87,7 +87,7 @@ public class EnabledFilterInfoLookupServiceImplTest {
                 filterInfoMaintainService.update(filterInfo);
             }
             assertEquals(5, filterInfoMaintainService.lookup(FilterInfoMaintainService.ENABLED_CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}).getCount());
-            assertEquals(5, enabledFilterInfoLookupService.getEnabledFilterInfos(parentPoint.getKey()).size());
+            assertEquals(5, enabledFilterInfoLookupService.getEnabledFilterInfos(parentPoint.getKey()).getFilterInfos().size());
             assertEquals(5, enabledFilterInfoCache.get(parentPoint.getKey()).size());
             FilterInfo filterInfo = filterInfos.get(0);
             filterInfoMaintainService.delete(filterInfo.getKey());
@@ -95,7 +95,7 @@ public class EnabledFilterInfoLookupServiceImplTest {
             filterInfoMaintainService.insert(filterInfo);
             assertEquals(0, enabledFilterInfoCache.get(parentPoint.getKey()).size());
             assertEquals(5, filterInfoMaintainService.lookup(FilterInfoMaintainService.ENABLED_CHILD_FOR_POINT, new Object[]{parentPoint.getKey()}).getCount());
-            assertEquals(5, enabledFilterInfoLookupService.getEnabledFilterInfos(parentPoint.getKey()).size());
+            assertEquals(5, enabledFilterInfoLookupService.getEnabledFilterInfos(parentPoint.getKey()).getFilterInfos().size());
             assertEquals(5, enabledFilterInfoCache.get(parentPoint.getKey()).size());
         } finally {
             for (FilterInfo filterInfo : filterInfos) {

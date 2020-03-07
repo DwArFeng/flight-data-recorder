@@ -50,6 +50,10 @@ public class DaoConfiguration {
     private String realtimeValuePrefix;
     @Value("${redis.dbkey.realtime_value}")
     private String realtimeValueDbKey;
+    @Value("${redis.dbkey.filter_serial_version}")
+    private String filterSerialVersionDbKey;
+    @Value("${redis.dbkey.trigger_serial_version}")
+    private String triggerSerialVersionDbKey;
 
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchBaseDao() {
@@ -264,6 +268,28 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
                 HibernateTriggerInfo.class
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBaseDao<LongIdKey, FilterSerialVersion, FastJsonFilterSerialVersion> filterSerialVersionRedisBaseDao() {
+        return new RedisBaseDao<>(
+                (RedisTemplate<String, FastJsonFilterSerialVersion>) redisTemplate,
+                new LongIdStringKeyFormatter(realtimeValuePrefix),
+                new DozerBeanTransformer<>(FilterSerialVersion.class, FastJsonFilterSerialVersion.class, mapper),
+                filterSerialVersionDbKey
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBaseDao<LongIdKey, TriggerSerialVersion, FastJsonTriggerSerialVersion> triggerSerialVersionRedisBaseDao() {
+        return new RedisBaseDao<>(
+                (RedisTemplate<String, FastJsonTriggerSerialVersion>) redisTemplate,
+                new LongIdStringKeyFormatter(realtimeValuePrefix),
+                new DozerBeanTransformer<>(TriggerSerialVersion.class, FastJsonTriggerSerialVersion.class, mapper),
+                triggerSerialVersionDbKey
         );
     }
 }

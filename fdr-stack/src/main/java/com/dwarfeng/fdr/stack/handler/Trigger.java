@@ -4,8 +4,6 @@ import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 
-import java.util.function.Consumer;
-
 /**
  * 触发器。
  *
@@ -15,13 +13,13 @@ import java.util.function.Consumer;
 public interface Trigger {
 
     /**
-     * 测试一个数据是否能被触发。
+     * 测试一个数据是否能通过触发器。
      *
-     * <p> 如果指定的数据能被触发，则执行指定的消费者进行回调。</>
+     * <p> 如果指定的数据满足触发条件，则返回被触发的数据值;否则返回 null。</>
      *
      * @param dataInfo 指定的数据。
-     * @param consumer 数据不通过时进行的回调。
+     * @return 被触发的数据值，其主键为 null 即可。
      * @throws TriggerException 触发器异常。
      */
-    void test(DataInfo dataInfo, Consumer<? super TriggeredValue> consumer) throws TriggerException;
+    TriggeredValue test(DataInfo dataInfo) throws TriggerException;
 }

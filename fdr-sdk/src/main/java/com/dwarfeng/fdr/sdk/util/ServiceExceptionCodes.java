@@ -12,35 +12,20 @@ public final class ServiceExceptionCodes {
 
     private static int EXCEPTION_CODE_OFFSET = 5000;
 
-    /**
-     * 过滤器失败。
-     */
-    public static final ServiceException.Code FILTER_FAILED = new ServiceException.Code(EXCEPTION_CODE_OFFSET, "filter failed");
-
-    /**
-     * 过滤器构造失败。
-     */
-    public static final ServiceException.Code FILTER_MAKE_FAILED = new ServiceException.Code(EXCEPTION_CODE_OFFSET + 1, "filter make failed");
-
-    /**
-     * 过滤器类型不支持。
-     */
-    public static final ServiceException.Code FILTER_TYPE_UNSUPPORTED = new ServiceException.Code(EXCEPTION_CODE_OFFSET + 2, "filter type unsupported");
-
-    /**
-     * 触发器失败。
-     */
-    public static final ServiceException.Code TRIGGER_FAILED = new ServiceException.Code(EXCEPTION_CODE_OFFSET + 10, "trigger failed");
-
-    /**
-     * 触发器构造失败。
-     */
-    public static final ServiceException.Code TRIGGER_MAKE_FAILED = new ServiceException.Code(EXCEPTION_CODE_OFFSET + 1, "trigger make failed");
-
-    /**
-     * 触发器类型不支持。
-     */
-    public static final ServiceException.Code TRIGGER_TYPE_UNSUPPORTED = new ServiceException.Code(EXCEPTION_CODE_OFFSET + 2, "trigger type unsupported");
+    public static final ServiceException.Code FILTER_FAILED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET, "filter failed");
+    public static final ServiceException.Code FILTER_MAKE_FAILED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 1, "filter make failed");
+    public static final ServiceException.Code FILTER_TYPE_UNSUPPORTED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 2, "filter type unsupported");
+    public static final ServiceException.Code TRIGGER_FAILED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 10, "trigger failed");
+    public static final ServiceException.Code TRIGGER_MAKE_FAILED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 11, "trigger make failed");
+    public static final ServiceException.Code TRIGGER_TYPE_UNSUPPORTED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 12, "trigger type unsupported");
+    public static final ServiceException.Code POINT_NOT_EXISTS =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 20, "point not exists");
 
     /**
      * 获取异常代号的偏移量。

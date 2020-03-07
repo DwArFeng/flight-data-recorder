@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 /**
  * 具有范围的 Long过滤器制造器。
@@ -93,7 +92,7 @@ public class RangedLongFilterMaker implements FilterMaker {
         }
 
         @Override
-        public void test(DataInfo dataInfo, Consumer<? super FilteredValue> consumer) throws FilterException {
+        public FilteredValue test(DataInfo dataInfo) throws FilterException {
             try {
                 String value = dataInfo.getValue();
                 long longValue;
@@ -101,7 +100,7 @@ public class RangedLongFilterMaker implements FilterMaker {
                     longValue = Long.parseLong(value);
                 } catch (NumberFormatException e) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过长整型数范围, 不能通过过滤...", e);
-                    FilteredValue filteredValue = new FilteredValue(
+                    return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
@@ -109,16 +108,12 @@ public class RangedLongFilterMaker implements FilterMaker {
                             dataInfo.getValue(),
                             "数据值不是数字或超过长整型数范围"
                     );
-                    if (Objects.nonNull(consumer)) {
-                        consumer.accept(filteredValue);
-                    }
-                    return;
                 }
 
                 if ((config.getCanEqualsMin() && longValue < config.getMin()) ||
                         (!config.getCanEqualsMin() && longValue <= config.getMin())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 小于(或小于等于等于)最小值, 不能通过过滤...");
-                    FilteredValue filteredValue = new FilteredValue(
+                    return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
@@ -126,16 +121,12 @@ public class RangedLongFilterMaker implements FilterMaker {
                             dataInfo.getValue(),
                             "数据值小于(或小于等于等于)最小值"
                     );
-                    if (Objects.nonNull(consumer)) {
-                        consumer.accept(filteredValue);
-                    }
-                    return;
                 }
 
                 if ((config.getCanEqualsMax() && longValue > config.getMax()) ||
                         (!config.getCanEqualsMax() && longValue >= config.getMax())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 大于(或大于等于等于)最大值, 不能通过过滤...");
-                    FilteredValue filteredValue = new FilteredValue(
+                    return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
@@ -143,13 +134,10 @@ public class RangedLongFilterMaker implements FilterMaker {
                             dataInfo.getValue(),
                             "数据值大于(或大于等于等于)最大值"
                     );
-                    if (Objects.nonNull(consumer)) {
-                        consumer.accept(filteredValue);
-                    }
-                    return;
                 }
 
                 LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 通过过滤器...");
+                return null;
             } catch (Exception e) {
                 throw new FilterException(e);
             }

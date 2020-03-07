@@ -2,14 +2,16 @@ package com.dwarfeng.fdr.impl.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dwarfeng.dutil.basic.io.CT;
+import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.impl.handler.preset.RangedIntegerFilterMaker;
 import com.dwarfeng.fdr.impl.handler.preset.RangedIntegerTriggerMaker;
+import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilteredValue;
+import com.dwarfeng.fdr.sdk.bean.entity.FastJsonPersistenceValue;
+import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
 import com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggeredValue;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.stack.bean.dto.RecordResult;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.service.*;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -154,19 +156,25 @@ public class RecordServiceImplTest {
             triggerInfoMaintainService.update(triggerInfo);
         }
         try {
-            record(new DataInfo(point.getKey().getLongId(), "aaa", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "bbb", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "ccc", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "112", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "113", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "114", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "115", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "116", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "1000", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "1001", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "1002", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "1003", new Date()));
-            record(new DataInfo(point.getKey().getLongId(), "1004", new Date()));
+            TimeMeasurer tm = new TimeMeasurer();
+            tm.start();
+            for (int i = 0; i < 10; i++) {
+                recordService.record(new DataInfo(point.getKey().getLongId(), "aaa", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "bbb", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "ccc", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "112", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "113", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "114", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "115", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "116", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "1000", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "1001", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "1002", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "1003", new Date()));
+                recordService.record(new DataInfo(point.getKey().getLongId(), "1004", new Date()));
+            }
+            tm.stop();
+            CT.trace(tm.formatStringMs());
         } finally {
             for (FilteredValue filteredValue : filteredValues) {
                 filteredValueMaintainService.delete(filteredValue.getKey());
@@ -188,31 +196,29 @@ public class RecordServiceImplTest {
             }
             pointMaintainService.delete(point.getKey());
         }
-        Thread.sleep(2000L);
-    }
-
-    private void record(DataInfo dataInfo) throws ServiceException {
-        RecordResult recordResult = recordService.record(dataInfo);
-        if (recordResult.isFiltered()) {
-            filteredValues.add(recordResult.getFilteredValue());
-        }
-        if (recordResult.isPersistenceRecorded()) {
-            persistenceValues.add(recordResult.getPersistenceValue());
-        }
-        if (recordResult.isRealtimeRecorded()) {
-            realtimeValue = recordResult.getRealtimeValue();
-        }
-        if (recordResult.isTriggered()) {
-            triggeredValues.addAll(recordResult.getTriggeredValues());
-        }
     }
 
     @Component
     public static class KafkaConsumer {
 
-        @KafkaListener(topics = "fdr.data_triggered")
+        @KafkaListener(topics = "${kafka.topic.data_filtered}")
+        public void fireDataTriggered(FastJsonFilteredValue fastJsonFilteredValue) {
+            CT.trace(fastJsonFilteredValue);
+        }
+
+        @KafkaListener(topics = "${kafka.topic.data_triggered}")
         public void fireDataTriggered(FastJsonTriggeredValue triggeredValue) {
             CT.trace(triggeredValue);
+        }
+
+        @KafkaListener(topics = "${kafka.topic.realtime_updated}")
+        public void fireDataTriggered(FastJsonRealtimeValue fastJsonRealtimeValue) {
+            CT.trace(fastJsonRealtimeValue);
+        }
+
+        @KafkaListener(topics = "${kafka.topic.persistence_recorded}")
+        public void fireDataTriggered(FastJsonPersistenceValue fastJsonPersistenceValue) {
+            CT.trace(fastJsonPersistenceValue);
         }
     }
 }

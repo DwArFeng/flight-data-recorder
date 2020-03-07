@@ -1,6 +1,8 @@
 package com.dwarfeng.fdr.node.configuration;
 
 import com.alibaba.fastjson.parser.ParserConfig;
+import com.dwarfeng.fdr.impl.bean.entity.FastJsonFilterSerialVersion;
+import com.dwarfeng.fdr.impl.bean.entity.FastJsonTriggerSerialVersion;
 import com.dwarfeng.fdr.sdk.bean.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,8 @@ public class FastJsonConfiguration {
         ParserConfig.getGlobalInstance().addAccept(FastJsonTriggeredValue.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonFilterSupport.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerSupport.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonFilterSerialVersion.class.getCanonicalName());
+        ParserConfig.getGlobalInstance().addAccept(FastJsonTriggerSerialVersion.class.getCanonicalName());
         LOGGER.debug("FastJson autotype 白名单配置完毕");
     }
 }
