@@ -25,34 +25,16 @@ public class CacheConfiguration {
     @Autowired
     private Mapper mapper;
 
-    @Value("${cache.prefix.entity.filtered_value}")
-    private String filteredValuePrefix;
     @Value("${cache.prefix.entity.filter_info}")
     private String filterInfoPrefix;
-    @Value("${cache.prefix.entity.persistence_value}")
-    private String persistenceValuePrefix;
     @Value("${cache.prefix.entity.point}")
     private String pointPrefix;
-    @Value("${cache.prefix.entity.realtime_value}")
-    private String realtimeValuePrefix;
-    @Value("${cache.prefix.entity.triggered_value}")
-    private String triggeredValuePrefix;
     @Value("${cache.prefix.entity.trigger_info}")
     private String triggerInfoPrefix;
     @Value("${cache.prefix.entity.filter_support}")
     private String filterSupportPrefix;
     @Value("${cache.prefix.entity.trigger_support}")
     private String triggerSupportPrefix;
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<LongIdKey, FilteredValue, FastJsonFilteredValue> filteredValueRedisBatchBaseCache() {
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonFilteredValue>) template,
-                new LongIdStringKeyFormatter(filteredValuePrefix),
-                new DozerBeanTransformer<>(FilteredValue.class, FastJsonFilteredValue.class, mapper)
-        );
-    }
 
     @Bean
     @SuppressWarnings("unchecked")
@@ -66,41 +48,11 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<LongIdKey, PersistenceValue, FastJsonPersistenceValue> persistenceValueRedisBatchBaseCache() {
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonPersistenceValue>) template,
-                new LongIdStringKeyFormatter(persistenceValuePrefix),
-                new DozerBeanTransformer<>(PersistenceValue.class, FastJsonPersistenceValue.class, mapper)
-        );
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, Point, FastJsonPoint> pointRedisBatchBaseCache() {
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonPoint>) template,
                 new LongIdStringKeyFormatter(pointPrefix),
                 new DozerBeanTransformer<>(Point.class, FastJsonPoint.class, mapper)
-        );
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<LongIdKey, RealtimeValue, FastJsonRealtimeValue> realtimeValueRedisBatchBaseCache() {
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonRealtimeValue>) template,
-                new LongIdStringKeyFormatter(realtimeValuePrefix),
-                new DozerBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, mapper)
-        );
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<LongIdKey, TriggeredValue, FastJsonTriggeredValue> triggeredValueRedisBatchBaseCache() {
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonTriggeredValue>) template,
-                new LongIdStringKeyFormatter(triggeredValuePrefix),
-                new DozerBeanTransformer<>(TriggeredValue.class, FastJsonTriggeredValue.class, mapper)
         );
     }
 

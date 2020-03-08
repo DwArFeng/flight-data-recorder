@@ -98,6 +98,7 @@
     </dependencies>
 
     <build>
+        <!-- 插件列表 -->
         <plugins>
             <!-- Maven 清理插件，用于清理测试时留下的日志。 -->
             <plugin>
@@ -142,7 +143,7 @@
                         <manifest>  
                              <addClasspath>true</addClasspath>  
                              <classpathPrefix>./</classpathPrefix>  
-                             <mainClass>com.dwarfeng.fdr.node.recorder.fuh.launcher.Launcher</mainClass>  
+                             <mainClass>com.dwarfeng.fdr.node.launcher.Launcher</mainClass>  
                         </manifest>
                     </archive>
                     <finalName>${project.name}-${project.version}</finalName>

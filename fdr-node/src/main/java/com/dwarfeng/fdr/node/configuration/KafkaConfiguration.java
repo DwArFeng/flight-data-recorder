@@ -1,6 +1,8 @@
 package com.dwarfeng.fdr.node.configuration;
 
+import com.dwarfeng.subgrade.sdk.kafka.serialize.FastJsonKafkaSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +26,7 @@ public class KafkaConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConfiguration.class);
 
     @Value("${kafka.producer.bootstrap_servers}")
-    private String bootstrapServers;
+    private String producerBootstrapServers;
     @Value("${kafka.producer.retries}")
     private int retries;
     @Value("${kafka.producer.linger}")
@@ -42,10 +44,8 @@ public class KafkaConfiguration {
     public Map<String, Object> producerProperties() {
         LOGGER.info("配置Kafka生产者属性...");
         Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "com.dwarfeng.fdr.sdk.serialize.FastJsonKafkaSerializer");
-        props.put(ProducerConfig.RETRIES_CONFIG, 3);
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, producerBootstrapServers);
+        props.put(ProducerConfig.RETRIES_CONFIG, retries);
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, batchSize);
         props.put(ProducerConfig.LINGER_MS_CONFIG, linger);
         props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, bufferMemory);
@@ -58,10 +58,12 @@ public class KafkaConfiguration {
     public ProducerFactory<String, Object> producerFactory() {
         LOGGER.info("配置Kafka生产者工厂...");
         Map<String, Object> properties = producerProperties();
-        DefaultKafkaProducerFactory<String, Object> defaultKafkaProducerFactory = new DefaultKafkaProducerFactory<>(properties);
-        defaultKafkaProducerFactory.setTransactionIdPrefix(transactionPrefix);
+        DefaultKafkaProducerFactory<String, Object> factory = new DefaultKafkaProducerFactory<>(properties);
+        factory.setTransactionIdPrefix(transactionPrefix);
+        factory.setKeySerializer(new StringSerializer());
+        factory.setValueSerializer(new FastJsonKafkaSerializer<>());
         LOGGER.debug("Kafka生产者工厂配置完成");
-        return defaultKafkaProducerFactory;
+        return factory;
     }
 
     @Bean

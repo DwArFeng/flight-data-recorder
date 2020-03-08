@@ -43,14 +43,6 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
     private FilterInfoCache filterInfoCache;
     @Autowired
     private TriggerInfoCache triggerInfoCache;
-    @Autowired
-    private FilteredValueCache filteredValueCache;
-    @Autowired
-    private TriggeredValueCache triggeredValueCache;
-    @Autowired
-    private PersistenceValueCache persistenceValueCache;
-    @Autowired
-    private RealtimeValueCache realtimeValueCache;
 
     @Autowired
     private EnabledFilterInfoCache enabledFilterInfoCache;
@@ -95,25 +87,21 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
     public void delete(LongIdKey key) throws Exception {
         //删除与点位直接相关的数据值。
         {
-            if (realtimeValueCache.exists(key) || realtimeValueDao.exists(key)) {
+            if (realtimeValueDao.exists(key)) {
                 realtimeValueDao.delete(key);
-                realtimeValueCache.delete(key);
             }
 
             List<LongIdKey> filteredValueKeys = filteredValueDao.lookup(FilteredValueMaintainService.CHILD_FOR_POINT, new Object[]{key})
                     .stream().map(FilteredValue::getKey).collect(Collectors.toList());
             filteredValueDao.batchDelete(filteredValueKeys);
-            filteredValueCache.batchDelete(filteredValueKeys);
 
             List<LongIdKey> triggeredValueKeys = triggeredValueDao.lookup(TriggeredValueMaintainService.CHILD_FOR_POINT, new Object[]{key})
                     .stream().map(TriggeredValue::getKey).collect(Collectors.toList());
             triggeredValueDao.batchDelete(triggeredValueKeys);
-            triggeredValueCache.batchDelete(triggeredValueKeys);
 
             List<LongIdKey> persistenceValueKeys = persistenceValueDao.lookup(PersistenceValueMaintainService.CHILD_FOR_POINT, new Object[]{key})
                     .stream().map(PersistenceValue::getKey).collect(Collectors.toList());
             persistenceValueDao.batchDelete(persistenceValueKeys);
-            persistenceValueCache.batchDelete(persistenceValueKeys);
         }
 
         //删除与点位拥有的过滤器与触发器相关的点位以及其过滤器触发器本身。
@@ -132,9 +120,7 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
 
             //删除点位拥有的过滤器与触发器相关的数据点。
             filteredValueDao.batchDelete(filteredValueKeys);
-            filteredValueCache.batchDelete(filteredValueKeys);
             triggeredValueDao.batchDelete(triggeredValueKeys);
-            triggeredValueCache.batchDelete(triggeredValueKeys);
 
             //删除点位拥有的过滤器与触发器。
             filterInfoDao.batchDelete(filterInfoKeys);

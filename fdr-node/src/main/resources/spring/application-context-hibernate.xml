@@ -60,7 +60,7 @@
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.connection.autocommit">false</prop>
                 <!-- 打印生成的SQL语句 -->
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">false</prop>
             </props>
         </property>
         <!-- 扫描实体包 -->

@@ -4,7 +4,6 @@ import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.cache.EnabledTriggerInfoCache;
 import com.dwarfeng.fdr.stack.cache.TriggerInfoCache;
-import com.dwarfeng.fdr.stack.cache.TriggeredValueCache;
 import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
 import com.dwarfeng.fdr.stack.dao.TriggeredValueDao;
 import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
@@ -30,8 +29,6 @@ public class TriggerInfoCrudOperation implements CrudOperation<LongIdKey, Trigge
 
     @Autowired
     private TriggerInfoCache triggerInfoCache;
-    @Autowired
-    private TriggeredValueCache triggeredValueCache;
     @Autowired
     private EnabledTriggerInfoCache enabledTriggerInfoCache;
 
@@ -92,7 +89,6 @@ public class TriggerInfoCrudOperation implements CrudOperation<LongIdKey, Trigge
         List<LongIdKey> triggeredValueKeys = triggeredValueDao.lookup(TriggeredValueMaintainService.CHILD_FOR_TRIGGER, new Object[]{key})
                 .stream().map(TriggeredValue::getKey).collect(Collectors.toList());
         triggeredValueDao.batchDelete(triggeredValueKeys);
-        triggeredValueCache.batchDelete(triggeredValueKeys);
 
         triggerInfoDao.delete(key);
         triggerInfoCache.delete(key);

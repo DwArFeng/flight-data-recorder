@@ -4,7 +4,6 @@ import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.cache.EnabledFilterInfoCache;
 import com.dwarfeng.fdr.stack.cache.FilterInfoCache;
-import com.dwarfeng.fdr.stack.cache.FilteredValueCache;
 import com.dwarfeng.fdr.stack.dao.FilterInfoDao;
 import com.dwarfeng.fdr.stack.dao.FilteredValueDao;
 import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
@@ -30,8 +29,6 @@ public class FilterInfoCrudOperation implements CrudOperation<LongIdKey, FilterI
 
     @Autowired
     private FilterInfoCache filterInfoCache;
-    @Autowired
-    private FilteredValueCache filteredValueCache;
     @Autowired
     private EnabledFilterInfoCache enabledFilterInfoCache;
 
@@ -92,7 +89,6 @@ public class FilterInfoCrudOperation implements CrudOperation<LongIdKey, FilterI
         List<LongIdKey> filteredValueKeys = filteredValueDao.lookup(FilteredValueMaintainService.CHILD_FOR_FILTER, new Object[]{key})
                 .stream().map(FilteredValue::getKey).collect(Collectors.toList());
         filteredValueDao.batchDelete(filteredValueKeys);
-        filteredValueCache.batchDelete(filteredValueKeys);
 
         filterInfoDao.delete(key);
         filterInfoCache.delete(key);

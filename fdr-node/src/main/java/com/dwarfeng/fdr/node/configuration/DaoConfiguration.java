@@ -46,8 +46,6 @@ public class DaoConfiguration {
     @Autowired
     private TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker;
 
-    @Value("${cache.prefix.entity.realtime_value}")
-    private String realtimeValuePrefix;
     @Value("${redis.dbkey.realtime_value}")
     private String realtimeValueDbKey;
     @Value("${redis.dbkey.filter_serial_version}")
@@ -149,7 +147,7 @@ public class DaoConfiguration {
     public RedisBatchBaseDao<LongIdKey, RealtimeValue, FastJsonRealtimeValue> realtimeValueRedisBatchBaseDao() {
         return new RedisBatchBaseDao<>(
                 (RedisTemplate<String, FastJsonRealtimeValue>) redisTemplate,
-                new LongIdStringKeyFormatter(realtimeValuePrefix),
+                new LongIdStringKeyFormatter("key."),
                 new DozerBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, mapper),
                 realtimeValueDbKey
         );
@@ -276,7 +274,7 @@ public class DaoConfiguration {
     public RedisBaseDao<LongIdKey, FilterSerialVersion, FastJsonFilterSerialVersion> filterSerialVersionRedisBaseDao() {
         return new RedisBaseDao<>(
                 (RedisTemplate<String, FastJsonFilterSerialVersion>) redisTemplate,
-                new LongIdStringKeyFormatter(realtimeValuePrefix),
+                new LongIdStringKeyFormatter("key."),
                 new DozerBeanTransformer<>(FilterSerialVersion.class, FastJsonFilterSerialVersion.class, mapper),
                 filterSerialVersionDbKey
         );
@@ -287,7 +285,7 @@ public class DaoConfiguration {
     public RedisBaseDao<LongIdKey, TriggerSerialVersion, FastJsonTriggerSerialVersion> triggerSerialVersionRedisBaseDao() {
         return new RedisBaseDao<>(
                 (RedisTemplate<String, FastJsonTriggerSerialVersion>) redisTemplate,
-                new LongIdStringKeyFormatter(realtimeValuePrefix),
+                new LongIdStringKeyFormatter("key."),
                 new DozerBeanTransformer<>(TriggerSerialVersion.class, FastJsonTriggerSerialVersion.class, mapper),
                 triggerSerialVersionDbKey
         );
