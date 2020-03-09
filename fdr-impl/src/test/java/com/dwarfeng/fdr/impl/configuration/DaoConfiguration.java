@@ -268,26 +268,4 @@ public class DaoConfiguration {
                 HibernateTriggerInfo.class
         );
     }
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RedisBaseDao<LongIdKey, FilterSerialVersion, FastJsonFilterSerialVersion> filterSerialVersionRedisBaseDao() {
-        return new RedisBaseDao<>(
-                (RedisTemplate<String, FastJsonFilterSerialVersion>) redisTemplate,
-                new LongIdStringKeyFormatter("key."),
-                new DozerBeanTransformer<>(FilterSerialVersion.class, FastJsonFilterSerialVersion.class, mapper),
-                filterSerialVersionDbKey
-        );
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RedisBaseDao<LongIdKey, TriggerSerialVersion, FastJsonTriggerSerialVersion> triggerSerialVersionRedisBaseDao() {
-        return new RedisBaseDao<>(
-                (RedisTemplate<String, FastJsonTriggerSerialVersion>) redisTemplate,
-                new LongIdStringKeyFormatter("key."),
-                new DozerBeanTransformer<>(TriggerSerialVersion.class, FastJsonTriggerSerialVersion.class, mapper),
-                triggerSerialVersionDbKey
-        );
-    }
 }

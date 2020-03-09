@@ -32,10 +32,6 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
     private PersistenceValueDao persistenceValueDao;
     @Autowired
     private RealtimeValueDao realtimeValueDao;
-    @Autowired
-    private FilterSerialVersionDao filterSerialVersionDao;
-    @Autowired
-    private TriggerSerialVersionDao triggerSerialVersionDao;
 
     @Autowired
     private PointCache pointCache;
@@ -133,16 +129,6 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
         {
             enabledFilterInfoCache.delete(key);
             enabledTriggerInfoCache.delete(key);
-        }
-
-        //过滤器序列版本和触发器序列版本持久层信息删除。
-        {
-            if (filterSerialVersionDao.exists(key)) {
-                filterSerialVersionDao.delete(key);
-            }
-            if (triggerSerialVersionDao.exists(key)) {
-                triggerSerialVersionDao.delete(key);
-            }
         }
 
         pointDao.delete(key);

@@ -1,9 +1,5 @@
 package com.dwarfeng.fdr.node.configuration;
 
-import com.dwarfeng.dutil.basic.cna.model.DelegateMapModel;
-import com.dwarfeng.dutil.basic.cna.model.ModelUtil;
-import com.dwarfeng.dutil.basic.cna.model.SyncMapModel;
-import com.dwarfeng.fdr.impl.service.RecordServiceImpl;
 import com.dwarfeng.fdr.impl.service.operation.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
@@ -284,15 +280,5 @@ public class ServiceConfiguration {
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
-    }
-
-    @Bean
-    public SyncMapModel<LongIdKey, RecordServiceImpl.FilterMeta> filterMetaSyncMapModel() {
-        return ModelUtil.syncMapModel(new DelegateMapModel<>());
-    }
-
-    @Bean
-    public SyncMapModel<LongIdKey, RecordServiceImpl.TriggerMeta> triggerMetaSyncMapModel() {
-        return ModelUtil.syncMapModel(new DelegateMapModel<>());
     }
 }
