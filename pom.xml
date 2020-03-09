@@ -47,7 +47,7 @@
         <aspectj.version>1.8.2</aspectj.version>
         <aopalliance.version>1.0</aopalliance.version>
         <spring.data.redis.version>1.7.11.RELEASE</spring.data.redis.version>
-        <hibernate.version>5.3.13.Final</hibernate.version>
+        <hibernate.version>5.3.15.Final</hibernate.version>
         <el.version>3.0.0</el.version>
         <hibernate-validator.version>6.0.18.Final</hibernate-validator.version>
         <log4j2.version>2.12.1</log4j2.version>
@@ -56,7 +56,7 @@
         <dutil.version>beta-0.2.1.a-SNAPSHOT</dutil.version>
         <kafka.version>2.4.0</kafka.version>
         <snowflake.version>1.2.3.a</snowflake.version>
-        <subgrade.version>beta-0.3.1.c</subgrade.version>
+        <subgrade.version>beta-0.3.2.a-SNAPSHOT</subgrade.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>

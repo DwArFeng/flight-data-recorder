@@ -61,6 +61,10 @@
                 <prop key="hibernate.connection.autocommit">false</prop>
                 <!-- 打印生成的SQL语句 -->
                 <prop key="hibernate.show_sql">false</prop>
+                <!-- 数据库的批量写入量，设置激进的值以提高数据库的写入效率 -->
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+                <!-- 数据库的批量抓取量，设置激进的值以提高数据库的读取效率 -->
+                <prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
             </props>
         </property>
         <!-- 扫描实体包 -->

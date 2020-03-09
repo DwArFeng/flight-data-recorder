@@ -8,10 +8,7 @@ import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
 import com.dwarfeng.subgrade.impl.bean.key.ExceptionKeyFetcher;
-import com.dwarfeng.subgrade.impl.service.CustomCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralCrudService;
+import com.dwarfeng.subgrade.impl.service.*;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -21,10 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -80,8 +74,8 @@ public class ServiceConfiguration {
     private long triggerSupportTimeout;
 
     @Bean
-    public CustomCrudService<LongIdKey, FilteredValue> filteredValueCustomCrudService() {
-        return new CustomCrudService<>(
+    public CustomBatchCrudService<LongIdKey, FilteredValue> filteredValueCustomCrudService() {
+        return new CustomBatchCrudService<>(
                 filteredValueCrudOperation,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
@@ -118,8 +112,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomCrudService<LongIdKey, PersistenceValue> persistenceValueCustomCrudService() {
-        return new CustomCrudService<>(
+    public CustomBatchCrudService<LongIdKey, PersistenceValue> persistenceValueCustomCrudService() {
+        return new CustomBatchCrudService<>(
                 persistenceValueCrudOperation,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
@@ -175,8 +169,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomCrudService<LongIdKey, TriggeredValue> triggeredValueCustomCrudService() {
-        return new CustomCrudService<>(
+    public CustomBatchCrudService<LongIdKey, TriggeredValue> triggeredValueCustomCrudService() {
+        return new CustomBatchCrudService<>(
                 triggeredValueCrudOperation,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
@@ -303,5 +297,35 @@ public class ServiceConfiguration {
     @Bean
     public Set<LongIdKey> notExistsPoints() {
         return new HashSet<>();
+    }
+
+    @Bean
+    public ReadWriteLock realtimeBlockLock() {
+        return new ReentrantReadWriteLock();
+    }
+
+    @Bean
+    public Map<LongIdKey, RealtimeValue> realtimeValueMap() {
+        return new HashMap<>();
+    }
+
+    @Bean
+    public ReadWriteLock persistenceBlockLock() {
+        return new ReentrantReadWriteLock();
+    }
+
+    @Bean
+    public List<PersistenceValue> persistenceValues() {
+        return new ArrayList<>();
+    }
+
+    @Bean
+    public List<FilteredValue> filteredValues() {
+        return new ArrayList<>();
+    }
+
+    @Bean
+    public List<TriggeredValue> triggeredValues() {
+        return new ArrayList<>();
     }
 }

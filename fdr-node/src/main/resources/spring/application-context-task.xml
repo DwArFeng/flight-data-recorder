@@ -10,4 +10,6 @@
     <task:annotation-driven executor="executor"/>
     <!-- 装配Executor -->
     <task:executor id="executor" pool-size="5-25" queue-capacity="100" keep-alive="120" rejection-policy="CALLER_RUNS"/>
+    <!-- 装配Scheduler -->
+    <task:scheduler id="scheduler" pool-size="10"/>
 </beans>

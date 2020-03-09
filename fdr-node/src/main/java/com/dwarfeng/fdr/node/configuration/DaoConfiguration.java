@@ -8,6 +8,7 @@ import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.*;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
+import com.dwarfeng.subgrade.sdk.hibernate.modification.DefaultDeletionMod;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -53,13 +54,18 @@ public class DaoConfiguration {
     @Value("${redis.dbkey.trigger_serial_version}")
     private String triggerSerialVersionDbKey;
 
+    @Value("${hibernate.jdbc.batch_size}")
+    private int batchSize;
+
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
                 new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
-                HibernateFilteredValue.class
+                HibernateFilteredValue.class,
+                new DefaultDeletionMod<>(),
+                batchSize
         );
     }
 
@@ -79,7 +85,9 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
                 new DozerBeanTransformer<>(FilterInfo.class, HibernateFilterInfo.class, mapper),
-                HibernateFilterInfo.class
+                HibernateFilterInfo.class,
+                new DefaultDeletionMod<>(),
+                batchSize
         );
     }
 
@@ -99,7 +107,9 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
                 new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
-                HibernatePersistenceValue.class
+                HibernatePersistenceValue.class,
+                new DefaultDeletionMod<>(),
+                batchSize
         );
     }
 
@@ -119,7 +129,9 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
                 new DozerBeanTransformer<>(Point.class, HibernatePoint.class, mapper),
-                HibernatePoint.class
+                HibernatePoint.class,
+                new DefaultDeletionMod<>(),
+                batchSize
         );
     }
 
@@ -159,7 +171,9 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
                 new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
-                HibernateTriggeredValue.class
+                HibernateTriggeredValue.class,
+                new DefaultDeletionMod<>(),
+                batchSize
         );
     }
 
@@ -179,7 +193,9 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
                 new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
-                HibernateTriggerInfo.class
+                HibernateTriggerInfo.class,
+                new DefaultDeletionMod<>(),
+                batchSize
         );
     }
 
