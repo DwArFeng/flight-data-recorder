@@ -1,5 +1,6 @@
 package com.dwarfeng.fdr.impl.configuration;
 
+import com.dwarfeng.fdr.impl.service.RecordServiceImpl;
 import com.dwarfeng.fdr.impl.service.operation.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
@@ -19,6 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Configuration
 public class ServiceConfiguration {
@@ -280,5 +288,20 @@ public class ServiceConfiguration {
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
+    }
+
+    @Bean
+    public ReadWriteLock recordServiceLock() {
+        return new ReentrantReadWriteLock();
+    }
+
+    @Bean
+    public Map<LongIdKey, RecordServiceImpl.PointMeta> pointMetaMap() {
+        return new HashMap<>();
+    }
+
+    @Bean
+    public Set<LongIdKey> notExistsPoints() {
+        return new HashSet<>();
     }
 }
