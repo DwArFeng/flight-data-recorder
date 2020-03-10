@@ -14,75 +14,75 @@ import org.springframework.transaction.annotation.Transactional;
 public class RealtimeValueMaintainServiceImpl implements RealtimeValueMaintainService {
 
     @Autowired
-    private CustomCrudService<LongIdKey, RealtimeValue> crudDelegate;
+    private CustomCrudService<LongIdKey, RealtimeValue> crudService;
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public boolean exists(LongIdKey key) throws ServiceException {
-        return crudDelegate.exists(key);
+        return crudService.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public RealtimeValue get(LongIdKey key) throws ServiceException {
-        return crudDelegate.get(key);
+        return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insert(RealtimeValue element) throws ServiceException {
-        return crudDelegate.insert(element);
+        return crudService.insert(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void update(RealtimeValue element) throws ServiceException {
-        crudDelegate.update(element);
+        crudService.update(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void delete(LongIdKey key) throws ServiceException {
-        crudDelegate.delete(key);
+        crudService.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public RealtimeValue getIfExists(LongIdKey key) throws ServiceException {
-        return crudDelegate.getIfExists(key);
+        return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insertIfNotExists(RealtimeValue element) throws ServiceException {
-        return crudDelegate.insertIfNotExists(element);
+        return crudService.insertIfNotExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void updateIfExists(RealtimeValue element) throws ServiceException {
-        crudDelegate.updateIfExists(element);
+        crudService.updateIfExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void deleteIfExists(LongIdKey key) throws ServiceException {
-        crudDelegate.deleteIfExists(key);
+        crudService.deleteIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insertOrUpdate(RealtimeValue element) throws ServiceException {
-        return crudDelegate.insertOrUpdate(element);
+        return crudService.insertOrUpdate(element);
     }
 }

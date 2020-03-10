@@ -11,5 +11,4 @@ import com.dwarfeng.subgrade.stack.service.CrudService;
  * @since 0.0.1-alpha
  */
 public interface RealtimeValueMaintainService extends CrudService<LongIdKey, RealtimeValue> {
-
 }

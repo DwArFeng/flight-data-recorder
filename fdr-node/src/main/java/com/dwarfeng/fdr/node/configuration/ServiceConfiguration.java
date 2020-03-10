@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.node.configuration;
 
-import com.dwarfeng.fdr.impl.service.RecordServiceImpl;
 import com.dwarfeng.fdr.impl.service.operation.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
@@ -17,10 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.*;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Configuration
 public class ServiceConfiguration {
@@ -282,50 +277,5 @@ public class ServiceConfiguration {
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
-    }
-
-    @Bean
-    public ReadWriteLock recordServiceLock() {
-        return new ReentrantReadWriteLock();
-    }
-
-    @Bean
-    public Map<LongIdKey, RecordServiceImpl.PointMeta> pointMetaMap() {
-        return new HashMap<>();
-    }
-
-    @Bean
-    public Set<LongIdKey> notExistsPoints() {
-        return new HashSet<>();
-    }
-
-    @Bean
-    public ReadWriteLock realtimeBlockLock() {
-        return new ReentrantReadWriteLock();
-    }
-
-    @Bean
-    public Map<LongIdKey, RealtimeValue> realtimeValueMap() {
-        return new HashMap<>();
-    }
-
-    @Bean
-    public ReadWriteLock persistenceBlockLock() {
-        return new ReentrantReadWriteLock();
-    }
-
-    @Bean
-    public List<PersistenceValue> persistenceValues() {
-        return new ArrayList<>();
-    }
-
-    @Bean
-    public List<FilteredValue> filteredValues() {
-        return new ArrayList<>();
-    }
-
-    @Bean
-    public List<TriggeredValue> triggeredValues() {
-        return new ArrayList<>();
     }
 }
