@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.preset;
+package com.dwarfeng.fdr.impl.handler.filter;
 
 import com.dwarfeng.fdr.impl.handler.FilterMaker;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
@@ -19,15 +19,15 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * Long过滤器制造器。
+ * Integer过滤器制造器。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
 @Component
-public class LongFilterMaker implements FilterMaker {
+public class IntegerFilterMaker implements FilterMaker {
 
-    public static final String SUPPORT_TYPE = "long_filter";
+    public static final String SUPPORT_TYPE = "integer_filter";
 
     @Autowired
     private ApplicationContext ctx;
@@ -40,7 +40,7 @@ public class LongFilterMaker implements FilterMaker {
     @Override
     public Filter makeFilter(FilterInfo filterInfo) throws FilterException {
         try {
-            LongFilter filter = ctx.getBean(LongFilter.class);
+            IntegerFilter filter = ctx.getBean(IntegerFilter.class);
             filter.setPointKey(filterInfo.getPointKey());
             filter.setFilterInfoKey(filterInfo.getKey());
             return filter;
@@ -56,12 +56,12 @@ public class LongFilterMaker implements FilterMaker {
 
     @Override
     public String provideLabel() {
-        return "长整型浮点过滤器";
+        return "整型数过滤器";
     }
 
     @Override
     public String provideDescription() {
-        return "如果数据值是长整型数，则通过过滤。";
+        return "如果数据值是整型数，则通过过滤。";
     }
 
     @Override
@@ -71,15 +71,15 @@ public class LongFilterMaker implements FilterMaker {
 
     @Component
     @Scope("prototype")
-    public static class LongFilter implements Filter, Bean {
+    public static class IntegerFilter implements Filter, Bean {
 
-        private static final long serialVersionUID = -4468042912091243251L;
-        private static final Logger LOGGER = LoggerFactory.getLogger(LongFilter.class);
+        private static final long serialVersionUID = -3232275174352383029L;
+        private static final Logger LOGGER = LoggerFactory.getLogger(IntegerFilter.class);
 
         private LongIdKey pointKey;
         private LongIdKey filterInfoKey;
 
-        public LongFilter() {
+        public IntegerFilter() {
         }
 
         @Override
@@ -87,16 +87,16 @@ public class LongFilterMaker implements FilterMaker {
             try {
                 String value = dataInfo.getValue();
                 try {
-                    Long.parseLong(value);
+                    Integer.parseInt(value);
                 } catch (NumberFormatException e) {
-                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过长整型数范围, 不能通过过滤...", e);
+                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过整型数范围, 不能通过过滤...", e);
                     return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
                             dataInfo.getHappenedDate(),
                             dataInfo.getValue(),
-                            "数据值不是数字或超过长整型数范围"
+                            "数据值不是数字或超过整型数范围"
                     );
                 }
                 LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 通过过滤器...");
@@ -124,7 +124,7 @@ public class LongFilterMaker implements FilterMaker {
 
         @Override
         public String toString() {
-            return "LongFilter{" +
+            return "IntegerFilter{" +
                     "pointKey=" + pointKey +
                     ", filterInfoKey=" + filterInfoKey +
                     '}';

@@ -1,7 +1,5 @@
-package com.dwarfeng.fdr.impl.handler.preset;
+package com.dwarfeng.fdr.impl.handler.filter;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.fdr.impl.handler.FilterMaker;
 import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
@@ -21,15 +19,15 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * 正则表达式过滤器制造器。
+ * Long过滤器制造器。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
 @Component
-public class RegexFilterMaker implements FilterMaker {
+public class LongFilterMaker implements FilterMaker {
 
-    public static final String SUPPORT_TYPE = "regex_filter";
+    public static final String SUPPORT_TYPE = "long_filter";
 
     @Autowired
     private ApplicationContext ctx;
@@ -42,10 +40,9 @@ public class RegexFilterMaker implements FilterMaker {
     @Override
     public Filter makeFilter(FilterInfo filterInfo) throws FilterException {
         try {
-            RegexFilter filter = ctx.getBean(RegexFilter.class);
+            LongFilter filter = ctx.getBean(LongFilter.class);
             filter.setPointKey(filterInfo.getPointKey());
             filter.setFilterInfoKey(filterInfo.getKey());
-            filter.setConfig(JSON.parseObject(filterInfo.getContent(), Config.class));
             return filter;
         } catch (Exception e) {
             throw new FilterMakeException(e);
@@ -59,49 +56,48 @@ public class RegexFilterMaker implements FilterMaker {
 
     @Override
     public String provideLabel() {
-        return "正则表达式过滤器";
+        return "长整型浮点过滤器";
     }
 
     @Override
     public String provideDescription() {
-        return "如果数据值匹配指定的正则表达式，则通过过滤。";
+        return "如果数据值是长整型数，则通过过滤。";
     }
 
     @Override
     public String provideExampleContent() {
-        return JSON.toJSONString(new Config("^\\d+$"), true);
+        return "";
     }
 
     @Component
     @Scope("prototype")
-    public static class RegexFilter implements Filter, Bean {
+    public static class LongFilter implements Filter, Bean {
 
-        private static final long serialVersionUID = 970186550656361331L;
-        private static final Logger LOGGER = LoggerFactory.getLogger(RegexFilter.class);
+        private static final long serialVersionUID = -4468042912091243251L;
+        private static final Logger LOGGER = LoggerFactory.getLogger(LongFilter.class);
 
         private LongIdKey pointKey;
         private LongIdKey filterInfoKey;
-        private Config config;
 
-        public RegexFilter() {
+        public LongFilter() {
         }
 
         @Override
         public FilteredValue test(DataInfo dataInfo) throws FilterException {
             try {
                 String value = dataInfo.getValue();
-                if (!value.matches(config.getPattern())) {
-                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不能匹配正则表达式 " + config.getPattern()
-                            + ", 不能通过过滤...");
+                try {
+                    Long.parseLong(value);
+                } catch (NumberFormatException e) {
+                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过长整型数范围, 不能通过过滤...", e);
                     return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
                             dataInfo.getHappenedDate(),
                             dataInfo.getValue(),
-                            "数据值不是数字"
+                            "数据值不是数字或超过长整型数范围"
                     );
-
                 }
                 LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 通过过滤器...");
                 return null;
@@ -126,50 +122,11 @@ public class RegexFilterMaker implements FilterMaker {
             this.filterInfoKey = filterInfoKey;
         }
 
-        public Config getConfig() {
-            return config;
-        }
-
-        public void setConfig(Config config) {
-            this.config = config;
-        }
-
         @Override
         public String toString() {
-            return "RegexFilter{" +
+            return "LongFilter{" +
                     "pointKey=" + pointKey +
                     ", filterInfoKey=" + filterInfoKey +
-                    ", config=" + config +
-                    '}';
-        }
-    }
-
-    public static class Config implements Bean {
-
-        private static final long serialVersionUID = -4947434410530771676L;
-
-        @JSONField(name = "pattern")
-        private String pattern;
-
-        public Config() {
-        }
-
-        public Config(String pattern) {
-            this.pattern = pattern;
-        }
-
-        public String getPattern() {
-            return pattern;
-        }
-
-        public void setPattern(String pattern) {
-            this.pattern = pattern;
-        }
-
-        @Override
-        public String toString() {
-            return "Config{" +
-                    "pattern='" + pattern + '\'' +
                     '}';
         }
     }

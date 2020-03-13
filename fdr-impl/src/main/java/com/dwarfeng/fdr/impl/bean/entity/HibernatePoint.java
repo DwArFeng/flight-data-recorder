@@ -41,15 +41,6 @@ public class HibernatePoint implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggerInfo.class, mappedBy = "point")
     private Set<HibernateTriggerInfo> triggerInfos = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilteredValue.class, mappedBy = "point")
-    private Set<HibernateFilteredValue> filteredValues = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePersistenceValue.class, mappedBy = "point")
-    private Set<HibernatePersistenceValue> persistenceValues = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateTriggeredValue.class, mappedBy = "point")
-    private Set<HibernateTriggeredValue> triggeredValues = new HashSet<>();
-
     public HibernatePoint() {
     }
 
@@ -115,30 +106,6 @@ public class HibernatePoint implements Bean {
 
     public void setTriggerInfos(Set<HibernateTriggerInfo> triggerInfos) {
         this.triggerInfos = triggerInfos;
-    }
-
-    public Set<HibernateFilteredValue> getFilteredValues() {
-        return filteredValues;
-    }
-
-    public void setFilteredValues(Set<HibernateFilteredValue> filteredValues) {
-        this.filteredValues = filteredValues;
-    }
-
-    public Set<HibernatePersistenceValue> getPersistenceValues() {
-        return persistenceValues;
-    }
-
-    public void setPersistenceValues(Set<HibernatePersistenceValue> persistenceValues) {
-        this.persistenceValues = persistenceValues;
-    }
-
-    public Set<HibernateTriggeredValue> getTriggeredValues() {
-        return triggeredValues;
-    }
-
-    public void setTriggeredValues(Set<HibernateTriggeredValue> triggeredValues) {
-        this.triggeredValues = triggeredValues;
     }
 
     @Override

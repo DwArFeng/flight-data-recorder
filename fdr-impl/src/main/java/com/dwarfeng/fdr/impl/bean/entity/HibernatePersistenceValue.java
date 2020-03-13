@@ -20,23 +20,15 @@ public class HibernatePersistenceValue implements Bean {
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------外键-----------------------------------------------------------
+    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "point_id")
     private Long pointLongId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
     @Column(name = "value", length = Constraints.LENGTH_VALUE, nullable = false)
     private String value;
-
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
-    @ManyToOne(targetEntity = HibernatePoint.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "point_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernatePoint point;
 
     public HibernatePersistenceValue() {
     }
@@ -87,14 +79,6 @@ public class HibernatePersistenceValue implements Bean {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public HibernatePoint getPoint() {
-        return point;
-    }
-
-    public void setPoint(HibernatePoint point) {
-        this.point = point;
     }
 
     @Override

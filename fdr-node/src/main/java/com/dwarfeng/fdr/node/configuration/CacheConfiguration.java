@@ -35,6 +35,10 @@ public class CacheConfiguration {
     private String filterSupportPrefix;
     @Value("${cache.prefix.entity.trigger_support}")
     private String triggerSupportPrefix;
+    @Value("${cache.prefix.list.enabled_filter_info}")
+    private String enabledFilterInfoPrefix;
+    @Value("${cache.prefix.list.enabled_trigger_info}")
+    private String enabledTriggerInfoPrefix;
 
     @Bean
     @SuppressWarnings("unchecked")
@@ -71,7 +75,7 @@ public class CacheConfiguration {
     public RedisKeyListCache<LongIdKey, FilterInfo, FastJsonFilterInfo> filterInfoEnabledRedisKeyListCache() {
         return new RedisKeyListCache<>(
                 (RedisTemplate<String, FastJsonFilterInfo>) template,
-                new LongIdStringKeyFormatter(filterInfoPrefix),
+                new LongIdStringKeyFormatter(enabledFilterInfoPrefix),
                 new DozerBeanTransformer<>(FilterInfo.class, FastJsonFilterInfo.class, mapper)
         );
     }
@@ -81,7 +85,7 @@ public class CacheConfiguration {
     public RedisKeyListCache<LongIdKey, TriggerInfo, FastJsonTriggerInfo> triggerInfoEnabledRedisKeyListCache() {
         return new RedisKeyListCache<>(
                 (RedisTemplate<String, FastJsonTriggerInfo>) template,
-                new LongIdStringKeyFormatter(triggerInfoPrefix),
+                new LongIdStringKeyFormatter(enabledTriggerInfoPrefix),
                 new DozerBeanTransformer<>(TriggerInfo.class, FastJsonTriggerInfo.class, mapper)
         );
     }

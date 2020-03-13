@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.preset;
+package com.dwarfeng.fdr.impl.handler.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
@@ -21,15 +21,15 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 /**
- * 具有范围的 Double过滤器制造器。
+ * 具有范围的 Long过滤器制造器。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
 @Component
-public class RangedDoubleFilterMaker implements FilterMaker {
+public class RangedLongFilterMaker implements FilterMaker {
 
-    public static final String SUPPORT_TYPE = "ranged_double_filter";
+    public static final String SUPPORT_TYPE = "ranged_long_filter";
 
     @Autowired
     private ApplicationContext ctx;
@@ -42,7 +42,7 @@ public class RangedDoubleFilterMaker implements FilterMaker {
     @Override
     public Filter makeFilter(FilterInfo filterInfo) throws FilterException {
         try {
-            RangedDoubleFilter filter = ctx.getBean(RangedDoubleFilter.class);
+            RangedLongFilter filter = ctx.getBean(RangedLongFilter.class);
             filter.setPointKey(filterInfo.getPointKey());
             filter.setFilterInfoKey(filterInfo.getKey());
             filter.setConfig(JSON.parseObject(filterInfo.getContent(), Config.class));
@@ -59,59 +59,59 @@ public class RangedDoubleFilterMaker implements FilterMaker {
 
     @Override
     public String provideLabel() {
-        return "具有范围的双精度浮点过滤器";
+        return "具有范围的长整型过滤器";
     }
 
     @Override
     public String provideDescription() {
-        return "如果数据值是双精度浮点数且数值在配置的范围之内，则通过过滤。";
+        return "如果数据值是长整型数且数值在配置的范围之内，则通过过滤。";
     }
 
     @Override
     public String provideExampleContent() {
         return JSON.toJSONString(new Config(
-                0.5,
+                1L,
                 true,
-                -1.25,
+                -2L,
                 false
         ), true);
     }
 
     @Component
     @Scope("prototype")
-    public static class RangedDoubleFilter implements Filter, Bean {
+    public static class RangedLongFilter implements Filter, Bean {
 
-        private static final long serialVersionUID = -7217865313990907457L;
-        private static final Logger LOGGER = LoggerFactory.getLogger(RangedDoubleFilter.class);
+        private static final long serialVersionUID = -3232275174352383029L;
+        private static final Logger LOGGER = LoggerFactory.getLogger(RangedLongFilter.class);
 
         private LongIdKey pointKey;
         private LongIdKey filterInfoKey;
         private Config config;
 
-        public RangedDoubleFilter() {
+        public RangedLongFilter() {
         }
 
         @Override
         public FilteredValue test(DataInfo dataInfo) throws FilterException {
             try {
                 String value = dataInfo.getValue();
-                double doubleValue;
+                long longValue;
                 try {
-                    doubleValue = Double.parseDouble(value);
+                    longValue = Long.parseLong(value);
                 } catch (NumberFormatException e) {
-                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过双精度浮点数范围, 不能通过过滤...", e);
+                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过长整型数范围, 不能通过过滤...", e);
                     return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
                             dataInfo.getHappenedDate(),
                             dataInfo.getValue(),
-                            "数据值不是数字或超过双精度浮点数范围"
+                            "数据值不是数字或超过长整型数范围"
                     );
                 }
 
-                if ((config.getCanEqualsMin() && doubleValue < config.getMin()) ||
-                        (!config.getCanEqualsMin() && doubleValue <= config.getMin())) {
+                if ((config.getCanEqualsMin() && longValue < config.getMin()) ||
+                        (!config.getCanEqualsMin() && longValue <= config.getMin())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 小于(或小于等于等于)最小值, 不能通过过滤...");
                     return new FilteredValue(
                             null,
@@ -123,8 +123,8 @@ public class RangedDoubleFilterMaker implements FilterMaker {
                     );
                 }
 
-                if ((config.getCanEqualsMax() && doubleValue > config.getMax()) ||
-                        (!config.getCanEqualsMax() && doubleValue >= config.getMax())) {
+                if ((config.getCanEqualsMax() && longValue > config.getMax()) ||
+                        (!config.getCanEqualsMax() && longValue >= config.getMax())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 大于(或大于等于等于)最大值, 不能通过过滤...");
                     return new FilteredValue(
                             null,
@@ -169,7 +169,7 @@ public class RangedDoubleFilterMaker implements FilterMaker {
 
         @Override
         public String toString() {
-            return "RangedDoubleFilter{" +
+            return "RangedLongFilter{" +
                     "pointKey=" + pointKey +
                     ", filterInfoKey=" + filterInfoKey +
                     ", config=" + config +
@@ -179,16 +179,16 @@ public class RangedDoubleFilterMaker implements FilterMaker {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 7448644831542247410L;
+        private static final long serialVersionUID = 4302356058688595782L;
 
         @JSONField(name = "min")
-        private Double min;
+        private Long min;
 
         @JSONField(name = "can_equals_min")
         private Boolean canEqualsMin;
 
         @JSONField(name = "max")
-        private Double max;
+        private Long max;
 
         @JSONField(name = "can_equals_max")
         private Boolean canEqualsMax;
@@ -196,18 +196,18 @@ public class RangedDoubleFilterMaker implements FilterMaker {
         public Config() {
         }
 
-        public Config(Double min, Boolean canEqualsMin, Double max, Boolean canEqualsMax) {
+        public Config(Long min, Boolean canEqualsMin, Long max, Boolean canEqualsMax) {
             this.min = min;
             this.canEqualsMin = canEqualsMin;
             this.max = max;
             this.canEqualsMax = canEqualsMax;
         }
 
-        public Double getMin() {
+        public Long getMin() {
             return min;
         }
 
-        public void setMin(Double min) {
+        public void setMin(Long min) {
             this.min = min;
         }
 
@@ -219,11 +219,11 @@ public class RangedDoubleFilterMaker implements FilterMaker {
             this.canEqualsMin = canEqualsMin;
         }
 
-        public Double getMax() {
+        public Long getMax() {
             return max;
         }
 
-        public void setMax(Double max) {
+        public void setMax(Long max) {
             this.max = max;
         }
 

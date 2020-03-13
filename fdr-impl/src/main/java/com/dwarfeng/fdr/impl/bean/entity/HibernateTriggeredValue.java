@@ -20,14 +20,13 @@ public class HibernateTriggeredValue implements Bean {
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------外键-----------------------------------------------------------
+    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "point_id")
     private Long pointLongId;
 
     @Column(name = "trigger_id")
     private Long triggerLongId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
@@ -36,19 +35,6 @@ public class HibernateTriggeredValue implements Bean {
 
     @Column(name = "message", length = Constraints.LENGTH_MESSAGE)
     private String message;
-
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
-    @ManyToOne(targetEntity = HibernatePoint.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "point_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernatePoint point;
-
-    @ManyToOne(targetEntity = HibernateTriggerInfo.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "trigger_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateTriggerInfo triggerInfo;
 
     public HibernateTriggeredValue() {
     }
@@ -123,22 +109,6 @@ public class HibernateTriggeredValue implements Bean {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public HibernatePoint getPoint() {
-        return point;
-    }
-
-    public void setPoint(HibernatePoint point) {
-        this.point = point;
-    }
-
-    public HibernateTriggerInfo getTriggerInfo() {
-        return triggerInfo;
-    }
-
-    public void setTriggerInfo(HibernateTriggerInfo triggerInfo) {
-        this.triggerInfo = triggerInfo;
     }
 
     @Override

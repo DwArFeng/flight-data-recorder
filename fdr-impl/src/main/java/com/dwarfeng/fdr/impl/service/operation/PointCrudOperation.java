@@ -1,9 +1,14 @@
 package com.dwarfeng.fdr.impl.service.operation;
 
-import com.dwarfeng.fdr.stack.bean.entity.*;
+import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
+import com.dwarfeng.fdr.stack.bean.entity.Point;
+import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.cache.*;
-import com.dwarfeng.fdr.stack.dao.*;
-import com.dwarfeng.fdr.stack.service.*;
+import com.dwarfeng.fdr.stack.dao.FilterInfoDao;
+import com.dwarfeng.fdr.stack.dao.PointDao;
+import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
+import com.dwarfeng.fdr.stack.service.FilterInfoMaintainService;
+import com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.CrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -24,14 +29,6 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
     private FilterInfoDao filterInfoDao;
     @Autowired
     private TriggerInfoDao triggerInfoDao;
-    @Autowired
-    private FilteredValueDao filteredValueDao;
-    @Autowired
-    private TriggeredValueDao triggeredValueDao;
-    @Autowired
-    private PersistenceValueDao persistenceValueDao;
-    @Autowired
-    private RealtimeValueDao realtimeValueDao;
 
     @Autowired
     private PointCache pointCache;
@@ -81,42 +78,13 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
 
     @Override
     public void delete(LongIdKey key) throws Exception {
-        //删除与点位直接相关的数据值。
-        {
-            if (realtimeValueDao.exists(key)) {
-                realtimeValueDao.delete(key);
-            }
-
-            List<LongIdKey> filteredValueKeys = filteredValueDao.lookup(FilteredValueMaintainService.CHILD_FOR_POINT, new Object[]{key})
-                    .stream().map(FilteredValue::getKey).collect(Collectors.toList());
-            filteredValueDao.batchDelete(filteredValueKeys);
-
-            List<LongIdKey> triggeredValueKeys = triggeredValueDao.lookup(TriggeredValueMaintainService.CHILD_FOR_POINT, new Object[]{key})
-                    .stream().map(TriggeredValue::getKey).collect(Collectors.toList());
-            triggeredValueDao.batchDelete(triggeredValueKeys);
-
-            List<LongIdKey> persistenceValueKeys = persistenceValueDao.lookup(PersistenceValueMaintainService.CHILD_FOR_POINT, new Object[]{key})
-                    .stream().map(PersistenceValue::getKey).collect(Collectors.toList());
-            persistenceValueDao.batchDelete(persistenceValueKeys);
-        }
-
-        //删除与点位拥有的过滤器与触发器相关的点位以及其过滤器触发器本身。
+        //删除与点位相关的过滤器触发器。
         {
             //查找点位拥有的过滤器与触发器。
             List<LongIdKey> filterInfoKeys = filterInfoDao.lookup(FilterInfoMaintainService.CHILD_FOR_POINT, new Object[]{key})
                     .stream().map(FilterInfo::getKey).collect(Collectors.toList());
             List<LongIdKey> triggerInfoKeys = triggerInfoDao.lookup(TriggerInfoMaintainService.CHILD_FOR_POINT, new Object[]{key})
                     .stream().map(TriggerInfo::getKey).collect(Collectors.toList());
-
-            //查找点位拥有的过滤器与触发器相关的数据点。
-            List<LongIdKey> filteredValueKeys = filteredValueDao.lookup(FilteredValueMaintainService.CHILD_FOR_FILTER_SET, new Object[]{filterInfoKeys})
-                    .stream().map(FilteredValue::getKey).collect(Collectors.toList());
-            List<LongIdKey> triggeredValueKeys = triggeredValueDao.lookup(TriggeredValueMaintainService.CHILD_FOR_TRIGGER_SET, new Object[]{triggerInfoKeys})
-                    .stream().map(TriggeredValue::getKey).collect(Collectors.toList());
-
-            //删除点位拥有的过滤器与触发器相关的数据点。
-            filteredValueDao.batchDelete(filteredValueKeys);
-            triggeredValueDao.batchDelete(triggeredValueKeys);
 
             //删除点位拥有的过滤器与触发器。
             filterInfoDao.batchDelete(filterInfoKeys);

@@ -5,9 +5,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Entity
 @IdClass(HibernateLongIdKey.class)
@@ -44,10 +42,6 @@ public class HibernateFilterInfo implements Bean {
             @JoinColumn(name = "point_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernatePoint point;
-
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateFilteredValue.class, mappedBy = "filterInfo")
-    private Set<HibernateFilteredValue> filteredValues = new HashSet<>();
 
     public HibernateFilterInfo() {
     }
@@ -122,14 +116,6 @@ public class HibernateFilterInfo implements Bean {
 
     public void setPoint(HibernatePoint point) {
         this.point = point;
-    }
-
-    public Set<HibernateFilteredValue> getFilteredValues() {
-        return filteredValues;
-    }
-
-    public void setFilteredValues(Set<HibernateFilteredValue> filteredValues) {
-        this.filteredValues = filteredValues;
     }
 
     @Override

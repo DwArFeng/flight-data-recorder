@@ -20,14 +20,13 @@ public class HibernateFilteredValue implements Bean {
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------外键-----------------------------------------------------------
+    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "point_id")
     private Long pointLongId;
 
     @Column(name = "filter_id")
     private Long filterLongId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
@@ -36,19 +35,6 @@ public class HibernateFilteredValue implements Bean {
 
     @Column(name = "message", length = Constraints.LENGTH_MESSAGE)
     private String message;
-
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
-    @ManyToOne(targetEntity = HibernatePoint.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "point_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernatePoint point;
-
-    @ManyToOne(targetEntity = HibernateFilterInfo.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "filter_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateFilterInfo filterInfo;
 
     public HibernateFilteredValue() {
     }
@@ -123,22 +109,6 @@ public class HibernateFilteredValue implements Bean {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public HibernatePoint getPoint() {
-        return point;
-    }
-
-    public void setPoint(HibernatePoint point) {
-        this.point = point;
-    }
-
-    public HibernateFilterInfo getFilterInfo() {
-        return filterInfo;
-    }
-
-    public void setFilterInfo(HibernateFilterInfo filterInfo) {
-        this.filterInfo = filterInfo;
     }
 
     @Override

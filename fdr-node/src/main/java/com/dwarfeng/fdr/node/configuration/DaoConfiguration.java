@@ -49,10 +49,6 @@ public class DaoConfiguration {
 
     @Value("${redis.dbkey.realtime_value}")
     private String realtimeValueDbKey;
-    @Value("${redis.dbkey.filter_serial_version}")
-    private String filterSerialVersionDbKey;
-    @Value("${redis.dbkey.trigger_serial_version}")
-    private String triggerSerialVersionDbKey;
 
     @Value("${hibernate.jdbc.batch_size}")
     private int batchSize;

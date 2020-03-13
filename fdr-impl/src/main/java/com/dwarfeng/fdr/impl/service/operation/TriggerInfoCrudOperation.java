@@ -1,12 +1,9 @@
 package com.dwarfeng.fdr.impl.service.operation;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.cache.EnabledTriggerInfoCache;
 import com.dwarfeng.fdr.stack.cache.TriggerInfoCache;
 import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
-import com.dwarfeng.fdr.stack.dao.TriggeredValueDao;
-import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.CrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -15,17 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Component
 public class TriggerInfoCrudOperation implements CrudOperation<LongIdKey, TriggerInfo> {
 
     @Autowired
     private TriggerInfoDao triggerInfoDao;
-    @Autowired
-    private TriggeredValueDao triggeredValueDao;
 
     @Autowired
     private TriggerInfoCache triggerInfoCache;
@@ -85,10 +78,6 @@ public class TriggerInfoCrudOperation implements CrudOperation<LongIdKey, Trigge
         if (Objects.nonNull(oldTriggerInfo.getPointKey())) {
             enabledTriggerInfoCache.delete(oldTriggerInfo.getPointKey());
         }
-
-        List<LongIdKey> triggeredValueKeys = triggeredValueDao.lookup(TriggeredValueMaintainService.CHILD_FOR_TRIGGER, new Object[]{key})
-                .stream().map(TriggeredValue::getKey).collect(Collectors.toList());
-        triggeredValueDao.batchDelete(triggeredValueKeys);
 
         triggerInfoDao.delete(key);
         triggerInfoCache.delete(key);
