@@ -102,6 +102,17 @@ public class LocalCacheHandlerImpl implements LocalCacheHandler {
         }
     }
 
+    @Override
+    public void clear() {
+        lock.writeLock().lock();
+        try {
+            contextMap.clear();
+            notExistPoints.clear();
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+
     @Component
     public static class RecordContextFetcher {
 

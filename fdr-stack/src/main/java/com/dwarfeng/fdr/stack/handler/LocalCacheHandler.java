@@ -37,6 +37,13 @@ public interface LocalCacheHandler extends Handler {
     RecordContext getRecordContext(LongIdKey pointKey) throws HandlerException;
 
     /**
+     * 清除本地缓存。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void clear() throws HandlerException;
+
+    /**
      * 数据记录上下文。
      *
      * @author DwArFeng
