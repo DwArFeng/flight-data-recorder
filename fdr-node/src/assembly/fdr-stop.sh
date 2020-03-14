@@ -1,6 +1,6 @@
 #!/bin/bash
 # 程序的根目录
-basedir=/usr/share/fdr-recorder
+basedir=/usr/share/fdr
 
-PID=$(cat $basedir/fdr-recorder.pid)
+PID=$(cat $basedir/fdr.pid)
 kill "$PID"

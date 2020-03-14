@@ -1,10 +1,13 @@
 # ChangeLog
 
-### Release_1.2.0_202003010_build_A
+### Release_1.2.0_202003014_build_A
 
 #### 功能构建
 
 - 优化数据记录的效率。
+- 实现 Qos 服务。
+- 更改启动器为 spring-terminator 风格。
+- 更新依赖 dutil 至版本 beta-0.2.1.a。
 
 #### Bug修复
 
