@@ -1,18 +1,17 @@
-<?xml version="1.0"?>
-<project
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.dwarfeng</groupId>
         <artifactId>fdr</artifactId>
+        <groupId>com.dwarfeng</groupId>
         <version>1.3.1.a-SNAPSHOT</version>
     </parent>
 
-    <artifactId>fdr-node</artifactId>
-    <name>fdr-node</name>
+    <artifactId>fdr-plugin</artifactId>
+    <name>fdr-plugin</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -30,6 +29,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- AspectJ框架 -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
         <!-- Spring框架 -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -37,28 +41,55 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Dubbo分布式包 -->
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
         </dependency>
-        <!-- Netty网络连接包 -->
+        <!-- Druid连接池 -->
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
         </dependency>
-        <!-- Curator框架 -->
+        <!-- Hibernate框架 -->
         <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
         </dependency>
-        <!-- zookeeper客户端 -->
+        <!-- MySql连接器 -->
         <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- Redis客户端 -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <!-- FastJson Json处理工具包 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <!-- Dozer模块 -->
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer-spring</artifactId>
+        </dependency>
+        <!-- dutil模块 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>dutil-basic</artifactId>
         </dependency>
         <!-- 日志处理 -->
         <dependency>
@@ -68,6 +99,11 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
+        </dependency>
+        <!-- SnowFlake服务 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>snowflake-distributed-service-api</artifactId>
         </dependency>
         <!-- subgrade组件 -->
         <dependency>
@@ -82,16 +118,6 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>subgrade-impl</artifactId>
         </dependency>
-        <!-- spring-terminator组件 -->
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>spring-terminator</artifactId>
-        </dependency>
-        <!-- dcti标准接口 -->
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>dcti</artifactId>
-        </dependency>
         <!-- 程序自身模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
@@ -104,15 +130,11 @@
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>fdr-impl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>fdr-plugin</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <!-- 插件列表 -->
         <plugins>
             <!-- Maven 清理插件，用于清理测试时留下的日志。 -->
             <plugin>
@@ -126,41 +148,12 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <!-- Maven 装配插件，用于装配项目文件。 -->
+            <!-- Maven 测试插件，用于跳过测试。 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>single</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/assembly.xml</descriptor>
-                            </descriptors>
-                            <tarLongFileMode>gnu</tarLongFileMode>
-                            <attach>false</attach>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Maven 打包插件，用于打可以运行的jar包。 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <archive>  
-                        <manifest>  
-                             <addClasspath>true</addClasspath>  
-                             <classpathPrefix>./</classpathPrefix>  
-                             <mainClass>com.dwarfeng.fdr.node.launcher.Launcher</mainClass>  
-                        </manifest>
-                    </archive>
-                    <finalName>${project.name}-${project.version}</finalName>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

@@ -14,21 +14,33 @@ import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
+import org.apache.dubbo.common.extension.ExtensionLoader;
+import org.apache.dubbo.registry.Registry;
+import org.apache.dubbo.registry.RegistryFactory;
+import org.apache.dubbo.rpc.model.ApplicationModel;
+import org.apache.dubbo.rpc.model.ProviderModel;
+import org.apache.dubbo.rpc.model.ServiceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Service
-public class RecordServiceImpl implements RecordService {
+public class RecordServiceImpl implements RecordService, RecordControlHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordServiceImpl.class);
+    private static final String SERVICE_NAME = RecordService.class.getCanonicalName();
+    private static final RegistryFactory REGISTER_FACTORY = ExtensionLoader.getExtensionLoader(RegistryFactory.class).getAdaptiveExtension();
+    private static final ServiceRepository SERVICE_REPOSITORY = ApplicationModel.getServiceRepository();
 
     @Autowired
     private KeyFetcher<LongIdKey> keyFetcher;
@@ -136,6 +148,60 @@ public class RecordServiceImpl implements RecordService {
             throw ServiceExceptionHelper.logAndThrow("记录数据信息时发生异常",
                     LogLevel.WARN, sem, e
             );
+        }
+    }
+
+    /**
+     * 注意: 该方法的实现与 dubbo 版本有关，更改dubbo的版本有可能导致该方法需要重写。
+     *
+     * @since 1.3.1
+     */
+    @Override
+    public void online() throws HandlerException {
+        try {
+            Collection<ProviderModel> providerModelList = SERVICE_REPOSITORY.getExportedServices();
+            ProviderModel providerModel = providerModelList.stream()
+                    .filter(p -> p.getServiceMetadata().getDisplayServiceKey().startsWith(SERVICE_NAME))
+                    .findAny().orElseThrow(() -> new HandlerException("找不到 dubbo 提供者 " + SERVICE_NAME));
+            List<ProviderModel.RegisterStatedURL> statedUrls = providerModel.getStatedUrl();
+            for (ProviderModel.RegisterStatedURL statedURL : statedUrls) {
+                if (!statedURL.isRegistered()) {
+                    Registry registry = REGISTER_FACTORY.getRegistry(statedURL.getRegistryUrl());
+                    registry.register(statedURL.getProviderUrl());
+                    statedURL.setRegistered(true);
+                }
+            }
+        } catch (HandlerException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
+    /**
+     * 注意: 该方法的实现与 dubbo 版本有关，更改dubbo的版本有可能导致该方法需要重写。
+     *
+     * @since 1.3.1
+     */
+    @Override
+    public void offline() throws HandlerException {
+        try {
+            Collection<ProviderModel> providerModelList = SERVICE_REPOSITORY.getExportedServices();
+            ProviderModel providerModel = providerModelList.stream()
+                    .filter(p -> p.getServiceMetadata().getDisplayServiceKey().startsWith(SERVICE_NAME))
+                    .findAny().orElseThrow(() -> new HandlerException("找不到 dubbo 提供者 " + SERVICE_NAME));
+            List<ProviderModel.RegisterStatedURL> statedUrls = providerModel.getStatedUrl();
+            for (ProviderModel.RegisterStatedURL statedURL : statedUrls) {
+                if (statedURL.isRegistered()) {
+                    Registry registry = REGISTER_FACTORY.getRegistry(statedURL.getRegistryUrl());
+                    registry.unregister(statedURL.getProviderUrl());
+                    statedURL.setRegistered(false);
+                }
+            }
+        } catch (HandlerException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new HandlerException(e);
         }
     }
 }

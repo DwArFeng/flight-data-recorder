@@ -5,6 +5,8 @@
 #### 功能构建
 
 - 优化AbstractConsumeHandler启动和停止时的代码。
+- 构建 fdr-plugin 模块。
+- 新建 kafka source 插件。
 
 #### Bug修复
 

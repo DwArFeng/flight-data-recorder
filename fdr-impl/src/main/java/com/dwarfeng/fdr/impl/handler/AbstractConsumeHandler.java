@@ -63,7 +63,7 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
                     this.batchSize,
                     this.maxIdleTime,
                     this.buffer.size(),
-                    tasks.stream().map(ConsumeTask::getProcessingElementSize).reduce(0, Integer::sum)
+                    tasks.stream().map(ConsumeTask::processingElementSize).reduce(0, Integer::sum)
             );
         } finally {
             lock.unlock();
@@ -87,7 +87,7 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
                 }
             } else if (threadDelta < 0) {
                 Set<ConsumeTask> collect = tasks.stream().limit(-threadDelta).collect(Collectors.toSet());
-                collect.forEach(task -> task.setRunningFlag(false));
+                collect.forEach(ConsumeTask::shutdown);
                 tasks.removeAll(collect);
             }
             provideCondition.signalAll();
@@ -118,7 +118,7 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
         lock.lock();
         try {
             if (startFlag) {
-                tasks.forEach(task -> task.setRunningFlag(false));
+                tasks.forEach(ConsumeTask::shutdown);
                 tasks.clear();
                 provideCondition.signalAll();
                 consumerCondition.signalAll();
@@ -143,20 +143,12 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
             }
         }
 
-        public boolean isRunningFlag() {
-            return runningFlag;
+        public void shutdown() {
+            this.runningFlag = false;
         }
 
-        public void setRunningFlag(boolean runningFlag) {
-            this.runningFlag = runningFlag;
-        }
-
-        public int getProcessingElementSize() {
+        public int processingElementSize() {
             return processingElementSize;
-        }
-
-        public void setProcessingElementSize(int processingElementSize) {
-            this.processingElementSize = processingElementSize;
         }
 
         private void consume() {
