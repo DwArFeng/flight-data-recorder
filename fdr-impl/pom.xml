@@ -98,14 +98,6 @@
             </exclusions>
             <version>${dubbo.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo-registry</artifactId>
-        </dependency>
         <!-- dutil模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
@@ -137,6 +129,11 @@
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>subgrade-impl</artifactId>
+        </dependency>
+        <!-- dcti标准接口 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>dcti</artifactId>
         </dependency>
         <!-- 程序自身模块 -->
         <dependency>

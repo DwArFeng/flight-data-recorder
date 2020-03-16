@@ -1,10 +1,11 @@
 # ChangeLog
 
-### Release_1.2.0_202003014_build_A
+### Release_1.3.0_202003016_build_A
 
 #### 功能构建
 
 - 建立 RecordControlHandler 并实现记录服务的上下线。
+- 将数据记录模块集成至dcti。
 
 #### Bug修复
 

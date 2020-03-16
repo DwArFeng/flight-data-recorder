@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
+import com.dwarfeng.dcti.sdk.util.DataInfoUtil;
+import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
@@ -53,6 +54,18 @@ public class RecordServiceImpl implements RecordService {
 
     @Autowired
     private ServiceExceptionMapper sem;
+
+    @Override
+    @BehaviorAnalyse
+    public void record(String message) throws ServiceException {
+        try {
+            record(DataInfoUtil.fromMessage(message));
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("记录数据信息时发生异常",
+                    LogLevel.WARN, sem, e
+            );
+        }
+    }
 
     /**
      * 优化的记录方法。

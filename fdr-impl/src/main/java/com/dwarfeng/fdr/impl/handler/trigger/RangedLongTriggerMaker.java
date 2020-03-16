@@ -2,8 +2,8 @@ package com.dwarfeng.fdr.impl.handler.trigger;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.impl.handler.TriggerMaker;
-import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.exception.TriggerException;

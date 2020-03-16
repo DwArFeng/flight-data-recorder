@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.handler;
 
-import com.dwarfeng.fdr.stack.bean.dto.DataInfo;
+import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
 

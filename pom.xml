@@ -58,6 +58,7 @@
         <snowflake.version>1.2.3.a</snowflake.version>
         <subgrade.version>beta-0.3.2.a-SNAPSHOT</subgrade.version>
         <spring-terminator.version>1.0.2.a</spring-terminator.version>
+        <dcti.version>1.0.0.b</dcti.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -119,30 +120,6 @@
                         <artifactId>spring</artifactId>
                     </exclusion>
                 </exclusions>
-                <version>${dubbo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-common</artifactId>
-                <version>${dubbo.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.apache.logging.log4j</groupId>
-                        <artifactId>log4j-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.apache.logging.log4j</groupId>
-                        <artifactId>log4j-core</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-registry</artifactId>
                 <version>${dubbo.version}</version>
             </dependency>
             <!-- Netty网络连接包 -->
@@ -401,6 +378,12 @@
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>spring-terminator</artifactId>
                 <version>${spring-terminator.version}</version>
+            </dependency>
+            <!-- dcti标准接口 -->
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>dcti</artifactId>
+                <version>${dcti.version}</version>
             </dependency>
             <!-- 程序自身组件 -->
             <dependency>
