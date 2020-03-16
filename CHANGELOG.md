@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 优化AbstractConsumeHandler启动和停止时的代码。
 
 #### Bug修复
 

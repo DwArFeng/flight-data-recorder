@@ -34,6 +34,7 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
     private List<E> buffer = null;
     private long lastIdleCheckDate = System.currentTimeMillis();
     private Set<ConsumeTask> tasks = new HashSet<>();
+    private boolean startFlag = false;
 
     @Override
     public void accept(E element) {
@@ -99,11 +100,14 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
     protected void start() {
         lock.lock();
         try {
-            buffer = new ArrayList<>();
-            for (int i = 0; i < consumerThread; i++) {
-                ConsumeTask task = new ConsumeTask();
-                tasks.add(task);
-                threadPoolTaskExecutor.execute(task);
+            if (!startFlag) {
+                buffer = new ArrayList<>();
+                for (int i = 0; i < consumerThread; i++) {
+                    ConsumeTask task = new ConsumeTask();
+                    tasks.add(task);
+                    threadPoolTaskExecutor.execute(task);
+                }
+                startFlag = true;
             }
         } finally {
             lock.unlock();
@@ -113,10 +117,13 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
     protected void stop() {
         lock.lock();
         try {
-            tasks.forEach(task -> task.setRunningFlag(false));
-            tasks.clear();
-            provideCondition.signalAll();
-            consumerCondition.signalAll();
+            if (startFlag) {
+                tasks.forEach(task -> task.setRunningFlag(false));
+                tasks.clear();
+                provideCondition.signalAll();
+                consumerCondition.signalAll();
+                startFlag = false;
+            }
         } finally {
             lock.unlock();
         }
