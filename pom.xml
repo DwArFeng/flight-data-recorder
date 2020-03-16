@@ -37,7 +37,7 @@
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
         <jedis.version>2.9.0</jedis.version>
         <solrj.version>4.10.3</solrj.version>
-        <dubbo.version>2.7.1</dubbo.version>
+        <dubbo.version>2.7.5</dubbo.version>
         <netty.version>4.1.43.Final</netty.version>
         <curator.version>4.2.0</curator.version>
         <zkclient.version>0.11</zkclient.version>
@@ -119,6 +119,30 @@
                         <artifactId>spring</artifactId>
                     </exclusion>
                 </exclusions>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-common</artifactId>
+                <version>${dubbo.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-registry</artifactId>
                 <version>${dubbo.version}</version>
             </dependency>
             <!-- Netty网络连接包 -->

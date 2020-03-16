@@ -55,4 +55,14 @@ public interface QosService extends Service {
      * 设置触发数据值消费参数。
      */
     void setTriggeredValueConsumeParameter(int consumerThread, int bufferSize, int batchSize, long maxIdleTime) throws ServiceException;
+
+    /**
+     * 记录功能上线。
+     */
+    void recordOnline() throws ServiceException;
+
+    /**
+     * 记录功能下线。
+     */
+    void recordOffline() throws ServiceException;
 }
