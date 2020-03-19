@@ -90,6 +90,6 @@
         </property>
         <property name="hashValueSerializer" ref="fastJsonRedisSerializer"/>
         <!--开启事务  -->
-        <property name="enableTransactionSupport" value="false"/>
+        <property name="enableTransactionSupport" value="true"/>
     </bean>
 </beans>
