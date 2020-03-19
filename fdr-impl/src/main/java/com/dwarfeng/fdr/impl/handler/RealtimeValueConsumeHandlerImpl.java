@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.handler.RealtimeValueConsumeHandler;
 import com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +53,12 @@ public class RealtimeValueConsumeHandlerImpl extends AbstractConsumeHandler<Real
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws HandlerException {
         start();
     }
 
     @PreDestroy
-    public void dispose() {
+    public void dispose() throws HandlerException {
         stop();
     }
 

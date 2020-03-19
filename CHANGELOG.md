@@ -11,6 +11,7 @@
 #### Bug修复
 
 - 开启 redis 事务。
+- 修复AbstractConsumeHandler停止后后台任务可能未执行完的bug。
 
 #### 功能移除
 

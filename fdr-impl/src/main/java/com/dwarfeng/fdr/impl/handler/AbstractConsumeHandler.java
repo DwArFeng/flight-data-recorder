@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.impl.handler;
 
 import com.dwarfeng.dutil.develop.backgr.AbstractTask;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
         }
     }
 
-    protected void start() {
+    protected void start() throws HandlerException {
         lock.lock();
         try {
             if (!startFlag) {
@@ -109,23 +110,32 @@ public abstract class AbstractConsumeHandler<E> implements ConsumeHandler<E> {
                 }
                 startFlag = true;
             }
+        } catch (Exception e) {
+            throw new HandlerException(e);
         } finally {
             lock.unlock();
         }
     }
 
-    protected void stop() {
-        lock.lock();
+    protected void stop() throws HandlerException {
         try {
-            if (startFlag) {
+            lock.lock();
+            try {
                 tasks.forEach(ConsumeTask::shutdown);
                 tasks.clear();
                 provideCondition.signalAll();
                 consumerCondition.signalAll();
-                startFlag = false;
+            } finally {
+                lock.unlock();
             }
-        } finally {
-            lock.unlock();
+            for (ConsumeTask task : tasks) {
+                try {
+                    task.awaitFinish();
+                } catch (InterruptedException ignored) {
+                }
+            }
+        } catch (Exception e) {
+            throw new HandlerException(e);
         }
     }
 

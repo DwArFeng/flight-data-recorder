@@ -4,6 +4,7 @@ import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.handler.PersistenceValueConsumeHandler;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,12 @@ public class PersistenceValueConsumeHandlerImpl extends AbstractConsumeHandler<P
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws HandlerException {
         start();
     }
 
     @PreDestroy
-    public void dispose() {
+    public void dispose() throws HandlerException {
         stop();
     }
 
