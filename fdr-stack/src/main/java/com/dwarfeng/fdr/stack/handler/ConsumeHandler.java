@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.stack.handler.Handler;
 
 /**
  * 消费处理器。
@@ -9,7 +10,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  * @author DwArFeng
  * @since 1.2.0.a
  */
-public interface ConsumeHandler<E> {
+public interface ConsumeHandler<E> extends Handler {
 
     /**
      * 使消费处理器接受指定的元素。

@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.stack.handler.Handler;
 
 import java.util.List;
 

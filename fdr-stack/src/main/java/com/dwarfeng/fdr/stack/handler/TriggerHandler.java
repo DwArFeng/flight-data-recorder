@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
+import com.dwarfeng.subgrade.stack.handler.Handler;
 
 /**
  * 触发器处理器。

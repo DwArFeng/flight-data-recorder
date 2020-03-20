@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 删除 com.dwarfeng.fdr.stack.handler.Handler，所有的处理器均改为继承 subgrade 的 Handler 。
 
 #### Bug修复
 

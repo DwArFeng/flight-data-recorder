@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.exception.FilterException;
+import com.dwarfeng.subgrade.stack.handler.Handler;
 
 /**
  * 过滤器处理器。
