@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.handler;
 
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.stack.bean.entity.Entity;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 
@@ -10,7 +10,29 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
  * @author DwArFeng
  * @since 1.2.0.a
  */
-public interface ConsumeHandler<E> extends Handler {
+public interface ConsumeHandler<E extends Entity<?>> extends Handler {
+
+    /**
+     * 消费处理器是否启动。
+     *
+     * @return 消费处理器是否启动。
+     * @throws HandlerException 处理器异常。
+     */
+    boolean isStart() throws HandlerException;
+
+    /**
+     * 开启消费处理器。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void start() throws HandlerException;
+
+    /**
+     * 关闭消费处理器。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void stop() throws HandlerException;
 
     /**
      * 使消费处理器接受指定的元素。
@@ -21,113 +43,60 @@ public interface ConsumeHandler<E> extends Handler {
     void accept(E element) throws HandlerException;
 
     /**
-     * 获取消费状态。
+     * 获取缓冲器的容量。
      *
-     * @return 消费状态。
+     * @return 缓冲器的容量。
      * @throws HandlerException 处理器异常。
      */
-    ConsumeStatus getConsumeStatus() throws HandlerException;
+    int getBufferSize() throws HandlerException;
 
     /**
-     * 设置消费者的各项参数。
+     * 获取数据的批处理量。
      *
-     * @param consumerThread 消费者的线程数。
-     * @param bufferSize     缓冲队列的数量。
-     * @param batchSize      批处理数量。
-     * @param maxIdleTime    最大空闲时间。
+     * @return 数据的批处理量。
      * @throws HandlerException 处理器异常。
      */
-    void setConsumeParameter(int consumerThread, int bufferSize, int batchSize, long maxIdleTime) throws HandlerException;
+    int getBatchSize() throws HandlerException;
 
     /**
-     * 消费状态。
+     * 获取最大空闲时间。
      *
-     * @author DwArFeng
-     * @since 1.2.0.a
+     * @return 最大空闲时间。
+     * @throws HandlerException 处理器异常。
      */
-    class ConsumeStatus implements Bean {
+    long getMaxIdleTime() throws HandlerException;
 
-        private static final long serialVersionUID = 4200797487098414748L;
+    /**
+     * 设置缓冲器的参数。
+     *
+     * @param bufferSize  缓冲器的大小。
+     * @param batchSize   数据的批处理量。
+     * @param maxIdleTime 最大空闲时间。
+     * @throws HandlerException 处理器异常。
+     */
+    void setBufferParameters(int bufferSize, int batchSize, long maxIdleTime) throws HandlerException;
 
-        private int consumerThread;
-        private int bufferSize;
-        private int batchSize;
-        private long maxIdleTime;
-        private int usedBufferSize;
-        private int processingElementSize;
+    /**
+     * 获取消费者的线程数量。
+     *
+     * @return 消费者的线程数量。
+     * @throws HandlerException 处理器异常。
+     */
+    int getThread() throws HandlerException;
 
-        public ConsumeStatus() {
-        }
+    /**
+     * 设置消费者的线程数量。
+     *
+     * @param thread 消费者的线程数量。
+     * @throws HandlerException 处理器异常。
+     */
+    void setThread(int thread) throws HandlerException;
 
-        public ConsumeStatus(
-                int consumerThread, int bufferSize, int batchSize, long maxIdleTime, int usedBufferSize,
-                int processingElementSize) {
-            this.consumerThread = consumerThread;
-            this.bufferSize = bufferSize;
-            this.batchSize = batchSize;
-            this.maxIdleTime = maxIdleTime;
-            this.usedBufferSize = usedBufferSize;
-            this.processingElementSize = processingElementSize;
-        }
-
-        public int getConsumerThread() {
-            return consumerThread;
-        }
-
-        public void setConsumerThread(int consumerThread) {
-            this.consumerThread = consumerThread;
-        }
-
-        public int getBufferSize() {
-            return bufferSize;
-        }
-
-        public void setBufferSize(int bufferSize) {
-            this.bufferSize = bufferSize;
-        }
-
-        public int getBatchSize() {
-            return batchSize;
-        }
-
-        public void setBatchSize(int batchSize) {
-            this.batchSize = batchSize;
-        }
-
-        public long getMaxIdleTime() {
-            return maxIdleTime;
-        }
-
-        public void setMaxIdleTime(long maxIdleTime) {
-            this.maxIdleTime = maxIdleTime;
-        }
-
-        public int getUsedBufferSize() {
-            return usedBufferSize;
-        }
-
-        public void setUsedBufferSize(int usedBufferSize) {
-            this.usedBufferSize = usedBufferSize;
-        }
-
-        public int getProcessingElementSize() {
-            return processingElementSize;
-        }
-
-        public void setProcessingElementSize(int processingElementSize) {
-            this.processingElementSize = processingElementSize;
-        }
-
-        @Override
-        public String toString() {
-            return "ConsumerStatus{" +
-                    "consumerThread=" + consumerThread +
-                    ", bufferSize=" + bufferSize +
-                    ", batchSize=" + batchSize +
-                    ", maxIdleTime=" + maxIdleTime +
-                    ", usedBufferSize=" + usedBufferSize +
-                    ", processingElementSize=" + processingElementSize +
-                    '}';
-        }
-    }
+    /**
+     * 获取消费者是否空闲。
+     *
+     * @return 消费者是否空闲。
+     * @throws HandlerException 处理器异常。
+     */
+    boolean isIdle() throws HandlerException;
 }

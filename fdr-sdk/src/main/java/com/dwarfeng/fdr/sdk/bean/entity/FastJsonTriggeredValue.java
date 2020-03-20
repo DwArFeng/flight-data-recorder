@@ -1,14 +1,30 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class FastJsonTriggeredValue implements Bean {
 
     private static final long serialVersionUID = 333024773948079348L;
+
+    public static FastJsonTriggeredValue of(TriggeredValue triggeredValue) {
+        if (Objects.isNull(triggeredValue)) {
+            return null;
+        }
+        return new FastJsonTriggeredValue(
+                FastJsonLongIdKey.of(triggeredValue.getKey()),
+                FastJsonLongIdKey.of(triggeredValue.getPointKey()),
+                FastJsonLongIdKey.of(triggeredValue.getTriggerKey()),
+                triggeredValue.getHappenedDate(),
+                triggeredValue.getValue(),
+                triggeredValue.getMessage()
+        );
+    }
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;

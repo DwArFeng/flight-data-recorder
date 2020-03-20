@@ -26,6 +26,8 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 12, "trigger type unsupported");
     public static final ServiceException.Code POINT_NOT_EXISTS =
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 20, "point not exists");
+    public static final ServiceException.Code RECORD_HANDLER_DISABLED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 30, "record handler disabled");
 
     /**
      * 获取异常代号的偏移量。

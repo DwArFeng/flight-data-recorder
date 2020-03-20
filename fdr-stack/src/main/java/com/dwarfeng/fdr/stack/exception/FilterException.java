@@ -1,6 +1,8 @@
 package com.dwarfeng.fdr.stack.exception;
 
-public class FilterException extends Exception {
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
+
+public class FilterException extends HandlerException {
 
     private static final long serialVersionUID = 5584249920639455084L;
 

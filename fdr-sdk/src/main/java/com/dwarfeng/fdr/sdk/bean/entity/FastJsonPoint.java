@@ -1,8 +1,11 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
+
+import java.util.Objects;
 
 /**
  * FastJson数据点对象。
@@ -13,6 +16,19 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
 public class FastJsonPoint implements Bean {
 
     private static final long serialVersionUID = -6727125091352050788L;
+
+    public static FastJsonPoint of(Point point) {
+        if (Objects.isNull(point)) {
+            return null;
+        }
+        return new FastJsonPoint(
+                FastJsonLongIdKey.of(point.getKey()),
+                point.getName(),
+                point.getRemark(),
+                point.isPersistenceEnabled(),
+                point.isRealtimeEnabled()
+        );
+    }
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;

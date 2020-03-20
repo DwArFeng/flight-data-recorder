@@ -1,14 +1,30 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class FastJsonFilteredValue implements Bean {
 
     private static final long serialVersionUID = -8969452860654354134L;
+
+    public static FastJsonFilteredValue of(FilteredValue filteredValue) {
+        if (Objects.isNull(filteredValue)) {
+            return null;
+        }
+        return new FastJsonFilteredValue(
+                FastJsonLongIdKey.of(filteredValue.getKey()),
+                FastJsonLongIdKey.of(filteredValue.getPointKey()),
+                FastJsonLongIdKey.of(filteredValue.getFilterKey()),
+                filteredValue.getHappenedDate(),
+                filteredValue.getValue(),
+                filteredValue.getMessage()
+        );
+    }
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
@@ -31,7 +47,9 @@ public class FastJsonFilteredValue implements Bean {
     public FastJsonFilteredValue() {
     }
 
-    public FastJsonFilteredValue(FastJsonLongIdKey key, FastJsonLongIdKey pointKey, FastJsonLongIdKey filterKey, Date happenedDate, String value, String message) {
+    public FastJsonFilteredValue(
+            FastJsonLongIdKey key, FastJsonLongIdKey pointKey, FastJsonLongIdKey filterKey, Date happenedDate,
+            String value, String message) {
         this.key = key;
         this.pointKey = pointKey;
         this.filterKey = filterKey;

@@ -1,8 +1,11 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
+
+import java.util.Objects;
 
 /**
  * FastJson数据点对象。
@@ -13,6 +16,20 @@ import com.dwarfeng.subgrade.stack.bean.Bean;
 public class FastJsonFilterInfo implements Bean {
 
     private static final long serialVersionUID = 635115142498652853L;
+
+    public static FastJsonFilterInfo of(FilterInfo filterInfo) {
+        if (Objects.isNull(filterInfo)) {
+            return null;
+        }
+        return new FastJsonFilterInfo(
+                FastJsonLongIdKey.of(filterInfo.getKey()),
+                FastJsonLongIdKey.of(filterInfo.getPointKey()),
+                filterInfo.isEnabled(),
+                filterInfo.getRemark(),
+                filterInfo.getContent(),
+                filterInfo.getType()
+        );
+    }
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
@@ -33,6 +50,17 @@ public class FastJsonFilterInfo implements Bean {
     private String type;
 
     public FastJsonFilterInfo() {
+    }
+
+    public FastJsonFilterInfo(
+            FastJsonLongIdKey key, FastJsonLongIdKey pointKey, boolean enabled, String remark,
+            String content, String type) {
+        this.key = key;
+        this.pointKey = pointKey;
+        this.enabled = enabled;
+        this.remark = remark;
+        this.content = content;
+        this.type = type;
     }
 
     public FastJsonLongIdKey getKey() {

@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.stack.handler;
 
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
-import com.dwarfeng.fdr.stack.exception.FilterException;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 
 /**
@@ -17,7 +17,7 @@ public interface FilterHandler extends Handler {
      *
      * @param filterInfo 指定的过滤器信息。
      * @return 构造的过滤器。
-     * @throws FilterException 过滤器异常。
+     * @throws HandlerException 处理器异常。
      */
-    Filter make(FilterInfo filterInfo) throws FilterException;
+    Filter make(FilterInfo filterInfo) throws HandlerException;
 }

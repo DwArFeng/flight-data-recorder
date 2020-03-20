@@ -22,6 +22,6 @@ public class UnsupportedTriggerTypeException extends TriggerException {
 
     @Override
     public String getMessage() {
-        return " " + type;
+        return "不支持的触发器类型: " + type;
     }
 }

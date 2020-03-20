@@ -1,14 +1,28 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class FastJsonPersistenceValue implements Bean {
 
     private static final long serialVersionUID = 3792689493415676501L;
+
+    public static FastJsonPersistenceValue of(PersistenceValue persistenceValue) {
+        if (Objects.isNull(persistenceValue)) {
+            return null;
+        }
+        return new FastJsonPersistenceValue(
+                FastJsonLongIdKey.of(persistenceValue.getKey()),
+                FastJsonLongIdKey.of(persistenceValue.getPointKey()),
+                persistenceValue.getHappenedDate(),
+                persistenceValue.getValue()
+        );
+    }
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;

@@ -1,14 +1,27 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class FastJsonRealtimeValue implements Bean {
 
     private static final long serialVersionUID = 2093936111729327278L;
+
+    public static FastJsonRealtimeValue of(RealtimeValue realtimeValue) {
+        if (Objects.isNull(realtimeValue)) {
+            return null;
+        }
+        return new FastJsonRealtimeValue(
+                FastJsonLongIdKey.of(realtimeValue.getKey()),
+                realtimeValue.getHappenedDate(),
+                realtimeValue.getValue()
+        );
+    }
 
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;

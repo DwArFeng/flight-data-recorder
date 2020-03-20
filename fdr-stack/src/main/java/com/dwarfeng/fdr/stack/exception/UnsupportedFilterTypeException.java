@@ -22,6 +22,6 @@ public class UnsupportedFilterTypeException extends FilterException {
 
     @Override
     public String getMessage() {
-        return " " + type;
+        return "不支持的过滤器类型: " + type;
     }
 }
