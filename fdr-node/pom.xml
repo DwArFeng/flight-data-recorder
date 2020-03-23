@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.dwarfeng</groupId>
         <artifactId>fdr</artifactId>
-        <version>1.4.0.a-SNAPSHOT</version>
+        <version>1.4.0.a</version>
     </parent>
 
     <packaging>pom</packaging>
@@ -28,7 +28,5 @@
     <modules>
         <module>fdr-node-maintain</module>
         <module>fdr-node-record</module>
-        <module>fdr-node-lookup</module>
-        <module>fdr-node-all</module>
     </modules>
 </project>

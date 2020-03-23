@@ -1,18 +1,24 @@
 package com.dwarfeng.fdr.impl.service;
 
+import com.dwarfeng.fdr.impl.handler.FilterMaker;
 import com.dwarfeng.fdr.stack.bean.entity.FilterSupport;
 import com.dwarfeng.fdr.stack.service.FilterSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralCrudService;
+import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainService {
@@ -23,6 +29,11 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     private DaoOnlyEntireLookupService<FilterSupport> entireLookupService;
     @Autowired
     private DaoOnlyPresetLookupService<FilterSupport> presetLookupService;
+    @Autowired
+    private List<FilterMaker> filterMakers;
+
+    @Autowired
+    private ServiceExceptionMapper sem;
 
     @Override
     @BehaviorAnalyse
@@ -120,5 +131,27 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public PagedData<FilterSupport> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void reset() throws ServiceException {
+        for (FilterMaker filterMaker : filterMakers) {
+            try {
+                crudService.insertIfNotExists(
+                        new FilterSupport(
+                                new StringIdKey(filterMaker.provideType()),
+                                filterMaker.provideLabel(),
+                                filterMaker.provideDescription(),
+                                filterMaker.provideExampleContent()
+                        )
+                );
+            } catch (Exception e) {
+                throw ServiceExceptionHelper.logAndThrow("重置触发器支持时发生异常",
+                        LogLevel.WARN, sem, e
+                );
+            }
+        }
     }
 }

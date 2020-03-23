@@ -1,10 +1,14 @@
 # ChangeLog
 
-### Release_1.4.0_202003020_build_A
+### Release_1.4.0_20200323_build_A
 
 #### 功能构建
 
-- 删除 com.dwarfeng.fdr.stack.handler.Handler，所有的处理器均改为继承 subgrade 的 Handler 。
+- 删除 com.dwarfeng.fdr.stack.handler.Handler，所有的处理器均改为继承 subgrade 的 Handler。
+- 更改项目结构，将不同的功能分布在多个节点上。建立node-maintain和node-record两个节点。
+- 将kafka数据源整合到项目当中，放弃dubbo数据源。
+- 增加多种pusher，事件的推送由之前的仅kafka增加为可自由选择的多种数据源。
+- 建立assembly打包文件，项目package后将直接输出可供linux平台运行的.tar.gz文件。
 
 #### Bug修复
 
@@ -12,11 +16,11 @@
 
 #### 功能移除
 
-- (无)
+- ~~放弃dubbo数据源。~~
 
 ---
 
-### Release_1.3.1_202003019_build_A
+### Release_1.3.1_20200319_build_A
 
 #### 功能构建
 
@@ -35,7 +39,7 @@
 
 ---
 
-### Release_1.3.0_202003016_build_A
+### Release_1.3.0_20200316_build_A
 
 #### 功能构建
 
@@ -52,7 +56,7 @@
 
 ---
 
-### Release_1.2.0_202003014_build_A
+### Release_1.2.0_20200314_build_A
 
 #### 功能构建
 

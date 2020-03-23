@@ -14,12 +14,17 @@
         <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.RecordQosService"/>
         <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.RecordService"/>
     </context:component-scan>
+    <!--扫描handler的部分实现包。 -->
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.filter"/>
+    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.trigger"/>
     <!--扫描dao的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.dao"/>
     <!--扫描cache的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.cache"/>
     <!--扫描配置类所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.node.maintain.configuration"/>
+    <!--扫描启动器有关的handler所在的包。 -->
+    <context:component-scan base-package="com.dwarfeng.fdr.node.maintain.handler"/>
     <!--扫描aop增强所在的包。 -->
     <context:component-scan base-package="com.dwarfeng.subgrade.sdk.interceptor.analyse"/>
 </beans>

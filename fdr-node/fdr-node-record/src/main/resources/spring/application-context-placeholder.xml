@@ -13,7 +13,6 @@
                     "classpath:hibernate/*.properties,
                     classpath:dubbo/*.properties,
                     classpath:fdr/*.properties,
-                    classpath:kafka/*.properties,
                     classpath:redis/*.properties"
             local-override="true"
             properties-ref="refProperties"/>
@@ -28,8 +27,6 @@
                 <value>file:conf/dubbo/*.properties</value>
                 <!--suppress SpringXmlModelInspection -->
                 <value>file:conf/fdr/*.properties</value>
-                <!--suppress SpringXmlModelInspection -->
-                <value>file:conf/kafka/*.properties</value>
                 <!--suppress SpringXmlModelInspection -->
                 <value>file:conf/redis/*.properties</value>
             </list>
