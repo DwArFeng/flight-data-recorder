@@ -17,4 +17,6 @@ public interface TriggeredValueMaintainService extends BatchCrudService<LongIdKe
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_TRIGGER = "child_for_trigger";
     String CHILD_FOR_TRIGGER_SET = "child_for_trigger_set";
+    String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
+    String CHILD_FOR_TRIGGER_BETWEEN = "child_for_trigger_between";
 }

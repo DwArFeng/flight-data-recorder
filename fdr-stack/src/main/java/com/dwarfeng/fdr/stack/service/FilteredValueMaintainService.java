@@ -17,4 +17,6 @@ public interface FilteredValueMaintainService extends BatchCrudService<LongIdKey
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_FILTER = "child_for_filter";
     String CHILD_FOR_FILTER_SET = "child_for_filter_set";
+    String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
+    String CHILD_FOR_FILTER_BETWEEN = "child_for_filter_between";
 }

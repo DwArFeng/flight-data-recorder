@@ -15,4 +15,5 @@ public interface PersistenceValueMaintainService extends BatchCrudService<LongId
         PresetLookupService<PersistenceValue> {
 
     String CHILD_FOR_POINT = "child_for_point";
+    String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
 }

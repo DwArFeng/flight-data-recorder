@@ -25,8 +25,8 @@
             <fileMode>0644</fileMode>
         </fileSet>
         <fileSet>
-            <outputDirectory>conf/hibernate</outputDirectory>
-            <directory>src/main/resources/hibernate</directory>
+            <outputDirectory>conf/database</outputDirectory>
+            <directory>src/main/resources/database</directory>
             <includes>
                 <include>*.properties</include>
             </includes>

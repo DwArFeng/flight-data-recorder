@@ -5,7 +5,6 @@ import com.dwarfeng.fdr.stack.exception.FilterException;
 import com.dwarfeng.fdr.stack.exception.UnsupportedFilterTypeException;
 import com.dwarfeng.fdr.stack.handler.Filter;
 import com.dwarfeng.fdr.stack.handler.FilterHandler;
-import com.dwarfeng.fdr.stack.service.FilterSupportMaintainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public class FilterHandlerImpl implements FilterHandler {
 
     @Autowired
     private List<FilterMaker> filterMakers;
-    @Autowired
-    private FilterSupportMaintainService service;
 
     @Override
     public Filter make(FilterInfo filterInfo) throws FilterException {

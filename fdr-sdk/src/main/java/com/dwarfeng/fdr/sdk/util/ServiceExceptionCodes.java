@@ -28,6 +28,12 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 20, "point not exists");
     public static final ServiceException.Code RECORD_HANDLER_DISABLED =
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 30, "record handler disabled");
+    public static final ServiceException.Code MAPPER_FAILED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 40, "mapper failed");
+    public static final ServiceException.Code MAPPER_MAKE_FAILED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 41, "mapper make failed");
+    public static final ServiceException.Code MAPPER_TYPE_UNSUPPORTED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 42, "mapper type unsupported");
 
     /**
      * 获取异常代号的偏移量。

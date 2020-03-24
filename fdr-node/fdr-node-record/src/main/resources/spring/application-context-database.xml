@@ -53,7 +53,7 @@
         <!-- 配置其他属性 -->
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                 <!-- 格式化SQL语句 -->
                 <prop key="hibernate.format_sql">true</prop>
                 <!-- 自动建表 -->

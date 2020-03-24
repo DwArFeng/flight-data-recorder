@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,65 +18,108 @@ import java.util.stream.Collectors;
 public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
 
     @Override
-    public void makeCriteria(DetachedCriteria detachedCriteria, String s, Object[] objects) {
-        switch (s) {
+    public void makeCriteria(DetachedCriteria criteria, String preset, Object[] objs) {
+        switch (preset) {
             case FilteredValueMaintainService.CHILD_FOR_POINT:
-                childForPoint(detachedCriteria, objects);
+                childForPoint(criteria, objs);
                 break;
             case FilteredValueMaintainService.CHILD_FOR_FILTER:
-                childForFilter(detachedCriteria, objects);
+                childForFilter(criteria, objs);
                 break;
             case FilteredValueMaintainService.CHILD_FOR_FILTER_SET:
-                childForFilterSet(detachedCriteria, objects);
+                childForFilterSet(criteria, objs);
+                break;
+            case FilteredValueMaintainService.CHILD_FOR_POINT_BETWEEN:
+                childForPointBetween(criteria, objs);
+                break;
+            case FilteredValueMaintainService.CHILD_FOR_FILTER_BETWEEN:
+                childForFilterSetBetween(criteria, objs);
                 break;
             default:
-                throw new IllegalArgumentException("无法识别的预设: " + s);
+                throw new IllegalArgumentException("无法识别的预设: " + preset);
         }
     }
 
-    private void childForPoint(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForPoint(DetachedCriteria criteria, Object[] objs) {
         try {
-            if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("pointLongId"));
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("pointLongId"));
             } else {
-                LongIdKey longIdKey = (LongIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
+                LongIdKey longIdKey = (LongIdKey) objs[0];
+                criteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
             }
-            detachedCriteria.addOrder(Order.asc("longId"));
+            criteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
     }
 
-    private void childForFilter(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForFilter(DetachedCriteria criteria, Object[] objs) {
         try {
-            if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("filterLongId"));
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("filterLongId"));
             } else {
-                LongIdKey longIdKey = (LongIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("filterLongId", longIdKey.getLongId()));
+                LongIdKey longIdKey = (LongIdKey) objs[0];
+                criteria.add(Restrictions.eqOrIsNull("filterLongId", longIdKey.getLongId()));
             }
-            detachedCriteria.addOrder(Order.asc("longId"));
+            criteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
     }
 
-    private void childForFilterSet(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForFilterSet(DetachedCriteria criteria, Object[] objs) {
         try {
-            if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("filterLongId"));
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("filterLongId"));
             } else {
                 @SuppressWarnings("unchecked")
-                List<LongIdKey> longIdKeys = (List<LongIdKey>) objects[0];
+                List<LongIdKey> longIdKeys = (List<LongIdKey>) objs[0];
                 if (longIdKeys.isEmpty()) {
-                    detachedCriteria.add(Restrictions.isNull("longId"));
+                    criteria.add(Restrictions.isNull("longId"));
                 } else {
-                    detachedCriteria.add(Restrictions.in("filterLongId", longList(longIdKeys)));
+                    criteria.add(Restrictions.in("filterLongId", longList(longIdKeys)));
                 }
             }
+            criteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
-            detachedCriteria.addOrder(Order.asc("longId"));
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
+        }
+    }
+
+    private void childForPointBetween(DetachedCriteria criteria, Object[] objs) {
+        try {
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("pointLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objs[0];
+                criteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
+            }
+            Date startDate = (Date) objs[1];
+            Date endDate = (Date) objs[2];
+            criteria.add(Restrictions.ge("happenedDate", startDate));
+            criteria.add(Restrictions.lt("happenedDate", endDate));
+            criteria.addOrder(Order.asc("longId"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
+        }
+    }
+
+    private void childForFilterSetBetween(DetachedCriteria criteria, Object[] objs) {
+        try {
+            if (Objects.isNull(objs[0])) {
+                criteria.add(Restrictions.isNull("filterLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objs[0];
+                criteria.add(Restrictions.eqOrIsNull("filterLongId", longIdKey.getLongId()));
+            }
+            Date startDate = (Date) objs[1];
+            Date endDate = (Date) objs[2];
+            criteria.add(Restrictions.ge("happenedDate", startDate));
+            criteria.add(Restrictions.lt("happenedDate", endDate));
+            criteria.addOrder(Order.asc("longId"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
     }
 
