@@ -29,6 +29,8 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Component
 public class KafkaSource implements Source {
@@ -44,8 +46,11 @@ public class KafkaSource implements Source {
     @Value("${source.kafka.listener_id}")
     private String listenerId;
 
+    private final Lock lock = new ReentrantLock();
+
     @Override
     public boolean isOnline() throws HandlerException {
+        lock.lock();
         try {
             MessageListenerContainer listenerContainer = registry.getListenerContainer(listenerId);
             if (Objects.isNull(listenerContainer)) {
@@ -59,11 +64,14 @@ public class KafkaSource implements Source {
             throw e;
         } catch (Exception e) {
             throw new HandlerException(e);
+        } finally {
+            lock.unlock();
         }
     }
 
     @Override
     public void online() throws HandlerException {
+        lock.lock();
         try {
             LOGGER.info("Kafka source 上线...");
             MessageListenerContainer listenerContainer = registry.getListenerContainer(listenerId);
@@ -79,11 +87,14 @@ public class KafkaSource implements Source {
             throw e;
         } catch (Exception e) {
             throw new HandlerException(e);
+        } finally {
+            lock.unlock();
         }
     }
 
     @Override
     public void offline() throws HandlerException {
+        lock.lock();
         try {
             LOGGER.info("Kafka source 下线...");
             MessageListenerContainer listenerContainer = registry.getListenerContainer(listenerId);
@@ -95,6 +106,8 @@ public class KafkaSource implements Source {
             throw e;
         } catch (Exception e) {
             throw new HandlerException(e);
+        } finally {
+            lock.unlock();
         }
     }
 

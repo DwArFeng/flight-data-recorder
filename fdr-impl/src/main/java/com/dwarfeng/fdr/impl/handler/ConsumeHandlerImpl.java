@@ -67,6 +67,7 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
         try {
             if (!startFlag) {
                 LOGGER.info("Consumer handler 开启消费线程...");
+                consumeBuffer.block();
                 for (int i = 0; i < thread; i++) {
                     ConsumeTask<E> consumeTask = new ConsumeTask<>(consumeBuffer, consumer);
                     threadPoolTaskExecutor.execute(consumeTask);
@@ -362,10 +363,22 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
             }
         }
 
+        public void block() {
+            lock.lock();
+            try {
+                this.blockEnabled = true;
+                this.provideCondition.signalAll();
+                this.consumeCondition.signalAll();
+            } finally {
+                lock.unlock();
+            }
+        }
+
         public void unblock() {
             lock.lock();
             try {
                 this.blockEnabled = false;
+                this.provideCondition.signalAll();
                 this.consumeCondition.signalAll();
             } finally {
                 lock.unlock();
