@@ -10,8 +10,8 @@
         <version>1.4.2.a-SNAPSHOT</version>
     </parent>
 
-    <artifactId>fdr-node-record</artifactId>
-    <name>fdr-node-record</name>
+    <artifactId>fdr-node-all</artifactId>
+    <name>fdr-node-all</name>
     <url>http://www.example.com</url>
 
     <properties>
@@ -152,7 +152,7 @@
                         <manifest>  
                              <addClasspath>true</addClasspath>  
                              <classpathPrefix>./</classpathPrefix>  
-                             <mainClass>com.dwarfeng.fdr.node.record.launcher.Launcher</mainClass>  
+                             <mainClass>com.dwarfeng.fdr.node.launcher.Launcher</mainClass>  
                         </manifest>
                     </archive>
                     <finalName>${project.name}-${project.version}</finalName>

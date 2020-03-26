@@ -5,10 +5,11 @@
 #### 功能构建
 
 - 更新snowflake依赖至1.2.3.b。
+- 添加fdr-node-all模块。
 
 #### Bug修复
 
-- (无)
+- 修复fdr-node-record打包文件mainClass不正确的bug。
 
 #### 功能移除
 

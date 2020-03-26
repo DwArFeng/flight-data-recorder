@@ -53,16 +53,14 @@ buildNumber.properties
 ## Logger Files
 #################
 /fdr-impl/logs/
-/fdr-node/fdr-node-all/logs/
 /fdr-node/fdr-node-maintain/logs/
 /fdr-node/fdr-node-record/logs/
-/fdr-node/fdr-node-lookup/logs/
+/fdr-node/fdr-node-all/logs/
 
 #################
 ## Configuration Files
 #################
 /fdr-impl/conf/
-/fdr-node/fdr-node-all/conf/
 /fdr-node/fdr-node-maintain/conf/
 /fdr-node/fdr-node-record/conf/
-/fdr-node/fdr-node-lookup/conf/
+/fdr-node/fdr-node-all/conf/
