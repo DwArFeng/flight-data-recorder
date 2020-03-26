@@ -5,7 +5,7 @@
 
     <groupId>com.dwarfeng</groupId>
     <artifactId>fdr</artifactId>
-    <version>1.4.1.a</version>
+    <version>1.4.1.b</version>
 
     <packaging>pom</packaging>
 
@@ -56,9 +56,9 @@
         <dutil.version>beta-0.2.1.a</dutil.version>
         <kafka.version>2.4.0</kafka.version>
         <snowflake.version>1.2.3.a</snowflake.version>
-        <subgrade.version>beta-0.3.2.a</subgrade.version>
+        <subgrade.version>beta-0.3.2.b</subgrade.version>
         <spring-terminator.version>1.0.2.a</spring-terminator.version>
-        <dcti.version>1.0.0.b</dcti.version>
+        <dcti.version>1.0.0.c</dcti.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -389,42 +389,27 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-stack</artifactId>
-                <version>1.4.1.a</version>
+                <version>1.4.1.b</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-sdk</artifactId>
-                <version>1.4.1.a</version>
+                <version>1.4.1.b</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-impl</artifactId>
-                <version>1.4.1.a</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>fdr-plugin</artifactId>
-                <version>1.4.0.a-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>fdr-node-all</artifactId>
-                <version>1.4.0.a-SNAPSHOT</version>
+                <version>1.4.1.b</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-maintain</artifactId>
-                <version>1.4.1.a</version>
+                <version>1.4.1.b</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-record</artifactId>
-                <version>1.4.1.a</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>fdr-node-lookup</artifactId>
-                <version>1.4.0.a-SNAPSHOT</version>
+                <version>1.4.1.b</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
