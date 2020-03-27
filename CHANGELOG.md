@@ -1,6 +1,6 @@
 # ChangeLog
 
-### Release_1.4.2_20200326_build_A
+### Release_1.4.2_20200327_build_A
 
 #### 功能构建
 
@@ -10,6 +10,7 @@
 #### Bug修复
 
 - 修复fdr-node-record打包文件mainClass不正确的bug。
+- 修复部分spring的配置错误。
 
 #### 功能移除
 

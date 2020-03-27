@@ -4,6 +4,8 @@
 
 提供数据点的定义，数据的记录、过滤、触发、事件推送等于数据收集有关的丰富的功能。
 
+*Variety of data source, to one data repository, with kinds of event pusher, that is FDR.*
+
 ---
 
 ## 项目的使用
@@ -66,20 +68,133 @@
 
 ### 数据查询
 
-1. 数据查询接口
+1. 通过维护接口
 
-TODO
+   维护接口提供了一定的数据查询功能，包括主键查询和样板查询。
+   
+   样板查询说明
+   
+   * `PersistenceValueMaintainService`
+   
+      |样板名称|样板说明|传输参数|
+      |---|---|---|
+      |child_for_point|属于指定数据点的所有持久数据|数据点的longIdKey|
+      |child_for_point_between|属于指定数据点，并且在指定时间区间内的所有持久数据|数据点的longIdKey, 起始时间, 结束时间
 
-2. 映射器
+   * `FilteredValueMaintainService`
+   
+      |样板名称|样板说明|传输参数|
+      |---|---|---|
+      |child_for_point|属于指定数据点的所有被过滤数据|数据点的longIdKey|
+      |child_for_point_between|属于指定数据点，并且在指定时间区间内的所有被过滤数据|数据点的longIdKey, 起始时间, 结束时间
+      |child_for_filter|属于指定过滤器的所有被过滤数据|过滤器的longIdKey|
+      |child_for_filter_between|属于指定过滤器，并且在指定时间区间内的所有被过滤数据|过滤器的longIdKey, 起始时间, 结束时间
+      |child_for_set|属于指定过滤器集合的所有被过滤数据|过滤器的longIdKey组成的List|
 
-TODO
+   * `TriggeredValueMaintainService`
+   
+      |样板名称|样板说明|传输参数|
+      |---|---|---|
+      |child_for_point|属于指定数据点的所有被触发数据|数据点的longIdKey|
+      |child_for_point_between|属于指定数据点，并且在指定时间区间内的所有被触发数据|数据点的longIdKey, 起始时间, 结束时间
+      |child_for_trigger|属于指定触发器的所有被触发数据|触发器的longIdKey|
+      |child_for_trigger_between|属于指定触发器，并且在指定时间区间内的所有被触发数据|触发器的longIdKey, 起始时间, 结束时间
+      |child_for_set|属于指定触发器集合的所有被触发数据|触发器的longIdKey组成的List|
+      
+2. 数据查询接口
+
+   数据查询接口提供数据的按照时间区间查询以及映射查询。
+   其中，部分数据查询接口中的方法与维护接口中的样板查询方法作用是一致的，只不过是换种表达方式。数据查询接口中的映射查询是数据
+   查询接口特有的方法。
+   
+   数据映射查询是指将查询出的数据按照某种规则进行预处理，并且返回已经预处理好的值。类似于返回一段时间数据点的中位数、平均数、
+   单词统计都可以使用数据的映射查询实现。
+   
+   需要指出的是，映射查询只能满足少部分查询需求。更多复杂的数据处理应该更多的在其它项目中完成。
 
 3. 加速
 
-TODO
+   FDR 针对部分查询提供了原生SQL加速的功能。
+   
+   在使用加速功能的情况下，数据接口的时间查询，以及对应的维护服务的样板查询将会直接通过jdbc使用sql语句进行查询，从而大大提高
+   查询的效率。
+   
+   然而，sql语句意味着不通用，针对于不同的数据库，您可能需要针对不同的数据库编写相关的 `NSQLGenerator`, 目前该项目对于此接口
+   提供了 `MySQL8NSQLGeneratorImpl` 实现，这意味着该项目本身支持 MySQL 的原生SQL加速。
+   
+   开启原生SQL加速，需要在 `conf/database/performance.properties` 中设置属性
+   ```properties
+   # 针对持久数据点、被过滤数据点、被触发数据点的批量操作使用原生的SQL语句以提高查询效率。
+   # 一旦启用原生SQL，针对持久数据点、被过滤数据点、被触发数据点的任何批量查询以及数量查询
+   # 都会由原生SQL以JDBC的形式直接查询，从而提高效率。
+   # 提高效率固然是好事，但令人遗憾的是，原生SQL查询只支持很少的几种数据库。
+   # 使用原生SQL时，会尝试根据 hibernate.dialect 属性寻找可用的原生SQL生成器。
+   # 如果原生数据库SQL是不支持的，该程序将会继续使用基于hibernate的查询，并且会生成一条警告。
+   # 欢迎大家持续贡献其它种类的数据库支持。
+   hibernate.accelerate.using_native_sql=true
+   ```
+   同时注意，SQL原生查询的实效条件：当检测到不支持的原生SQL查询，或者当前的原生SQL查询出现异常时，原生SQL查询便会失效，这时
+   程序会将查询方式转为一般查询。由于原生SQL查询的速度是一般查询的10倍以上，这将导致查询速度变得显而易见的缓慢。
 
 ---
 
 ## 项目的扩展
 
-   TODO
+1. 数据源的扩展
+
+   实现接口 `com.dwarfeng.fdr.impl.handler.Source` 并将实现类注入到spring的IoC容器中。
+
+2. 触发器的扩展
+
+   实现接口 `com.dwarfeng.fdr.impl.handler.FilterMaker` 并将实现类注入到spring的IoC容器中。
+   
+3. 过滤器的扩展
+
+   实现接口 `com.dwarfeng.fdr.impl.handler.TriggerMaker` 并将实现类注入到spring的IoC容器中。
+
+4. 推送器的扩展
+
+   实现接口 `com.dwarfeng.fdr.impl.handler.TriggerMaker` 并将实现类注入到spring的IoC容器中。
+   
+   设定配置文件 `conf/fdr/push.properties`
+   ```properties
+   ###################################################
+   #                     global                      #
+   ###################################################
+   # 当前的推送器类型。
+   # 目前该项目支持的推送器类型有:
+   #   drain: 简单的丢弃掉所有消息的推送器。
+   #   partial_drain: 丢弃掉部分消息的推送器。
+   #   multi: 同时将消息推送给所有代理的多重推送器。
+   #   kafka: 基于Kafka消息队列的推送器。
+   #
+   # 对于一个具体的项目，很可能只用一个推送器。此时希望加载
+   # 推送器时只加载需要的那个，其余的推送器不加载。这个需求
+   # 可以通过编辑 application-context-scan.xml 实现。
+   pusher.type=kafka
+   ```
+   将 pusher.type 改为扩展的 pusher。
+
+5. 映射器的扩展
+
+   实现接口 `com.dwarfeng.fdr.impl.handler.MapperMaker` 并将实现类注入到spring的IoC容器中。
+
+6. 原生SQL生成器的扩展
+
+   实现接口 `com.dwarfeng.fdr.impl.dao.NSQLGenerator` 并将实现类注入到spring的IoC容器中。
+   
+   设置数据库连接 `conf/database/connection.properties`
+   ```properties
+   jdbc.driver=com.mysql.cj.jdbc.Driver
+   jdbc.url=jdbc:mysql://your-datapase-address/your-database-name
+   jdbc.username=root
+   jdbc.password=your-password-here
+   hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+   ```
+   更改属性 hibernate.dialect 为您使用的数据库的方言，并且使得实现的 NSQLGenerator 中 
+   ```java
+   public boolean supportType(String type){
+      // 此处type传入的便是 hibernate.dialect 的值，判断是否与您的实现支持的dialect相等。
+      return Objects.equals("org.hibernate.dialect.MySQL8Dialect", type);
+   }
+   ```
