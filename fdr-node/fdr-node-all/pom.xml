@@ -7,12 +7,12 @@
     <parent>
         <artifactId>fdr-node</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>1.4.2.a</version>
+        <version>1.4.2.b</version>
     </parent>
 
     <artifactId>fdr-node-all</artifactId>
     <name>fdr-node-all</name>
-    <url>http://www.example.com</url>
+    <url>http://maven.apache.org</url>
 
     <properties>
         <!-- 进行工程编码声明 -->

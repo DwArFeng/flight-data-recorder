@@ -1,5 +1,22 @@
 # ChangeLog
 
+### Release_1.4.2_20200329_build_B
+
+#### 功能构建
+
+- 优化部分properties文件中的注释。
+
+#### Bug修复
+
+- 修复部分实体的CriteriaMaker中的错误。
+- 修复部分模块中pom.xml的错误。
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.4.2_20200327_build_A
 
 #### 功能构建

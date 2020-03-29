@@ -55,7 +55,7 @@ public class FilterInfoPresetCriteriaMaker implements PresetCriteriaMaker {
                 @SuppressWarnings("unchecked")
                 List<LongIdKey> longIdKeys = (List<LongIdKey>) objects[0];
                 if (longIdKeys.isEmpty()) {
-                    detachedCriteria.add(Restrictions.isNull("longId"));
+                    detachedCriteria.add(Restrictions.isNull("pointLongId"));
                 } else {
                     detachedCriteria.add(Restrictions.in("pointLongId", longList(longIdKeys)));
                 }
