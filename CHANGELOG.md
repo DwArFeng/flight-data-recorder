@@ -1,5 +1,22 @@
 # ChangeLog
 
+### Release_1.4.2_20200329_build_C
+
+#### 功能构建
+
+- 优化部分properties文件中的注释。
+
+#### Bug修复
+
+- 修正MultiPusher.SUPPORT_TYPE值不正确的bug。
+- 修正KafkaPusher类的不正确的注解。
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.4.2_20200329_build_B
 
 #### 功能构建

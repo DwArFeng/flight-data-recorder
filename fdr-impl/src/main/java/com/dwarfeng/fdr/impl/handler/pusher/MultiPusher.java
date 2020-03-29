@@ -27,7 +27,7 @@ import java.util.StringTokenizer;
 @Component
 public class MultiPusher implements Pusher {
 
-    public static final String SUPPORT_TYPE = "partial_drain";
+    public static final String SUPPORT_TYPE = "multi";
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiPusher.class);
 
     @Autowired

@@ -39,7 +39,6 @@ import java.util.Objects;
  * @since 1.4.0
  */
 @Component
-@Configuration
 public class KafkaPusher implements Pusher {
 
     public static final String SUPPORT_TYPE = "kafka";
