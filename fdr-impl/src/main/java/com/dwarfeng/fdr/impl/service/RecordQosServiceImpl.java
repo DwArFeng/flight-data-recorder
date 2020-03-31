@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class RecordQosServiceImpl implements RecordQosService {
@@ -63,6 +65,8 @@ public class RecordQosServiceImpl implements RecordQosService {
     @Autowired
     private ServiceExceptionMapper sem;
 
+    private final Lock lock = new ReentrantLock();
+
     @PreDestroy
     public void dispose() throws ServiceException {
         stopRecord();
@@ -71,18 +75,22 @@ public class RecordQosServiceImpl implements RecordQosService {
     @Override
     @BehaviorAnalyse
     public void clearLocalCache() throws ServiceException {
+        lock.lock();
         try {
             recordLocalCacheHandler.clear();
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("清除本地缓存时发生异常",
                     LogLevel.WARN, sem, e
             );
+        } finally {
+            lock.unlock();
         }
     }
 
     @Override
     @BehaviorAnalyse
     public void startRecord() throws ServiceException {
+        lock.lock();
         try {
             LOGGER.info("开启记录服务...");
             filteredEventConsumeHandler.start();
@@ -103,19 +111,26 @@ public class RecordQosServiceImpl implements RecordQosService {
             throw ServiceExceptionHelper.logAndThrow("开启记录服务时发生异常",
                     LogLevel.WARN, sem, e
             );
+        } finally {
+            lock.unlock();
         }
     }
 
     @Override
     @BehaviorAnalyse
     public void stopRecord() throws ServiceException {
+        lock.lock();
         try {
             LOGGER.info("关闭记录服务...");
             for (Source source : sources) {
                 source.offline();
             }
 
-            recordHandler.enable();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) {
+            }
+            recordHandler.disable();
 
             filteredEventConsumeHandler.stop();
             filteredValueConsumeHandler.stop();
@@ -129,6 +144,8 @@ public class RecordQosServiceImpl implements RecordQosService {
             throw ServiceExceptionHelper.logAndThrow("关闭记录服务时发生异常",
                     LogLevel.WARN, sem, e
             );
+        } finally {
+            lock.unlock();
         }
     }
 }

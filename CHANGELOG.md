@@ -1,5 +1,25 @@
 # ChangeLog
 
+### Release_1.4.2_20200330_build_D
+
+#### 功能构建
+
+- 使用 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) 代替 @Scope("prototype")。
+- 优化RecordQosServiceImpl的stopRecord方法。
+- 调整com.dwarfeng.fdr.node.all.launcher.Launcher部分注释语序。
+
+#### Bug修复
+
+- 修正ConsumeHandlerImpl中错误的日志文本。
+- 修正ConsumeHandlerImpl.ConsumeBuffer中的部分get方法未线程同步的bug。
+- 修正ConsumeHandlerImpl.ConsumeBuffer.setBufferParameters潜在的取值问题bug。
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.4.2_20200329_build_C
 
 #### 功能构建

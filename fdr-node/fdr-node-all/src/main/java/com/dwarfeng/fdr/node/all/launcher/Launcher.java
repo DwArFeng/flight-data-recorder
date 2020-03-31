@@ -24,8 +24,8 @@ public class Launcher {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:spring/application-context*.xml");
         ctx.registerShutdownHook();
         ctx.start();
-        //判断是否重置触发器和过滤器。
         LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+        //判断是否重置触发器和过滤器。
         if (launcherSettingHandler.isResetFilterSupport()) {
             LOGGER.info("重置过滤器支持...");
             FilterSupportMaintainService maintainService = ctx.getBean(FilterSupportMaintainService.class);

@@ -14,6 +14,7 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -78,7 +79,7 @@ public class RangedDoubleTriggerMaker implements TriggerMaker {
     }
 
     @Component
-    @Scope("prototype")
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RangedDoubleTrigger implements Trigger, Bean {
 
         private static final double serialVersionUID = -3232275174352383029L;

@@ -3,7 +3,6 @@ package com.dwarfeng.fdr.impl.handler;
 import com.dwarfeng.dutil.develop.backgr.AbstractTask;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -95,8 +94,8 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
                     try {
                         LOGGER.info("消费 consume handler 中剩余的元素 " + element2Consume.size() + " 个...");
                         consumer.consume(element2Consume);
-                    } catch (HandlerException e) {
-                        LOGGER.warn("消费元素是发生异常, 最多抛弃 " + element2Consume.size() + " 个元素", e);
+                    } catch (Exception e) {
+                        LOGGER.warn("消费元素时发生异常, 最多抛弃 " + element2Consume.size() + " 个元素", e);
                     }
                 }
                 endingConsumeTasks.removeIf(AbstractTask::isFinished);
@@ -225,7 +224,7 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
                     }
                 } catch (Exception e) {
                     if (Objects.nonNull(pollList)) {
-                        LOGGER.warn("消费元素是发生异常, 最多抛弃 " + pollList.size() + " 个元素", e);
+                        LOGGER.warn("消费元素时发生异常, 最多抛弃 " + pollList.size() + " 个元素", e);
                     }
                 }
             }
@@ -339,24 +338,40 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
         }
 
         public int getBufferSize() {
-            return bufferSize;
+            lock.lock();
+            try {
+                return bufferSize;
+            } finally {
+                lock.unlock();
+            }
         }
 
         public int getBatchSize() {
-            return batchSize;
+            lock.lock();
+            try {
+                return batchSize;
+            } finally {
+                lock.unlock();
+            }
         }
 
         public long getMaxIdleTime() {
-            return maxIdleTime;
+            lock.lock();
+            try {
+                return maxIdleTime;
+            } finally {
+                lock.unlock();
+            }
         }
 
         public void setBufferParameters(int bufferSize, int batchSize, long maxIdleTime) {
             lock.lock();
             try {
-                this.bufferSize = bufferSize;
+                this.bufferSize = Math.max(bufferSize, 1);
                 this.batchSize = batchSize;
                 this.maxIdleTime = maxIdleTime;
 
+                provideCondition.signalAll();
                 consumeCondition.signalAll();
             } finally {
                 lock.unlock();
