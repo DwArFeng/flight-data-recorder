@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.dwarfeng</groupId>
         <artifactId>fdr</artifactId>
-        <version>1.4.2.d</version>
+        <version>1.5.0.a-SNAPSHOT</version>
     </parent>
 
     <artifactId>fdr-impl</artifactId>
