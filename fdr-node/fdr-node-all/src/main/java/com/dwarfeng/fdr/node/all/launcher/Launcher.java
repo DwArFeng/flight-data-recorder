@@ -32,7 +32,7 @@ public class Launcher {
             try {
                 maintainService.reset();
             } catch (ServiceException e) {
-                LOGGER.warn("触发器支持重置失败，异常信息如下", e);
+                LOGGER.warn("过滤器支持重置失败，异常信息如下", e);
             }
         }
         if (launcherSettingHandler.isResetTriggerSupport()) {
@@ -41,7 +41,7 @@ public class Launcher {
             try {
                 maintainService.reset();
             } catch (ServiceException e) {
-                LOGGER.warn("过滤器支持重置失败，异常信息如下", e);
+                LOGGER.warn("触发器支持重置失败，异常信息如下", e);
             }
         }
         // 判断是否开启记录服务。
