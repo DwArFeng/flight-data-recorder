@@ -34,13 +34,13 @@ public class MultiPusher implements Pusher {
     private List<Pusher> pushers;
 
     @Value("${pusher.multi.delegate_types}")
-    private String delegetTypes;
+    private String delegateTypes;
 
     private final List<Pusher> delegates = new ArrayList<>();
 
     @PostConstruct
     public void init() throws HandlerException {
-        StringTokenizer st = new StringTokenizer(delegetTypes, ",");
+        StringTokenizer st = new StringTokenizer(delegateTypes, ",");
         while (st.hasMoreTokens()) {
             String delegateType = st.nextToken();
             delegates.add(pushers.stream().filter(p -> p.supportType(delegateType)).findAny()
