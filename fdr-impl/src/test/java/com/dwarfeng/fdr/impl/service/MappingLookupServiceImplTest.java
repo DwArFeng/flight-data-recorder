@@ -1,13 +1,12 @@
 package com.dwarfeng.fdr.impl.service;
 
+import com.dwarfeng.fdr.impl.handler.mapper.CountMapperMaker;
+import com.dwarfeng.fdr.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.service.PersistenceLookupService;
+import com.dwarfeng.fdr.stack.service.MappingLookupService;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
-import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
-import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
-import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,16 +17,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
-public class PersistenceLookupServiceImplTest {
+public class MappingLookupServiceImplTest {
 
     @Autowired
-    private PersistenceLookupService persistenceLookupService;
+    private MappingLookupService mappingLookupService;
     @Autowired
     private PointMaintainService pointMaintainService;
     @Autowired
@@ -71,26 +69,19 @@ public class PersistenceLookupServiceImplTest {
             }
             Date endDate = new Date();
 
-            PagedData<PersistenceValue> lookup = persistenceLookupService.lookup(parentPoint.getKey(), startDate, endDate);
-            assertEquals(5, lookup.getCount());
-            assertEquals(0, lookup.getCurrentPage());
-            assertEquals(1, lookup.getTotalPages());
-            for (int i = 0; i < lookup.getData().size(); i++) {
-                Map<String, String> lookupEntity = BeanUtils.describe(lookup.getData().get(i));
-                Map<String, String> originalEntity = BeanUtils.describe(persistenceValues.get(i));
-                assertEquals(lookupEntity, originalEntity);
+            List<TimedValue> lookup = mappingLookupService.lookupPersistence(parentPoint.getKey(), startDate, endDate);
+            assertEquals(5, lookup.size());
+            for (int i = 0; i < lookup.size(); i++) {
+                TimedValue lookupEntity = lookup.get(i);
+                PersistenceValue originalEntity = persistenceValues.get(i);
+                assertEquals(lookupEntity.getHappenedDate(), originalEntity.getHappenedDate());
+                assertEquals(lookupEntity.getValue(), originalEntity.getValue());
             }
 
-            lookup = persistenceLookupService.lookup(parentPoint.getKey(), startDate, endDate, new PagingInfo(1, 2));
-            assertEquals(5, lookup.getCount());
-            assertEquals(1, lookup.getCurrentPage());
-            assertEquals(3, lookup.getTotalPages());
-
-            for (int i = 0; i < lookup.getData().size(); i++) {
-                Map<String, String> lookupEntity = BeanUtils.describe(lookup.getData().get(i));
-                Map<String, String> originalEntity = BeanUtils.describe(persistenceValues.get(i + 2));
-                assertEquals(lookupEntity, originalEntity);
-            }
+            lookup = mappingLookupService.mappingPersistence(parentPoint.getKey(), startDate, endDate,
+                    CountMapperMaker.SUPPORT_TYPE, new Object[]{});
+            assertEquals(1, lookup.size());
+            assertEquals("5", lookup.get(0).getValue());
         } finally {
             for (PersistenceValue persistenceValue : persistenceValues) {
                 persistenceValueMaintainService.delete(persistenceValue.getKey());

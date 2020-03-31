@@ -34,6 +34,10 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 41, "mapper make failed");
     public static final ServiceException.Code MAPPER_TYPE_UNSUPPORTED =
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 42, "mapper type unsupported");
+    public static final ServiceException.Code PERSISTENCE_DISABLED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 50, "persistence disabled");
+    public static final ServiceException.Code REALTIME_DISABLED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 51, "realtime disabled");
 
     /**
      * 获取异常代号的偏移量。

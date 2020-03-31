@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 优化数据查询架构。
 
 #### Bug修复
 
@@ -12,8 +12,8 @@
 
 #### 功能移除
 
-- ~~删除 FilteredLookupService 服务~~
-- ~~删除 TriggeredLookupService 服务~~
+- ~~删除 FilteredLookupService 服务。~~
+- ~~删除 TriggeredLookupService 服务。~~
 
 ---
 

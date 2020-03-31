@@ -5,31 +5,23 @@ import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import java.util.Date;
 
 /**
- * 被映射的数据值。
+ * 拥有发生时间的数据值。
  *
  * @author DwArFeng
- * @since 1.4.1
+ * @since 1.5.0
  */
-public class MappedValue implements Dto {
+public class TimedValue implements Dto {
 
     private static final long serialVersionUID = -2721833507011331854L;
 
-    private Date happenedDate;
     private String value;
+    private Date happenedDate;
 
-    public MappedValue() {
+    public TimedValue() {
     }
 
-    public MappedValue(Date happenedDate, String value) {
-        this.happenedDate = happenedDate;
+    public TimedValue(String value, Date happenedDate) {
         this.value = value;
-    }
-
-    public Date getHappenedDate() {
-        return happenedDate;
-    }
-
-    public void setHappenedDate(Date happenedDate) {
         this.happenedDate = happenedDate;
     }
 
@@ -41,11 +33,19 @@ public class MappedValue implements Dto {
         this.value = value;
     }
 
+    public Date getHappenedDate() {
+        return happenedDate;
+    }
+
+    public void setHappenedDate(Date happenedDate) {
+        this.happenedDate = happenedDate;
+    }
+
     @Override
     public String toString() {
-        return "MappedValue{" +
-                "happenedDate=" + happenedDate +
-                ", value='" + value + '\'' +
+        return "TimedValue{" +
+                "value='" + value + '\'' +
+                ", happenedDate=" + happenedDate +
                 '}';
     }
 }

@@ -24,6 +24,11 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(UnsupportedTriggerTypeException.class, ServiceExceptionCodes.TRIGGER_TYPE_UNSUPPORTED);
         destination.put(PointNotExistsException.class, ServiceExceptionCodes.POINT_NOT_EXISTS);
         destination.put(RecordDisabledException.class, ServiceExceptionCodes.RECORD_HANDLER_DISABLED);
+        destination.put(MapperException.class, ServiceExceptionCodes.MAPPER_FAILED);
+        destination.put(MapperMakeException.class, ServiceExceptionCodes.MAPPER_MAKE_FAILED);
+        destination.put(UnsupportedMapperTypeException.class, ServiceExceptionCodes.MAPPER_TYPE_UNSUPPORTED);
+        destination.put(PersistenceDisabledException.class, ServiceExceptionCodes.PERSISTENCE_DISABLED);
+        destination.put(RealtimeDisabledException.class, ServiceExceptionCodes.REALTIME_DISABLED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

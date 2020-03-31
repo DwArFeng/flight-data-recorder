@@ -64,7 +64,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -130,7 +130,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
             sqlBuilder.append("LIMIT ?, ?");
 
@@ -255,7 +255,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -325,7 +325,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
             sqlBuilder.append("LIMIT ?, ?");
 
@@ -452,7 +452,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -522,7 +522,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
             sqlBuilder.append("LIMIT ?, ?");
 
@@ -649,7 +649,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -719,7 +719,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
             sqlBuilder.append("LIMIT ?, ?");
 
@@ -846,7 +846,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
@@ -916,7 +916,7 @@ public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator 
             }
             sqlBuilder.append("ORDER BY ");
             {
-                sqlBuilder.append("tbl.id ASC ");
+                sqlBuilder.append("tbl.happened_date ASC ");
             }
             sqlBuilder.append("LIMIT ?, ?");
 

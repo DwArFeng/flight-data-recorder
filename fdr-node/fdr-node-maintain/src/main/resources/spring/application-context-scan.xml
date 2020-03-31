@@ -10,9 +10,7 @@
     <!--扫描service的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.service">
         <!--排除service与维护方法无关的实现类。 -->
-        <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.PersistenceLookupService"/>
-        <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.FilteredLookupService"/>
-        <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.TriggeredLookupService"/>
+        <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.MappingLookupService"/>
         <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.RecordQosService"/>
         <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.RecordService"/>
     </context:component-scan>

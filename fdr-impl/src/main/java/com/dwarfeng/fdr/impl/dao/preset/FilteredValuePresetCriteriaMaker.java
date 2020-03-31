@@ -99,7 +99,7 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
             Date endDate = (Date) objs[2];
             criteria.add(Restrictions.ge("happenedDate", startDate));
             criteria.add(Restrictions.lt("happenedDate", endDate));
-            criteria.addOrder(Order.asc("longId"));
+            criteria.addOrder(Order.asc("happenedDate"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
@@ -117,7 +117,7 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
             Date endDate = (Date) objs[2];
             criteria.add(Restrictions.ge("happenedDate", startDate));
             criteria.add(Restrictions.lt("happenedDate", endDate));
-            criteria.addOrder(Order.asc("longId"));
+            criteria.addOrder(Order.asc("happenedDate"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }

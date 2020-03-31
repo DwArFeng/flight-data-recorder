@@ -1,10 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
 import com.dwarfeng.fdr.impl.handler.MapperMaker;
-import com.dwarfeng.fdr.stack.bean.dto.MappedValue;
-import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
@@ -53,33 +50,8 @@ public class CountMapperMaker implements MapperMaker {
     public static class CountMapper implements Mapper {
 
         @Override
-        public boolean supportPersistenceValue() {
-            return true;
-        }
-
-        @Override
-        public boolean supportFilteredValue() {
-            return true;
-        }
-
-        @Override
-        public boolean supportTriggeredValue() {
-            return true;
-        }
-
-        @Override
-        public List<MappedValue> mapPersistenceValue(List<PersistenceValue> persistenceValues) {
-            return Collections.singletonList(new MappedValue(new Date(), Integer.toString(persistenceValues.size())));
-        }
-
-        @Override
-        public List<MappedValue> mapFilteredValue(List<FilteredValue> filteredValues) {
-            return Collections.singletonList(new MappedValue(new Date(), Integer.toString(filteredValues.size())));
-        }
-
-        @Override
-        public List<MappedValue> mapTriggeredValue(List<TriggeredValue> triggeredValues) {
-            return Collections.singletonList(new MappedValue(new Date(), Integer.toString(triggeredValues.size())));
+        public List<TimedValue> map(List<TimedValue> timedValues) {
+            return Collections.singletonList(new TimedValue(Integer.toString(timedValues.size()), new Date()));
         }
     }
 }
