@@ -12,7 +12,8 @@
 
 #### 功能移除
 
-- (无)
+- ~~删除 FilteredLookupService 服务~~
+- ~~删除 TriggeredLookupService 服务~~
 
 ---
 
