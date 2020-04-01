@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.bean.entity;
 
-import com.dwarfeng.fdr.sdk.util.Constraints;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -27,7 +26,7 @@ public class HibernatePersistenceValue implements Bean {
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
-    @Column(name = "value", length = Constraints.LENGTH_VALUE, nullable = false)
+    @Column(name = "value", columnDefinition = "TEXT", nullable = false)
     private String value;
 
     public HibernatePersistenceValue() {

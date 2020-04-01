@@ -30,7 +30,7 @@ public class HibernateFilteredValue implements Bean {
     @Column(name = "happened_date", nullable = false)
     private Date happenedDate;
 
-    @Column(name = "value", length = Constraints.LENGTH_VALUE, nullable = false)
+    @Column(name = "value", columnDefinition = "TEXT", nullable = false)
     private String value;
 
     @Column(name = "message", length = Constraints.LENGTH_MESSAGE)

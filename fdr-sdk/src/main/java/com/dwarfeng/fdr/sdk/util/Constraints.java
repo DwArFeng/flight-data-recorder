@@ -16,10 +16,6 @@ public final class Constraints {
      */
     public static final int LENGTH_REMARK = 100;
     /**
-     * 值的长度约束。
-     */
-    public static final int LENGTH_VALUE = 40;
-    /**
      * 消息的长度约束。
      */
     public static final int LENGTH_MESSAGE = 100;
