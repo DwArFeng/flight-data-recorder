@@ -1,12 +1,10 @@
 package com.dwarfeng.fdr.impl.handler.pusher;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.dcti.sdk.util.DataInfoUtil;
+import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.fdr.impl.handler.Pusher;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilteredValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonPersistenceValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
-import com.dwarfeng.fdr.sdk.bean.entity.FastJsonTriggeredValue;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
@@ -33,27 +31,27 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Kafka推送器。
+ * 标准数据接口Kafka推送器。
  *
  * @author DwArFeng
- * @since 1.4.0
+ * @since 1.5.0
  */
 @Component
-public class KafkaPusher implements Pusher {
+public class DctiKafkaPusher implements Pusher {
 
-    public static final String SUPPORT_TYPE = "kafka";
+    public static final String SUPPORT_TYPE = "dcti.kafka";
 
     @Autowired
-    @Qualifier("kafkaPusher.kafkaTemplate")
+    @Qualifier("dctiKafkaPusher.kafkaTemplate")
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${pusher.kafka.topic.data_filtered}")
+    @Value("${pusher.dcti.kafka.topic.data_filtered}")
     private String dataFilteredTopic;
-    @Value("${pusher.kafka.topic.data_triggered}")
+    @Value("${pusher.dcti.kafka.topic.data_triggered}")
     private String dataTriggeredTopic;
-    @Value("${pusher.kafka.topic.realtime_updated}")
+    @Value("${pusher.dcti.kafka.topic.realtime_updated}")
     private String realtimeUpdatedTopic;
-    @Value("${pusher.kafka.topic.persistence_recorded}")
+    @Value("${pusher.dcti.kafka.topic.persistence_recorded}")
     private String persistenceRecordedTopic;
 
     @Override
@@ -62,53 +60,61 @@ public class KafkaPusher implements Pusher {
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void dataFiltered(FilteredValue filteredValue) {
-        String message = JSON.toJSONString(FastJsonFilteredValue.of(filteredValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(dataFilteredTopic, message);
+        MessagedValue messagedValue = new MessagedValue(filteredValue.getValue(), filteredValue.getMessage());
+        String value = JSON.toJSONString(messagedValue);
+        DataInfo dataInfo = new DataInfo(
+                filteredValue.getPointKey().getLongId(), value, filteredValue.getHappenedDate());
+        kafkaTemplate.send(dataFilteredTopic, DataInfoUtil.toMessage(dataInfo));
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void dataFiltered(List<FilteredValue> filteredValues) {
         filteredValues.forEach(this::dataFiltered);
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void dataTriggered(TriggeredValue triggeredValue) {
-        String message = JSON.toJSONString(FastJsonTriggeredValue.of(triggeredValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(dataTriggeredTopic, message);
+        MessagedValue messagedValue = new MessagedValue(triggeredValue.getValue(), triggeredValue.getMessage());
+        String value = JSON.toJSONString(messagedValue);
+        DataInfo dataInfo = new DataInfo(
+                triggeredValue.getPointKey().getLongId(), value, triggeredValue.getHappenedDate());
+        kafkaTemplate.send(dataFilteredTopic, DataInfoUtil.toMessage(dataInfo));
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void dataTriggered(List<TriggeredValue> triggeredValues) {
         triggeredValues.forEach(this::dataTriggered);
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void realtimeUpdated(RealtimeValue realtimeValue) {
-        String message = JSON.toJSONString(FastJsonRealtimeValue.of(realtimeValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(realtimeUpdatedTopic, message);
+        DataInfo dataInfo = new DataInfo(
+                realtimeValue.getKey().getLongId(), realtimeValue.getValue(), realtimeValue.getHappenedDate());
+        kafkaTemplate.send(realtimeUpdatedTopic, DataInfoUtil.toMessage(dataInfo));
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void realtimeUpdated(List<RealtimeValue> realtimeValues) {
         realtimeValues.forEach(this::realtimeUpdated);
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void persistenceRecorded(PersistenceValue persistenceValue) {
-        String message = JSON.toJSONString(FastJsonPersistenceValue.of(persistenceValue), SerializerFeature.WriteClassName);
-        kafkaTemplate.send(persistenceRecordedTopic, message);
+        DataInfo dataInfo = new DataInfo(
+                persistenceValue.getKey().getLongId(), persistenceValue.getValue(), persistenceValue.getHappenedDate());
+        kafkaTemplate.send(persistenceRecordedTopic, DataInfoUtil.toMessage(dataInfo));
     }
 
     @Override
-    @Transactional(transactionManager = "kafkaPusher.kafkaTransactionManager")
+    @Transactional(transactionManager = "dctiKafkaPusher.kafkaTransactionManager")
     public void persistenceRecorded(List<PersistenceValue> persistenceValues) {
         persistenceValues.forEach(this::persistenceRecorded);
     }
@@ -118,22 +124,22 @@ public class KafkaPusher implements Pusher {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPusherConfiguration.class);
 
-        @Value("${pusher.kafka.bootstrap_servers}")
+        @Value("${pusher.dcti.kafka.bootstrap_servers}")
         private String producerBootstrapServers;
-        @Value("${pusher.kafka.retries}")
+        @Value("${pusher.dcti.kafka.retries}")
         private int retries;
-        @Value("${pusher.kafka.linger}")
+        @Value("${pusher.dcti.kafka.linger}")
         private long linger;
-        @Value("${pusher.kafka.buffer_memory}")
+        @Value("${pusher.dcti.kafka.buffer_memory}")
         private long bufferMemory;
-        @Value("${pusher.kafka.batch_size}")
+        @Value("${pusher.dcti.kafka.batch_size}")
         private int batchSize;
-        @Value("${pusher.kafka.acks}")
+        @Value("${pusher.dcti.kafka.acks}")
         private String acks;
-        @Value("${pusher.kafka.transaction_prefix}")
+        @Value("${pusher.dcti.kafka.transaction_prefix}")
         private String transactionPrefix;
 
-        @Bean("kafkaPusher.producerProperties")
+        @Bean("dctiKafkaPusher.producerProperties")
         public Map<String, Object> producerProperties() {
             LOGGER.info("配置Kafka生产者属性...");
             Map<String, Object> props = new HashMap<>();
@@ -147,7 +153,7 @@ public class KafkaPusher implements Pusher {
             return props;
         }
 
-        @Bean("kafkaPusher.producerFactory")
+        @Bean("dctiKafkaPusher.producerFactory")
         public ProducerFactory<String, String> producerFactory() {
             LOGGER.info("配置Kafka生产者工厂...");
             Map<String, Object> properties = producerProperties();
@@ -159,7 +165,7 @@ public class KafkaPusher implements Pusher {
             return factory;
         }
 
-        @Bean("kafkaPusher.kafkaTemplate")
+        @Bean("dctiKafkaPusher.kafkaTemplate")
         public KafkaTemplate<String, String> kafkaTemplate() {
             LOGGER.info("生成KafkaTemplate...");
             ProducerFactory<String, String> producerFactory = producerFactory();
@@ -168,12 +174,52 @@ public class KafkaPusher implements Pusher {
             return kafkaTemplate;
         }
 
-        @Bean("kafkaPusher.kafkaTransactionManager")
+        @Bean("dctiKafkaPusher.kafkaTransactionManager")
         public KafkaTransactionManager<String, String> kafkaTransactionManager() {
             LOGGER.info("生成KafkaTransactionManager...");
             ProducerFactory<String, String> producerFactory = producerFactory();
             LOGGER.debug("KafkaTransactionManager生成完成...");
             return new KafkaTransactionManager<>(producerFactory);
+        }
+    }
+
+    private static class MessagedValue {
+
+        @JSONField(name = "value", ordinal = 1)
+        private String value;
+        @JSONField(name = "massage", ordinal = 2)
+        private String message;
+
+        public MessagedValue() {
+        }
+
+        public MessagedValue(String value, String message) {
+            this.value = value;
+            this.message = message;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        @Override
+        public String toString() {
+            return "MessagedValue{" +
+                    "value='" + value + '\'' +
+                    ", message='" + message + '\'' +
+                    '}';
         }
     }
 }
