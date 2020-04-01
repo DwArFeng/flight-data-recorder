@@ -152,7 +152,7 @@
                         <manifest>  
                              <addClasspath>true</addClasspath>  
                              <classpathPrefix>./</classpathPrefix>  
-                             <mainClass>com.dwarfeng.fdr.node.launcher.Launcher</mainClass>  
+                             <mainClass>com.dwarfeng.fdr.node.all.launcher.Launcher</mainClass>  
                         </manifest>
                     </archive>
                     <finalName>${project.name}-${project.version}</finalName>
