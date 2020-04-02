@@ -451,5 +451,6 @@
         <module>fdr-impl</module>
         <module>fdr-sdk</module>
         <module>fdr-node</module>
+        <module>fdr-api</module>
     </modules>
 </project>
