@@ -7,6 +7,8 @@
 - 优化数据查询架构。
 - 修改assembly.xml，将LICENSE文件装配至工程目录。
 - 更改持久值、被过滤值、被触发值在数据库中的定义为TEXT。
+- 实现DctiKafkaPusher，原有的KafkaPusher更名为NativeKafkaPusher。
+- 原有的KafkaSource更名为DctiKafkaSource，并优化配置。
 
 #### Bug修复
 

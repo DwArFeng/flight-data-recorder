@@ -33,9 +33,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Component
-public class KafkaSource implements Source {
+public class DctiKafkaSource implements Source {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSource.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DctiKafkaSource.class);
 
     @Autowired
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -43,7 +43,7 @@ public class KafkaSource implements Source {
     @Autowired
     private RecordService recordService;
 
-    @Value("${source.kafka.listener_id}")
+    @Value("${source.dcti.kafka.listener_id}")
     private String listenerId;
 
     private final Lock lock = new ReentrantLock();
@@ -111,8 +111,8 @@ public class KafkaSource implements Source {
         }
     }
 
-    @KafkaListener(id = "${source.kafka.listener_id}", containerFactory = "kafkaSource.kafkaListenerContainerFactory",
-            topics = "${source.kafka.listener_topic}")
+    @KafkaListener(id = "${source.dcti.kafka.listener_id}", containerFactory = "dctiKafkaSource.kafkaListenerContainerFactory",
+            topics = "${source.dcti.kafka.listener_topic}")
     public void handleDataInfo(String dataInfo, Acknowledgment ack) {
         try {
             recordService.record(dataInfo);
@@ -133,22 +133,22 @@ public class KafkaSource implements Source {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSourceConfiguration.class);
 
-        @Value("${source.kafka.bootstrap_servers}")
+        @Value("${source.dcti.kafka.bootstrap_servers}")
         private String consumerBootstrapServers;
-        @Value("${source.kafka.session_timeout_ms}")
+        @Value("${source.dcti.kafka.session_timeout_ms}")
         private int sessionTimeoutMs;
-        @Value("${source.kafka.group}")
+        @Value("${source.dcti.kafka.group}")
         private String group;
-        @Value("${source.kafka.auto_offset_reset}")
+        @Value("${source.dcti.kafka.auto_offset_reset}")
         private String autoOffsetReset;
-        @Value("${source.kafka.concurrency}")
+        @Value("${source.dcti.kafka.concurrency}")
         private int concurrency;
-        @Value("${source.kafka.poll_timeout}")
+        @Value("${source.dcti.kafka.poll_timeout}")
         private int pollTimeout;
-        @Value("${source.kafka.auto_startup}")
+        @Value("${source.dcti.kafka.auto_startup}")
         private boolean autoStartup;
 
-        @Bean("kafkaSource.consumerProperties")
+        @Bean("dctiKafkaSource.consumerProperties")
         public Map<String, Object> consumerProperties() {
             LOGGER.info("配置Kafka消费者属性...");
             Map<String, Object> props = new HashMap<>();
@@ -162,7 +162,7 @@ public class KafkaSource implements Source {
             return props;
         }
 
-        @Bean("kafkaSource.consumerFactory")
+        @Bean("dctiKafkaSource.consumerFactory")
         public ConsumerFactory<String, String> consumerFactory() {
             LOGGER.info("配置Kafka消费者工厂...");
             Map<String, Object> properties = consumerProperties();
@@ -173,7 +173,7 @@ public class KafkaSource implements Source {
             return factory;
         }
 
-        @Bean("kafkaSource.kafkaListenerContainerFactory")
+        @Bean("dctiKafkaSource.kafkaListenerContainerFactory")
         public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
             LOGGER.info("配置Kafka侦听容器工厂...");
             ConsumerFactory<String, String> consumerFactory = consumerFactory();
