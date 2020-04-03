@@ -125,6 +125,12 @@
         <dependency>
             <groupId>com.dwarfeng</groupId>
             <artifactId>fdr-impl</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
