@@ -135,6 +135,11 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>dcti</artifactId>
         </dependency>
+        <!-- groovy支持 -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+        </dependency>
         <!-- 程序自身模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>

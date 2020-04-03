@@ -60,6 +60,7 @@
         <spring-terminator.version>1.0.2.b</spring-terminator.version>
         <dcti.version>1.1.0.a</dcti.version>
         <judge.version>1.0.0.b</judge.version>
+        <groovy.version>3.0.2</groovy.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
@@ -401,6 +402,12 @@
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>judge-impl</artifactId>
                 <version>${judge.version}</version>
+            </dependency>
+            <!-- groovy支持 -->
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${groovy.version}</version>
             </dependency>
             <!-- 程序自身组件 -->
             <dependency>
