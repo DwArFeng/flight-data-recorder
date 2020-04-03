@@ -7,6 +7,7 @@
 - 新建fdr-api模块。
 - 升级dcti依赖至1.1.0.a。
 - 删除项目自身TimedValue，使用dcti的TimedValue对象。
+- 实现com.dwarfeng.fdr.api.integration.judge.FdrDubboRepository。
 
 #### Bug修复
 
