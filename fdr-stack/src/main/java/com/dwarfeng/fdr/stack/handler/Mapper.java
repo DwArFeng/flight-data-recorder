@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.stack.handler;
 
-import com.dwarfeng.fdr.stack.bean.dto.TimedValue;
+import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 
 import java.util.List;

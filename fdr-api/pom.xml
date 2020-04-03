@@ -41,36 +41,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-        </dependency>
-        <!-- Druid连接池 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
-        <!-- Hibernate框架 -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-        </dependency>
-        <!-- MySql连接器 -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <!-- Redis客户端 -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
         </dependency>
         <!-- FastJson Json处理工具包 -->
         <dependency>
@@ -113,11 +85,6 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
         </dependency>
-        <!-- SnowFlake服务 -->
-        <dependency>
-            <groupId>com.dwarfeng</groupId>
-            <artifactId>snowflake-distributed-service-api</artifactId>
-        </dependency>
         <!-- subgrade组件 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
@@ -136,6 +103,19 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>dcti</artifactId>
         </dependency>
+        <!-- judge组件 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>judge-stack</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>judge-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>judge-impl</artifactId>
+        </dependency>
         <!-- 程序自身模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
@@ -146,4 +126,19 @@
             <artifactId>fdr-sdk</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <!-- 配置资源目录 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <!-- 配置测试资源目录 -->
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+    </build>
 </project>

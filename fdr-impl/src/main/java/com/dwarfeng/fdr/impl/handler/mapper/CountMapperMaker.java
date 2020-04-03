@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
+import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.impl.handler.MapperMaker;
-import com.dwarfeng.fdr.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
