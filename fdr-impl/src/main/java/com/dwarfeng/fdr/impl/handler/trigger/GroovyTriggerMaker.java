@@ -93,6 +93,8 @@ public class GroovyTriggerMaker implements TriggerMaker {
         public TriggeredValue test(DataInfo dataInfo) throws TriggerException {
             try {
                 return processor.test(pointKey, triggerInfoKey, dataInfo);
+            } catch (TriggerException e) {
+                throw e;
             } catch (Exception e) {
                 throw new TriggerException(e);
             }

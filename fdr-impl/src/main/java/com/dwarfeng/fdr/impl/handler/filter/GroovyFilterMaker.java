@@ -126,6 +126,8 @@ public class GroovyFilterMaker implements FilterMaker {
         public FilteredValue test(DataInfo dataInfo) throws FilterException {
             try {
                 return processor.test(pointKey, filterInfoKey, dataInfo);
+            } catch (FilterException e) {
+                throw e;
             } catch (Exception e) {
                 throw new FilterException(e);
             }

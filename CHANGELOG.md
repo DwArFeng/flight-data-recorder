@@ -1,5 +1,21 @@
 # ChangeLog
 
+### Release_1.5.2_20200404_build_B
+
+#### 功能构建
+
+- 优化GroovyFilter和GroovyTrigger工作时的异常抛出方式。
+
+#### Bug修复
+
+- (无)
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.5.2_20200403_build_A
 
 #### 功能构建
