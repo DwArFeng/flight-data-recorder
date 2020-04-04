@@ -1,5 +1,21 @@
 # ChangeLog
 
+### Release_1.5.2_20200404_build_C
+
+#### 功能构建
+
+- 删除GroovyFilter和GroovyTrigger中无用的字段。
+
+#### Bug修复
+
+- (无)
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.5.2_20200404_build_B
 
 #### 功能构建

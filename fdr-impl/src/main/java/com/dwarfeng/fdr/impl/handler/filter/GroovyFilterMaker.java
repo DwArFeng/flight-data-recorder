@@ -9,8 +9,6 @@ import com.dwarfeng.fdr.stack.exception.FilterMakeException;
 import com.dwarfeng.fdr.stack.handler.Filter;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import groovy.lang.GroovyClassLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -112,8 +110,6 @@ public class GroovyFilterMaker implements FilterMaker {
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class GroovyFilter implements Filter {
-
-        private static final Logger LOGGER = LoggerFactory.getLogger(GroovyFilter.class);
 
         private LongIdKey pointKey;
         private LongIdKey filterInfoKey;
