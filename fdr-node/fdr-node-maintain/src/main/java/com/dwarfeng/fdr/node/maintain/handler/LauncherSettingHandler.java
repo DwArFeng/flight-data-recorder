@@ -11,6 +11,8 @@ public class LauncherSettingHandler implements Handler {
     private boolean resetFilterSupport;
     @Value("${launcher.reset_trigger_support}")
     private boolean resetTriggerSupport;
+    @Value("${launcher.reset_mapper_support}")
+    private boolean resetMapperSupport;
 
     public boolean isResetFilterSupport() {
         return resetFilterSupport;
@@ -18,5 +20,9 @@ public class LauncherSettingHandler implements Handler {
 
     public boolean isResetTriggerSupport() {
         return resetTriggerSupport;
+    }
+
+    public boolean isResetMapperSupport() {
+        return resetMapperSupport;
     }
 }

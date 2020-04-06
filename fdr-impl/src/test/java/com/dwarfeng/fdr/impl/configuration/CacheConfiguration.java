@@ -39,6 +39,8 @@ public class CacheConfiguration {
     private String enabledFilterInfoPrefix;
     @Value("${cache.prefix.list.enabled_trigger_info}")
     private String enabledTriggerInfoPrefix;
+    @Value("${cache.prefix.entity.mapper_support}")
+    private String mapperSupportPrefix;
 
     @Bean
     @SuppressWarnings("unchecked")
@@ -107,6 +109,16 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonTriggerSupport>) template,
                 new StringIdStringKeyFormatter(triggerSupportPrefix),
                 new DozerBeanTransformer<>(TriggerSupport.class, FastJsonTriggerSupport.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBaseCache<StringIdKey, MapperSupport, FastJsonMapperSupport> mapperSupportRedisBaseCache() {
+        return new RedisBaseCache<>(
+                (RedisTemplate<String, FastJsonMapperSupport>) template,
+                new StringIdStringKeyFormatter(mapperSupportPrefix),
+                new DozerBeanTransformer<>(MapperSupport.class, FastJsonMapperSupport.class, mapper)
         );
     }
 }

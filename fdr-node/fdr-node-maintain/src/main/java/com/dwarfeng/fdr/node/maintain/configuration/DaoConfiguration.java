@@ -46,6 +46,8 @@ public class DaoConfiguration {
     private FilterSupportPresetCriteriaMaker filterSupportPresetCriteriaMaker;
     @Autowired
     private TriggerSupportPresetCriteriaMaker triggerSupportPresetCriteriaMaker;
+    @Autowired
+    private MapperSupportPresetCriteriaMaker mapperSupportPresetCriteriaMaker;
 
     @Value("${redis.dbkey.realtime_value}")
     private String realtimeValueDbKey;
@@ -278,6 +280,35 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(TriggerInfo.class, HibernateTriggerInfo.class, mapper),
                 HibernateTriggerInfo.class
+        );
+    }
+
+    @Bean
+    public HibernateBaseDao<StringIdKey, HibernateStringIdKey, MapperSupport, HibernateMapperSupport> mapperSupportHibernateBaseDao() {
+        return new HibernateBaseDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
+                new DozerBeanTransformer<>(MapperSupport.class, HibernateMapperSupport.class, mapper),
+                HibernateMapperSupport.class
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<MapperSupport, HibernateMapperSupport> mapperSupportHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(MapperSupport.class, HibernateMapperSupport.class, mapper),
+                HibernateMapperSupport.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<MapperSupport, HibernateMapperSupport> mapperSupportHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(MapperSupport.class, HibernateMapperSupport.class, mapper),
+                HibernateMapperSupport.class,
+                mapperSupportPresetCriteriaMaker
         );
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 最小值映射器。
+ * 最小值映射器制造器。
  *
  * @author DwArFeng
  * @since 1.5.3

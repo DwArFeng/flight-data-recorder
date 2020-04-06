@@ -1,31 +1,31 @@
 package com.dwarfeng.fdr.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.fdr.stack.bean.entity.FilterSupport;
+import com.dwarfeng.fdr.stack.bean.entity.MapperSupport;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
 
 /**
- * FastJson过滤器支持。
+ * FastJson映射器支持。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.6.0
  */
-public class FastJsonFilterSupport implements Bean {
+public class FastJsonMapperSupport implements Bean {
 
-    private static final long serialVersionUID = -3821348344682281897L;
+    private static final long serialVersionUID = -7046798288553307802L;
 
-    public static FastJsonFilterSupport of(FilterSupport filterSupport) {
-        if (Objects.isNull(filterSupport)) {
+    public static FastJsonMapperSupport of(MapperSupport mapperSupport) {
+        if (Objects.isNull(mapperSupport)) {
             return null;
         }
-        return new FastJsonFilterSupport(
-                FastJsonStringIdKey.of(filterSupport.getKey()),
-                filterSupport.getLabel(),
-                filterSupport.getDescription(),
-                filterSupport.getExampleContent()
+        return new FastJsonMapperSupport(
+                FastJsonStringIdKey.of(mapperSupport.getKey()),
+                mapperSupport.getLabel(),
+                mapperSupport.getDescription(),
+                mapperSupport.getArgsIllustrate()
         );
     }
 
@@ -38,17 +38,17 @@ public class FastJsonFilterSupport implements Bean {
     @JSONField(name = "description", ordinal = 3)
     private String description;
 
-    @JSONField(name = "example_content", ordinal = 4)
-    private String exampleContent;
+    @JSONField(name = "args_illustrate", ordinal = 4)
+    private String argsIllustrate;
 
-    public FastJsonFilterSupport() {
+    public FastJsonMapperSupport() {
     }
 
-    public FastJsonFilterSupport(FastJsonStringIdKey key, String label, String description, String exampleContent) {
+    public FastJsonMapperSupport(FastJsonStringIdKey key, String label, String description, String argsIllustrate) {
         this.key = key;
         this.label = label;
         this.description = description;
-        this.exampleContent = exampleContent;
+        this.argsIllustrate = argsIllustrate;
     }
 
     public FastJsonStringIdKey getKey() {
@@ -75,21 +75,21 @@ public class FastJsonFilterSupport implements Bean {
         this.description = description;
     }
 
-    public String getExampleContent() {
-        return exampleContent;
+    public String getArgsIllustrate() {
+        return argsIllustrate;
     }
 
-    public void setExampleContent(String exampleContent) {
-        this.exampleContent = exampleContent;
+    public void setArgsIllustrate(String argsIllustrate) {
+        this.argsIllustrate = argsIllustrate;
     }
 
     @Override
     public String toString() {
-        return "FastJsonFilterSupport{" +
+        return "FastJsonMapperSupport{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", description='" + description + '\'' +
-                ", exampleContent='" + exampleContent + '\'' +
+                ", argsIllustrate='" + argsIllustrate + '\'' +
                 '}';
     }
 }

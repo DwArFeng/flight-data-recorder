@@ -15,6 +15,7 @@
 - Filter,Trigger相关结构实现功能分离。
   - com.dwarfeng.fdr.impl.handler.FilterSupporter
   - com.dwarfeng.fdr.impl.handler.TriggerSupporter
+- MapperSupport实体及其服务实现。
 
 #### Bug修复
 

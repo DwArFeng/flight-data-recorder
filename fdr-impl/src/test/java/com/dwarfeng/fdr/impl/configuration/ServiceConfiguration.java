@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.configuration;
 import com.dwarfeng.fdr.impl.service.operation.*;
 import com.dwarfeng.fdr.stack.bean.entity.*;
 import com.dwarfeng.fdr.stack.cache.FilterSupportCache;
+import com.dwarfeng.fdr.stack.cache.MapperSupportCache;
 import com.dwarfeng.fdr.stack.cache.TriggerSupportCache;
 import com.dwarfeng.fdr.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
@@ -62,11 +63,17 @@ public class ServiceConfiguration {
     private TriggerSupportCache triggerSupportCache;
     @Autowired
     private TriggerSupportDao triggerSupportDao;
+    @Autowired
+    private MapperSupportCache mapperSupportCache;
+    @Autowired
+    private MapperSupportDao mapperSupportDao;
 
     @Value("${cache.timeout.entity.filter_support}")
     private long filterSupportTimeout;
     @Value("${cache.timeout.entity.trigger_support}")
     private long triggerSupportTimeout;
+    @Value("${cache.timeout.entity.mapper_support}")
+    private long mapperSupportTimeout;
 
     @Bean
     public CustomBatchCrudService<LongIdKey, FilteredValue> filteredValueCustomCrudService() {
@@ -274,6 +281,36 @@ public class ServiceConfiguration {
     public DaoOnlyEntireLookupService<TriggerInfo> triggerInfoDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
                 triggerInfoDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralCrudService<StringIdKey, MapperSupport> mapperSupportGeneralCrudService() {
+        return new GeneralCrudService<>(
+                mapperSupportDao,
+                mapperSupportCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                mapperSupportTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<MapperSupport> mapperSupportDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                mapperSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<MapperSupport> mapperSupportDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                mapperSupportDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

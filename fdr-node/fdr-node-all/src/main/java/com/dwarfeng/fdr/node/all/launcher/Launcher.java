@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.node.all.launcher;
 
 import com.dwarfeng.fdr.node.all.handler.LauncherSettingHandler;
 import com.dwarfeng.fdr.stack.service.FilterSupportMaintainService;
+import com.dwarfeng.fdr.stack.service.MapperSupportMaintainService;
 import com.dwarfeng.fdr.stack.service.RecordQosService;
 import com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService;
 import com.dwarfeng.springterminator.stack.handler.Terminator;
@@ -25,7 +26,7 @@ public class Launcher {
         ctx.registerShutdownHook();
         ctx.start();
         LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
-        //判断是否重置触发器和过滤器。
+        //判断是否重置过滤器、触发器、映射器。
         if (launcherSettingHandler.isResetFilterSupport()) {
             LOGGER.info("重置过滤器支持...");
             FilterSupportMaintainService maintainService = ctx.getBean(FilterSupportMaintainService.class);
@@ -42,6 +43,15 @@ public class Launcher {
                 maintainService.reset();
             } catch (ServiceException e) {
                 LOGGER.warn("触发器支持重置失败，异常信息如下", e);
+            }
+        }
+        if (launcherSettingHandler.isResetMapperSupport()) {
+            LOGGER.info("重置映射器支持...");
+            MapperSupportMaintainService maintainService = ctx.getBean(MapperSupportMaintainService.class);
+            try {
+                maintainService.reset();
+            } catch (ServiceException e) {
+                LOGGER.warn("映射器支持重置失败，异常信息如下", e);
             }
         }
         // 判断是否开启记录服务。

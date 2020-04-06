@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 计数映射器。
+ * 计数映射器制造器。
  *
  * @author DwArFeng
  * @since 1.4.1

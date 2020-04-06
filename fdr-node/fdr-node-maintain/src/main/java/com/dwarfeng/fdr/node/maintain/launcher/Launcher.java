@@ -2,6 +2,7 @@ package com.dwarfeng.fdr.node.maintain.launcher;
 
 import com.dwarfeng.fdr.node.maintain.handler.LauncherSettingHandler;
 import com.dwarfeng.fdr.stack.service.FilterSupportMaintainService;
+import com.dwarfeng.fdr.stack.service.MapperSupportMaintainService;
 import com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService;
 import com.dwarfeng.springterminator.stack.handler.Terminator;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
@@ -40,6 +41,15 @@ public class Launcher {
                 maintainService.reset();
             } catch (ServiceException e) {
                 LOGGER.warn("触发器支持重置失败，异常信息如下", e);
+            }
+        }
+        if (launcherSettingHandler.isResetMapperSupport()) {
+            LOGGER.info("重置映射器支持...");
+            MapperSupportMaintainService maintainService = ctx.getBean(MapperSupportMaintainService.class);
+            try {
+                maintainService.reset();
+            } catch (ServiceException e) {
+                LOGGER.warn("映射器支持重置失败，异常信息如下", e);
             }
         }
         Terminator terminator = ctx.getBean(Terminator.class);
