@@ -50,26 +50,6 @@ public class IntegerFilterMaker implements FilterMaker {
         }
     }
 
-    @Override
-    public String provideType() {
-        return SUPPORT_TYPE;
-    }
-
-    @Override
-    public String provideLabel() {
-        return "整型数过滤器";
-    }
-
-    @Override
-    public String provideDescription() {
-        return "如果数据值是整型数，则通过过滤。";
-    }
-
-    @Override
-    public String provideExampleContent() {
-        return "";
-    }
-
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class IntegerFilter implements Filter, Bean {

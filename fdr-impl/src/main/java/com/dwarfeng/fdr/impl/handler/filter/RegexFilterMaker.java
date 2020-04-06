@@ -53,26 +53,6 @@ public class RegexFilterMaker implements FilterMaker {
         }
     }
 
-    @Override
-    public String provideType() {
-        return SUPPORT_TYPE;
-    }
-
-    @Override
-    public String provideLabel() {
-        return "正则表达式过滤器";
-    }
-
-    @Override
-    public String provideDescription() {
-        return "如果数据值匹配指定的正则表达式，则通过过滤。";
-    }
-
-    @Override
-    public String provideExampleContent() {
-        return JSON.toJSONString(new Config("^\\d+$"), true);
-    }
-
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RegexFilter implements Filter, Bean {

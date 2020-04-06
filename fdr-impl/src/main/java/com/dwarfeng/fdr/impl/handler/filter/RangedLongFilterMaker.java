@@ -53,31 +53,6 @@ public class RangedLongFilterMaker implements FilterMaker {
         }
     }
 
-    @Override
-    public String provideType() {
-        return SUPPORT_TYPE;
-    }
-
-    @Override
-    public String provideLabel() {
-        return "具有范围的长整型过滤器";
-    }
-
-    @Override
-    public String provideDescription() {
-        return "如果数据值是长整型数且数值在配置的范围之内，则通过过滤。";
-    }
-
-    @Override
-    public String provideExampleContent() {
-        return JSON.toJSONString(new Config(
-                1L,
-                true,
-                -2L,
-                false
-        ), true);
-    }
-
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RangedLongFilter implements Filter, Bean {

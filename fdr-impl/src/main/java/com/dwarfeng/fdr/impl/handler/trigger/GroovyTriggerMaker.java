@@ -54,26 +54,6 @@ public class GroovyTriggerMaker implements TriggerMaker {
         }
     }
 
-    @Override
-    public String provideType() {
-        return SUPPORT_TYPE;
-    }
-
-    @Override
-    public String provideLabel() {
-        return "Groovy触发器";
-    }
-
-    @Override
-    public String provideDescription() {
-        return "通过自定义的groovy脚本，判断数据点是否通过过滤";
-    }
-
-    @Override
-    public String provideExampleContent() {
-        return "";
-    }
-
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class GroovyTrigger implements Trigger {

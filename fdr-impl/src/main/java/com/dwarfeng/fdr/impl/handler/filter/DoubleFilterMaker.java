@@ -50,26 +50,6 @@ public class DoubleFilterMaker implements FilterMaker {
         }
     }
 
-    @Override
-    public String provideType() {
-        return SUPPORT_TYPE;
-    }
-
-    @Override
-    public String provideLabel() {
-        return "双精度浮点过滤器";
-    }
-
-    @Override
-    public String provideDescription() {
-        return "如果数据值是双精度浮点数，则通过过滤。";
-    }
-
-    @Override
-    public String provideExampleContent() {
-        return "";
-    }
-
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class DoubleFilter implements Filter, Bean {

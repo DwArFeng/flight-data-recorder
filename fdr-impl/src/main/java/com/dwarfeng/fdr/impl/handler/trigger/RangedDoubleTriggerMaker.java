@@ -53,31 +53,6 @@ public class RangedDoubleTriggerMaker implements TriggerMaker {
         }
     }
 
-    @Override
-    public String provideType() {
-        return SUPPORT_TYPE;
-    }
-
-    @Override
-    public String provideLabel() {
-        return "具有范围的双精度浮点触发器";
-    }
-
-    @Override
-    public String provideDescription() {
-        return "如果数据值是双精度浮点数且数值在配置的范围之内，则进行触发。";
-    }
-
-    @Override
-    public String provideExampleContent() {
-        return JSON.toJSONString(new Config(
-                0.5,
-                true,
-                -1.25,
-                false
-        ), true);
-    }
-
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RangedDoubleTrigger implements Trigger, Bean {

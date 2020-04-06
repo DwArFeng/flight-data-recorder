@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.impl.handler.FilterMaker;
+import com.dwarfeng.fdr.impl.handler.FilterSupporter;
 import com.dwarfeng.fdr.stack.bean.entity.FilterSupport;
 import com.dwarfeng.fdr.stack.service.FilterSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
@@ -32,7 +32,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     private DaoOnlyPresetLookupService<FilterSupport> presetLookupService;
 
     @Autowired(required = false)
-    private List<FilterMaker> filterMakers = new ArrayList<>();
+    private List<FilterSupporter> filterSupporters = new ArrayList<>();
 
     @Autowired
     private ServiceExceptionMapper sem;
@@ -139,14 +139,14 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void reset() throws ServiceException {
-        for (FilterMaker filterMaker : filterMakers) {
+        for (FilterSupporter filterSupporter : filterSupporters) {
             try {
                 crudService.insertIfNotExists(
                         new FilterSupport(
-                                new StringIdKey(filterMaker.provideType()),
-                                filterMaker.provideLabel(),
-                                filterMaker.provideDescription(),
-                                filterMaker.provideExampleContent()
+                                new StringIdKey(filterSupporter.provideType()),
+                                filterSupporter.provideLabel(),
+                                filterSupporter.provideDescription(),
+                                filterSupporter.provideExampleContent()
                         )
                 );
             } catch (Exception e) {

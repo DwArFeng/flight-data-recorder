@@ -1,6 +1,6 @@
 package com.dwarfeng.fdr.impl.service;
 
-import com.dwarfeng.fdr.impl.handler.TriggerMaker;
+import com.dwarfeng.fdr.impl.handler.TriggerSupporter;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerSupport;
 import com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
@@ -32,7 +32,7 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     private DaoOnlyPresetLookupService<TriggerSupport> presetLookupService;
 
     @Autowired(required = false)
-    private List<TriggerMaker> triggerMakers = new ArrayList<>();
+    private List<TriggerSupporter> triggerSupporters = new ArrayList<>();
 
     @Autowired
     private ServiceExceptionMapper sem;
@@ -139,14 +139,14 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager")
     public void reset() throws ServiceException {
-        for (TriggerMaker triggerMaker : triggerMakers) {
+        for (TriggerSupporter triggerSupporter : triggerSupporters) {
             try {
                 crudService.insertIfNotExists(
                         new TriggerSupport(
-                                new StringIdKey(triggerMaker.provideType()),
-                                triggerMaker.provideLabel(),
-                                triggerMaker.provideDescription(),
-                                triggerMaker.provideExampleContent()
+                                new StringIdKey(triggerSupporter.provideType()),
+                                triggerSupporter.provideLabel(),
+                                triggerSupporter.provideDescription(),
+                                triggerSupporter.provideExampleContent()
                         )
                 );
             } catch (Exception e) {

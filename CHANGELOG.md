@@ -12,6 +12,9 @@
   - com.dwarfeng.fdr.impl.handler.TriggerHandlerImpl
   - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImpl
   - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImpl
+- Filter,Trigger相关结构实现功能分离。
+  - com.dwarfeng.fdr.impl.handler.FilterSupporter
+  - com.dwarfeng.fdr.impl.handler.TriggerSupporter
 
 #### Bug修复
 
