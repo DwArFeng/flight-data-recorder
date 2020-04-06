@@ -5,6 +5,13 @@
 #### 功能构建
 
 - 细分fdr-api模块。
+- 将可放宽装配的组件列表设置为 @Autowired(required = false)
+  - com.dwarfeng.fdr.impl.handler.FilterHandlerImpl
+  - com.dwarfeng.fdr.impl.handler.MapperHandlerImpl
+  - com.dwarfeng.fdr.impl.handler.PushHandlerImpl
+  - com.dwarfeng.fdr.impl.handler.TriggerHandlerImpl
+  - com.dwarfeng.fdr.impl.service.FilterSupportMaintainServiceImpl
+  - com.dwarfeng.fdr.impl.service.TriggerSupportMaintainServiceImpl
 
 #### Bug修复
 

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +30,9 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     private DaoOnlyEntireLookupService<TriggerSupport> entireLookupService;
     @Autowired
     private DaoOnlyPresetLookupService<TriggerSupport> presetLookupService;
-    @Autowired
-    private List<TriggerMaker> triggerMakers;
+
+    @Autowired(required = false)
+    private List<TriggerMaker> triggerMakers = new ArrayList<>();
 
     @Autowired
     private ServiceExceptionMapper sem;

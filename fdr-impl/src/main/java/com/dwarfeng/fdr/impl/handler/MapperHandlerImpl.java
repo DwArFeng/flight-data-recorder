@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -17,8 +18,8 @@ public class MapperHandlerImpl implements MapperHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MapperHandlerImpl.class);
 
-    @Autowired
-    private List<MapperMaker> mapperMakers;
+    @Autowired(required = false)
+    private List<MapperMaker> mapperMakers = new ArrayList<>();
 
     @Override
     public Mapper make(String type, Object[] args) throws HandlerException {

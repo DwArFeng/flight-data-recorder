@@ -11,13 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class PushHandlerImpl implements PushHandler {
 
-    @Autowired
-    private List<Pusher> pushers;
+    @Autowired(required = false)
+    private List<Pusher> pushers = new ArrayList<>();
 
     @Value("${pusher.type}")
     private String pusherType;

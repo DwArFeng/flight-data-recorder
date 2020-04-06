@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,8 +30,9 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     private DaoOnlyEntireLookupService<FilterSupport> entireLookupService;
     @Autowired
     private DaoOnlyPresetLookupService<FilterSupport> presetLookupService;
-    @Autowired
-    private List<FilterMaker> filterMakers;
+
+    @Autowired(required = false)
+    private List<FilterMaker> filterMakers = new ArrayList<>();
 
     @Autowired
     private ServiceExceptionMapper sem;

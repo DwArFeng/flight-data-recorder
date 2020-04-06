@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -17,8 +18,8 @@ public class FilterHandlerImpl implements FilterHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FilterHandlerImpl.class);
 
-    @Autowired
-    private List<FilterMaker> filterMakers;
+    @Autowired(required = false)
+    private List<FilterMaker> filterMakers = new ArrayList<>();
 
     @Override
     public Filter make(FilterInfo filterInfo) throws FilterException {

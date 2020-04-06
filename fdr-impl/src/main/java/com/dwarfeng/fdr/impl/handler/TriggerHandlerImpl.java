@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -17,8 +18,8 @@ public class TriggerHandlerImpl implements TriggerHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggerHandlerImpl.class);
 
-    @Autowired
-    private List<TriggerMaker> triggerMakers;
+    @Autowired(required = false)
+    private List<TriggerMaker> triggerMakers = new ArrayList<>();
 
     @Override
     public Trigger make(TriggerInfo triggerInfo) throws TriggerException {
