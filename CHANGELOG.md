@@ -5,6 +5,7 @@
 #### 功能构建
 
 - 实现com.dwarfeng.fdr.impl.handler.mapper.MaxMapperMaker。
+- 实现com.dwarfeng.fdr.impl.handler.mapper.MinMapperMaker。
 
 #### Bug修复
 

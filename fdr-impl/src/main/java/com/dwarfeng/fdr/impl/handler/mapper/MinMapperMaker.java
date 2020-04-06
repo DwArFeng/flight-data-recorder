@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 最大值映射器。
+ * 最小值映射器。
  *
  * @author DwArFeng
  * @since 1.5.3
  */
 @Component
-public class MaxMapperMaker implements MapperMaker {
+public class MinMapperMaker implements MapperMaker {
 
-    public static final String SUPPORT_TYPE = "max_mapper";
+    public static final String SUPPORT_TYPE = "min_mapper";
 
     @Autowired
     private ApplicationContext ctx;
@@ -37,7 +37,7 @@ public class MaxMapperMaker implements MapperMaker {
     @Override
     public Mapper makeMapper(Object[] args) throws MapperException {
         try {
-            return ctx.getBean(MaxMapper.class);
+            return ctx.getBean(MinMapper.class);
         } catch (Exception e) {
             throw new MapperMakeException(e);
         }
@@ -45,7 +45,7 @@ public class MaxMapperMaker implements MapperMaker {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class MaxMapper implements Mapper {
+    public static class MinMapper implements Mapper {
 
         @Override
         public List<TimedValue> map(List<TimedValue> timedValues) throws MapperException {
@@ -53,17 +53,17 @@ public class MaxMapperMaker implements MapperMaker {
                 if (timedValues.isEmpty()) {
                     return Collections.emptyList();
                 }
-                int maxIndex = 0;
-                double maxValue = Double.MIN_VALUE;
+                int minIndex = 0;
+                double minValue = Double.MAX_VALUE;
                 for (int i = 0; i < timedValues.size(); i++) {
                     TimedValue timedValue = timedValues.get(i);
                     double v = Double.parseDouble(timedValue.getValue());
-                    if (v > maxValue) {
-                        maxValue = v;
-                        maxIndex = i;
+                    if (v < minValue) {
+                        minValue = v;
+                        minIndex = i;
                     }
                 }
-                return Collections.singletonList(timedValues.get(maxIndex));
+                return Collections.singletonList(timedValues.get(minIndex));
             } catch (Exception e) {
                 throw new MapperException(e);
             }
