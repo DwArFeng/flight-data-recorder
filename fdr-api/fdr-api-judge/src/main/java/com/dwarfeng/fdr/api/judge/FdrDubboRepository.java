@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.api.integration.judge;
+package com.dwarfeng.fdr.api.judge;
 
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.stack.service.MappingLookupService;
