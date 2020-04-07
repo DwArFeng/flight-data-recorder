@@ -57,7 +57,7 @@
         <kafka.version>2.4.0</kafka.version>
         <snowflake.version>1.2.4.a</snowflake.version>
         <subgrade.version>beta-0.3.2.b</subgrade.version>
-        <spring-terminator.version>1.0.2.b</spring-terminator.version>
+        <spring-terminator.version>1.0.3.a</spring-terminator.version>
         <dcti.version>1.1.0.a</dcti.version>
         <groovy.version>3.0.2</groovy.version>
         <!-- Maven插件版本声明 -->

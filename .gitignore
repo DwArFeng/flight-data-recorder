@@ -64,3 +64,24 @@ buildNumber.properties
 /fdr-node/fdr-node-maintain/conf/
 /fdr-node/fdr-node-record/conf/
 /fdr-node/fdr-node-all/conf/
+
+#################
+## Libext Files
+#################
+/fdr-node/fdr-node-maintain/libext/
+/fdr-node/fdr-node-record/libext/
+/fdr-node/fdr-node-all/libext/
+
+#################
+## Opt Files
+#################
+/fdr-node/fdr-node-maintain/opt/
+/fdr-node/fdr-node-record/opt/
+/fdr-node/fdr-node-all/opt/
+
+#################
+## Optext Files
+#################
+/fdr-node/fdr-node-maintain/optext/
+/fdr-node/fdr-node-record/optext/
+/fdr-node/fdr-node-all/optext/

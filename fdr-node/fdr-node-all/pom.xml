@@ -20,6 +20,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- 主方法类声明 -->
+        <mainClass>com.dwarfeng.fdr.node.all.launcher.Launcher</mainClass>
     </properties>
 
     <dependencies>

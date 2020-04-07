@@ -15,6 +15,8 @@
   - com.dwarfeng.fdr.impl.handler.FilterSupporter
   - com.dwarfeng.fdr.impl.handler.TriggerSupporter
 - MapperSupport实体及其服务实现。
+- 更改优化node模块的程序结构。
+  - node-all
 
 #### Bug修复
 
