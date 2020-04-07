@@ -28,6 +28,7 @@
     <modules>
         <module>fdr-node-maintain</module>
         <module>fdr-node-record</module>
+        <module>fdr-node-inspect</module>
         <module>fdr-node-all</module>
     </modules>
 </project>

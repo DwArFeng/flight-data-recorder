@@ -19,6 +19,7 @@
   - node-all
   - node-maintain
   - node-record
+- 添加node-inspect模块。
 
 #### Bug修复
 
