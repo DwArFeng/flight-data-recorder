@@ -19,7 +19,10 @@ public class Launcher {
     private final static Logger LOGGER = LoggerFactory.getLogger(Launcher.class);
 
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:spring/application-context*.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
+                "classpath:spring/application-context*.xml",
+                "file:opt/opt*.xml",
+                "file:optext/opt*.xml");
         ctx.registerShutdownHook();
         ctx.start();
         LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
