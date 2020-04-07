@@ -4,7 +4,6 @@
 
 #### 功能构建
 
-- 细分fdr-api模块。
 - 将可放宽装配的组件列表设置为 @Autowired(required = false)
   - com.dwarfeng.fdr.impl.handler.FilterHandlerImpl
   - com.dwarfeng.fdr.impl.handler.MapperHandlerImpl
@@ -23,7 +22,7 @@
 
 #### 功能移除
 
-- (无)
+- ~~删除api模块以及解除judge依赖~~
 
 ---
 

@@ -59,7 +59,6 @@
         <subgrade.version>beta-0.3.2.b</subgrade.version>
         <spring-terminator.version>1.0.2.b</spring-terminator.version>
         <dcti.version>1.1.0.a</dcti.version>
-        <judge.version>1.0.0.b</judge.version>
         <groovy.version>3.0.2</groovy.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
@@ -387,22 +386,6 @@
                 <artifactId>dcti</artifactId>
                 <version>${dcti.version}</version>
             </dependency>
-            <!-- judge组件 -->
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>judge-stack</artifactId>
-                <version>${judge.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>judge-sdk</artifactId>
-                <version>${judge.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.dwarfeng</groupId>
-                <artifactId>judge-impl</artifactId>
-                <version>${judge.version}</version>
-            </dependency>
             <!-- groovy支持 -->
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
@@ -476,6 +459,5 @@
         <module>fdr-impl</module>
         <module>fdr-sdk</module>
         <module>fdr-node</module>
-        <module>fdr-api</module>
     </modules>
 </project>
