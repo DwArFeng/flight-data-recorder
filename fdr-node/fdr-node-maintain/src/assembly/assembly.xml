@@ -48,6 +48,32 @@
             </includes>
             <fileMode>0644</fileMode>
         </fileSet>
+        <fileSet>
+            <outputDirectory>opt</outputDirectory>
+            <directory>src/main/resources/opt</directory>
+            <includes>
+                <include>*.xml</include>
+            </includes>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>libext</outputDirectory>
+            <directory>src/main/resources/libext</directory>
+            <includes>
+                <include>README.md</include>
+                <include>*.xml</include>
+            </includes>
+            <fileMode>0644</fileMode>
+        </fileSet>
+        <fileSet>
+            <outputDirectory>optext</outputDirectory>
+            <directory>src/main/resources/optext</directory>
+            <includes>
+                <include>README.md</include>
+                <include>*.xml</include>
+            </includes>
+            <fileMode>0644</fileMode>
+        </fileSet>
     </fileSets>
 
     <files>
@@ -81,8 +107,16 @@
         <file>
             <outputDirectory>bin</outputDirectory>
             <source>src/assembly/fdr-stop.sh</source>
+            <filtered>true</filtered>
             <fileMode>0755</fileMode>
             <lineEnding>unix</lineEnding>
+        </file>
+        <file>
+            <outputDirectory>bin</outputDirectory>
+            <source>src/assembly/fdr-start.bat</source>
+            <filtered>true</filtered>
+            <fileMode>0755</fileMode>
+            <lineEnding>dos</lineEnding>
         </file>
     </files>
 </assembly>

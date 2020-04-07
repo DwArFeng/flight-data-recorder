@@ -14,9 +14,6 @@
         <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.RecordQosService"/>
         <context:exclude-filter type="assignable" expression="com.dwarfeng.fdr.stack.service.RecordService"/>
     </context:component-scan>
-    <!--扫描handler的部分实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.filter"/>
-    <context:component-scan base-package="com.dwarfeng.fdr.impl.handler.trigger"/>
     <!--扫描dao的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.dao"/>
     <!--扫描cache的实现包。 -->

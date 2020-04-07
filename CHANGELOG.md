@@ -17,6 +17,7 @@
 - MapperSupport实体及其服务实现。
 - 更改优化node模块的程序结构。
   - node-all
+  - node-maintain
 
 #### Bug修复
 
