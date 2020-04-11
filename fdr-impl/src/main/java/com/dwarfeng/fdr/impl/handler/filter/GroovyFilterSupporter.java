@@ -1,7 +1,17 @@
 package com.dwarfeng.fdr.impl.handler.filter;
 
+import com.dwarfeng.dutil.basic.io.IOUtil;
+import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.fdr.impl.handler.FilterSupporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 使用Groovy脚本的过滤器支持器。
@@ -13,6 +23,10 @@ import org.springframework.stereotype.Component;
 public class GroovyFilterSupporter implements FilterSupporter {
 
     public static final String SUPPORT_TYPE = "groovy_filter";
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroovyFilterSupporter.class);
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Override
     public String provideType() {
@@ -31,39 +45,19 @@ public class GroovyFilterSupporter implements FilterSupporter {
 
     @Override
     public String provideExampleContent() {
-        return "import com.dwarfeng.dcti.stack.bean.dto.DataInfo\n" +
-                "import com.dwarfeng.fdr.impl.handler.filter.GroovyFilterMaker\n" +
-                "import com.dwarfeng.fdr.stack.bean.entity.FilteredValue\n" +
-                "import com.dwarfeng.fdr.stack.exception.FilterException\n" +
-                "import com.dwarfeng.subgrade.stack.bean.key.LongIdKey\n" +
-                "\n" +
-                "/**\n" +
-                " * 通过DataInfo的值的长度判断数据信息是否通过过滤的脚本。\n" +
-                " * <p> 如果DataInfo中数据的长度大于5，则不通过，否则通过。\n" +
-                " */\n" +
-                "@SuppressWarnings(\"GrPackage\")\n" +
-                "class ExampleFilterProcessor implements GroovyFilterMaker.Processor {\n" +
-                "\n" +
-                "    @Override\n" +
-                "    FilteredValue test(LongIdKey pointIdKey, LongIdKey filterIdKey, DataInfo dataInfo) throws FilterException {\n" +
-                "        try {\n" +
-                "            def size = dataInfo.getValue().size();\n" +
-                "            if (size > 5) {\n" +
-                "                return new FilteredValue(\n" +
-                "                        null,\n" +
-                "                        pointIdKey,\n" +
-                "                        filterIdKey,\n" +
-                "                        dataInfo.getHappenedDate(),\n" +
-                "                        dataInfo.getValue(),\n" +
-                "                        \"DataInfo 的值大于 5 个字符\"\n" +
-                "                );\n" +
-                "            } else {\n" +
-                "                return null;\n" +
-                "            }\n" +
-                "        } catch (Exception e) {\n" +
-                "            throw new FilterException(e);\n" +
-                "        }\n" +
-                "    }\n" +
-                "}\n";
+        try {
+            Resource resource = applicationContext.getResource("classpath:groovy/ExampleFilterProcessor.groovy");
+            String example;
+            try (InputStream sin = resource.getInputStream();
+                 StringOutputStream sout = new StringOutputStream(StandardCharsets.UTF_8, true)) {
+                IOUtil.trans(sin, sout, 4096);
+                sout.flush();
+                example = sout.toString();
+            }
+            return example;
+        } catch (Exception e) {
+            LOGGER.warn("读取文件 classpath:groovy/ExampleFilterProcessor.groovy 时出现异常", e);
+            return "";
+        }
     }
 }

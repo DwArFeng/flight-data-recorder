@@ -32,7 +32,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     private DaoOnlyPresetLookupService<FilterSupport> presetLookupService;
 
     @Autowired(required = false)
-    private List<FilterSupporter> filterSupporters = new ArrayList<>();
+    private final List<FilterSupporter> filterSupporters = new ArrayList<>();
 
     @Autowired
     private ServiceExceptionMapper sem;
@@ -141,7 +141,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
     public void reset() throws ServiceException {
         for (FilterSupporter filterSupporter : filterSupporters) {
             try {
-                crudService.insertIfNotExists(
+                crudService.insertOrUpdate(
                         new FilterSupport(
                                 new StringIdKey(filterSupporter.provideType()),
                                 filterSupporter.provideLabel(),

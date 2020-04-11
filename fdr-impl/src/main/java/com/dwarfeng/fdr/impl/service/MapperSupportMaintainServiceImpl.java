@@ -32,7 +32,7 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
     private DaoOnlyPresetLookupService<MapperSupport> presetLookupService;
 
     @Autowired(required = false)
-    private List<MapperSupporter> mapperSupporters = new ArrayList<>();
+    private final List<MapperSupporter> mapperSupporters = new ArrayList<>();
 
     @Autowired
     private ServiceExceptionMapper sem;
@@ -141,7 +141,7 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
     public void reset() throws ServiceException {
         for (MapperSupporter mapperSupporter : mapperSupporters) {
             try {
-                crudService.insertIfNotExists(
+                crudService.insertOrUpdate(
                         new MapperSupport(
                                 new StringIdKey(mapperSupporter.provideType()),
                                 mapperSupporter.provideLabel(),

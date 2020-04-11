@@ -4,7 +4,8 @@
 
 #### 功能构建
 
-- (无)
+- 优化GroovyFilterSupporter.provideExampleContent方法的实现方式。
+- 优化GroovyTriggerSupporter.provideExampleContent方法的实现方式。
 
 #### Bug修复
 

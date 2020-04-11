@@ -32,7 +32,7 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     private DaoOnlyPresetLookupService<TriggerSupport> presetLookupService;
 
     @Autowired(required = false)
-    private List<TriggerSupporter> triggerSupporters = new ArrayList<>();
+    private final List<TriggerSupporter> triggerSupporters = new ArrayList<>();
 
     @Autowired
     private ServiceExceptionMapper sem;
@@ -141,7 +141,7 @@ public class TriggerSupportMaintainServiceImpl implements TriggerSupportMaintain
     public void reset() throws ServiceException {
         for (TriggerSupporter triggerSupporter : triggerSupporters) {
             try {
-                crudService.insertIfNotExists(
+                crudService.insertOrUpdate(
                         new TriggerSupport(
                                 new StringIdKey(triggerSupporter.provideType()),
                                 triggerSupporter.provideLabel(),
