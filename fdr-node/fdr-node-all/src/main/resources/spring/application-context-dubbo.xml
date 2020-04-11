@@ -42,6 +42,8 @@
                    ref="filterSupportMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.fdr.stack.service.TriggerSupportMaintainService"
                    ref="triggerSupportMaintainServiceImpl"/>
+    <dubbo:service interface="com.dwarfeng.fdr.stack.service.MapperSupportMaintainService"
+                   ref="mapperSupportMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.fdr.stack.service.MappingLookupService"
                    ref="mappingLookupServiceImpl"/>
 

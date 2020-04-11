@@ -9,7 +9,9 @@
 
 #### Bug修复
 
-- (无)
+- 修复部分模块dubbo组件未暴露MapperSupportMaintainService服务的问题。
+  - node-all
+  - node-maintain
 
 #### 功能移除
 
