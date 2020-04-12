@@ -31,6 +31,6 @@ public class MinMapperSupporter implements MapperSupporter {
 
     @Override
     public String provideArgsIllustrate() {
-        return "";
+        return "不需要任何参数";
     }
 }

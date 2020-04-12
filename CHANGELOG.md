@@ -6,6 +6,7 @@
 
 - 优化GroovyFilterSupporter.provideExampleContent方法的实现方式。
 - 优化GroovyTriggerSupporter.provideExampleContent方法的实现方式。
+- 实现com.dwarfeng.fdr.impl.handler.mapper.GroovyMapperMaker映射器构造器。
 
 #### Bug修复
 
