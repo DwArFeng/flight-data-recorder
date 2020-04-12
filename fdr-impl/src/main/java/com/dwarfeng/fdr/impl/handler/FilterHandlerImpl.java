@@ -19,6 +19,7 @@ public class FilterHandlerImpl implements FilterHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(FilterHandlerImpl.class);
 
     @Autowired(required = false)
+    @SuppressWarnings("FieldMayBeFinal")
     private List<FilterMaker> filterMakers = new ArrayList<>();
 
     @Override

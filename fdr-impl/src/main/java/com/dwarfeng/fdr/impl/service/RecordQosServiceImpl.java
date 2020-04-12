@@ -33,7 +33,8 @@ public class RecordQosServiceImpl implements RecordQosService {
 
     @Autowired
     private RecordLocalCacheHandler recordLocalCacheHandler;
-    @Autowired
+    @Autowired(required = false)
+    @SuppressWarnings("FieldMayBeFinal")
     private List<Source> sources = new ArrayList<>();
     @Autowired
     private RecordHandler recordHandler;

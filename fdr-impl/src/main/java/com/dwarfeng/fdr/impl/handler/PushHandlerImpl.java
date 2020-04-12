@@ -18,6 +18,7 @@ import java.util.List;
 public class PushHandlerImpl implements PushHandler {
 
     @Autowired(required = false)
+    @SuppressWarnings("FieldMayBeFinal")
     private List<Pusher> pushers = new ArrayList<>();
 
     @Value("${pusher.type}")

@@ -24,7 +24,7 @@ public class MapperSupportMaintainServiceImplTest {
     @Autowired
     private MapperSupportMaintainService service;
 
-    private List<MapperSupport> mapperSupports = new ArrayList<>();
+    private final List<MapperSupport> mapperSupports = new ArrayList<>();
 
     @Before
     public void setUp() {

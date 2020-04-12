@@ -24,7 +24,7 @@ public class FilterSupportMaintainServiceImplTest {
     @Autowired
     private FilterSupportMaintainService service;
 
-    private List<FilterSupport> filterSupports = new ArrayList<>();
+    private final List<FilterSupport> filterSupports = new ArrayList<>();
 
     @Before
     public void setUp() {

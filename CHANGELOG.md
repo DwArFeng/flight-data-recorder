@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- RealtimeValueMaintainService实现全部实体查询。
 
 #### Bug修复
 
@@ -32,7 +32,7 @@
 
 #### 功能移除
 
-- (无)
+- RealtimeValueMaintainService实现全部实体查询。
 
 ---
 

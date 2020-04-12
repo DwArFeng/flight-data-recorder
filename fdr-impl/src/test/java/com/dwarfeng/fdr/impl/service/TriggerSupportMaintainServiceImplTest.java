@@ -24,7 +24,7 @@ public class TriggerSupportMaintainServiceImplTest {
     @Autowired
     private TriggerSupportMaintainService service;
 
-    private List<TriggerSupport> triggerSupports = new ArrayList<>();
+    private final List<TriggerSupport> triggerSupports = new ArrayList<>();
 
     @Before
     public void setUp() {

@@ -3,7 +3,10 @@ package com.dwarfeng.fdr.impl.service;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomCrudService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
+import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ public class RealtimeValueMaintainServiceImpl implements RealtimeValueMaintainSe
 
     @Autowired
     private CustomCrudService<LongIdKey, RealtimeValue> crudService;
+    @Autowired
+    private DaoOnlyEntireLookupService<RealtimeValue> entireLookupService;
 
     @Override
     @BehaviorAnalyse
@@ -84,5 +89,19 @@ public class RealtimeValueMaintainServiceImpl implements RealtimeValueMaintainSe
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insertOrUpdate(RealtimeValue element) throws ServiceException {
         return crudService.insertOrUpdate(element);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public PagedData<RealtimeValue> lookup() throws ServiceException {
+        return entireLookupService.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public PagedData<RealtimeValue> lookup(PagingInfo pagingInfo) throws ServiceException {
+        return entireLookupService.lookup(pagingInfo);
     }
 }

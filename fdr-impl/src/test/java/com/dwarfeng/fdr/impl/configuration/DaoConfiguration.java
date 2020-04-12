@@ -164,6 +164,17 @@ public class DaoConfiguration {
     }
 
     @Bean
+    @SuppressWarnings("unchecked")
+    public RedisEntireLookupDao<LongIdKey, RealtimeValue, FastJsonRealtimeValue> realtimeValueRedisEntireLookupDao() {
+        return new RedisEntireLookupDao<>(
+                (RedisTemplate<String, FastJsonRealtimeValue>) redisTemplate,
+                new LongIdStringKeyFormatter("key."),
+                new DozerBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, mapper),
+                realtimeValueDbKey
+        );
+    }
+
+    @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,

@@ -19,6 +19,7 @@ public class TriggerHandlerImpl implements TriggerHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(TriggerHandlerImpl.class);
 
     @Autowired(required = false)
+    @SuppressWarnings("FieldMayBeFinal")
     private List<TriggerMaker> triggerMakers = new ArrayList<>();
 
     @Override

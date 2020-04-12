@@ -24,9 +24,9 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
     @Autowired
     private RecordContextFetcher recordContextFetcher;
 
-    private ReadWriteLock lock = new ReentrantReadWriteLock();
-    private Map<LongIdKey, RecordContext> contextMap = new HashMap<>();
-    private Set<LongIdKey> notExistPoints = new HashSet<>();
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Map<LongIdKey, RecordContext> contextMap = new HashMap<>();
+    private final Set<LongIdKey> notExistPoints = new HashSet<>();
 
     @Override
     public boolean existsPoint(LongIdKey pointKey) throws HandlerException {

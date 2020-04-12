@@ -4,7 +4,9 @@ import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
 import com.dwarfeng.fdr.stack.dao.RealtimeValueDao;
 import com.dwarfeng.subgrade.impl.dao.RedisBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.RedisEntireLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class RealtimeValueDaoImpl implements RealtimeValueDao {
 
     @Autowired
     private RedisBatchBaseDao<LongIdKey, RealtimeValue, FastJsonRealtimeValue> batchBaseDao;
+    @Autowired
+    private RedisEntireLookupDao<LongIdKey, RealtimeValue, FastJsonRealtimeValue> entireLookupDao;
 
     @Override
     @BehaviorAnalyse
@@ -94,5 +98,26 @@ public class RealtimeValueDaoImpl implements RealtimeValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<RealtimeValue> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<RealtimeValue> lookup() throws DaoException {
+        return entireLookupDao.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<RealtimeValue> lookup(PagingInfo pagingInfo) throws DaoException {
+        return entireLookupDao.lookup(pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public int lookupCount() throws DaoException {
+        return entireLookupDao.lookupCount();
     }
 }

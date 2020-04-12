@@ -46,6 +46,8 @@ public class ServiceConfiguration {
     @Autowired
     private PointDao pointDao;
     @Autowired
+    private RealtimeValueDao realtimeValueDao;
+    @Autowired
     private RealtimeValueCrudOperation realtimeValueCrudOperation;
     @Autowired
     private TriggeredValueCrudOperation triggeredValueCrudOperation;
@@ -165,6 +167,15 @@ public class ServiceConfiguration {
         return new CustomCrudService<>(
                 realtimeValueCrudOperation,
                 longIdKeyKeyFetcher(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<RealtimeValue> realtimeValueDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                realtimeValueDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
