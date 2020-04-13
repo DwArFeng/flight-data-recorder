@@ -1,5 +1,21 @@
 # ChangeLog
 
+### Release_1.6.2_20200413_build_B
+
+#### 功能构建
+
+- (无)
+
+#### Bug修复
+
+- 修复WebInputPersistenceValue.toStackBean方法不是静态方法的bug。
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.6.2_20200413_build_A
 
 #### 功能构建

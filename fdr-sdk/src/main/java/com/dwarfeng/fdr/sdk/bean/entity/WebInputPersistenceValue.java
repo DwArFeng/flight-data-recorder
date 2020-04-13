@@ -12,9 +12,9 @@ import java.util.Date;
 
 public class WebInputPersistenceValue implements Bean {
 
-    private static final long serialVersionUID = -403385862894752562L;
+    private static final long serialVersionUID = -7654691083074227401L;
 
-    public PersistenceValue toStackBean(WebInputPersistenceValue webInputPersistenceValue) {
+    public static PersistenceValue toStackBean(WebInputPersistenceValue webInputPersistenceValue) {
         return new PersistenceValue(
                 WebInputLongIdKey.toStackBean(webInputPersistenceValue.getKey()),
                 WebInputLongIdKey.toStackBean(webInputPersistenceValue.getPointKey()),
