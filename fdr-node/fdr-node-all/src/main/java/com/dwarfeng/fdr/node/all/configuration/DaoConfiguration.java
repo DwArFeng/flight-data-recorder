@@ -68,6 +68,15 @@ public class DaoConfiguration {
     }
 
     @Bean
+    public HibernateEntireLookupDao<FilteredValue, HibernateFilteredValue> filteredValueHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
+                HibernateFilteredValue.class
+        );
+    }
+
+    @Bean
     public HibernatePresetLookupDao<FilteredValue, HibernateFilteredValue> filteredValueHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,

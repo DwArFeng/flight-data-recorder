@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.dao.FilteredValueDao;
 import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
@@ -30,6 +31,8 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
 
     @Autowired
     private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue> batchBaseDao;
+    @Autowired
+    private HibernateEntireLookupDao<FilteredValue, HibernateFilteredValue> entireLookupDao;
     @Autowired
     private HibernatePresetLookupDao<FilteredValue, HibernateFilteredValue> presetLookupDao;
     @Autowired
@@ -125,6 +128,27 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<FilteredValue> batchGet(List<LongIdKey> keys) {
         return batchBaseDao.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<FilteredValue> lookup() throws DaoException {
+        return entireLookupDao.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<FilteredValue> lookup(PagingInfo pagingInfo) throws DaoException {
+        return entireLookupDao.lookup(pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public int lookupCount() throws DaoException {
+        return entireLookupDao.lookupCount();
     }
 
     @Override
