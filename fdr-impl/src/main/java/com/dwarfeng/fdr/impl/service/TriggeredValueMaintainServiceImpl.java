@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.service;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -20,6 +21,8 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
 
     @Autowired
     private CustomBatchCrudService<LongIdKey, TriggeredValue> batchCrudService;
+    @Autowired
+    private DaoOnlyEntireLookupService<TriggeredValue> entireLookupService;
     @Autowired
     private DaoOnlyPresetLookupService<TriggeredValue> presetLookupService;
 
@@ -168,6 +171,20 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
     @Transactional(transactionManager = "hibernateTransactionManager")
     public List<LongIdKey> batchInsertOrUpdate(List<TriggeredValue> elements) throws ServiceException {
         return batchCrudService.batchInsertOrUpdate(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public PagedData<TriggeredValue> lookup() throws ServiceException {
+        return entireLookupService.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public PagedData<TriggeredValue> lookup(PagingInfo pagingInfo) throws ServiceException {
+        return entireLookupService.lookup(pagingInfo);
     }
 
     @Override

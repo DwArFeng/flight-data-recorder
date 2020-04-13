@@ -205,6 +205,15 @@ public class DaoConfiguration {
     }
 
     @Bean
+    public HibernateEntireLookupDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
+                HibernateTriggeredValue.class
+        );
+    }
+
+    @Bean
     public HibernatePresetLookupDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,

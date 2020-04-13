@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.dao.TriggeredValueDao;
 import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
@@ -30,6 +31,8 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
 
     @Autowired
     private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, TriggeredValue, HibernateTriggeredValue> batchBaseDao;
+    @Autowired
+    private HibernateEntireLookupDao<TriggeredValue, HibernateTriggeredValue> entireLookupDao;
     @Autowired
     private HibernatePresetLookupDao<TriggeredValue, HibernateTriggeredValue> presetLookupDao;
     @Autowired
@@ -125,6 +128,27 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<TriggeredValue> batchGet(List<LongIdKey> keys) {
         return batchBaseDao.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<TriggeredValue> lookup() throws DaoException {
+        return entireLookupDao.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<TriggeredValue> lookup(PagingInfo pagingInfo) throws DaoException {
+        return entireLookupDao.lookup(pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public int lookupCount() throws DaoException {
+        return entireLookupDao.lookupCount();
     }
 
     @Override

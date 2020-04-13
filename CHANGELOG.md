@@ -7,6 +7,7 @@
 - RealtimeValueMaintainService实现全部实体查询。
 - PersistenceValueMaintainService实现全部实体查询。
 - FilteredValueMaintainService实现全部实体查询。
+- TriggerValueMaintainService实现全部实体查询。
 
 #### Bug修复
 

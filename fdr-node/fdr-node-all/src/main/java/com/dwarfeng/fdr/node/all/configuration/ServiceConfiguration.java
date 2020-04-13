@@ -210,6 +210,15 @@ public class ServiceConfiguration {
     }
 
     @Bean
+    public DaoOnlyEntireLookupService<TriggeredValue> triggeredValueDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                triggeredValueDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
     public DaoOnlyPresetLookupService<TriggeredValue> triggeredValueDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 triggeredValueDao,

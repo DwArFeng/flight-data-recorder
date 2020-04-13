@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.stack.service;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
 import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 
 /**
@@ -12,7 +13,7 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
  * @since 0.0.1-alpha
  */
 public interface TriggeredValueMaintainService extends BatchCrudService<LongIdKey, TriggeredValue>,
-        PresetLookupService<TriggeredValue> {
+        EntireLookupService<TriggeredValue>, PresetLookupService<TriggeredValue> {
 
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_TRIGGER = "child_for_trigger";
