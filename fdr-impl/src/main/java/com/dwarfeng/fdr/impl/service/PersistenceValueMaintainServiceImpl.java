@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.service;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -20,6 +21,8 @@ public class PersistenceValueMaintainServiceImpl implements PersistenceValueMain
 
     @Autowired
     private CustomBatchCrudService<LongIdKey, PersistenceValue> batchCrudService;
+    @Autowired
+    private DaoOnlyEntireLookupService<PersistenceValue> entireLookupService;
     @Autowired
     private DaoOnlyPresetLookupService<PersistenceValue> presetLookupService;
 
@@ -168,6 +171,20 @@ public class PersistenceValueMaintainServiceImpl implements PersistenceValueMain
     @Transactional(transactionManager = "hibernateTransactionManager")
     public List<LongIdKey> batchInsertOrUpdate(List<PersistenceValue> elements) throws ServiceException {
         return batchCrudService.batchInsertOrUpdate(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public PagedData<PersistenceValue> lookup() throws ServiceException {
+        return entireLookupService.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public PagedData<PersistenceValue> lookup(PagingInfo pagingInfo) throws ServiceException {
+        return entireLookupService.lookup(pagingInfo);
     }
 
     @Override

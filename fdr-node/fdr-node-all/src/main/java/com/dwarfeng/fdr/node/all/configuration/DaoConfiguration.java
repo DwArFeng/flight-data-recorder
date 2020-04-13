@@ -112,6 +112,15 @@ public class DaoConfiguration {
     }
 
     @Bean
+    public HibernateEntireLookupDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
+                HibernatePersistenceValue.class
+        );
+    }
+
+    @Bean
     public HibernatePresetLookupDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,

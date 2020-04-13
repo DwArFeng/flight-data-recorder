@@ -5,6 +5,7 @@
 #### 功能构建
 
 - RealtimeValueMaintainService实现全部实体查询。
+- PersistenceValueMaintainService实现全部实体查询。
 
 #### Bug修复
 

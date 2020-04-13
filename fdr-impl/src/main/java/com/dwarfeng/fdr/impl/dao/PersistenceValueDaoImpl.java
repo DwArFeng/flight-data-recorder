@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.dao.PersistenceValueDao;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
@@ -30,6 +31,8 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
 
     @Autowired
     private HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, PersistenceValue, HibernatePersistenceValue> batchBaseDao;
+    @Autowired
+    private HibernateEntireLookupDao<PersistenceValue, HibernatePersistenceValue> entireLookupDao;
     @Autowired
     private HibernatePresetLookupDao<PersistenceValue, HibernatePersistenceValue> presetLookupDao;
     @Autowired
@@ -125,6 +128,27 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
     public List<PersistenceValue> batchGet(List<LongIdKey> keys) {
         return batchBaseDao.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<PersistenceValue> lookup() throws DaoException {
+        return entireLookupDao.lookup();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<PersistenceValue> lookup(PagingInfo pagingInfo) throws DaoException {
+        return entireLookupDao.lookup(pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public int lookupCount() throws DaoException {
+        return entireLookupDao.lookupCount();
     }
 
     @Override

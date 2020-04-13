@@ -126,6 +126,15 @@ public class ServiceConfiguration {
     }
 
     @Bean
+    public DaoOnlyEntireLookupService<PersistenceValue> persistenceValueDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                persistenceValueDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
     public DaoOnlyPresetLookupService<PersistenceValue> persistenceValueDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 persistenceValueDao,
