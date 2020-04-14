@@ -15,6 +15,7 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 public interface TriggeredValueMaintainService extends BatchCrudService<LongIdKey, TriggeredValue>,
         EntireLookupService<TriggeredValue>, PresetLookupService<TriggeredValue> {
 
+    String BETWEEN = "between";
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_TRIGGER = "child_for_trigger";
     String CHILD_FOR_TRIGGER_SET = "child_for_trigger_set";

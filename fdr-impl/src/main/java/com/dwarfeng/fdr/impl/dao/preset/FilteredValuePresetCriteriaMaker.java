@@ -20,6 +20,9 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
     @Override
     public void makeCriteria(DetachedCriteria criteria, String preset, Object[] objs) {
         switch (preset) {
+            case FilteredValueMaintainService.BETWEEN:
+                between(criteria, objs);
+                break;
             case FilteredValueMaintainService.CHILD_FOR_POINT:
                 childForPoint(criteria, objs);
                 break;
@@ -37,6 +40,18 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
                 break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + preset);
+        }
+    }
+
+    private void between(DetachedCriteria criteria, Object[] objs) {
+        try {
+            Date startDate = (Date) objs[0];
+            Date endDate = (Date) objs[1];
+            criteria.add(Restrictions.ge("happenedDate", startDate));
+            criteria.add(Restrictions.lt("happenedDate", endDate));
+            criteria.addOrder(Order.asc("happenedDate"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
     }
 

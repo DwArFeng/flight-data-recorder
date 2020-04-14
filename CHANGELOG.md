@@ -4,7 +4,9 @@
 
 #### 功能构建
 
-- (无)
+- 添加 PersistenceValueMaintainService.BETWEEN 预设查询。
+- 添加 FilteredValueMaintainService.BETWEEN 预设查询。
+- 添加 TriggeredValueMaintainService.BETWEEN 预设查询。
 
 #### Bug修复
 

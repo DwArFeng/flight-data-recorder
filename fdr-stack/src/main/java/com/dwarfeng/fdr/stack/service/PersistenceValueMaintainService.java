@@ -15,6 +15,7 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 public interface PersistenceValueMaintainService extends BatchCrudService<LongIdKey, PersistenceValue>,
         EntireLookupService<PersistenceValue>, PresetLookupService<PersistenceValue> {
 
+    String BETWEEN = "between";
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_POINT_BETWEEN = "child_for_point_between";
 }

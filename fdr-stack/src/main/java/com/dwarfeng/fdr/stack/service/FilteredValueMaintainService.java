@@ -15,6 +15,7 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 public interface FilteredValueMaintainService extends BatchCrudService<LongIdKey, FilteredValue>,
         EntireLookupService<FilteredValue>, PresetLookupService<FilteredValue> {
 
+    String BETWEEN = "between";
     String CHILD_FOR_POINT = "child_for_point";
     String CHILD_FOR_FILTER = "child_for_filter";
     String CHILD_FOR_FILTER_SET = "child_for_filter_set";
