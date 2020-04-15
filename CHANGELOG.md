@@ -1,5 +1,21 @@
 # ChangeLog
 
+### Release_1.6.3_20200415_build_B
+
+#### 功能构建
+
+- (无)
+
+#### Bug修复
+
+- 修复RegexFilterMaker.RegexFilter过滤器的返回字段错误。
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.6.3_20200414_build_A
 
 #### 功能构建

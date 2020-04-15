@@ -80,7 +80,7 @@ public class RegexFilterMaker implements FilterMaker {
                             filterInfoKey,
                             dataInfo.getHappenedDate(),
                             dataInfo.getValue(),
-                            "数据值不是数字"
+                            "数据值不能匹配指定的正则表达式: " + config.getPattern()
                     );
 
                 }
