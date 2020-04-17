@@ -7,7 +7,7 @@
     <parent>
         <artifactId>fdr-node</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>1.6.3.b</version>
+        <version>1.6.3.c</version>
     </parent>
 
     <artifactId>fdr-node-maintain</artifactId>
@@ -155,7 +155,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
                 <executions>
                     <execution>
                         <id>single</id>
