@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 优化com.dwarfeng.fdr.impl.handler.comsumer.RealtimeEventConsumer的异常处理流程。
 
 #### Bug修复
 

@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class RealtimeEventConsumer implements Consumer<RealtimeValue> {
@@ -27,39 +24,55 @@ public class RealtimeEventConsumer implements Consumer<RealtimeValue> {
     private RealtimeValueMaintainService realtimeValueMaintainService;
 
     @Override
-    public void consume(List<RealtimeValue> elements) {
+    public void consume(List<RealtimeValue> realtimeValues) {
         TimeMeasurer tm = new TimeMeasurer();
         tm.start();
         try {
             Map<LongIdKey, RealtimeValue> realtimeValueMap = new HashMap<>();
-            for (RealtimeValue realtimeValue : elements) {
-                if (realtimeValueMap.containsKey(realtimeValue.getKey())) {
-                    int compareResult = realtimeValue.getHappenedDate()
-                            .compareTo(realtimeValueMap.get(realtimeValue.getKey()).getHappenedDate());
-                    if (compareResult > 0) {
+            try {
+                for (RealtimeValue realtimeValue : realtimeValues) {
+                    if (realtimeValueMap.containsKey(realtimeValue.getKey())) {
+                        int compareResult = realtimeValue.getHappenedDate()
+                                .compareTo(realtimeValueMap.get(realtimeValue.getKey()).getHappenedDate());
+                        if (compareResult > 0) {
+                            realtimeValueMap.put(realtimeValue.getKey(), realtimeValue);
+                        }
+                    } else {
                         realtimeValueMap.put(realtimeValue.getKey(), realtimeValue);
                     }
-                } else {
-                    realtimeValueMap.put(realtimeValue.getKey(), realtimeValue);
                 }
+            } catch (Exception e) {
+                LOGGER.error("处理数据时发生异常, 最多 " + realtimeValues.size() + " 个数据信息丢失", e);
+                realtimeValues.forEach(realtimeValue -> LOGGER.debug(realtimeValue + ""));
+                return;
             }
+
+            List<RealtimeValue> failedList = new ArrayList<>();
+
             for (RealtimeValue realtimeValue : realtimeValueMap.values()) {
-                RealtimeValue ifExists = realtimeValueMaintainService.getIfExists(realtimeValue.getKey());
-                if (Objects.isNull(ifExists)) {
-                    pushHandler.realtimeUpdated(realtimeValue);
-                } else {
-                    int compareResult = realtimeValue.getHappenedDate().compareTo(ifExists.getHappenedDate());
-                    if (compareResult > 0) {
+                try {
+                    RealtimeValue ifExists = realtimeValueMaintainService.getIfExists(realtimeValue.getKey());
+                    if (Objects.isNull(ifExists)) {
                         pushHandler.realtimeUpdated(realtimeValue);
+                    } else {
+                        int compareResult = realtimeValue.getHappenedDate().compareTo(ifExists.getHappenedDate());
+                        if (compareResult >= 0) {
+                            pushHandler.realtimeUpdated(realtimeValue);
+                        }
                     }
+                } catch (Exception e) {
+                    LOGGER.error("数据推送失败, 放弃对数据的推送: " + realtimeValue, e);
+                    failedList.add(realtimeValue);
                 }
             }
-        } catch (Exception e) {
-            LOGGER.error("记录数据时发生异常, 最多 " + elements.size() + " 个数据信息丢失", e);
-            elements.forEach(realtimeValue -> LOGGER.debug(realtimeValue + ""));
+
+            if (!failedList.isEmpty()) {
+                LOGGER.error("推送数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
+                failedList.forEach(realtimeValue -> LOGGER.debug(realtimeValue + ""));
+            }
         } finally {
             tm.stop();
-            LOGGER.info("消费者处理了 " + elements.size() + " 条数据, 共用时 " + tm.getTimeMs() + " 毫秒");
+            LOGGER.info("消费者处理了 " + realtimeValues.size() + " 条数据, 共用时 " + tm.getTimeMs() + " 毫秒");
         }
     }
 }
