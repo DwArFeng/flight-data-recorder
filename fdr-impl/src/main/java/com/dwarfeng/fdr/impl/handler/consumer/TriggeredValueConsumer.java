@@ -1,9 +1,9 @@
-package com.dwarfeng.fdr.impl.handler.comsumer;
+package com.dwarfeng.fdr.impl.handler.consumer;
 
 import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.impl.handler.Consumer;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
+import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
+import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,40 +13,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class PersistenceValueConsumer implements Consumer<PersistenceValue> {
+public class TriggeredValueConsumer implements Consumer<TriggeredValue> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceValueConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TriggeredValueConsumer.class);
 
     @Autowired
-    private PersistenceValueMaintainService persistenceValueMaintainService;
+    private TriggeredValueMaintainService triggeredValueMaintainService;
 
     @Override
-    public void consume(List<PersistenceValue> elements) {
+    public void consume(List<TriggeredValue> elements) {
         TimeMeasurer tm = new TimeMeasurer();
         tm.start();
         try {
             try {
-                persistenceValueMaintainService.batchInsert(elements);
+                triggeredValueMaintainService.batchInsert(elements);
                 return;
             } catch (Exception e) {
                 LOGGER.warn("数据插入失败, 试图使用不同的策略进行插入: 插入或更新", e);
             }
 
             try {
-                persistenceValueMaintainService.batchInsertOrUpdate(elements);
+                triggeredValueMaintainService.batchInsertOrUpdate(elements);
                 return;
             } catch (Exception e) {
                 LOGGER.warn("数据插入失败, 试图使用不同的策略进行插入: 逐条插入", e);
             }
 
-            List<PersistenceValue> failedList = new ArrayList<>();
+            List<TriggeredValue> failedList = new ArrayList<>();
 
-            for (PersistenceValue persistenceValue : elements) {
+            for (TriggeredValue triggeredValue : elements) {
                 try {
-                    persistenceValueMaintainService.insertOrUpdate(persistenceValue);
+                    triggeredValueMaintainService.insertOrUpdate(triggeredValue);
                 } catch (Exception e) {
-                    LOGGER.error("数据插入失败, 放弃对数据的插入: " + persistenceValue, e);
-                    failedList.add(persistenceValue);
+                    LOGGER.error("数据插入失败, 放弃对数据的插入: " + triggeredValue, e);
+                    failedList.add(triggeredValue);
                 }
             }
 

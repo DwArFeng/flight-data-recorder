@@ -1,9 +1,8 @@
-package com.dwarfeng.fdr.impl.handler.comsumer;
+package com.dwarfeng.fdr.impl.handler.consumer;
 
 import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.impl.handler.Consumer;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.handler.PushHandler;
 import com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import org.slf4j.Logger;
@@ -14,12 +13,10 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class RealtimeEventConsumer implements Consumer<RealtimeValue> {
+public class RealtimeValueConsumer implements Consumer<RealtimeValue> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RealtimeEventConsumer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RealtimeValueConsumer.class);
 
-    @Autowired
-    private PushHandler pushHandler;
     @Autowired
     private RealtimeValueMaintainService realtimeValueMaintainService;
 
@@ -53,21 +50,21 @@ public class RealtimeEventConsumer implements Consumer<RealtimeValue> {
                 try {
                     RealtimeValue ifExists = realtimeValueMaintainService.getIfExists(realtimeValue.getKey());
                     if (Objects.isNull(ifExists)) {
-                        pushHandler.realtimeUpdated(realtimeValue);
+                        realtimeValueMaintainService.insert(realtimeValue);
                     } else {
                         int compareResult = realtimeValue.getHappenedDate().compareTo(ifExists.getHappenedDate());
-                        if (compareResult >= 0) {
-                            pushHandler.realtimeUpdated(realtimeValue);
+                        if (compareResult > 0) {
+                            realtimeValueMaintainService.update(realtimeValue);
                         }
                     }
                 } catch (Exception e) {
-                    LOGGER.error("数据推送失败, 放弃对数据的推送: " + realtimeValue, e);
+                    LOGGER.error("数据插入失败, 放弃对数据的推送: " + realtimeValue, e);
                     failedList.add(realtimeValue);
                 }
             }
 
             if (!failedList.isEmpty()) {
-                LOGGER.error("推送数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
+                LOGGER.error("记录数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
                 failedList.forEach(realtimeValue -> LOGGER.debug(realtimeValue + ""));
             }
         } finally {

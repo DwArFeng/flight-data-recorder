@@ -1,4 +1,4 @@
-package com.dwarfeng.fdr.impl.handler.comsumer;
+package com.dwarfeng.fdr.impl.handler.consumer;
 
 import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.impl.handler.Consumer;

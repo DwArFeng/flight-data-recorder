@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.node.all.configuration;
 
 import com.dwarfeng.fdr.impl.handler.ConsumeHandlerImpl;
-import com.dwarfeng.fdr.impl.handler.comsumer.*;
+import com.dwarfeng.fdr.impl.handler.consumer.*;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
