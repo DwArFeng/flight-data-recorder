@@ -57,6 +57,9 @@ public class TriggeredValueCrudOperation implements BatchCrudOperation<LongIdKey
 
     @Override
     public List<TriggeredValue> batchGet(List<LongIdKey> keys) throws Exception {
+        if (!triggeredValueDao.allExists(keys)) {
+            throw new ServiceException(ServiceExceptionCodes.ENTITY_NOT_EXIST);
+        }
         return triggeredValueDao.batchGet(keys);
     }
 

@@ -7,6 +7,10 @@
 - 优化com.dwarfeng.fdr.impl.handler.consumer.RealtimeEventConsumer的异常处理流程。
 - 优化com.dwarfeng.fdr.impl.handler.consumer.RealtimeValueConsumer的异常处理流程。
 - 更新README.md说明文件。
+- 调整部分实体维护服务的CrudOperation，对齐方法get和batchGet。
+   - com.dwarfeng.fdr.impl.service.operation.FilteredValueCrudOperation
+   - com.dwarfeng.fdr.impl.service.operation.PersistenceValueCrudOperation
+   - com.dwarfeng.fdr.impl.service.operation.TriggeredValueCrudOperation
 
 #### Bug修复
 

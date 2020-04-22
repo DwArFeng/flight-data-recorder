@@ -57,6 +57,9 @@ public class PersistenceValueCrudOperation implements BatchCrudOperation<LongIdK
 
     @Override
     public List<PersistenceValue> batchGet(List<LongIdKey> keys) throws Exception {
+        if (!persistenceValueDao.allExists(keys)) {
+            throw new ServiceException(ServiceExceptionCodes.ENTITY_NOT_EXIST);
+        }
         return persistenceValueDao.batchGet(keys);
     }
 
