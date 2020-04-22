@@ -8,6 +8,89 @@
 
 ---
 
+## 安装说明
+
+1. 下载源码
+
+   使用git进行源码下载。
+   ```
+   git clone git@github.com:DwArFeng/fdr.git
+   ```
+   对于中国用户，可以使用gitee进行高速下载。
+   ```
+   git clone git@gitee.com:dwarfeng/fdr.git
+   ```
+   
+2. 项目打包
+
+   进入项目根目录，执行maven命令
+   ```
+   mvn clean package
+   ```
+   
+3. 解压
+
+   找到打包后的目标文件 
+   ```
+   fdr-node/fdr-node-all/target/fdr-node-all-[version]-release.tar.gz
+   fdr-node/fdr-node-record/target/fdr-node-record-[version]-release.tar.gz
+   fdr-node/fdr-node-maintain/target/fdr-node-maintain-[version]-release.tar.gz
+   fdr-node/fdr-node-inspect/target/fdr-node-inspect-[version]-release.tar.gz
+   ```
+   将其解压至windows系统或者linux系统
+   
+4. 配置
+
+   1. 进入工程下的`bin`目录，修改所有执行脚本的`basedir`和`logdir`
+      
+   2. 修改conf文件夹下的配置文件，着重修改各连接的url与密码。
+   
+5. enjoy it
+
+---
+
+## 分布式说明
+
+该项目使用`dubbo`作为RPC框架，本身支持分布式，您可以在实际使用时，部署该项目任何模块任意数量，以进行分布式运算。
+
+---
+
+## 项目的工作流程
+
+1. 项目运行后，数据源`Source`会不断地将待采集的数据交给数据记录服务`RecordService`处理。
+
+2. `RecordService`调用`RecordHandler`，分析待采集数据的具体条件，决定数据是否进行如下的动作。
+   1. 数据持久化记录
+   2. 数据实时记录
+   3. 数据过滤记录
+   4. 数据触发记录
+   
+   每个动作拥有与之对应的事件，当动作确定执行时，会同时生成一个相对应的事件，事件列表如下。
+   1. 数据持久化事件
+   2. 数据实时事件
+   3. 数据过滤事件
+   4. 数据触发事件
+   
+   `RecordHandler` 将一个待记录的数据点转化成一个或多个动作事件，将这些动作事件交给消费处理器`ConsumeHandler`。
+   
+3. `ConsumeHandler`消费动作事件，将动作相关的实体持久化至数据访问层中，并将事件推送给`PushHandler`。
+
+   `ConsumeHandler` 拥有灵活的执行逻辑，这些逻辑细节都可以进行配置，详见配置文件`conf/fdr/consume.properties`。
+
+---
+
+## 特性
+
+- 通过配置实体对象设定数据点，并定义过滤、触发、实时、持久四项数据记录功能。
+
+- 使用`生产者-消费者`模型处理数据记录和事件推送，将分散的数据点处理结果发送到消费处理器中，实现最终数据的批量处理，提高了效率。
+
+- 记录数据的同时，提供的各种事件的推送机制，解决了实时性需求。
+
+- 丰富的查询接口，使用原生SQL语句优化查询效率。
+
+---
+
 ## 项目的使用
 
 ### 数据点定义
@@ -66,13 +149,21 @@
    可以为某一个数据点指定触发器。当数据点拥有触发器时，每次收到更新的数据信息后，则会根据触发器信息对该点进行触发，如果数据
    满足触发条件，则本条数据信息会额外的被记录在触发数据中，并且向当前的事件处理器推送数据被触发事件。
 
+### 事件推送
+
+事件推送机制保证了获取报警信息的实时性。
+
+当持久数据、实时数据、过滤数据、触发数据任何一种被记录时，会立即生成事件，并通过`PushHandler`进行推送。
+
+`PushHandler`可以通过配置更改其行为，具体的配置参照文件`conf/fdr/push.proeprties`
+
 ### 数据查询
 
 1. 通过维护接口
 
-   维护接口提供了一定的数据查询功能，包括主键查询和样板查询。
+   全部实体对象均可通过其维护服务进行查询，再此基础上，部分实体提供样板查询。
    
-   样板查询说明
+   所有样板查询
    
    * `PersistenceValueMaintainService`
    
@@ -138,6 +229,14 @@
 
 ---
 
+## 插件
+
+该项目可以进行插件扩展，将自己编写的插件放在项目的 `libext` 文件夹中，并且在 `optext` 中编写spring加载文件，以实现插件的加载。
+
+*注意：`optext` 目录下的spring加载文件请满足`opt*.xml`的格式，即以opt开头，以.xml结尾。*
+
+---
+
 ## 项目的扩展
 
 1. 数据源的扩展
@@ -148,9 +247,13 @@
 
    实现接口 `com.dwarfeng.fdr.impl.handler.FilterMaker` 并将实现类注入到spring的IoC容器中。
    
+   实现接口 `com.dwarfeng.fdr.impl.handler.FilterSupporter` 并将实现类注入到spring的IoC容器中。
+
 3. 过滤器的扩展
 
    实现接口 `com.dwarfeng.fdr.impl.handler.TriggerMaker` 并将实现类注入到spring的IoC容器中。
+
+   实现接口 `com.dwarfeng.fdr.impl.handler.TriggerSupporter` 并将实现类注入到spring的IoC容器中。
 
 4. 推送器的扩展
 
@@ -178,6 +281,8 @@
 5. 映射器的扩展
 
    实现接口 `com.dwarfeng.fdr.impl.handler.MapperMaker` 并将实现类注入到spring的IoC容器中。
+   
+   实现接口 `com.dwarfeng.fdr.impl.handler.MapperSupporter` 并将实现类注入到spring的IoC容器中。
 
 6. 原生SQL生成器的扩展
 

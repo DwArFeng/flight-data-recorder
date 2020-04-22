@@ -6,6 +6,7 @@
 
 - 优化com.dwarfeng.fdr.impl.handler.consumer.RealtimeEventConsumer的异常处理流程。
 - 优化com.dwarfeng.fdr.impl.handler.consumer.RealtimeValueConsumer的异常处理流程。
+- 更新README.md说明文件。
 
 #### Bug修复
 
