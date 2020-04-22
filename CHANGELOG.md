@@ -4,7 +4,8 @@
 
 #### 功能构建
 
-- 优化com.dwarfeng.fdr.impl.handler.comsumer.RealtimeEventConsumer的异常处理流程。
+- 优化com.dwarfeng.fdr.impl.handler.consumer.RealtimeEventConsumer的异常处理流程。
+- 优化com.dwarfeng.fdr.impl.handler.consumer.RealtimeValueConsumer的异常处理流程。
 
 #### Bug修复
 
