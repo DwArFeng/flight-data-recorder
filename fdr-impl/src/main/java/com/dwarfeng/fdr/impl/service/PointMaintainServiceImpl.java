@@ -2,7 +2,7 @@ package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.PointMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomCrudService;
+import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class PointMaintainServiceImpl implements PointMaintainService {
 
     @Autowired
-    private CustomCrudService<LongIdKey, Point> crudService;
+    private CustomBatchCrudService<LongIdKey, Point> crudService;
     @Autowired
     private DaoOnlyEntireLookupService<Point> entireLookupService;
     @Autowired
@@ -92,6 +94,83 @@ public class PointMaintainServiceImpl implements PointMaintainService {
     @Transactional(transactionManager = "hibernateTransactionManager")
     public LongIdKey insertOrUpdate(Point element) throws ServiceException {
         return crudService.insertOrUpdate(element);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public boolean allExists(List<LongIdKey> keys) throws ServiceException {
+        return crudService.allExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public boolean nonExists(List<LongIdKey> keys) throws ServiceException {
+        return crudService.nonExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<Point> batchGet(List<LongIdKey> keys) throws ServiceException {
+        return crudService.batchGet(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public List<LongIdKey> batchInsert(List<Point> elements) throws ServiceException {
+        return crudService.batchInsert(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void batchUpdate(List<Point> elements) throws ServiceException {
+        crudService.batchUpdate(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void batchDelete(List<LongIdKey> keys) throws ServiceException {
+        crudService.batchDelete(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+    public List<Point> batchGetIfExists(List<LongIdKey> keys) throws ServiceException {
+        return crudService.batchGetIfExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public List<LongIdKey> batchInsertIfExists(List<Point> elements) throws ServiceException {
+        return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void batchUpdateIfExists(List<Point> elements) throws ServiceException {
+        crudService.batchUpdateIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public void batchDeleteIfExists(List<LongIdKey> keys) throws ServiceException {
+        crudService.batchDeleteIfExists(keys);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager")
+    public List<LongIdKey> batchInsertOrUpdate(List<Point> elements) throws ServiceException {
+        return crudService.batchInsertOrUpdate(elements);
     }
 
     @Override

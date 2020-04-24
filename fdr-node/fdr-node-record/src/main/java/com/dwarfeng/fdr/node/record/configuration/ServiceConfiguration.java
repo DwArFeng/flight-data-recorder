@@ -106,8 +106,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomCrudService<LongIdKey, FilterInfo> filterInfoCustomCrudService() {
-        return new CustomCrudService<>(
+    public CustomBatchCrudService<LongIdKey, FilterInfo> filterInfoBatchCustomCrudService() {
+        return new CustomBatchCrudService<>(
                 filterInfoCrudOperation,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
@@ -153,8 +153,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomCrudService<LongIdKey, Point> pointCustomCrudService() {
-        return new CustomCrudService<>(
+    public CustomBatchCrudService<LongIdKey, Point> pointBatchCustomCrudService() {
+        return new CustomBatchCrudService<>(
                 pointCrudOperation,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
@@ -228,8 +228,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomCrudService<LongIdKey, TriggerInfo> triggerInfoCustomCrudService() {
-        return new CustomCrudService<>(
+    public CustomBatchCrudService<LongIdKey, TriggerInfo> triggerInfoBatchCustomCrudService() {
+        return new CustomBatchCrudService<>(
                 triggerInfoCrudOperation,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),

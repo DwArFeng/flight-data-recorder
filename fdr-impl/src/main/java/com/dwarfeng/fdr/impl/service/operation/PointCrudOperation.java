@@ -10,7 +10,7 @@ import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
 import com.dwarfeng.fdr.stack.service.FilterInfoMaintainService;
 import com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
-import com.dwarfeng.subgrade.sdk.service.custom.operation.CrudOperation;
+import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
+public class PointCrudOperation implements BatchCrudOperation<LongIdKey, Point> {
 
     @Autowired
     private PointDao pointDao;
@@ -101,5 +101,48 @@ public class PointCrudOperation implements CrudOperation<LongIdKey, Point> {
 
         pointDao.delete(key);
         pointCache.delete(key);
+    }
+
+    @Override
+    public boolean allExists(List<LongIdKey> keys) throws Exception {
+        return pointCache.allExists(keys) || pointDao.allExists(keys);
+    }
+
+    @Override
+    public boolean nonExists(List<LongIdKey> keys) throws Exception {
+        return pointCache.nonExists(keys) && pointCache.nonExists(keys);
+    }
+
+    @Override
+    public List<Point> batchGet(List<LongIdKey> keys) throws Exception {
+        if (pointCache.allExists(keys)) {
+            return pointCache.batchGet(keys);
+        } else {
+            if (!pointDao.allExists(keys)) {
+                throw new ServiceException(ServiceExceptionCodes.ENTITY_NOT_EXIST);
+            }
+            List<Point> points = pointDao.batchGet(keys);
+            pointCache.batchPush(points, pointTimeout);
+            return points;
+        }
+    }
+
+    @Override
+    public List<LongIdKey> batchInsert(List<Point> points) throws Exception {
+        pointCache.batchPush(points, pointTimeout);
+        return pointDao.batchInsert(points);
+    }
+
+    @Override
+    public void batchUpdate(List<Point> points) throws Exception {
+        pointCache.batchPush(points, pointTimeout);
+        pointDao.batchUpdate(points);
+    }
+
+    @Override
+    public void batchDelete(List<LongIdKey> keys) throws Exception {
+        for (LongIdKey key : keys) {
+            delete(key);
+        }
     }
 }

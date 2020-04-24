@@ -5,17 +5,19 @@ import com.dwarfeng.fdr.stack.cache.EnabledTriggerInfoCache;
 import com.dwarfeng.fdr.stack.cache.TriggerInfoCache;
 import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
-import com.dwarfeng.subgrade.sdk.service.custom.operation.CrudOperation;
+import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Component
-public class TriggerInfoCrudOperation implements CrudOperation<LongIdKey, TriggerInfo> {
+public class TriggerInfoCrudOperation implements BatchCrudOperation<LongIdKey, TriggerInfo> {
 
     @Autowired
     private TriggerInfoDao triggerInfoDao;
@@ -81,5 +83,52 @@ public class TriggerInfoCrudOperation implements CrudOperation<LongIdKey, Trigge
 
         triggerInfoDao.delete(key);
         triggerInfoCache.delete(key);
+    }
+
+    @Override
+    public boolean allExists(List<LongIdKey> keys) throws Exception {
+        return triggerInfoCache.allExists(keys) || triggerInfoDao.allExists(keys);
+    }
+
+    @Override
+    public boolean nonExists(List<LongIdKey> keys) throws Exception {
+        return triggerInfoCache.nonExists(keys) && triggerInfoCache.nonExists(keys);
+    }
+
+    @Override
+    public List<TriggerInfo> batchGet(List<LongIdKey> keys) throws Exception {
+        if (triggerInfoCache.allExists(keys)) {
+            return triggerInfoCache.batchGet(keys);
+        } else {
+            if (!triggerInfoDao.allExists(keys)) {
+                throw new ServiceException(ServiceExceptionCodes.ENTITY_NOT_EXIST);
+            }
+            List<TriggerInfo> triggerInfos = triggerInfoDao.batchGet(keys);
+            triggerInfoCache.batchPush(triggerInfos, triggerInfoTimeout);
+            return triggerInfos;
+        }
+    }
+
+    @Override
+    public List<LongIdKey> batchInsert(List<TriggerInfo> triggerInfos) throws Exception {
+        List<LongIdKey> keys = new ArrayList<>();
+        for (TriggerInfo triggerInfo : triggerInfos) {
+            keys.add(insert(triggerInfo));
+        }
+        return keys;
+    }
+
+    @Override
+    public void batchUpdate(List<TriggerInfo> triggerInfos) throws Exception {
+        for (TriggerInfo triggerInfo : triggerInfos) {
+            update(triggerInfo);
+        }
+    }
+
+    @Override
+    public void batchDelete(List<LongIdKey> keys) throws Exception {
+        for (LongIdKey key : keys) {
+            delete(key);
+        }
     }
 }

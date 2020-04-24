@@ -4,7 +4,10 @@
 
 #### 功能构建
 
-- (无)
+- 将部分实体的Crud服务升级为BatchCrud服务。
+  - com.dwarfeng.fdr.stack.service.PointMaintainService
+  - com.dwarfeng.fdr.stack.service.FilterInfoMaintainService
+  - com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService
 
 #### Bug修复
 
