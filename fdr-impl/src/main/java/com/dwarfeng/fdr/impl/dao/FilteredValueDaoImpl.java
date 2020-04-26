@@ -126,7 +126,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<FilteredValue> batchGet(List<LongIdKey> keys) {
+    public List<FilteredValue> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

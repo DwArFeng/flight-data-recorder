@@ -100,7 +100,7 @@ public class TriggerInfoDaoImpl implements TriggerInfoDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<TriggerInfo> batchGet(List<LongIdKey> keys) {
+    public List<TriggerInfo> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

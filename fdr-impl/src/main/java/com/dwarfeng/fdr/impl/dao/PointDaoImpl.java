@@ -100,7 +100,7 @@ public class PointDaoImpl implements PointDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<Point> batchGet(List<LongIdKey> keys) {
+    public List<Point> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

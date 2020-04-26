@@ -126,7 +126,7 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<PersistenceValue> batchGet(List<LongIdKey> keys) {
+    public List<PersistenceValue> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

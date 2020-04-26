@@ -100,7 +100,7 @@ public class FilterInfoDaoImpl implements FilterInfoDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<FilterInfo> batchGet(List<LongIdKey> keys) {
+    public List<FilterInfo> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

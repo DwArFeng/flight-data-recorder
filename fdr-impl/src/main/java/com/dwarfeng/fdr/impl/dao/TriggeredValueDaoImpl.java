@@ -126,7 +126,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
-    public List<TriggeredValue> batchGet(List<LongIdKey> keys) {
+    public List<TriggeredValue> batchGet(List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 
