@@ -7,7 +7,7 @@
     <parent>
         <artifactId>fdr-node</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>1.6.6.a</version>
+        <version>1.6.7.a</version>
     </parent>
 
     <artifactId>fdr-node-inspect</artifactId>

@@ -1,5 +1,21 @@
 # ChangeLog
 
+### Release_1.6.7_20200503_build_A
+
+#### 功能构建
+
+- 升级subgrade依赖至1.0.1.a，以避免潜在的RedisDao的分页bug。
+
+#### Bug修复
+
+- (无)
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.6.6_20200426_build_A
 
 #### 功能构建
