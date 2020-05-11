@@ -13,7 +13,7 @@ import java.util.Objects;
 public class HibernateTriggerSupport implements Bean {
 
     private static final long serialVersionUID = 3125109794036151494L;
-    
+
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "id", length = Constraints.LENGTH_TYPE, nullable = false, unique = true)

@@ -129,7 +129,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
         private TriggerHandler triggerHandler;
 
         @BehaviorAnalyse
-        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true)
+        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
         public RecordLocalCacheHandler.RecordContext fetchContext(LongIdKey pointKey) throws Exception {
             if (!pointMaintainService.exists(pointKey)) {
                 return null;

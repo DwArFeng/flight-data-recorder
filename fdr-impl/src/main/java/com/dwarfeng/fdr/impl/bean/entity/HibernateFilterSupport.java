@@ -13,7 +13,7 @@ import java.util.Objects;
 public class HibernateFilterSupport implements Bean {
 
     private static final long serialVersionUID = -8833768341499733518L;
-    
+
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "id", length = Constraints.LENGTH_TYPE, nullable = false, unique = true)
