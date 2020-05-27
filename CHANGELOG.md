@@ -8,7 +8,7 @@
 
 #### Bug修复
 
-- (无)
+- 修改com.dwarfeng.fdr.impl.handler.source.MockSource下线时造成线程阻塞的bug。
 
 #### 功能移除
 

@@ -87,6 +87,7 @@ public class MockSource implements Source {
         try {
             if (startFlag) {
                 LOGGER.info("Mock source 下线...");
+                mockBuffer.unblock();
                 mockRecordPlain.shutdown();
                 mockRecordPlainFuture.cancel(true);
                 mockMonitorPlain.shutdown();
