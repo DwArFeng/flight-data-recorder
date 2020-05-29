@@ -349,4 +349,31 @@ public class DaoConfiguration {
                 mapperSupportPresetCriteriaMaker
         );
     }
+
+    @Bean
+    HibernateBatchWriteDao<FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchWriteDao() {
+        return new HibernateBatchWriteDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
+                batchSize
+        );
+    }
+
+    @Bean
+    HibernateBatchWriteDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateBatchWriteDao() {
+        return new HibernateBatchWriteDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
+                batchSize
+        );
+    }
+
+    @Bean
+    HibernateBatchWriteDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernateBatchWriteDao() {
+        return new HibernateBatchWriteDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
+                batchSize
+        );
+    }
 }

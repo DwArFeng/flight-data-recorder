@@ -3,7 +3,7 @@ package com.dwarfeng.fdr.impl.handler.consumer;
 import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
 import com.dwarfeng.fdr.impl.handler.Consumer;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
-import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
+import com.dwarfeng.fdr.stack.service.FilteredValueWriteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class FilteredValueConsumer implements Consumer<FilteredValue> {
     private static final Logger LOGGER = LoggerFactory.getLogger(FilteredValueConsumer.class);
 
     @Autowired
-    private FilteredValueMaintainService filteredValueMaintainService;
+    private FilteredValueWriteService filteredValueWriteService;
 
     @Override
     public void consume(List<FilteredValue> elements) {
@@ -26,14 +26,7 @@ public class FilteredValueConsumer implements Consumer<FilteredValue> {
         tm.start();
         try {
             try {
-                filteredValueMaintainService.batchInsert(elements);
-                return;
-            } catch (Exception e) {
-                LOGGER.warn("数据插入失败, 试图使用不同的策略进行插入: 插入或更新", e);
-            }
-
-            try {
-                filteredValueMaintainService.batchInsertOrUpdate(elements);
+                filteredValueWriteService.batchWrite(elements);
                 return;
             } catch (Exception e) {
                 LOGGER.warn("数据插入失败, 试图使用不同的策略进行插入: 逐条插入", e);
@@ -43,7 +36,7 @@ public class FilteredValueConsumer implements Consumer<FilteredValue> {
 
             for (FilteredValue filteredValue : elements) {
                 try {
-                    filteredValueMaintainService.insertOrUpdate(filteredValue);
+                    filteredValueWriteService.write(filteredValue);
                 } catch (Exception e) {
                     LOGGER.error("数据插入失败, 放弃对数据的插入: " + filteredValue, e);
                     failedList.add(filteredValue);

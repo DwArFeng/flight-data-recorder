@@ -66,7 +66,7 @@ public class MockSource implements Source {
             if (!startFlag) {
                 LOGGER.info("Mock source 上线...");
                 mockBuffer.block();
-                mockRecordPlain = new MockRecordPlain(recordService, mockBuffer, dataSizePerSec);
+                mockRecordPlain = new MockRecordPlain(recordService, mockBuffer);
                 mockMonitorPlain = new MockMonitorPlain(mockBuffer);
                 mockProvidePlain = new MockProvidePlain(mockBuffer, pointId, dataSizePerSec);
                 mockRecordPlainFuture = scheduler.scheduleAtFixedRate(mockRecordPlain, 1000);
@@ -225,15 +225,13 @@ public class MockSource implements Source {
 
         private final RecordService recordService;
         private final MockBuffer mockBuffer;
-        private final int size;
 
         private final Lock lock = new ReentrantLock();
         private boolean runningFlag = true;
 
-        public MockRecordPlain(RecordService recordService, MockBuffer mockBuffer, int size) {
+        public MockRecordPlain(RecordService recordService, MockBuffer mockBuffer) {
             this.recordService = recordService;
             this.mockBuffer = mockBuffer;
-            this.size = size;
         }
 
         @Override
@@ -244,7 +242,7 @@ public class MockSource implements Source {
                     return;
                 }
 
-                for (DataInfo dataInfo : mockBuffer.poll(size)) {
+                for (DataInfo dataInfo : mockBuffer.poll(mockBuffer.bufferedSize())) {
                     try {
                         recordService.record(dataInfo);
                     } catch (ServiceException e) {
