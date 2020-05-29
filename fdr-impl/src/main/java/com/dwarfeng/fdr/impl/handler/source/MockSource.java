@@ -37,6 +37,8 @@ public class MockSource implements Source {
 
     @Value("${source.mock.data_size_per_sec}")
     private int dataSizePerSec;
+    @Value("${source.mock.data_record_max_coefficient}")
+    private double dataRecordMaxCoefficient;
     @Value("${source.mock.point_id}")
     private long pointId;
 
@@ -66,7 +68,7 @@ public class MockSource implements Source {
             if (!startFlag) {
                 LOGGER.info("Mock source 上线...");
                 mockBuffer.block();
-                mockRecordPlain = new MockRecordPlain(recordService, mockBuffer);
+                mockRecordPlain = new MockRecordPlain(recordService, mockBuffer, dataSizePerSec, dataRecordMaxCoefficient);
                 mockMonitorPlain = new MockMonitorPlain(mockBuffer);
                 mockProvidePlain = new MockProvidePlain(mockBuffer, pointId, dataSizePerSec);
                 mockRecordPlainFuture = scheduler.scheduleAtFixedRate(mockRecordPlain, 1000);
@@ -225,13 +227,18 @@ public class MockSource implements Source {
 
         private final RecordService recordService;
         private final MockBuffer mockBuffer;
+        private final int size;
+        private final double dataRecordMaxCoefficient;
 
         private final Lock lock = new ReentrantLock();
         private boolean runningFlag = true;
 
-        public MockRecordPlain(RecordService recordService, MockBuffer mockBuffer) {
+        public MockRecordPlain(
+                RecordService recordService, MockBuffer mockBuffer, int size, double dataRecordMaxCoefficient) {
             this.recordService = recordService;
             this.mockBuffer = mockBuffer;
+            this.size = size;
+            this.dataRecordMaxCoefficient = dataRecordMaxCoefficient;
         }
 
         @Override
@@ -242,7 +249,8 @@ public class MockSource implements Source {
                     return;
                 }
 
-                for (DataInfo dataInfo : mockBuffer.poll(mockBuffer.bufferedSize())) {
+                for (DataInfo dataInfo : mockBuffer.poll(Math.min((int) (size * dataRecordMaxCoefficient),
+                        mockBuffer.bufferedSize()))) {
                     try {
                         recordService.record(dataInfo);
                     } catch (ServiceException e) {
