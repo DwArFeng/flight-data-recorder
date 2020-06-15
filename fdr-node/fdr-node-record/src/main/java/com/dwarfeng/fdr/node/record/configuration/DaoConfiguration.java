@@ -351,7 +351,7 @@ public class DaoConfiguration {
     }
 
     @Bean
-    HibernateBatchWriteDao<FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchWriteDao() {
+    public HibernateBatchWriteDao<FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
@@ -360,7 +360,7 @@ public class DaoConfiguration {
     }
 
     @Bean
-    HibernateBatchWriteDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateBatchWriteDao() {
+    public HibernateBatchWriteDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
@@ -369,7 +369,7 @@ public class DaoConfiguration {
     }
 
     @Bean
-    HibernateBatchWriteDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernateBatchWriteDao() {
+    public HibernateBatchWriteDao<PersistenceValue, HibernatePersistenceValue> persistenceValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper),
