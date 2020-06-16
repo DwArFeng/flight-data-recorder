@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.stack.dao;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.BatchWriteDao;
 import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
 import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 
@@ -13,5 +14,5 @@ import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
  * @since 0.0.1-alpha
  */
 public interface FilteredValueDao extends BatchBaseDao<LongIdKey, FilteredValue>, EntireLookupDao<FilteredValue>,
-        PresetLookupDao<FilteredValue> {
+        PresetLookupDao<FilteredValue>, BatchWriteDao<FilteredValue> {
 }

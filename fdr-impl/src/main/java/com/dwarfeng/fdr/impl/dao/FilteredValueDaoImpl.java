@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.dao.FilteredValueDao;
 import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateBatchWriteDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
@@ -35,6 +36,8 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     private HibernateEntireLookupDao<FilteredValue, HibernateFilteredValue> entireLookupDao;
     @Autowired
     private HibernatePresetLookupDao<FilteredValue, HibernateFilteredValue> presetLookupDao;
+    @Autowired
+    private HibernateBatchWriteDao<FilteredValue, HibernateFilteredValue> batchWriteDao;
     @Autowired
     private HibernateTemplate hibernateTemplate;
     @Autowired
@@ -326,5 +329,19 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
         } catch (Exception e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void write(FilteredValue element) throws DaoException {
+        batchWriteDao.write(element);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchWrite(List<FilteredValue> elements) throws DaoException {
+        batchWriteDao.batchWrite(elements);
     }
 }

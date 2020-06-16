@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.dao.PersistenceValueDao;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateBatchWriteDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
@@ -35,6 +36,8 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     private HibernateEntireLookupDao<PersistenceValue, HibernatePersistenceValue> entireLookupDao;
     @Autowired
     private HibernatePresetLookupDao<PersistenceValue, HibernatePersistenceValue> presetLookupDao;
+    @Autowired
+    private HibernateBatchWriteDao<PersistenceValue, HibernatePersistenceValue> batchWriteDao;
     @Autowired
     private HibernateTemplate hibernateTemplate;
     @Autowired
@@ -260,5 +263,19 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
         } catch (Exception e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void write(PersistenceValue element) throws DaoException {
+        batchWriteDao.write(element);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchWrite(List<PersistenceValue> elements) throws DaoException {
+        batchWriteDao.batchWrite(elements);
     }
 }

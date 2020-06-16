@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.dao.TriggeredValueDao;
 import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.impl.dao.HibernateBatchWriteDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
@@ -35,6 +36,8 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     private HibernateEntireLookupDao<TriggeredValue, HibernateTriggeredValue> entireLookupDao;
     @Autowired
     private HibernatePresetLookupDao<TriggeredValue, HibernateTriggeredValue> presetLookupDao;
+    @Autowired
+    private HibernateBatchWriteDao<TriggeredValue, HibernateTriggeredValue> batchWriteDao;
     @Autowired
     private HibernateTemplate hibernateTemplate;
     @Autowired
@@ -326,5 +329,19 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
         } catch (Exception e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void write(TriggeredValue element) throws DaoException {
+        batchWriteDao.write(element);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public void batchWrite(List<TriggeredValue> elements) throws DaoException {
+        batchWriteDao.batchWrite(elements);
     }
 }
