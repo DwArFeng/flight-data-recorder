@@ -5,7 +5,10 @@ import com.dwarfeng.fdr.sdk.util.ServiceExceptionCodes;
 import com.dwarfeng.fdr.stack.service.RecordService;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.locks.Lock;
@@ -113,18 +117,27 @@ public class DctiKafkaSource implements Source {
 
     @KafkaListener(id = "${source.dcti.kafka.listener_id}", containerFactory = "dctiKafkaSource.kafkaListenerContainerFactory",
             topics = "${source.dcti.kafka.listener_topic}")
-    public void handleDataInfo(String dataInfo, Acknowledgment ack) {
-        try {
-            recordService.record(dataInfo);
-            ack.acknowledge();
-        } catch (ServiceException e) {
-            if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_DISABLED.getCode()) {
-                LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 不会被提交", e);
-            } else {
-                LOGGER.warn("记录处理器无法处理, 消息 " + dataInfo + " 将会被忽略", e);
-                ack.acknowledge();
+    public void handleDataInfo(
+            List<ConsumerRecord<String, String>> consumerRecords, Consumer<String, String> consumer, Acknowledgment ack) {
+        for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
+            String dataInfo = consumerRecord.value();
+            try {
+                recordService.record(dataInfo);
+            } catch (ServiceException e) {
+                if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_DISABLED.getCode()) {
+                    LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 以及其后同一批次的消息均不会被提交", e);
+                    // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理offset的提交。
+                    // Offset 精确设置到没有提交成功的最后一条信息上。
+                    consumer.seek(new TopicPartition(consumerRecord.topic(), consumerRecord.partition()),
+                            consumerRecord.offset());
+                    ack.acknowledge();
+                    return;
+                } else {
+                    LOGGER.warn("记录处理器无法处理, 消息 " + dataInfo + " 将会被忽略", e);
+                }
             }
         }
+        ack.acknowledge();
     }
 
     @Configuration
@@ -147,6 +160,10 @@ public class DctiKafkaSource implements Source {
         private int pollTimeout;
         @Value("${source.dcti.kafka.auto_startup}")
         private boolean autoStartup;
+        @Value("${source.dcti.kafka.max_poll_records}")
+        private int maxPollRecords;
+        @Value("${source.dcti.kafka.max_poll_interval_ms}")
+        private int maxPollIntervalMs;
 
         @Bean("dctiKafkaSource.consumerProperties")
         public Map<String, Object> consumerProperties() {
@@ -158,6 +175,8 @@ public class DctiKafkaSource implements Source {
             props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, sessionTimeoutMs);
             props.put(ConsumerConfig.GROUP_ID_CONFIG, group);
             props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
+            props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
+            props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollIntervalMs);
             LOGGER.debug("Kafka消费者属性配置完成...");
             return props;
         }
@@ -182,6 +201,8 @@ public class DctiKafkaSource implements Source {
             factory.setConcurrency(concurrency);
             factory.getContainerProperties().setPollTimeout(pollTimeout);
             factory.setAutoStartup(autoStartup);
+            // 监听器启用批量监听模式。
+            factory.setBatchListener(true);
             // 配置ACK模式为手动立即提交。
             factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
             LOGGER.info("配置Kafka侦听容器工厂...");
