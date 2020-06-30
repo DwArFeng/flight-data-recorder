@@ -10,15 +10,15 @@ import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.html.parser.Entity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.*;
 
+@SuppressWarnings("DuplicatedCode")
 @Component
-public class MySQL8NSQLGeneratorImpl<E extends Entity> implements NSQLGenerator {
+public class MySQL8NSQLGeneratorImpl implements NSQLGenerator {
 
     public static final String SUPPORT_TYPE = "org.hibernate.dialect.MySQL8Dialect";
 
