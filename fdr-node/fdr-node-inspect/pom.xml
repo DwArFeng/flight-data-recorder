@@ -7,7 +7,7 @@
     <parent>
         <artifactId>fdr-node</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>1.7.0.a</version>
+        <version>1.7.0.b</version>
     </parent>
 
     <artifactId>fdr-node-inspect</artifactId>
@@ -181,7 +181,7 @@
                         <manifest>  
                              <addClasspath>true</addClasspath>  
                              <classpathPrefix>./</classpathPrefix>  
-                             <mainClass>com.dwarfeng.fdr.node.inspect.launcher.Launcher</mainClass>  
+                             <mainClass>${mainClass}</mainClass>  
                         </manifest>
                     </archive>
                     <finalName>${project.name}-${project.version}</finalName>

@@ -1,5 +1,25 @@
 # ChangeLog
 
+### Release_1.7.0_20200630_build_B
+
+#### 功能构建
+
+- 优化 node 模块的子模块的 pom.xml。
+  - node-all
+  - node-inspect
+  - node-maintain
+  - node-record
+
+#### Bug修复
+
+- 修正spring配置文件的错误。
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.7.0_20200630_build_A
 
 #### 功能构建
