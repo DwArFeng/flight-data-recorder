@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.stack.exception;
 
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
 
 /**
  * 实时数据被禁用异常。
@@ -9,7 +8,7 @@ import com.dwarfeng.subgrade.stack.exception.ServiceException;
  * @author DwArFeng
  * @since 1.5.0
  */
-public class RealtimeDisabledException extends ServiceException {
+public class RealtimeDisabledException extends Exception {
 
     private static final long serialVersionUID = -7449265335644673680L;
 
@@ -19,18 +18,18 @@ public class RealtimeDisabledException extends ServiceException {
         this.pointKey = pointKey;
     }
 
-    public RealtimeDisabledException(Code code, LongIdKey pointKey) {
-        super(code);
+    public RealtimeDisabledException(String message, LongIdKey pointKey) {
+        super(message);
+        this.pointKey = pointKey;
+    }
+
+    public RealtimeDisabledException(String message, Throwable cause, LongIdKey pointKey) {
+        super(message, cause);
         this.pointKey = pointKey;
     }
 
     public RealtimeDisabledException(Throwable cause, LongIdKey pointKey) {
         super(cause);
-        this.pointKey = pointKey;
-    }
-
-    public RealtimeDisabledException(Code code, Throwable cause, LongIdKey pointKey) {
-        super(code, cause);
         this.pointKey = pointKey;
     }
 

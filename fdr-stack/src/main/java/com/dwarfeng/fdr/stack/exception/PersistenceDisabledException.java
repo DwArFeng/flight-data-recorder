@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.stack.exception;
 
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
 
 /**
  * 持久化数据被禁用异常。
@@ -9,7 +8,7 @@ import com.dwarfeng.subgrade.stack.exception.ServiceException;
  * @author DwArFeng
  * @since 1.5.0
  */
-public class PersistenceDisabledException extends ServiceException {
+public class PersistenceDisabledException extends Exception {
 
     private static final long serialVersionUID = 502323031960756558L;
 
@@ -19,18 +18,18 @@ public class PersistenceDisabledException extends ServiceException {
         this.pointKey = pointKey;
     }
 
-    public PersistenceDisabledException(Code code, LongIdKey pointKey) {
-        super(code);
+    public PersistenceDisabledException(String message, LongIdKey pointKey) {
+        super(message);
+        this.pointKey = pointKey;
+    }
+
+    public PersistenceDisabledException(String message, Throwable cause, LongIdKey pointKey) {
+        super(message, cause);
         this.pointKey = pointKey;
     }
 
     public PersistenceDisabledException(Throwable cause, LongIdKey pointKey) {
         super(cause);
-        this.pointKey = pointKey;
-    }
-
-    public PersistenceDisabledException(Code code, Throwable cause, LongIdKey pointKey) {
-        super(code, cause);
         this.pointKey = pointKey;
     }
 

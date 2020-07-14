@@ -5,6 +5,9 @@
 #### 功能构建
 
 - 升级subgrade依赖至1.1.2.a。
+- 更改以下异常的继承类。
+  - com.dwarfeng.fdr.stack.exception.PersistenceDisabledException
+  - com.dwarfeng.fdr.stack.exception.RealtimeDisabledException
 
 #### Bug修复
 

@@ -101,7 +101,7 @@ public class MappingLookupServiceImpl implements MappingLookupService {
     }
 
     private List<TimedValue> internalLookupPersistence(
-            LongIdKey pointKey, Date startDate, Date endDate) throws ServiceException {
+            LongIdKey pointKey, Date startDate, Date endDate) throws Exception {
         Point point = pointMaintainService.get(pointKey);
         if (!point.isPersistenceEnabled()) {
             throw new PersistenceDisabledException(pointKey);
