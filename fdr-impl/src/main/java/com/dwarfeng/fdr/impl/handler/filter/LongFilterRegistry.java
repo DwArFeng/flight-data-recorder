@@ -1,7 +1,6 @@
 package com.dwarfeng.fdr.impl.handler.filter;
 
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.impl.handler.FilterMaker;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.exception.FilterException;
@@ -17,31 +16,43 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 /**
- * Double过滤器制造器。
+ * Long过滤器注册。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.7.2
  */
 @Component
-public class DoubleFilterMaker implements FilterMaker {
+public class LongFilterRegistry extends AbstractFilterRegistry {
 
-    public static final String SUPPORT_TYPE = "double_filter";
+    public static final String FILTER_TYPE = "long_filter";
 
     @Autowired
     private ApplicationContext ctx;
 
+    public LongFilterRegistry() {
+        super(FILTER_TYPE);
+    }
+
     @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public String provideLabel() {
+        return "长整型浮点过滤器";
+    }
+
+    @Override
+    public String provideDescription() {
+        return "如果数据值是长整型数，则通过过滤。";
+    }
+
+    @Override
+    public String provideExampleContent() {
+        return "";
     }
 
     @Override
     public Filter makeFilter(FilterInfo filterInfo) throws FilterException {
         try {
-            DoubleFilter filter = ctx.getBean(DoubleFilter.class);
+            LongFilter filter = ctx.getBean(LongFilter.class);
             filter.setPointKey(filterInfo.getPointKey());
             filter.setFilterInfoKey(filterInfo.getKey());
             return filter;
@@ -52,15 +63,15 @@ public class DoubleFilterMaker implements FilterMaker {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class DoubleFilter implements Filter, Bean {
+    public static class LongFilter implements Filter, Bean {
 
-        private static final long serialVersionUID = -3161256701795506170L;
-        private static final Logger LOGGER = LoggerFactory.getLogger(DoubleFilter.class);
+        private static final long serialVersionUID = -4468042912091243251L;
+        private static final Logger LOGGER = LoggerFactory.getLogger(LongFilter.class);
 
         private LongIdKey pointKey;
         private LongIdKey filterInfoKey;
 
-        public DoubleFilter() {
+        public LongFilter() {
         }
 
         @Override
@@ -68,16 +79,16 @@ public class DoubleFilterMaker implements FilterMaker {
             try {
                 String value = dataInfo.getValue();
                 try {
-                    Double.parseDouble(value);
+                    Long.parseLong(value);
                 } catch (NumberFormatException e) {
-                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过双精度浮点数范围, 不能通过过滤...", e);
+                    LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 不是数字或超过长整型数范围, 不能通过过滤...", e);
                     return new FilteredValue(
                             null,
                             pointKey,
                             filterInfoKey,
                             dataInfo.getHappenedDate(),
                             dataInfo.getValue(),
-                            "数据值不是数字或超过双精度浮点数范围"
+                            "数据值不是数字或超过长整型数范围"
                     );
                 }
                 LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 通过过滤器...");
@@ -105,7 +116,7 @@ public class DoubleFilterMaker implements FilterMaker {
 
         @Override
         public String toString() {
-            return "DoubleFilter{" +
+            return "LongFilter{" +
                     "pointKey=" + pointKey +
                     ", filterInfoKey=" + filterInfoKey +
                     '}';

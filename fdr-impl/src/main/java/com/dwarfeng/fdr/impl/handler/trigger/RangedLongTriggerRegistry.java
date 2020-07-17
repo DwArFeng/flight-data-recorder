@@ -3,7 +3,6 @@ package com.dwarfeng.fdr.impl.handler.trigger;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.impl.handler.TriggerMaker;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
@@ -19,31 +18,48 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 /**
- * 具有范围的 Integer过滤器制造器。
+ * 具有范围的 Long过滤器注册。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.7.2
  */
 @Component
-public class RangedIntegerTriggerMaker implements TriggerMaker {
+public class RangedLongTriggerRegistry extends AbstractTriggerRegistry {
 
-    public static final String SUPPORT_TYPE = "ranged_integer_trigger";
+    public static final String TRIGGER_TYPE = "ranged_long_trigger";
 
     @Autowired
     private ApplicationContext ctx;
 
+    public RangedLongTriggerRegistry() {
+        super(TRIGGER_TYPE);
+    }
+
     @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public String provideLabel() {
+        return "具有范围的长整型触发器";
+    }
+
+    @Override
+    public String provideDescription() {
+        return "如果数据值是长整型数且数值在配置的范围之内，则进行触发。";
+    }
+
+    @Override
+    public String provideExampleContent() {
+        return JSON.toJSONString(new Config(
+                1L,
+                true,
+                -2L,
+                false
+        ), true);
     }
 
     @Override
     public Trigger makeTrigger(TriggerInfo triggerInfo) throws TriggerException {
         try {
-            RangedIntegerTrigger trigger = ctx.getBean(RangedIntegerTrigger.class);
+            RangedLongTrigger trigger = ctx.getBean(RangedLongTrigger.class);
             trigger.setPointKey(triggerInfo.getPointKey());
             trigger.setTriggerInfoKey(triggerInfo.getKey());
             trigger.setConfig(JSON.parseObject(triggerInfo.getContent(), Config.class));
@@ -55,32 +71,32 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class RangedIntegerTrigger implements Trigger, Bean {
+    public static class RangedLongTrigger implements Trigger, Bean {
 
-        private static final long serialVersionUID = 1618651025967120267L;
-        private static final Logger LOGGER = LoggerFactory.getLogger(RangedIntegerTrigger.class);
+        private static final long serialVersionUID = -3232275174352383029L;
+        private static final Logger LOGGER = LoggerFactory.getLogger(RangedLongTrigger.class);
 
         private LongIdKey pointKey;
         private LongIdKey triggerInfoKey;
         private Config config;
 
-        public RangedIntegerTrigger() {
+        public RangedLongTrigger() {
         }
 
         @Override
         public TriggeredValue test(DataInfo dataInfo) throws TriggerException {
             try {
                 LOGGER.debug("测试数据点 " + dataInfo.toString() + "...");
-                int integerValue = Integer.parseInt(dataInfo.getValue());
+                long longValue = Long.parseLong(dataInfo.getValue());
 
                 // 不触发判据。
-                if ((config.getCanEqualsMin() && integerValue < config.getMin()) ||
-                        (!config.getCanEqualsMin() && integerValue <= config.getMin())) {
+                if ((config.getCanEqualsMin() && longValue < config.getMin()) ||
+                        (!config.getCanEqualsMin() && longValue <= config.getMin())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 小于(或小于等于等于)最小值, 不进行触发...");
                     return null;
                 }
-                if ((config.getCanEqualsMax() && integerValue > config.getMax()) ||
-                        (!config.getCanEqualsMax() && integerValue >= config.getMax())) {
+                if ((config.getCanEqualsMax() && longValue > config.getMax()) ||
+                        (!config.getCanEqualsMax() && longValue >= config.getMax())) {
                     LOGGER.debug("测试数据值 " + dataInfo.getValue() + " 大于(或大于等于等于)最大值, 不进行触发...");
                     return null;
                 }
@@ -126,7 +142,7 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
 
         @Override
         public String toString() {
-            return "RangedIntegerTrigger{" +
+            return "RangedLongTrigger{" +
                     "pointKey=" + pointKey +
                     ", triggerInfoKey=" + triggerInfoKey +
                     ", config=" + config +
@@ -136,16 +152,16 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 2167683469180120702L;
+        private static final long serialVersionUID = 4302356058688595782L;
 
         @JSONField(name = "min")
-        private Integer min;
+        private Long min;
 
         @JSONField(name = "can_equals_min")
         private Boolean canEqualsMin;
 
         @JSONField(name = "max")
-        private Integer max;
+        private Long max;
 
         @JSONField(name = "can_equals_max")
         private Boolean canEqualsMax;
@@ -153,18 +169,18 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
         public Config() {
         }
 
-        public Config(Integer min, Boolean canEqualsMin, Integer max, Boolean canEqualsMax) {
+        public Config(Long min, Boolean canEqualsMin, Long max, Boolean canEqualsMax) {
             this.min = min;
             this.canEqualsMin = canEqualsMin;
             this.max = max;
             this.canEqualsMax = canEqualsMax;
         }
 
-        public Integer getMin() {
+        public Long getMin() {
             return min;
         }
 
-        public void setMin(Integer min) {
+        public void setMin(Long min) {
             this.min = min;
         }
 
@@ -176,11 +192,11 @@ public class RangedIntegerTriggerMaker implements TriggerMaker {
             this.canEqualsMin = canEqualsMin;
         }
 
-        public Integer getMax() {
+        public Long getMax() {
             return max;
         }
 
-        public void setMax(Integer max) {
+        public void setMax(Long max) {
             this.max = max;
         }
 

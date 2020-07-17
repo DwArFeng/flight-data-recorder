@@ -1,5 +1,5 @@
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo
-import com.dwarfeng.fdr.impl.handler.filter.GroovyFilterMaker
+import com.dwarfeng.fdr.impl.handler.filter.GroovyFilterRegistry
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue
 import com.dwarfeng.fdr.stack.exception.FilterException
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey
@@ -9,7 +9,7 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey
  * <p> 如果DataInfo中数据的长度大于5，则不通过，否则通过。
  */
 @SuppressWarnings("GrPackage")
-class ExampleFilterProcessor implements GroovyFilterMaker.Processor {
+class ExampleFilterProcessor implements GroovyFilterRegistry.Processor {
 
     @Override
     FilteredValue test(LongIdKey pointIdKey, LongIdKey filterIdKey, DataInfo dataInfo) throws FilterException {

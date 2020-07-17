@@ -1,7 +1,8 @@
 package com.dwarfeng.fdr.impl.handler.trigger;
 
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.impl.handler.TriggerMaker;
+import com.dwarfeng.dutil.basic.io.IOUtil;
+import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
@@ -9,31 +10,64 @@ import com.dwarfeng.fdr.stack.exception.TriggerMakeException;
 import com.dwarfeng.fdr.stack.handler.Trigger;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import groovy.lang.GroovyClassLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
- * 使用Groovy脚本的触发器制造器。
+ * 使用Groovy脚本的触发器注册。
  *
  * @author DwArFeng
- * @since 1.5.2
+ * @since 1.7.2
  */
 @Component
-public class GroovyTriggerMaker implements TriggerMaker {
+public class GroovyTriggerRegistry extends AbstractTriggerRegistry {
 
-    public static final String SUPPORT_TYPE = "groovy_trigger";
+    public static final String TRIGGER_TYPE = "groovy_trigger";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroovyTriggerRegistry.class);
 
     @Autowired
     private ApplicationContext ctx;
 
+    public GroovyTriggerRegistry() {
+        super(TRIGGER_TYPE);
+    }
+
     @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public String provideLabel() {
+        return "Groovy过滤器";
+    }
+
+    @Override
+    public String provideDescription() {
+        return "通过自定义的groovy脚本，判断数据点是否通过过滤";
+    }
+
+    @Override
+    public String provideExampleContent() {
+        try {
+            Resource resource = ctx.getResource("classpath:groovy/ExampleTriggerProcessor.groovy");
+            String example;
+            try (InputStream sin = resource.getInputStream();
+                 StringOutputStream sout = new StringOutputStream(StandardCharsets.UTF_8, true)) {
+                IOUtil.trans(sin, sout, 4096);
+                sout.flush();
+                example = sout.toString();
+            }
+            return example;
+        } catch (Exception e) {
+            LOGGER.warn("读取文件 classpath:groovy/ExampleTriggerProcessor.groovy 时出现异常", e);
+            return "";
+        }
     }
 
     @Override

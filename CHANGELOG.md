@@ -4,7 +4,10 @@
 
 #### 功能构建
 
-- (无)
+- 优化 Filter, Trigger, Mapper 的代码结构。
+  - com.dwarfeng.fdr.impl.handler.filter.AbstractFilterRegistry
+  - com.dwarfeng.fdr.impl.handler.trigger.AbstractTriggerRegistry
+  - com.dwarfeng.fdr.impl.handler.mapper.AbstractMapperRegistry
 
 #### Bug修复
 

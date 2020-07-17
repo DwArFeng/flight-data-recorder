@@ -3,7 +3,6 @@ package com.dwarfeng.fdr.impl.handler.trigger;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.impl.handler.TriggerMaker;
 import com.dwarfeng.fdr.stack.bean.entity.TriggerInfo;
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.exception.TriggerException;
@@ -19,25 +18,42 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 /**
- * 具有范围的 Double过滤器制造器。
+ * 具有范围的 Double过滤器注册。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.7.2
  */
 @Component
-public class RangedDoubleTriggerMaker implements TriggerMaker {
+public class RangedDoubleTriggerRegistry extends AbstractTriggerRegistry {
 
-    public static final String SUPPORT_TYPE = "ranged_double_trigger";
+    public static final String TRIGGER_TYPE = "ranged_double_trigger";
 
     @Autowired
     private ApplicationContext ctx;
 
+    public RangedDoubleTriggerRegistry() {
+        super(TRIGGER_TYPE);
+    }
+
     @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public String provideLabel() {
+        return "具有范围的双精度浮点触发器";
+    }
+
+    @Override
+    public String provideDescription() {
+        return "如果数据值是双精度浮点数且数值在配置的范围之内，则进行触发。";
+    }
+
+    @Override
+    public String provideExampleContent() {
+        return JSON.toJSONString(new Config(
+                0.5,
+                true,
+                -1.25,
+                false
+        ), true);
     }
 
     @Override

@@ -1,38 +1,75 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
-import com.dwarfeng.fdr.impl.handler.MapperMaker;
+import com.dwarfeng.dutil.basic.io.IOUtil;
+import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
 import groovy.lang.GroovyClassLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * 使用Groovy脚本的过滤器制造器。
+ * 使用Groovy脚本的过滤器注册。
  *
  * @author DwArFeng
- * @since 1.6.1
+ * @since 1.7.2
  */
 @Component
-public class GroovyMapperMaker implements MapperMaker {
+public class GroovyMapperRegistry extends AbstractMapperRegistry {
 
-    public static final String SUPPORT_TYPE = "groovy_mapper";
+    public static final String MAPPER_TYPE = "groovy_mapper";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroovyMapperRegistry.class);
 
     @Autowired
     private ApplicationContext ctx;
 
+    public GroovyMapperRegistry() {
+        super(MAPPER_TYPE);
+    }
+
     @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public String provideLabel() {
+        return "Groovy映射器";
+    }
+
+    @Override
+    public String provideDescription() {
+        return "通过自定义的groovy脚本，实现对带有时间数据的映射";
+    }
+
+    @Override
+    public String provideArgsIllustrate() {
+        try {
+            StringBuilder sb = new StringBuilder();
+            sb.append("------------------------第0个元素------------------------\n");
+            Resource resource = ctx.getResource("classpath:groovy/ExampleMapperProcessor.groovy");
+            try (InputStream sin = resource.getInputStream();
+                 StringOutputStream sout = new StringOutputStream(StandardCharsets.UTF_8, true)) {
+                IOUtil.trans(sin, sout, 4096);
+                sout.flush();
+                sb.append(sout.toString());
+            }
+            sb.append("------------------------第1个元素------------------------\n");
+            sb.append(5);
+            return sb.toString();
+        } catch (Exception e) {
+            LOGGER.warn("读取文件 classpath:groovy/ExampleFilterProcessor.groovy 时出现异常", e);
+            return "";
+        }
     }
 
     @Override

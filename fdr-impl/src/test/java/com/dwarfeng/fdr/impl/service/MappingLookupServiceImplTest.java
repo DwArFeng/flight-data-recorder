@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
-import com.dwarfeng.fdr.impl.handler.mapper.CountMapperMaker;
+import com.dwarfeng.fdr.impl.handler.mapper.CountMapperRegistry;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.service.MappingLookupService;
@@ -79,7 +79,7 @@ public class MappingLookupServiceImplTest {
             }
 
             lookup = mappingLookupService.mappingPersistence(parentPoint.getKey(), startDate, endDate,
-                    CountMapperMaker.SUPPORT_TYPE, new Object[]{});
+                    CountMapperRegistry.MAPPER_TYPE, new Object[]{});
             assertEquals(1, lookup.size());
             assertEquals("5", lookup.get(0).getValue());
         } finally {

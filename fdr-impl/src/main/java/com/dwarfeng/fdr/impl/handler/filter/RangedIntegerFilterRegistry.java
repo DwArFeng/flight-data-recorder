@@ -3,7 +3,6 @@ package com.dwarfeng.fdr.impl.handler.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
-import com.dwarfeng.fdr.impl.handler.FilterMaker;
 import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.exception.FilterException;
@@ -19,25 +18,42 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 /**
- * 具有范围的 Integer过滤器制造器。
+ * 具有范围的 Integer过滤器注册。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.7.2
  */
 @Component
-public class RangedIntegerFilterMaker implements FilterMaker {
+public class RangedIntegerFilterRegistry extends AbstractFilterRegistry {
 
-    public static final String SUPPORT_TYPE = "ranged_integer_filter";
+    public static final String FILTER_TYPE = "ranged_integer_filter";
 
     @Autowired
     private ApplicationContext ctx;
 
+    public RangedIntegerFilterRegistry() {
+        super(FILTER_TYPE);
+    }
+
     @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public String provideLabel() {
+        return "具有范围的整型过滤器";
+    }
+
+    @Override
+    public String provideDescription() {
+        return "如果数据值是整型数且数值在配置的范围之内，则通过过滤。";
+    }
+
+    @Override
+    public String provideExampleContent() {
+        return JSON.toJSONString(new Config(
+                1,
+                true,
+                -2,
+                false
+        ), true);
     }
 
     @Override
@@ -53,6 +69,7 @@ public class RangedIntegerFilterMaker implements FilterMaker {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RangedIntegerFilter implements Filter, Bean {

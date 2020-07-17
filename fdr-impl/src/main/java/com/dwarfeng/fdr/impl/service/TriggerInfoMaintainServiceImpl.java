@@ -96,7 +96,6 @@ public class TriggerInfoMaintainServiceImpl implements TriggerInfoMaintainServic
         return crudService.insertOrUpdate(element);
     }
 
-
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
