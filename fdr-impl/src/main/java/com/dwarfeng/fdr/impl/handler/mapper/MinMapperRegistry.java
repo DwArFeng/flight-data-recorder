@@ -55,6 +55,14 @@ public class MinMapperRegistry extends AbstractMapperRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "MinMapperRegistry{" +
+                "ctx=" + ctx +
+                ", mapperType='" + mapperType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class MinMapper implements Mapper {

@@ -69,6 +69,14 @@ public class RangedIntegerFilterRegistry extends AbstractFilterRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "RangedIntegerFilterRegistry{" +
+                "ctx=" + ctx +
+                ", filterType='" + filterType + '\'' +
+                '}';
+    }
+
     @SuppressWarnings("DuplicatedCode")
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

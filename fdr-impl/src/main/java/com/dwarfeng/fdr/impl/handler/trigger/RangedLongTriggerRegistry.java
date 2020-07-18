@@ -69,6 +69,14 @@ public class RangedLongTriggerRegistry extends AbstractTriggerRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "RangedLongTriggerRegistry{" +
+                "ctx=" + ctx +
+                ", triggerType='" + triggerType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RangedLongTrigger implements Trigger, Bean {

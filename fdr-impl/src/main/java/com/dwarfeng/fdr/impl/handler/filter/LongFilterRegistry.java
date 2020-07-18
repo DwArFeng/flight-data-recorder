@@ -61,6 +61,14 @@ public class LongFilterRegistry extends AbstractFilterRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "LongFilterRegistry{" +
+                "ctx=" + ctx +
+                ", filterType='" + filterType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class LongFilter implements Filter, Bean {

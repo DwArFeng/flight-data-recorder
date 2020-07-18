@@ -61,6 +61,14 @@ public class IntegerFilterRegistry extends AbstractFilterRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "IntegerFilterRegistry{" +
+                "ctx=" + ctx +
+                ", filterType='" + filterType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class IntegerFilter implements Filter, Bean {

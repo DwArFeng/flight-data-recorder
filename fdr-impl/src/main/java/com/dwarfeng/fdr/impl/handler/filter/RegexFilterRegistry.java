@@ -64,6 +64,14 @@ public class RegexFilterRegistry extends AbstractFilterRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "RegexFilterRegistry{" +
+                "ctx=" + ctx +
+                ", filterType='" + filterType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RegexFilter implements Filter, Bean {

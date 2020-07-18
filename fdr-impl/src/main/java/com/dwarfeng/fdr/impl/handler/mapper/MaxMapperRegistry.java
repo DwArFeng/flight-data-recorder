@@ -55,6 +55,14 @@ public class MaxMapperRegistry extends AbstractMapperRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "MaxMapperRegistry{" +
+                "ctx=" + ctx +
+                ", mapperType='" + mapperType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class MaxMapper implements Mapper {

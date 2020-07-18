@@ -69,6 +69,14 @@ public class RangedIntegerTriggerRegistry extends AbstractTriggerRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "RangedIntegerTriggerRegistry{" +
+                "ctx=" + ctx +
+                ", triggerType='" + triggerType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RangedIntegerTrigger implements Trigger, Bean {

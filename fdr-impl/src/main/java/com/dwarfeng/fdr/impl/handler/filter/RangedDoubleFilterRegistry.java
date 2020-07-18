@@ -69,6 +69,14 @@ public class RangedDoubleFilterRegistry extends AbstractFilterRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "RangedDoubleFilterRegistry{" +
+                "ctx=" + ctx +
+                ", filterType='" + filterType + '\'' +
+                '}';
+    }
+
     @SuppressWarnings("DuplicatedCode")
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

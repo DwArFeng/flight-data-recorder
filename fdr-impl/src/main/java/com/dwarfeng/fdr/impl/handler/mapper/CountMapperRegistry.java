@@ -56,6 +56,14 @@ public class CountMapperRegistry extends AbstractMapperRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "CountMapperRegistry{" +
+                "ctx=" + ctx +
+                ", mapperType='" + mapperType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class CountMapper implements Mapper {

@@ -69,6 +69,14 @@ public class RangedDoubleTriggerRegistry extends AbstractTriggerRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "RangedDoubleTriggerRegistry{" +
+                "ctx=" + ctx +
+                ", triggerType='" + triggerType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class RangedDoubleTrigger implements Trigger, Bean {

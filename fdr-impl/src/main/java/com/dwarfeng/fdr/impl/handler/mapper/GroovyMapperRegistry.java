@@ -97,6 +97,14 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
         }
     }
 
+    @Override
+    public String toString() {
+        return "GroovyMapperRegistry{" +
+                "ctx=" + ctx +
+                ", mapperType='" + mapperType + '\'' +
+                '}';
+    }
+
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class GroovyMapper implements Mapper {
