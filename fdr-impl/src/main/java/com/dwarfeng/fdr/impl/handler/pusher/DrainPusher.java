@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.pusher;
 
-import com.dwarfeng.fdr.impl.handler.Pusher;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
@@ -8,7 +7,6 @@ import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 简单的丢弃掉所有信息的推送器。
@@ -17,13 +15,12 @@ import java.util.Objects;
  * @since 1.4.0
  */
 @Component
-public class DrainPusher implements Pusher {
+public class DrainPusher extends AbstractPusher {
 
-    public static final String SUPPORT_TYPE = "drain";
+    public static final String PUSHER_TYPE = "drain";
 
-    @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public DrainPusher() {
+        super(PUSHER_TYPE);
     }
 
     @Override
@@ -56,5 +53,12 @@ public class DrainPusher implements Pusher {
 
     @Override
     public void persistenceRecorded(List<PersistenceValue> persistenceValues) {
+    }
+
+    @Override
+    public String toString() {
+        return "DrainPusher{" +
+                "pusherType='" + pusherType + '\'' +
+                '}';
     }
 }

@@ -2,7 +2,6 @@ package com.dwarfeng.fdr.impl.handler.pusher;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.dwarfeng.fdr.impl.handler.Pusher;
 import com.dwarfeng.fdr.sdk.bean.entity.FastJsonFilteredValue;
 import com.dwarfeng.fdr.sdk.bean.entity.FastJsonPersistenceValue;
 import com.dwarfeng.fdr.sdk.bean.entity.FastJsonRealtimeValue;
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * 本地Kafka推送器。
@@ -39,9 +37,9 @@ import java.util.Objects;
  * @since 1.4.0
  */
 @Component
-public class NativeKafkaPusher implements Pusher {
+public class NativeKafkaPusher extends AbstractPusher {
 
-    public static final String SUPPORT_TYPE = "native.kafka";
+    public static final String PUSHER_TYPE = "native.kafka";
 
     @Autowired
     @Qualifier("nativeKafkaPusher.kafkaTemplate")
@@ -56,9 +54,8 @@ public class NativeKafkaPusher implements Pusher {
     @Value("${pusher.native.kafka.topic.persistence_recorded}")
     private String persistenceRecordedTopic;
 
-    @Override
-    public boolean supportType(String type) {
-        return Objects.equals(SUPPORT_TYPE, type);
+    public NativeKafkaPusher() {
+        super(PUSHER_TYPE);
     }
 
     @Override
@@ -111,6 +108,18 @@ public class NativeKafkaPusher implements Pusher {
     @Transactional(transactionManager = "nativeKafkaPusher.kafkaTransactionManager")
     public void persistenceRecorded(List<PersistenceValue> persistenceValues) {
         persistenceValues.forEach(this::persistenceRecorded);
+    }
+
+    @Override
+    public String toString() {
+        return "NativeKafkaPusher{" +
+                "kafkaTemplate=" + kafkaTemplate +
+                ", dataFilteredTopic='" + dataFilteredTopic + '\'' +
+                ", dataTriggeredTopic='" + dataTriggeredTopic + '\'' +
+                ", realtimeUpdatedTopic='" + realtimeUpdatedTopic + '\'' +
+                ", persistenceRecordedTopic='" + persistenceRecordedTopic + '\'' +
+                ", pusherType='" + pusherType + '\'' +
+                '}';
     }
 
     @Configuration

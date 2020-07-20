@@ -6,10 +6,11 @@
 
 - 新增 MapperRegistry。
   - com.dwarfeng.fdr.impl.handler.mapper.IdentityMapperRegistry
-- 优化 Filter, Trigger, Mapper 的代码结构。
+- 优化 Filter, Trigger, Mapper, Pusher 的代码结构。
   - com.dwarfeng.fdr.impl.handler.filter.AbstractFilterRegistry
   - com.dwarfeng.fdr.impl.handler.trigger.AbstractTriggerRegistry
   - com.dwarfeng.fdr.impl.handler.mapper.AbstractMapperRegistry
+  - com.dwarfeng.fdr.impl.handler.pusher.AbstractPusher
 
 #### Bug修复
 
