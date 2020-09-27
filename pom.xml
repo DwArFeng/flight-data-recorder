@@ -58,6 +58,7 @@
         <snowflake.version>1.2.4.a</snowflake.version>
         <subgrade.version>1.1.2.a</subgrade.version>
         <spring-terminator.version>1.0.5.a</spring-terminator.version>
+        <spring-telqos.version>1.0.1.a</spring-telqos.version>
         <dcti.version>1.1.0.a</dcti.version>
         <groovy.version>3.0.2</groovy.version>
         <!-- Maven插件版本声明 -->
@@ -379,6 +380,12 @@
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>spring-terminator</artifactId>
                 <version>${spring-terminator.version}</version>
+            </dependency>
+            <!-- spring-telqos组件 -->
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>spring-telqos</artifactId>
+                <version>${spring-telqos.version}</version>
             </dependency>
             <!-- dcti标准接口 -->
             <dependency>

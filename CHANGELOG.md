@@ -5,6 +5,9 @@
 #### 功能构建
 
 - 升级 spring-terminator 依赖至1.0.5.a，并使用其新功能简化 Launcher 代码。
+- 删除 pom.xml 文件中的 NBSP 空格。
+- 增加 QOS 功能。
+  - 添加 spring-telqos 依赖。
 
 #### Bug修复
 

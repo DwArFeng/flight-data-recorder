@@ -141,6 +141,16 @@
             <artifactId>groovy-all</artifactId>
             <type>pom</type>
         </dependency>
+        <!-- spring-terminator组件 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>spring-terminator</artifactId>
+        </dependency>
+        <!-- spring-telqos组件 -->
+        <dependency>
+            <groupId>com.dwarfeng</groupId>
+            <artifactId>spring-telqos</artifactId>
+        </dependency>
         <!-- 程序自身模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
