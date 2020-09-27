@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 升级 spring-terminator 依赖至1.0.5.a，并使用其新功能简化 Launcher 代码。
 
 #### Bug修复
 
