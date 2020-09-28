@@ -11,6 +11,9 @@ import com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler;
 import com.dwarfeng.fdr.stack.service.RecordQosService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
@@ -20,11 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static com.dwarfeng.fdr.stack.handler.RecordLocalCacheHandler.RecordContext;
 
 @Service
 public class RecordQosServiceImpl implements RecordQosService {
@@ -67,10 +72,52 @@ public class RecordQosServiceImpl implements RecordQosService {
     private ServiceExceptionMapper sem;
 
     private final Lock lock = new ReentrantLock();
+    private final Map<ConsumerId, ConsumeHandler<? extends Bean>> consumeHandlerMap = new EnumMap<>(ConsumerId.class);
+
+    @PostConstruct
+    public void init() {
+        lock.lock();
+        try {
+            consumeHandlerMap.put(ConsumerId.EVENT_FILTERED, filteredEventConsumeHandler);
+            consumeHandlerMap.put(ConsumerId.VALUE_FILTERED, filteredValueConsumeHandler);
+            consumeHandlerMap.put(ConsumerId.EVENT_TRIGGERED, triggeredEventConsumeHandler);
+            consumeHandlerMap.put(ConsumerId.VALUE_TRIGGERED, triggeredValueConsumeHandler);
+            consumeHandlerMap.put(ConsumerId.EVENT_REALTIME, realtimeEventConsumeHandler);
+            consumeHandlerMap.put(ConsumerId.VALUE_REALTIME, realtimeValueConsumeHandler);
+            consumeHandlerMap.put(ConsumerId.EVENT_PERSISTENCE, persistenceEventConsumeHandler);
+            consumeHandlerMap.put(ConsumerId.VALUE_PERSISTENCE, persistenceValueConsumeHandler);
+        } finally {
+            lock.unlock();
+        }
+    }
 
     @PreDestroy
-    public void dispose() throws ServiceException {
-        stopRecord();
+    public void dispose() throws Exception {
+        lock.lock();
+        try {
+            internalStopRecord();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    @BehaviorAnalyse
+    public RecordContext getRecordContext(LongIdKey pointKey) throws ServiceException {
+        lock.lock();
+        try {
+            if (recordLocalCacheHandler.existsPoint(pointKey)) {
+                return recordLocalCacheHandler.getRecordContext(pointKey);
+            } else {
+                return null;
+            }
+        } catch (HandlerException e) {
+            throw ServiceExceptionHelper.logAndThrow("从本地缓存中获取记录上下文时发生异常",
+                    LogLevel.WARN, sem, e
+            );
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
@@ -81,6 +128,57 @@ public class RecordQosServiceImpl implements RecordQosService {
             recordLocalCacheHandler.clear();
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("清除本地缓存时发生异常",
+                    LogLevel.WARN, sem, e
+            );
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    @BehaviorAnalyse
+    public ConsumerStatus getConsumerStatus(ConsumerId consumerId) throws ServiceException {
+        lock.lock();
+        try {
+            return internalGetConsumerStatus(consumerId);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("获取消费者状态时发生异常",
+                    LogLevel.WARN, sem, e
+            );
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    private ConsumerStatus internalGetConsumerStatus(ConsumerId consumerId) throws HandlerException {
+        ConsumeHandler<? extends Bean> consumeHandler = consumeHandlerMap.get(consumerId);
+        return new ConsumerStatus(
+                consumeHandler.getBufferSize(),
+                consumeHandler.getBufferSize(),
+                consumeHandler.getMaxIdleTime(),
+                consumeHandler.getThread(),
+                consumeHandler.isIdle()
+        );
+    }
+
+    @Override
+    @BehaviorAnalyse
+    public void setConsumerParameters(
+            ConsumerId consumerId, Integer bufferSize, Integer batchSize, Long maxIdleTime, Integer thread)
+            throws ServiceException {
+        lock.lock();
+        try {
+            ConsumeHandler<? extends Bean> consumeHandler = consumeHandlerMap.get(consumerId);
+            consumeHandler.setBufferParameters(
+                    Objects.isNull(bufferSize) ? consumeHandler.getBufferSize() : bufferSize,
+                    Objects.isNull(batchSize) ? consumeHandler.getBatchSize() : batchSize,
+                    Objects.isNull(maxIdleTime) ? consumeHandler.getMaxIdleTime() : maxIdleTime
+            );
+            consumeHandler.setThread(
+                    Objects.isNull(thread) ? consumeHandler.getThread() : thread
+            );
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("设置消费者参数时发生异常",
                     LogLevel.WARN, sem, e
             );
         } finally {
@@ -122,25 +220,7 @@ public class RecordQosServiceImpl implements RecordQosService {
     public void stopRecord() throws ServiceException {
         lock.lock();
         try {
-            LOGGER.info("关闭记录服务...");
-            for (Source source : sources) {
-                source.offline();
-            }
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-            }
-            recordHandler.disable();
-
-            filteredEventConsumeHandler.stop();
-            filteredValueConsumeHandler.stop();
-            triggeredEventConsumeHandler.stop();
-            triggeredValueConsumeHandler.stop();
-            realtimeEventConsumeHandler.stop();
-            realtimeValueConsumeHandler.stop();
-            persistenceEventConsumeHandler.stop();
-            persistenceValueConsumeHandler.stop();
+            internalStopRecord();
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("关闭记录服务时发生异常",
                     LogLevel.WARN, sem, e
@@ -148,5 +228,27 @@ public class RecordQosServiceImpl implements RecordQosService {
         } finally {
             lock.unlock();
         }
+    }
+
+    private void internalStopRecord() throws Exception {
+        LOGGER.info("关闭记录服务...");
+        for (Source source : sources) {
+            source.offline();
+        }
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
+        }
+        recordHandler.disable();
+
+        filteredEventConsumeHandler.stop();
+        filteredValueConsumeHandler.stop();
+        triggeredEventConsumeHandler.stop();
+        triggeredValueConsumeHandler.stop();
+        realtimeEventConsumeHandler.stop();
+        realtimeValueConsumeHandler.stop();
+        persistenceEventConsumeHandler.stop();
+        persistenceValueConsumeHandler.stop();
     }
 }
