@@ -8,6 +8,7 @@
 - 删除 pom.xml 文件中的 NBSP 空格。
 - 增加 QOS 功能。
   - 添加 spring-telqos 依赖。
+  - 添加 shutdown 指令。
 
 #### Bug修复
 
