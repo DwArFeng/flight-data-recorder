@@ -5,7 +5,7 @@
 
     <groupId>com.dwarfeng</groupId>
     <artifactId>fdr</artifactId>
-    <version>1.8.0.a-SNAPSHOT</version>
+    <version>1.8.0.a</version>
 
     <packaging>pom</packaging>
 
@@ -58,7 +58,7 @@
         <snowflake.version>1.2.4.a</snowflake.version>
         <subgrade.version>1.1.2.a</subgrade.version>
         <spring-terminator.version>1.0.6.a</spring-terminator.version>
-        <spring-telqos.version>1.0.2.a-SNAPSHOT</spring-telqos.version>
+        <spring-telqos.version>1.0.2.a</spring-telqos.version>
         <dcti.version>1.1.0.a</dcti.version>
         <groovy.version>3.0.2</groovy.version>
         <!-- Maven插件版本声明 -->
@@ -404,32 +404,32 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-stack</artifactId>
-                <version>1.8.0.a-SNAPSHOT</version>
+                <version>1.8.0.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-sdk</artifactId>
-                <version>1.8.0.a-SNAPSHOT</version>
+                <version>1.8.0.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-impl</artifactId>
-                <version>1.8.0.a-SNAPSHOT</version>
+                <version>1.8.0.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-maintain</artifactId>
-                <version>1.8.0.a-SNAPSHOT</version>
+                <version>1.8.0.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-record</artifactId>
-                <version>1.8.0.a-SNAPSHOT</version>
+                <version>1.8.0.a</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-all</artifactId>
-                <version>1.8.0.a-SNAPSHOT</version>
+                <version>1.8.0.a</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

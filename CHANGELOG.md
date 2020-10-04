@@ -1,6 +1,6 @@
 # ChangeLog
 
-### Release_1.8.0_20200927_build_A
+### Release_1.8.0_20201004_build_A
 
 #### 功能构建
 
