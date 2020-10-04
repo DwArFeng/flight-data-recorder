@@ -10,6 +10,8 @@
   - com.dwarfeng.fdr.stack.service.RecordQosService.getRecordContext
   - com.dwarfeng.fdr.stack.service.RecordQosService.getConsumerStatus
   - com.dwarfeng.fdr.stack.service.RecordQosService.setConsumerParameters
+- 增强 ConsumeHandler。
+  - com.dwarfeng.fdr.stack.handler.ConsumeHandler.bufferedSize
 - 增加 QOS 功能。
   - 添加 spring-telqos 依赖。
   - 添加 shutdown 指令。

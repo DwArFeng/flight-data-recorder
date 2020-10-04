@@ -97,24 +97,27 @@ public class ConsumerCommand extends CliCommand {
 
     private void handleS(Context context, CommandLine cmd) throws Exception {
         List<ConsumerId> consumerIds = parserConsumerIds(cmd);
+        Integer newBufferSize = null;
+        Integer newBatchSize = null;
+        Long newMaxIdleTime = null;
+        Integer newThread = null;
+        try {
+            if (cmd.hasOption("b")) newBufferSize = Integer.parseInt(cmd.getOptionValue("b"));
+            if (cmd.hasOption("a")) newBatchSize = Integer.parseInt(cmd.getOptionValue("a"));
+            if (cmd.hasOption("m")) newMaxIdleTime = Long.parseLong(cmd.getOptionValue("m"));
+            if (cmd.hasOption("t")) newThread = Integer.parseInt(cmd.getOptionValue("t"));
+        } catch (Exception e) {
+            LOGGER.warn("解析命令选项时发生异常，异常信息如下", e);
+            context.sendMessage("命令行格式错误，正确的格式为: " + CMD_LINE_SYNTAX_S);
+            context.sendMessage("请留意选项 b,a,m,t 后接参数的类型应该是数字 ");
+            return;
+        }
         for (ConsumerId consumerId : consumerIds) {
             ConsumerStatus consumerStatus = recordQosService.getConsumerStatus(consumerId);
-            int bufferSize = consumerStatus.getBufferSize();
-            int batchSize = consumerStatus.getBatchSize();
-            long maxIdleTime = consumerStatus.getMaxIdleTime();
-            int thread = consumerStatus.getThread();
-            if (cmd.hasOption("b")) {
-                bufferSize = Integer.parseInt(cmd.getOptionValue("b"));
-            }
-            if (cmd.hasOption("a")) {
-                batchSize = Integer.parseInt(cmd.getOptionValue("a"));
-            }
-            if (cmd.hasOption("m")) {
-                maxIdleTime = Integer.parseInt(cmd.getOptionValue("m"));
-            }
-            if (cmd.hasOption("t")) {
-                thread = Integer.parseInt(cmd.getOptionValue("t"));
-            }
+            int bufferSize = Objects.nonNull(newBufferSize) ? newBufferSize : consumerStatus.getBufferSize();
+            int batchSize = Objects.nonNull(newBatchSize) ? newBatchSize : consumerStatus.getBatchSize();
+            long maxIdleTime = Objects.nonNull(newMaxIdleTime) ? newMaxIdleTime : consumerStatus.getMaxIdleTime();
+            int thread = Objects.nonNull(newThread) ? newThread : consumerStatus.getThread();
             recordQosService.setConsumerParameters(consumerId, bufferSize, batchSize, maxIdleTime, thread);
         }
         context.sendMessage("设置完成，消费者新的参数为: ");
@@ -145,10 +148,12 @@ public class ConsumerCommand extends CliCommand {
         for (ConsumerId consumerId : consumerIds) {
             ConsumerStatus consumerStatus = recordQosService.getConsumerStatus(consumerId);
             context.sendMessage(
-                    String.format("%-4d %s-%-14s buffer-size:%-7d batch-size:%-7d max-idle-time:%-10d thread:%-7d idle:%b",
-                            ++index, consumerId.getType(), consumerId.getLabel(), consumerStatus.getBufferSize(),
-                            consumerStatus.getBatchSize(), consumerStatus.getMaxIdleTime(), consumerStatus.getThread(),
-                            consumerStatus.isIdle())
+                    String.format(
+                            "%-4d %s-%-14s buffered-size:%-7d buffer-size:%-7d batch-size:%-7d max-idle-time:%-10d " +
+                                    "thread:%-3d idle:%b",
+                            ++index, consumerId.getType(), consumerId.getLabel(), consumerStatus.getBufferedSize(),
+                            consumerStatus.getBufferSize(), consumerStatus.getBatchSize(),
+                            consumerStatus.getMaxIdleTime(), consumerStatus.getThread(), consumerStatus.isIdle())
             );
         }
     }

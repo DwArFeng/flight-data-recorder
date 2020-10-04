@@ -126,6 +126,11 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
     }
 
     @Override
+    public int bufferedSize() {
+        return consumeBuffer.bufferedSize();
+    }
+
+    @Override
     public int getBufferSize() {
         return consumeBuffer.getBufferSize();
     }

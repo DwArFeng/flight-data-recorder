@@ -120,6 +120,7 @@ public interface RecordQosService extends Service {
 
         private static final long serialVersionUID = 5044732228551678000L;
 
+        private int bufferedSize;
         private int bufferSize;
         private int batchSize;
         private long maxIdleTime;
@@ -129,12 +130,22 @@ public interface RecordQosService extends Service {
         public ConsumerStatus() {
         }
 
-        public ConsumerStatus(int bufferSize, int batchSize, long maxIdleTime, int thread, boolean idle) {
+        public ConsumerStatus(
+                int bufferedSize, int bufferSize, int batchSize, long maxIdleTime, int thread, boolean idle) {
+            this.bufferedSize = bufferedSize;
             this.bufferSize = bufferSize;
             this.batchSize = batchSize;
             this.maxIdleTime = maxIdleTime;
             this.thread = thread;
             this.idle = idle;
+        }
+
+        public int getBufferedSize() {
+            return bufferedSize;
+        }
+
+        public void setBufferedSize(int bufferedSize) {
+            this.bufferedSize = bufferedSize;
         }
 
         public int getBufferSize() {
@@ -180,7 +191,8 @@ public interface RecordQosService extends Service {
         @Override
         public String toString() {
             return "ConsumerStatus{" +
-                    "bufferSize=" + bufferSize +
+                    "bufferedSize=" + bufferedSize +
+                    ", bufferSize=" + bufferSize +
                     ", batchSize=" + batchSize +
                     ", maxIdleTime=" + maxIdleTime +
                     ", thread=" + thread +

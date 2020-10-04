@@ -153,6 +153,7 @@ public class RecordQosServiceImpl implements RecordQosService {
     private ConsumerStatus internalGetConsumerStatus(ConsumerId consumerId) throws HandlerException {
         ConsumeHandler<? extends Bean> consumeHandler = consumeHandlerMap.get(consumerId);
         return new ConsumerStatus(
+                consumeHandler.bufferedSize(),
                 consumeHandler.getBufferSize(),
                 consumeHandler.getBatchSize(),
                 consumeHandler.getMaxIdleTime(),
