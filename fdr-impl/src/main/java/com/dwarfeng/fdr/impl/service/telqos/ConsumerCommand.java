@@ -27,11 +27,11 @@ public class ConsumerCommand extends CliCommand {
     private static final String DESCRIPTION = "消费者操作";
     private static final String CMD_LINE_SYNTAX_L = "csu -l [-c classes] [-n names]";
     private static final String CMD_LINE_SYNTAX_S = "csu -s [-c classes] [-n names] [-b val] [-a val] [-m val] [-t val]";
-    private static final String CMD_LINE_SYNTAX_LIST_CLASSES = "csu -lc";
-    private static final String CMD_LINE_SYNTAX_LIST_NAMES = "cus -ln";
+    private static final String CMD_LINE_SYNTAX_LC = "csu -lc";
+    private static final String CMD_LINE_SYNTAX_LN = "cus -ln";
     private static final String CMD_LINE_SYNTAX = CMD_LINE_SYNTAX_L + System.lineSeparator() +
-            CMD_LINE_SYNTAX_S + System.lineSeparator() + CMD_LINE_SYNTAX_LIST_CLASSES + System.lineSeparator() +
-            CMD_LINE_SYNTAX_LIST_NAMES;
+            CMD_LINE_SYNTAX_S + System.lineSeparator() + CMD_LINE_SYNTAX_LC + System.lineSeparator() +
+            CMD_LINE_SYNTAX_LN;
 
     public ConsumerCommand() {
         super(IDENTITY, DESCRIPTION, CMD_LINE_SYNTAX);

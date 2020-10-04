@@ -14,6 +14,7 @@
   - 添加 spring-telqos 依赖。
   - 添加 shutdown 指令。
   - 添加 csu 指令。
+  - 添加 record 指令。
 
 #### Bug修复
 
