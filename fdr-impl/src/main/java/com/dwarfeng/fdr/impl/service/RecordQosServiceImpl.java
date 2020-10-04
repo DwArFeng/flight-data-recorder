@@ -154,7 +154,7 @@ public class RecordQosServiceImpl implements RecordQosService {
         ConsumeHandler<? extends Bean> consumeHandler = consumeHandlerMap.get(consumerId);
         return new ConsumerStatus(
                 consumeHandler.getBufferSize(),
-                consumeHandler.getBufferSize(),
+                consumeHandler.getBatchSize(),
                 consumeHandler.getMaxIdleTime(),
                 consumeHandler.getThread(),
                 consumeHandler.isIdle()
