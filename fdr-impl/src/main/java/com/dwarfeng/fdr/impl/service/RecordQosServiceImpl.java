@@ -140,7 +140,15 @@ public class RecordQosServiceImpl implements RecordQosService {
     public ConsumerStatus getConsumerStatus(ConsumerId consumerId) throws ServiceException {
         lock.lock();
         try {
-            return internalGetConsumerStatus(consumerId);
+            ConsumeHandler<? extends Bean> consumeHandler = consumeHandlerMap.get(consumerId);
+            return new ConsumerStatus(
+                    consumeHandler.bufferedSize(),
+                    consumeHandler.getBufferSize(),
+                    consumeHandler.getBatchSize(),
+                    consumeHandler.getMaxIdleTime(),
+                    consumeHandler.getThread(),
+                    consumeHandler.isIdle()
+            );
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("获取消费者状态时发生异常",
                     LogLevel.WARN, sem, e
@@ -148,18 +156,6 @@ public class RecordQosServiceImpl implements RecordQosService {
         } finally {
             lock.unlock();
         }
-    }
-
-    private ConsumerStatus internalGetConsumerStatus(ConsumerId consumerId) throws HandlerException {
-        ConsumeHandler<? extends Bean> consumeHandler = consumeHandlerMap.get(consumerId);
-        return new ConsumerStatus(
-                consumeHandler.bufferedSize(),
-                consumeHandler.getBufferSize(),
-                consumeHandler.getBatchSize(),
-                consumeHandler.getMaxIdleTime(),
-                consumeHandler.getThread(),
-                consumeHandler.isIdle()
-        );
     }
 
     @Override
@@ -180,6 +176,44 @@ public class RecordQosServiceImpl implements RecordQosService {
             );
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("设置消费者参数时发生异常",
+                    LogLevel.WARN, sem, e
+            );
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    public RecorderStatus getRecorderStatus() throws ServiceException {
+        lock.lock();
+        try {
+            return new RecorderStatus(
+                    recordHandler.bufferedSize(),
+                    recordHandler.getBufferSize(),
+                    recordHandler.getThread(),
+                    recordHandler.isIdle()
+            );
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("获取记录者状态时发生异常",
+                    LogLevel.WARN, sem, e
+            );
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    public void setRecorderParameters(Integer bufferSize, Integer thread) throws ServiceException {
+        lock.lock();
+        try {
+            recordHandler.setBufferParameters(
+                    Objects.isNull(bufferSize) ? recordHandler.getBufferSize() : bufferSize
+            );
+            recordHandler.setThread(
+                    Objects.isNull(thread) ? recordHandler.getThread() : thread
+            );
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("设置记录者参数时发生异常",
                     LogLevel.WARN, sem, e
             );
         } finally {

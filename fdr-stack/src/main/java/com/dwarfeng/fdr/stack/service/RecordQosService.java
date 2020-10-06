@@ -40,7 +40,7 @@ public interface RecordQosService extends Service {
     ConsumerStatus getConsumerStatus(ConsumerId consumerId) throws ServiceException;
 
     /**
-     * 设置指定消费之的参数。
+     * 设置指定消费者的参数。
      *
      * @param consumerId  指定的消费者ID。
      * @param bufferSize  缓冲器的大小。
@@ -52,6 +52,23 @@ public interface RecordQosService extends Service {
     void setConsumerParameters(
             ConsumerId consumerId, Integer bufferSize, Integer batchSize, Long maxIdleTime, Integer thread)
             throws ServiceException;
+
+    /**
+     * 获取指定记录者的记录者状态。
+     *
+     * @return 记录者状态。
+     * @throws ServiceException 服务异常。
+     */
+    RecorderStatus getRecorderStatus() throws ServiceException;
+
+    /**
+     * 设置指定记录者的参数。
+     *
+     * @param bufferSize 缓冲器的大小。
+     * @param thread     记录者的线程数量。
+     * @throws ServiceException 服务异常。
+     */
+    void setRecorderParameters(Integer bufferSize, Integer thread) throws ServiceException;
 
     /**
      * 开启记录服务。
@@ -195,6 +212,74 @@ public interface RecordQosService extends Service {
                     ", bufferSize=" + bufferSize +
                     ", batchSize=" + batchSize +
                     ", maxIdleTime=" + maxIdleTime +
+                    ", thread=" + thread +
+                    ", idle=" + idle +
+                    '}';
+        }
+    }
+
+    /**
+     * 记录者状态。
+     *
+     * @author DwArFeng
+     * @since 1.8.1
+     */
+    class RecorderStatus implements Bean {
+
+        private static final long serialVersionUID = -6568120884699592771L;
+
+        private int bufferedSize;
+        private int bufferSize;
+        private int thread;
+        private boolean idle;
+
+        public RecorderStatus() {
+        }
+
+        public RecorderStatus(int bufferedSize, int bufferSize, int thread, boolean idle) {
+            this.bufferedSize = bufferedSize;
+            this.bufferSize = bufferSize;
+            this.thread = thread;
+            this.idle = idle;
+        }
+
+        public int getBufferedSize() {
+            return bufferedSize;
+        }
+
+        public void setBufferedSize(int bufferedSize) {
+            this.bufferedSize = bufferedSize;
+        }
+
+        public int getBufferSize() {
+            return bufferSize;
+        }
+
+        public void setBufferSize(int bufferSize) {
+            this.bufferSize = bufferSize;
+        }
+
+        public int getThread() {
+            return thread;
+        }
+
+        public void setThread(int thread) {
+            this.thread = thread;
+        }
+
+        public boolean isIdle() {
+            return idle;
+        }
+
+        public void setIdle(boolean idle) {
+            this.idle = idle;
+        }
+
+        @Override
+        public String toString() {
+            return "RecorderStatus{" +
+                    "bufferedSize=" + bufferedSize +
+                    ", bufferSize=" + bufferSize +
                     ", thread=" + thread +
                     ", idle=" + idle +
                     '}';
