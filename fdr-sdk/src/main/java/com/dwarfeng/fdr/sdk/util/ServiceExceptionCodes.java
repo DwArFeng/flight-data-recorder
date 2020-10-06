@@ -26,8 +26,10 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 12, "trigger type unsupported");
     public static final ServiceException.Code POINT_NOT_EXISTS =
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 20, "point not exists");
-    public static final ServiceException.Code RECORD_HANDLER_DISABLED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 30, "record handler disabled");
+    public static final ServiceException.Code RECORD_HANDLER_STOPPED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 30, "record handler stopped");
+    public static final ServiceException.Code CONSUME_HANDLER_STOPPED =
+            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 31, "consume handler stopped");
     public static final ServiceException.Code MAPPER_FAILED =
             new ServiceException.Code(EXCEPTION_CODE_OFFSET + 40, "mapper failed");
     public static final ServiceException.Code MAPPER_MAKE_FAILED =

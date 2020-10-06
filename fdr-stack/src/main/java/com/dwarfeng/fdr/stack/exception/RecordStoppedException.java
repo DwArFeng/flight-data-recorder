@@ -8,22 +8,14 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  * @author DwArFeng
  * @since 1.4.0
  */
-public class RecordDisabledException extends HandlerException {
+public class RecordStoppedException extends HandlerException {
 
     private static final long serialVersionUID = 1263442110558485897L;
 
-    public RecordDisabledException() {
+    public RecordStoppedException() {
     }
 
-    public RecordDisabledException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public RecordDisabledException(String message) {
-        super(message);
-    }
-
-    public RecordDisabledException(Throwable cause) {
+    public RecordStoppedException(Throwable cause) {
         super(cause);
     }
 

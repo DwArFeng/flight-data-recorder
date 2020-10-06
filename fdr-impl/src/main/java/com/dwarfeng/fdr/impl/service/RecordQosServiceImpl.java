@@ -202,7 +202,7 @@ public class RecordQosServiceImpl implements RecordQosService {
             persistenceEventConsumeHandler.start();
             persistenceValueConsumeHandler.start();
 
-            recordHandler.enable();
+            recordHandler.start();
 
             for (Source source : sources) {
                 source.online();
@@ -241,7 +241,7 @@ public class RecordQosServiceImpl implements RecordQosService {
             Thread.sleep(1000);
         } catch (InterruptedException ignored) {
         }
-        recordHandler.disable();
+        recordHandler.stop();
 
         filteredEventConsumeHandler.stop();
         filteredValueConsumeHandler.stop();

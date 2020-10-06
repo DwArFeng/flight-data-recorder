@@ -124,7 +124,7 @@ public class DctiKafkaSource implements Source {
             try {
                 recordService.record(dataInfo);
             } catch (ServiceException e) {
-                if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_DISABLED.getCode()) {
+                if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_STOPPED.getCode()) {
                     LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 以及其后同一批次的消息均不会被提交", e);
                     // 如果记录处理器被禁用，则放弃其后同一批次的消息记录，并且妥善处理offset的提交。
                     // Offset 精确设置到没有提交成功的最后一条信息上。

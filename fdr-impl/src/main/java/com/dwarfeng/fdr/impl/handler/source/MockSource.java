@@ -254,7 +254,7 @@ public class MockSource implements Source {
                     try {
                         recordService.record(dataInfo);
                     } catch (ServiceException e) {
-                        if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_DISABLED.getCode()) {
+                        if (e.getCode().getCode() == ServiceExceptionCodes.RECORD_HANDLER_STOPPED.getCode()) {
                             LOGGER.warn("记录处理器被禁用， 消息 " + dataInfo + " 将会被忽略", e);
                         } else {
                             LOGGER.warn("记录处理器无法处理, 消息 " + dataInfo + " 将会被忽略", e);

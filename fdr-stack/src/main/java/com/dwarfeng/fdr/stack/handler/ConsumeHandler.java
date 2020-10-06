@@ -18,7 +18,7 @@ public interface ConsumeHandler<E extends Entity<?>> extends Handler {
      * @return 消费处理器是否启动。
      * @throws HandlerException 处理器异常。
      */
-    boolean isStart() throws HandlerException;
+    boolean isStarted() throws HandlerException;
 
     /**
      * 开启消费处理器。

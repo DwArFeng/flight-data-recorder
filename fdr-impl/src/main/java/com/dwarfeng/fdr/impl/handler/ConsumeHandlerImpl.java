@@ -1,8 +1,10 @@
 package com.dwarfeng.fdr.impl.handler;
 
 import com.dwarfeng.dutil.develop.backgr.AbstractTask;
+import com.dwarfeng.fdr.stack.exception.ConsumeStoppedException;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -51,7 +53,7 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
     }
 
     @Override
-    public boolean isStart() {
+    public boolean isStarted() {
         lock.lock();
         try {
             return startFlag;
@@ -121,33 +123,71 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
     }
 
     @Override
-    public void accept(E element) {
-        consumeBuffer.accept(element);
+    public void accept(E element) throws HandlerException {
+        lock.lock();
+        try {
+            // 判断是否允许消费，如果不允许，直接报错。
+            if (!startFlag) {
+                throw new ConsumeStoppedException();
+            }
+            consumeBuffer.accept(element);
+        } catch (HandlerException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public int bufferedSize() {
-        return consumeBuffer.bufferedSize();
+        lock.lock();
+        try {
+            return consumeBuffer.bufferedSize();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public int getBufferSize() {
-        return consumeBuffer.getBufferSize();
+        lock.lock();
+        try {
+            return consumeBuffer.getBufferSize();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public int getBatchSize() {
-        return consumeBuffer.getBatchSize();
+        lock.lock();
+        try {
+            return consumeBuffer.getBatchSize();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public long getMaxIdleTime() {
-        return consumeBuffer.getMaxIdleTime();
+        lock.lock();
+        try {
+            return consumeBuffer.getMaxIdleTime();
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
     public void setBufferParameters(int bufferSize, int batchSize, long maxIdleTime) {
-        consumeBuffer.setBufferParameters(bufferSize, batchSize, maxIdleTime);
+        lock.lock();
+        try {
+            consumeBuffer.setBufferParameters(bufferSize, batchSize, maxIdleTime);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
@@ -188,6 +228,7 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public boolean isIdle() {
         lock.lock();
@@ -260,10 +301,7 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
             lock.lock();
             try {
                 while (buffer.size() >= bufferSize) {
-                    try {
-                        provideCondition.await();
-                    } catch (InterruptedException ignored) {
-                    }
+                    provideCondition.awaitUninterruptibly();
                 }
 
                 buffer.add(element);

@@ -13,26 +13,26 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
 public interface RecordHandler extends Handler {
 
     /**
-     * 记录处理器是否被启用。
+     * 记录处理器是否启动。
      *
      * @return 记录处理器是否被启用。
      * @throws HandlerException 处理器异常。
      */
-    boolean isEnabled() throws HandlerException;
+    boolean isStarted() throws HandlerException;
 
     /**
-     * 启用记录处理器。
+     * 开启记录处理器。
      *
      * @throws HandlerException 处理器异常。
      */
-    void enable() throws HandlerException;
+    void start() throws HandlerException;
 
     /**
-     * 禁用记录处理器。
+     * 关闭记录处理器。
      *
      * @throws HandlerException 处理器异常。
      */
-    void disable() throws HandlerException;
+    void stop() throws HandlerException;
 
     /**
      * 向程序中记录数据。
@@ -49,4 +49,52 @@ public interface RecordHandler extends Handler {
      * @throws HandlerException 处理器异常。
      */
     void record(DataInfo dataInfo) throws HandlerException;
+
+    /**
+     * 获取缓冲器已经缓冲的容量。
+     *
+     * @return 缓冲器已经缓冲的容量。
+     * @throws HandlerException 处理器异常。
+     */
+    int bufferedSize() throws HandlerException;
+
+    /**
+     * 获取缓冲器的容量。
+     *
+     * @return 缓冲器的容量。
+     * @throws HandlerException 处理器异常。
+     */
+    int getBufferSize() throws HandlerException;
+
+    /**
+     * 设置缓冲器的参数。
+     *
+     * @param bufferSize 缓冲器的大小。
+     * @throws HandlerException 处理器异常。
+     */
+    void setBufferParameters(int bufferSize) throws HandlerException;
+
+    /**
+     * 获取记录者的线程数量。
+     *
+     * @return 记录者的线程数量。
+     * @throws HandlerException 处理器异常。
+     */
+    int getThread() throws HandlerException;
+
+    /**
+     * 设置记录者的线程数量。
+     *
+     * @param thread 记录者的线程数量。
+     * @throws HandlerException 处理器异常。
+     */
+    void setThread(int thread) throws HandlerException;
+
+    /**
+     * 获取记录者是否空闲。
+     *
+     * @return 记录者是否空闲。
+     * @throws HandlerException 处理器异常。
+     */
+    boolean isIdle() throws HandlerException;
 }
