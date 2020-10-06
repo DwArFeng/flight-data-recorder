@@ -17,6 +17,7 @@
             <telqos:command-impl ref="consumerCommand"/>
             <telqos:command-impl ref="recordLocalCacheCommand"/>
             <telqos:command-impl ref="recordCommand"/>
+            <telqos:command-impl ref="dubboCommand"/>
         </telqos:command>
     </telqos:config>
 </beans>
