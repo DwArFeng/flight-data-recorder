@@ -19,7 +19,7 @@ import java.util.List;
 public class DubboCommand extends CliCommand {
 
     private static final String IDENTITY = "dubbo";
-    private static final String DESCRIPTION = "控制dubbo框架上下线服务";
+    private static final String DESCRIPTION = "分布式服务上线/下线";
     private static final String CMD_LINE_SYNTAX_ONLINE = "dubbo -online [service-name]";
     private static final String CMD_LINE_SYNTAX_OFFLINE = "dubbo -offline [service-name]";
     private static final String CMD_LINE_SYNTAX_LIST = "dubbo -ls";
@@ -95,9 +95,12 @@ public class DubboCommand extends CliCommand {
         String[] args = new String[0];
         CommandContext commandContext = new CommandContext("ls", args, false);
         String result = DUBBO_COMMAND_LS.execute(commandContext, args);
+        // 去除多余的换行符。
+        result = result.substring(0, result.length() - System.lineSeparator().length());
         context.sendMessage(result);
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private Pair<String, Integer> analyseCommand(CommandLine cmd) {
         int i = 0;
         String subCmd = null;
