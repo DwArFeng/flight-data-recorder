@@ -10,6 +10,7 @@
 - 更改 record 指令格式，使其与其它指令格式保持一致。
 - 更改 RecordHandlerImpl 为多线程消费模式，大大提高单节点数据记录的处理能力。
 - 将 application-context-task.xml 中的参数设置为可配置参数。
+- 升级 sprint-telqos 依赖至 1.0.3.a。
 
 #### Bug修复
 
