@@ -44,12 +44,12 @@ public class MockSource implements Source {
 
     private final Lock lock = new ReentrantLock();
     private boolean startFlag = false;
-    private MockRecordPlain mockRecordPlain = null;
-    private ScheduledFuture<?> mockRecordPlainFuture = null;
-    private MockMonitorPlain mockMonitorPlain = null;
-    private ScheduledFuture<?> mockMonitorPlainFuture = null;
-    private MockProvidePlain mockProvidePlain = null;
-    private ScheduledFuture<?> mockProvidePlainFuture = null;
+    private MockRecordPlan mockRecordPlan = null;
+    private ScheduledFuture<?> mockRecordPlanFuture = null;
+    private MockMonitorPlan mockMonitorPlan = null;
+    private ScheduledFuture<?> mockMonitorPlanFuture = null;
+    private MockProvidePlan mockProvidePlan = null;
+    private ScheduledFuture<?> mockProvidePlanFuture = null;
 
     @Override
     public boolean isOnline() {
@@ -68,12 +68,12 @@ public class MockSource implements Source {
             if (!startFlag) {
                 LOGGER.info("Mock source 上线...");
                 mockBuffer.block();
-                mockRecordPlain = new MockRecordPlain(recordService, mockBuffer, dataSizePerSec, dataRecordMaxCoefficient);
-                mockMonitorPlain = new MockMonitorPlain(mockBuffer);
-                mockProvidePlain = new MockProvidePlain(mockBuffer, pointId, dataSizePerSec);
-                mockRecordPlainFuture = scheduler.scheduleAtFixedRate(mockRecordPlain, 1000);
-                mockMonitorPlainFuture = scheduler.scheduleAtFixedRate(mockMonitorPlain, 1000);
-                mockProvidePlainFuture = scheduler.scheduleAtFixedRate(mockProvidePlain, 1000);
+                mockRecordPlan = new MockRecordPlan(recordService, mockBuffer, dataSizePerSec, dataRecordMaxCoefficient);
+                mockMonitorPlan = new MockMonitorPlan(mockBuffer);
+                mockProvidePlan = new MockProvidePlan(mockBuffer, pointId, dataSizePerSec);
+                mockRecordPlanFuture = scheduler.scheduleAtFixedRate(mockRecordPlan, 1000);
+                mockMonitorPlanFuture = scheduler.scheduleAtFixedRate(mockMonitorPlan, 1000);
+                mockProvidePlanFuture = scheduler.scheduleAtFixedRate(mockProvidePlan, 1000);
                 startFlag = true;
             }
         } catch (Exception e) {
@@ -90,18 +90,18 @@ public class MockSource implements Source {
             if (startFlag) {
                 LOGGER.info("Mock source 下线...");
                 mockBuffer.unblock();
-                mockRecordPlain.shutdown();
-                mockRecordPlainFuture.cancel(true);
-                mockMonitorPlain.shutdown();
-                mockMonitorPlainFuture.cancel(true);
-                mockProvidePlain.shutdown();
-                mockProvidePlainFuture.cancel(true);
-                mockRecordPlain = null;
-                mockRecordPlainFuture = null;
-                mockMonitorPlain = null;
-                mockMonitorPlainFuture = null;
-                mockProvidePlain = null;
-                mockProvidePlainFuture = null;
+                mockRecordPlan.shutdown();
+                mockRecordPlanFuture.cancel(true);
+                mockMonitorPlan.shutdown();
+                mockMonitorPlanFuture.cancel(true);
+                mockProvidePlan.shutdown();
+                mockProvidePlanFuture.cancel(true);
+                mockRecordPlan = null;
+                mockRecordPlanFuture = null;
+                mockMonitorPlan = null;
+                mockMonitorPlanFuture = null;
+                mockProvidePlan = null;
+                mockProvidePlanFuture = null;
                 startFlag = false;
             }
         } catch (Exception e) {
@@ -223,7 +223,7 @@ public class MockSource implements Source {
         }
     }
 
-    private static class MockRecordPlain implements Runnable {
+    private static class MockRecordPlan implements Runnable {
 
         private final RecordService recordService;
         private final MockBuffer mockBuffer;
@@ -233,7 +233,7 @@ public class MockSource implements Source {
         private final Lock lock = new ReentrantLock();
         private boolean runningFlag = true;
 
-        public MockRecordPlain(
+        public MockRecordPlan(
                 RecordService recordService, MockBuffer mockBuffer, int size, double dataRecordMaxCoefficient) {
             this.recordService = recordService;
             this.mockBuffer = mockBuffer;
@@ -276,7 +276,7 @@ public class MockSource implements Source {
         }
     }
 
-    private static class MockProvidePlain implements Runnable {
+    private static class MockProvidePlan implements Runnable {
 
         private final MockBuffer mockBuffer;
         private final long pointId;
@@ -286,7 +286,7 @@ public class MockSource implements Source {
         private final Random random = new Random();
         private boolean runningFlag = true;
 
-        public MockProvidePlain(MockBuffer mockBuffer, long pointId, int size) {
+        public MockProvidePlan(MockBuffer mockBuffer, long pointId, int size) {
             this.mockBuffer = mockBuffer;
             this.pointId = pointId;
             this.size = size;
@@ -318,16 +318,16 @@ public class MockSource implements Source {
         }
     }
 
-    private static class MockMonitorPlain implements Runnable {
+    private static class MockMonitorPlan implements Runnable {
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(MockMonitorPlain.class);
+        private static final Logger LOGGER = LoggerFactory.getLogger(MockMonitorPlan.class);
 
         private final MockBuffer mockBuffer;
 
         private final Lock lock = new ReentrantLock();
         private boolean runningFlag = true;
 
-        public MockMonitorPlain(MockBuffer mockBuffer) {
+        public MockMonitorPlan(MockBuffer mockBuffer) {
             this.mockBuffer = mockBuffer;
         }
 
