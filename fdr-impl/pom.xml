@@ -149,7 +149,7 @@
         <!-- spring-telqos组件 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
-            <artifactId>spring-telqos</artifactId>
+            <artifactId>spring-telqos-core</artifactId>
         </dependency>
         <!-- 程序自身模块 -->
         <dependency>

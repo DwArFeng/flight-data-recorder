@@ -26,6 +26,14 @@
                                 expression="com.dwarfeng.fdr.stack.service.TriggeredValueWriteService"/>
         <context:exclude-filter type="assignable"
                                 expression="com.dwarfeng.fdr.stack.service.PersistenceValueWriteService"/>
+        <context:exclude-filter type="assignable"
+                                expression="com.dwarfeng.fdr.impl.service.telqos.ConsumerCommand"/>
+        <context:exclude-filter type="assignable"
+                                expression="com.dwarfeng.fdr.impl.service.telqos.RecordCommand"/>
+        <context:exclude-filter type="assignable"
+                                expression="com.dwarfeng.fdr.impl.service.telqos.RecorderCommand"/>
+        <context:exclude-filter type="assignable"
+                                expression="com.dwarfeng.fdr.impl.service.telqos.RecordLocalCacheCommand"/>
     </context:component-scan>
     <!--扫描handler的实现包。 -->
     <context:component-scan base-package="com.dwarfeng.fdr.impl.handler" use-default-filters="false">
