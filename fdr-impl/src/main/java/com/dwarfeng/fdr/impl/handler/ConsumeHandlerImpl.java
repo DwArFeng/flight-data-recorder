@@ -1,6 +1,7 @@
 package com.dwarfeng.fdr.impl.handler;
 
 import com.dwarfeng.dutil.develop.backgr.AbstractTask;
+import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.exception.ConsumeStoppedException;
 import com.dwarfeng.fdr.stack.handler.ConsumeHandler;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
@@ -9,10 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
@@ -29,27 +33,34 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsumeHandlerImpl.class);
 
-    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private final ThreadPoolTaskExecutor executor;
+    private final ThreadPoolTaskScheduler scheduler;
     private final List<ConsumeTask<E>> processingConsumeTasks;
     private final List<ConsumeTask<E>> endingConsumeTasks;
     private final Consumer<E> consumer;
+    private final double warnThreshold;
     private int thread;
 
     private final Lock lock = new ReentrantLock();
     private final ConsumeBuffer<E> consumeBuffer = new ConsumeBuffer<>();
     private boolean startFlag = false;
+    ScheduledFuture<?> capacityCheckFuture = null;
 
     public ConsumeHandlerImpl(
-            @NonNull ThreadPoolTaskExecutor threadPoolTaskExecutor,
+            @NonNull ThreadPoolTaskExecutor executor,
+            @NonNull ThreadPoolTaskScheduler scheduler,
             @NonNull List<ConsumeTask<E>> processingConsumeTasks,
             @NonNull List<ConsumeTask<E>> endingConsumeTasks,
             @NonNull Consumer<E> consumer,
-            int thread) {
-        this.threadPoolTaskExecutor = threadPoolTaskExecutor;
+            int thread,
+            double warnThreshold) {
+        this.executor = executor;
+        this.scheduler = scheduler;
         this.processingConsumeTasks = processingConsumeTasks;
         this.endingConsumeTasks = endingConsumeTasks;
         this.consumer = consumer;
         this.thread = Math.max(thread, 1);
+        this.warnThreshold = warnThreshold;
     }
 
     @Override
@@ -71,9 +82,19 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
                 consumeBuffer.block();
                 for (int i = 0; i < thread; i++) {
                     ConsumeTask<E> consumeTask = new ConsumeTask<>(consumeBuffer, consumer);
-                    threadPoolTaskExecutor.execute(consumeTask);
+                    executor.execute(consumeTask);
                     processingConsumeTasks.add(consumeTask);
                 }
+                capacityCheckFuture = scheduler.scheduleAtFixedRate(() -> {
+                    double ratio = (double) consumeBuffer.bufferedSize() / (double) consumeBuffer.getBufferSize();
+                    if (ratio >= warnThreshold) {
+                        LOGGER.warn("消费者 {} 的待消费元素占用缓存比例为 {}，超过报警值 {}，请检查",
+                                consumer.getClass().getSimpleName(),
+                                ratio,
+                                warnThreshold
+                        );
+                    }
+                }, Constants.SCHEDULER_CHECK_INTERVAL);
                 startFlag = true;
             }
         } finally {
@@ -81,28 +102,26 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void stop() {
         lock.lock();
         try {
             if (startFlag) {
-                LOGGER.info("Consume handler 结束消费线程...");
+                LOGGER.info("消费者为 {} 的 Consume handler 结束消费线程...", consumer.getClass().getSimpleName());
+                if (Objects.nonNull(capacityCheckFuture)) {
+                    capacityCheckFuture.cancel(true);
+                    capacityCheckFuture = null;
+                }
                 processingConsumeTasks.forEach(ConsumeTask::shutdown);
                 endingConsumeTasks.addAll(processingConsumeTasks);
                 processingConsumeTasks.clear();
                 consumeBuffer.unblock();
-                List<E> element2Consume;
-                while (!(element2Consume = consumeBuffer.poll()).isEmpty()) {
-                    try {
-                        LOGGER.info("消费 consume handler 中剩余的元素 " + element2Consume.size() + " 个...");
-                        consumer.consume(element2Consume);
-                    } catch (Exception e) {
-                        LOGGER.warn("消费元素时发生异常, 最多抛弃 " + element2Consume.size() + " 个元素", e);
-                    }
-                }
+                processRemainingElement();
                 endingConsumeTasks.removeIf(AbstractTask::isFinished);
                 if (!endingConsumeTasks.isEmpty()) {
-                    LOGGER.info("Consume handler 中的线程还未完全结束, 等待线程结束...");
+                    LOGGER.info("消费者为 {} 的 consume handler 中的线程还未完全结束, 等待线程结束...",
+                            consumer.getClass().getSimpleName());
                     endingConsumeTasks.forEach(
                             task -> {
                                 try {
@@ -114,12 +133,36 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
                 }
                 processingConsumeTasks.clear();
                 endingConsumeTasks.clear();
-                LOGGER.info("Consume handler 已经妥善处理数据, 消费线程结束");
+                LOGGER.info("消费者为 {} 的 consume handler 已经妥善处理数据, 消费线程结束",
+                        consumer.getClass().getSimpleName());
                 startFlag = false;
             }
         } finally {
             lock.unlock();
         }
+    }
+
+    private void processRemainingElement() {
+        // 如果没有剩余元素，直接跳过。
+        if (consumeBuffer.bufferedSize() <= 0) return;
+        LOGGER.info("消费者 {} 消费 consume handler 中剩余的元素 {} 个...",
+                consumer.getClass().getSimpleName(), consumeBuffer.bufferedSize());
+        LOGGER.info("消费者为 {} 的 consume handler 中剩余的元素过多时，需要较长时间消费，请耐心等待...",
+                consumer.getClass().getSimpleName());
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() ->
+                        LOGGER.info("消费者 {} 消费 consume handler 中剩余的元素 {} 个，请耐心等待...",
+                                consumer.getClass().getSimpleName(), consumeBuffer.bufferedSize()),
+                new Date(System.currentTimeMillis() + Constants.SCHEDULER_CHECK_INTERVAL), Constants.SCHEDULER_CHECK_INTERVAL);
+        List<E> element2Consume;
+        while (!(element2Consume = consumeBuffer.poll()).isEmpty()) {
+            try {
+                consumer.consume(element2Consume);
+            } catch (Exception e) {
+                LOGGER.warn("消费元素时发生异常, 最多抛弃 " + element2Consume.size() + " 个元素", e);
+            }
+        }
+        scheduledFuture.cancel(true);
+
     }
 
     @Override
@@ -211,7 +254,7 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
                 if (delta > 0) {
                     for (int i = 0; i < delta; i++) {
                         ConsumeTask<E> consumeTask = new ConsumeTask<>(consumeBuffer, consumer);
-                        threadPoolTaskExecutor.execute(consumeTask);
+                        executor.execute(consumeTask);
                         processingConsumeTasks.add(consumeTask);
                     }
                 } else if (delta < 0) {

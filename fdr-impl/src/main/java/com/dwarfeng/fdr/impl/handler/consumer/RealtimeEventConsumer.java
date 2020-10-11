@@ -72,7 +72,7 @@ public class RealtimeEventConsumer implements Consumer<RealtimeValue> {
             }
         } finally {
             tm.stop();
-            LOGGER.info("消费者处理了 " + realtimeValues.size() + " 条数据, 共用时 " + tm.getTimeMs() + " 毫秒");
+            LOGGER.debug("消费者处理了 " + realtimeValues.size() + " 条数据, 共用时 " + tm.getTimeMs() + " 毫秒");
         }
     }
 }

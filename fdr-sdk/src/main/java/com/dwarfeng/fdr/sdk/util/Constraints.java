@@ -7,6 +7,7 @@ package com.dwarfeng.fdr.sdk.util;
  * @since 0.0.1-alpha
  */
 public final class Constraints {
+
     /**
      * 名称的长度约束。
      */

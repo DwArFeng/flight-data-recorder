@@ -3,6 +3,7 @@ package com.dwarfeng.fdr.impl.handler;
 import com.dwarfeng.dcti.sdk.util.DataInfoUtil;
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo;
 import com.dwarfeng.dutil.develop.backgr.AbstractTask;
+import com.dwarfeng.fdr.sdk.util.Constants;
 import com.dwarfeng.fdr.stack.bean.entity.FilteredValue;
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
 import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
@@ -19,11 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -35,7 +39,9 @@ public class RecordHandlerImpl implements RecordHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordHandlerImpl.class);
 
     @Autowired
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private ThreadPoolTaskExecutor executor;
+    @Autowired
+    private ThreadPoolTaskScheduler scheduler;
 
     @Autowired
     private Consumer consumer;
@@ -44,12 +50,15 @@ public class RecordHandlerImpl implements RecordHandler {
 
     @Value("${record.consumer_thread}")
     private int thread;
+    @Value("${record.threshold.warn}")
+    private double warnThreshold;
 
     private final Lock lock = new ReentrantLock();
     private final List<ConsumeTask> processingConsumeTasks = new ArrayList<>();
     private final List<ConsumeTask> endingConsumeTasks = new ArrayList<>();
 
     private boolean startFlag = false;
+    ScheduledFuture<?> capacityCheckFuture = null;
 
     @Override
     public boolean isStarted() {
@@ -70,9 +79,18 @@ public class RecordHandlerImpl implements RecordHandler {
                 consumeBuffer.block();
                 for (int i = 0; i < thread; i++) {
                     ConsumeTask consumeTask = new ConsumeTask(consumeBuffer, consumer);
-                    threadPoolTaskExecutor.execute(consumeTask);
+                    executor.execute(consumeTask);
                     processingConsumeTasks.add(consumeTask);
                 }
+                capacityCheckFuture = scheduler.scheduleAtFixedRate(() -> {
+                    double ratio = (double) consumeBuffer.bufferedSize() / (double) consumeBuffer.getBufferSize();
+                    if (ratio >= warnThreshold) {
+                        LOGGER.warn("记录者的待消费元素占用缓存比例为 {}，超过报警值 {}，请检查",
+                                ratio,
+                                warnThreshold
+                        );
+                    }
+                }, Constants.SCHEDULER_CHECK_INTERVAL);
                 startFlag = true;
             }
         } finally {
@@ -80,25 +98,22 @@ public class RecordHandlerImpl implements RecordHandler {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void stop() {
         lock.lock();
         try {
             if (startFlag) {
                 LOGGER.info("禁用 record handler...");
+                if (Objects.nonNull(capacityCheckFuture)) {
+                    capacityCheckFuture.cancel(true);
+                    capacityCheckFuture = null;
+                }
                 processingConsumeTasks.forEach(ConsumeTask::shutdown);
                 endingConsumeTasks.addAll(processingConsumeTasks);
                 processingConsumeTasks.clear();
                 consumeBuffer.unblock();
-                DataInfo dataInfo2Consume;
-                while (Objects.nonNull(dataInfo2Consume = consumeBuffer.poll())) {
-                    try {
-                        LOGGER.info("消费 record handler 中剩余的元素...");
-                        consumer.consume(dataInfo2Consume);
-                    } catch (Exception e) {
-                        LOGGER.warn("消费元素时发生异常, 抛弃 DataInfo: " + dataInfo2Consume.toString(), e);
-                    }
-                }
+                processRemainingElement();
                 endingConsumeTasks.removeIf(AbstractTask::isFinished);
                 if (!endingConsumeTasks.isEmpty()) {
                     LOGGER.info("Record handler 中的线程还未完全结束, 等待线程结束...");
@@ -119,6 +134,25 @@ public class RecordHandlerImpl implements RecordHandler {
         } finally {
             lock.unlock();
         }
+    }
+
+    private void processRemainingElement() {
+        // 如果没有剩余元素，直接跳过。
+        if (consumeBuffer.bufferedSize() <= 0) return;
+        LOGGER.info("消费 record handler 中剩余的元素 {} 个...", consumeBuffer.bufferedSize());
+        LOGGER.info("Record handler 中剩余的元素过多时，需要较长时间消费，请耐心等待...");
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() ->
+                        LOGGER.info("消费 consume handler 中剩余的元素 {} 个，请耐心等待...", consumeBuffer.bufferedSize()),
+                new Date(System.currentTimeMillis() + Constants.SCHEDULER_CHECK_INTERVAL), Constants.SCHEDULER_CHECK_INTERVAL);
+        DataInfo dataInfo2Consume;
+        while (Objects.nonNull(dataInfo2Consume = consumeBuffer.poll())) {
+            try {
+                consumer.consume(dataInfo2Consume);
+            } catch (Exception e) {
+                LOGGER.warn("消费元素时发生异常, 抛弃 DataInfo: " + dataInfo2Consume.toString(), e);
+            }
+        }
+        scheduledFuture.cancel(true);
     }
 
     @Override
@@ -217,7 +251,7 @@ public class RecordHandlerImpl implements RecordHandler {
                 if (delta > 0) {
                     for (int i = 0; i < delta; i++) {
                         ConsumeTask consumeTask = new ConsumeTask(consumeBuffer, consumer);
-                        threadPoolTaskExecutor.execute(consumeTask);
+                        executor.execute(consumeTask);
                         processingConsumeTasks.add(consumeTask);
                     }
                 } else if (delta < 0) {

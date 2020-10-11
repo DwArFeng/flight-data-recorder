@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,11 @@ import java.util.ArrayList;
 public class ConsumeConfiguration {
 
     @Autowired
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private ThreadPoolTaskExecutor executor;
+    @Autowired
+    private ThreadPoolTaskScheduler scheduler;
+    @Value("${consume.threshold.warn}")
+    private double warnThreshold;
 
     @Autowired
     private FilteredEventConsumer filteredEventConsumer;
@@ -35,11 +40,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<FilteredValue> filteredEventConsumeHandler() {
         ConsumeHandlerImpl<FilteredValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 filteredEventConsumer,
-                filteredEventConsumerThread
+                filteredEventConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(filteredEventBufferSize, filteredEventBatchSize, filteredEventMaxIdleTime);
         return consumeHandler;
@@ -59,11 +66,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<FilteredValue> filteredValueConsumeHandler() {
         ConsumeHandlerImpl<FilteredValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 filteredValueConsumer,
-                filteredValueConsumerThread
+                filteredValueConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(filteredValueBufferSize, filteredValueBatchSize, filteredValueMaxIdleTime);
         return consumeHandler;
@@ -83,11 +92,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<TriggeredValue> triggeredEventConsumeHandler() {
         ConsumeHandlerImpl<TriggeredValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 triggeredEventConsumer,
-                triggeredEventConsumerThread
+                triggeredEventConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(triggeredEventBufferSize, triggeredEventBatchSize, triggeredEventMaxIdleTime);
         return consumeHandler;
@@ -107,11 +118,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<TriggeredValue> triggeredValueConsumeHandler() {
         ConsumeHandlerImpl<TriggeredValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 triggeredValueConsumer,
-                triggeredValueConsumerThread
+                triggeredValueConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(triggeredValueBufferSize, triggeredValueBatchSize, triggeredValueMaxIdleTime);
         return consumeHandler;
@@ -131,11 +144,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<RealtimeValue> realtimeEventConsumeHandler() {
         ConsumeHandlerImpl<RealtimeValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 realtimeEventConsumer,
-                realtimeEventConsumerThread
+                realtimeEventConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(realtimeEventBufferSize, realtimeEventBatchSize, realtimeEventMaxIdleTime);
         return consumeHandler;
@@ -155,11 +170,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<RealtimeValue> realtimeValueConsumeHandler() {
         ConsumeHandlerImpl<RealtimeValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 realtimeValueConsumer,
-                realtimeValueConsumerThread
+                realtimeValueConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(realtimeValueBufferSize, realtimeValueBatchSize, realtimeValueMaxIdleTime);
         return consumeHandler;
@@ -179,11 +196,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<PersistenceValue> persistenceEventConsumeHandler() {
         ConsumeHandlerImpl<PersistenceValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 persistenceEventConsumer,
-                persistenceEventConsumerThread
+                persistenceEventConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(persistenceEventBufferSize, persistenceEventBatchSize, persistenceEventMaxIdleTime);
         return consumeHandler;
@@ -203,11 +222,13 @@ public class ConsumeConfiguration {
     @Bean
     public ConsumeHandler<PersistenceValue> persistenceValueConsumeHandler() {
         ConsumeHandlerImpl<PersistenceValue> consumeHandler = new ConsumeHandlerImpl<>(
-                threadPoolTaskExecutor,
+                executor,
+                scheduler,
                 new ArrayList<>(),
                 new ArrayList<>(),
                 persistenceValueConsumer,
-                persistenceValueConsumerThread
+                persistenceValueConsumerThread,
+                warnThreshold
         );
         consumeHandler.setBufferParameters(persistenceValueBufferSize, persistenceValueBatchSize, persistenceValueMaxIdleTime);
         return consumeHandler;
