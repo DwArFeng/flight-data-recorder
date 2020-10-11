@@ -1,5 +1,22 @@
 # ChangeLog
 
+### Release_1.8.2_20201011_build_B
+
+#### 功能构建
+
+- (无)
+
+#### Bug修复
+
+- 修改 fdr-impl test 代码中不合理的配置文件。
+- 修改 telqos banner 中错误的版本号。
+
+#### 功能移除
+
+- (无)
+
+---
+
 ### Release_1.8.2_20201011_build_A
 
 #### 功能构建

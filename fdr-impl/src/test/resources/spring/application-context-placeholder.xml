@@ -13,8 +13,7 @@
                     "classpath:database/*.properties,
                     classpath:dubbo/*.properties,
                     classpath:fdr/*.properties,
-                    classpath:redis/*.properties,
-                    classpath:telqos/*.properties"
+                    classpath:redis/*.properties"
             local-override="true"
             properties-ref="refProperties"/>
 
@@ -30,8 +29,6 @@
                 <value>file:conf/test.redis/*.properties</value>
                 <!--suppress SpringXmlModelInspection -->
                 <value>file:conf/test.fdr/*.properties</value>
-                <!--suppress SpringXmlModelInspection -->
-                <value>file:conf/test.telqos/*.properties</value>
             </list>
         </property>
     </bean>
