@@ -14,10 +14,10 @@
         <telqos:task-pool ref="executor"/>
         <telqos:command>
             <telqos:command-impl ref="shutdownCommand"/>
+            <telqos:command-impl ref="dubboCommand"/>
             <telqos:command-impl ref="consumerCommand"/>
             <telqos:command-impl ref="recordLocalCacheCommand"/>
             <telqos:command-impl ref="recordCommand"/>
-            <telqos:command-impl ref="dubboCommand"/>
             <telqos:command-impl ref="recorderCommand"/>
         </telqos:command>
     </telqos:config>
