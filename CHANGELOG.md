@@ -5,6 +5,7 @@
 #### 功能构建
 
 - 调整 application-context-telqos.xml 中 qos 指令的顺序。
+- 引入新版本 spring-telqos 中的指令 memory。
 
 #### Bug修复
 

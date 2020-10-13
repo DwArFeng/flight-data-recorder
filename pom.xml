@@ -58,7 +58,7 @@
         <snowflake.version>1.2.4.a</snowflake.version>
         <subgrade.version>1.1.2.a</subgrade.version>
         <spring-terminator.version>1.0.6.a</spring-terminator.version>
-        <spring-telqos.version>1.1.0.a</spring-telqos.version>
+        <spring-telqos.version>1.1.1.a</spring-telqos.version>
         <dcti.version>1.1.0.a</dcti.version>
         <groovy.version>3.0.2</groovy.version>
         <!-- Maven插件版本声明 -->
