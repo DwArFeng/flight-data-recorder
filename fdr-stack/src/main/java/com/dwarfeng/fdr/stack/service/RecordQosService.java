@@ -17,8 +17,8 @@ public interface RecordQosService extends Service {
     /**
      * 获取指定数据点的记录上下文。
      *
-     * @param pointKey 指定数据点的记录上下文，或者是null。
-     * @return 指定数据点的记录上下文。
+     * @param pointKey 指定的数据点。
+     * @return 指定数据点的记录上下文，或者是null。
      * @throws ServiceException 服务异常。
      */
     RecordContext getRecordContext(LongIdKey pointKey) throws ServiceException;
