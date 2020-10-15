@@ -8,7 +8,10 @@
 
 #### Bug修复
 
-- (无)
+- 修正 MapperHandlerImpl 中错误的异常抛出。
+- 去除 RecordLocalCacheCommand.handleC 中多余的入口参数。
+- 修正错误的文档注释。
+- 删除无用字段 RecordCommand.LOGGER。
 
 #### 功能移除
 
