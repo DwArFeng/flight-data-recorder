@@ -7,8 +7,6 @@ import com.dwarfeng.springtelqos.stack.exception.TelqosException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +15,6 @@ import java.util.List;
 
 @Component
 public class RecordCommand extends CliCommand {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RecordCommand.class);
 
     private static final String IDENTITY = "record";
     private static final String DESCRIPTION = "记录功能上线/下线";

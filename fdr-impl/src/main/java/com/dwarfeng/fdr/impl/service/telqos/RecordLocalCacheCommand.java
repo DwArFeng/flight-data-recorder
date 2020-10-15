@@ -59,7 +59,7 @@ public class RecordLocalCacheCommand extends CliCommand {
             }
             switch (pair.getLeft()) {
                 case "c":
-                    handleC(context, cmd);
+                    handleC(context);
                     break;
                 case "p":
                     handleP(context, cmd);
@@ -70,7 +70,7 @@ public class RecordLocalCacheCommand extends CliCommand {
         }
     }
 
-    private void handleC(Context context, CommandLine cmd) throws Exception {
+    private void handleC(Context context) throws Exception {
         recordQosService.clearLocalCache();
         context.sendMessage("缓存已清空");
     }
