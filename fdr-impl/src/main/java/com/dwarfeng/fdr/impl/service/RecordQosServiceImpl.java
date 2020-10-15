@@ -206,7 +206,7 @@ public class RecordQosServiceImpl implements RecordQosService {
     public void setRecorderParameters(Integer bufferSize, Integer thread) throws ServiceException {
         lock.lock();
         try {
-            recordHandler.setBufferParameters(
+            recordHandler.setBufferSize(
                     Objects.isNull(bufferSize) ? recordHandler.getBufferSize() : bufferSize
             );
             recordHandler.setThread(

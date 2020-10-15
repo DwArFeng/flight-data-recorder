@@ -221,7 +221,7 @@ public class RecordHandlerImpl implements RecordHandler {
     }
 
     @Override
-    public void setBufferParameters(int bufferSize) {
+    public void setBufferSize(int bufferSize) {
         lock.lock();
         try {
             consumeBuffer.setBufferParameters(bufferSize);

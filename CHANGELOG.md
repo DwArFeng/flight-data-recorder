@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 将 RecordHandler.setBufferParameters 更名为 RecordHandler.setBufferSize。
 
 #### Bug修复
 

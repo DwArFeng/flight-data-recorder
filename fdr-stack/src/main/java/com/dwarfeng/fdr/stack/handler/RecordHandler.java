@@ -67,12 +67,12 @@ public interface RecordHandler extends Handler {
     int getBufferSize() throws HandlerException;
 
     /**
-     * 设置缓冲器的参数。
+     * 设置缓冲器的容量。
      *
-     * @param bufferSize 缓冲器的大小。
+     * @param bufferSize 缓冲器的容量。
      * @throws HandlerException 处理器异常。
      */
-    void setBufferParameters(int bufferSize) throws HandlerException;
+    void setBufferSize(int bufferSize) throws HandlerException;
 
     /**
      * 获取记录者的线程数量。
