@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 将 application-context-task.xml 中的全部参数设置为可配置参数。
 
 #### Bug修复
 
