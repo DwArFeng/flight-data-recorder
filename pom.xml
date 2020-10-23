@@ -433,6 +433,11 @@
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
+                <artifactId>fdr-node-inspect</artifactId>
+                <version>1.8.6.a</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-all</artifactId>
                 <version>1.8.6.a</version>
             </dependency>
