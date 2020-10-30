@@ -19,7 +19,6 @@
         </telqos:command>
     </telqos:config>
 
-
     <bean name="shutdownCommand" class="com.dwarfeng.springtelqos.api.integration.springterminator.ShutdownCommand">
         <!--suppress SpringXmlModelInspection -->
         <property name="terminator" ref="terminator"/>

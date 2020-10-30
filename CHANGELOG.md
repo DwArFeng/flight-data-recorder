@@ -4,11 +4,20 @@
 
 #### 功能构建
 
-- (无)
+- 优化 spring-telqos 的配置。
+- 优化 dubbo 的配置。
+- 完善 PartialDrainPusher 的文档注释。
+- 消除预设配置文件中的真实的 ip 地址。
+- 优化 pom.xml 中的不合理配置。
+- 优化不合理的 pom.xml。
+- 升级 spring-terminator 依赖至 1.0.7.a。
+- 优化 impl 模块的日志配置文件，使其支持自定义控制台与文件的输出字符集。
+- 优化 ConsumeHandlerImpl 代码的换行。
+- 为 RecordQosServiceImpl 中的部分代码加入了行为分析注解。
 
 #### Bug修复
 
-- (无)
+- 添加 LogPusher 缺失的 @Component 注解。
 
 #### 功能移除
 
