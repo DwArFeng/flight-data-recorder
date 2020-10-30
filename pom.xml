@@ -444,7 +444,7 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>fdr-node-inspect</artifactId>
-                <version>1.8.6.a</version>
+                <version>1.8.7.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
