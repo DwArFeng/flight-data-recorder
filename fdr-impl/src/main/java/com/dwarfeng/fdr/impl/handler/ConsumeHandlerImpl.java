@@ -162,7 +162,6 @@ public class ConsumeHandlerImpl<E extends Entity<?>> implements ConsumeHandler<E
             }
         }
         scheduledFuture.cancel(true);
-
     }
 
     @Override

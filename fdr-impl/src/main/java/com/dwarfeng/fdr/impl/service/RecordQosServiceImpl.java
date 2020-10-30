@@ -184,6 +184,7 @@ public class RecordQosServiceImpl implements RecordQosService {
     }
 
     @Override
+    @BehaviorAnalyse
     public RecorderStatus getRecorderStatus() throws ServiceException {
         lock.lock();
         try {
@@ -203,6 +204,7 @@ public class RecordQosServiceImpl implements RecordQosService {
     }
 
     @Override
+    @BehaviorAnalyse
     public void setRecorderParameters(Integer bufferSize, Integer thread) throws ServiceException {
         lock.lock();
         try {

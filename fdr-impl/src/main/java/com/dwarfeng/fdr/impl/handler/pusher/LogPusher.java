@@ -13,6 +13,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.7.2
  */
+@Component
 public class LogPusher extends AbstractPusher {
 
     public static final String PUSHER_TYPE = "log";

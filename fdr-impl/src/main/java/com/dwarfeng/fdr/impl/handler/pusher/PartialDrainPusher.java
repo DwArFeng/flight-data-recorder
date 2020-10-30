@@ -14,6 +14,8 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
+ * 丢弃掉部分消息的推送器。
+ *
  * @author DwArFeng
  * @since 1.4.0
  */
