@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
+@SuppressWarnings("DuplicatedCode")
 @Component
 public class PersistenceValuePresetCriteriaMaker implements PresetCriteriaMaker {
 
@@ -52,7 +53,6 @@ public class PersistenceValuePresetCriteriaMaker implements PresetCriteriaMaker 
                 LongIdKey longIdKey = (LongIdKey) objs[0];
                 criteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
             }
-            criteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }

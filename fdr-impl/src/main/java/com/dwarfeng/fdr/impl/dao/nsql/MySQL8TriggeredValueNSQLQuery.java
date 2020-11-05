@@ -351,6 +351,52 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
         }
     }
 
+    @Override
+    public TriggeredValue previous(@NonNull Connection connection, LongIdKey pointKey, Date date) throws DaoException {
+        try {
+            StringBuilder sqlBuilder = new StringBuilder();
+            selectTableWithTriggerId(sqlBuilder);
+            sqlBuilder.append("WHERE ");
+            {
+                if (Objects.isNull(pointKey)) {
+                    sqlBuilder.append("tbl.point_id IS NULL AND ");
+                } else {
+                    sqlBuilder.append("tbl.point_id=? AND ");
+                }
+                sqlBuilder.append("tbl.happened_date<? ");
+            }
+            sqlBuilder.append("ORDER BY ");
+            {
+                sqlBuilder.append("tbl.happened_date DESC ");
+            }
+            sqlBuilder.append("LIMIT ?, ?");
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
+            if (Objects.isNull(pointKey)) {
+                preparedStatement.setTimestamp(1, new Timestamp(date.getTime()));
+            } else {
+                preparedStatement.setLong(1, pointKey.getLongId());
+                preparedStatement.setTimestamp(2, new Timestamp(date.getTime()));
+            }
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new TriggeredValue(
+                        new LongIdKey(resultSet.getLong(1)),
+                        pointKey,
+                        new LongIdKey(resultSet.getLong(2)),
+                        new Date(resultSet.getTimestamp(3).getTime()),
+                        resultSet.getString(4),
+                        resultSet.getString(5)
+                );
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+    }
+
     private void selectTableWithTriggerId(StringBuilder sqlBuilder) {
         sqlBuilder.append("SELECT ");
         {

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
 public class PersistenceValueMaintainServiceImplTest {
@@ -43,8 +45,8 @@ public class PersistenceValueMaintainServiceImplTest {
             PersistenceValue persistenceValue = new PersistenceValue(
                     null,
                     parentPoint.getKey(),
-                    new Date(),
-                    "persistemce-value-" + i
+                    i == 0 ? new Date(10000) : new Date(),
+                    "persistence-value-" + i
             );
             persistenceValues.add(persistenceValue);
         }
@@ -65,6 +67,29 @@ public class PersistenceValueMaintainServiceImplTest {
                 persistenceValue.setPointKey(parentPoint.getKey());
                 persistenceValueMaintainService.update(persistenceValue);
             }
+        } finally {
+            for (PersistenceValue persistenceValue : persistenceValues) {
+                persistenceValueMaintainService.delete(persistenceValue.getKey());
+            }
+            pointMaintainService.delete(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    public void testPrevious() throws ServiceException {
+        try {
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (PersistenceValue persistenceValue : persistenceValues) {
+                persistenceValue.setPointKey(parentPoint.getKey());
+                persistenceValue.setKey(persistenceValueMaintainService.insert(persistenceValue));
+            }
+            PersistenceValue previous = persistenceValueMaintainService.previous(parentPoint.getKey(), new Date(12450));
+            assertNotNull(previous);
+            assertEquals(persistenceValues.get(0).getKey(), previous.getKey());
+            previous = persistenceValueMaintainService.previous(parentPoint.getKey(), new Date(10000));
+            assertNull(previous);
+            previous = persistenceValueMaintainService.previous(parentPoint.getKey(), new Date(9999));
+            assertNull(previous);
         } finally {
             for (PersistenceValue persistenceValue : persistenceValues) {
                 persistenceValueMaintainService.delete(persistenceValue.getKey());

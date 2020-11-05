@@ -10,6 +10,7 @@ import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.sdk.hibernate.modification.DefaultDeletionMod;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
+import com.dwarfeng.subgrade.stack.bean.BeanTransformer;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.dozer.Mapper;
@@ -54,6 +55,11 @@ public class DaoConfiguration {
 
     @Value("${hibernate.jdbc.batch_size}")
     private int batchSize;
+
+    @Bean
+    public BeanTransformer<FilteredValue, HibernateFilteredValue> filteredValueDozerBeanTransformer() {
+        return new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper);
+    }
 
     @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchBaseDao() {
@@ -106,6 +112,11 @@ public class DaoConfiguration {
                 HibernateFilterInfo.class,
                 filterInfoPresetCriteriaMaker
         );
+    }
+
+    @Bean
+    public BeanTransformer<PersistenceValue, HibernatePersistenceValue> persistenceValueBeanTransformer() {
+        return new DozerBeanTransformer<>(PersistenceValue.class, HibernatePersistenceValue.class, mapper);
     }
 
     @Bean
@@ -190,6 +201,11 @@ public class DaoConfiguration {
                 new DozerBeanTransformer<>(RealtimeValue.class, FastJsonRealtimeValue.class, mapper),
                 realtimeValueDbKey
         );
+    }
+
+    @Bean
+    public BeanTransformer<TriggeredValue, HibernateTriggeredValue> triggeredValueDozerBeanTransformer() {
+        return new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper);
     }
 
     @Bean
@@ -354,7 +370,7 @@ public class DaoConfiguration {
     public HibernateBatchWriteDao<FilteredValue, HibernateFilteredValue> filteredValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(FilteredValue.class, HibernateFilteredValue.class, mapper),
+                filteredValueDozerBeanTransformer(),
                 batchSize
         );
     }
@@ -363,7 +379,7 @@ public class DaoConfiguration {
     public HibernateBatchWriteDao<TriggeredValue, HibernateTriggeredValue> triggeredValueHibernateBatchWriteDao() {
         return new HibernateBatchWriteDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(TriggeredValue.class, HibernateTriggeredValue.class, mapper),
+                triggeredValueDozerBeanTransformer(),
                 batchSize
         );
     }

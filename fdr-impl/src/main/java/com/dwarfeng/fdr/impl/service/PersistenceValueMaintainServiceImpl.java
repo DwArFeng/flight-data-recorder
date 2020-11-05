@@ -1,19 +1,24 @@
 package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
+import com.dwarfeng.fdr.stack.dao.PersistenceValueDao;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,6 +30,11 @@ public class PersistenceValueMaintainServiceImpl implements PersistenceValueMain
     private DaoOnlyEntireLookupService<PersistenceValue> entireLookupService;
     @Autowired
     private DaoOnlyPresetLookupService<PersistenceValue> presetLookupService;
+
+    @Autowired
+    private PersistenceValueDao persistenceValueDao;
+    @Autowired
+    private ServiceExceptionMapper sem;
 
     @Override
     @BehaviorAnalyse
@@ -199,5 +209,16 @@ public class PersistenceValueMaintainServiceImpl implements PersistenceValueMain
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<PersistenceValue> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public PersistenceValue previous(LongIdKey pointKey, Date date) throws ServiceException {
+        try {
+            return persistenceValueDao.previous(pointKey, date);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("查询前刻数据时发生异常", LogLevel.WARN, sem, e);
+        }
     }
 }

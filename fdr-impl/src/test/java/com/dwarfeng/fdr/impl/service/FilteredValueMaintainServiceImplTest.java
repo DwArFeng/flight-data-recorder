@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
 public class FilteredValueMaintainServiceImplTest {
@@ -57,7 +59,7 @@ public class FilteredValueMaintainServiceImplTest {
                     null,
                     parentPoint.getKey(),
                     parentFilterInfo.getKey(),
-                    new Date(),
+                    i == 0 ? new Date(10000) : new Date(),
                     "filtered-value-" + i,
                     "this is a test"
             );
@@ -90,6 +92,29 @@ public class FilteredValueMaintainServiceImplTest {
                 filteredValueMaintainService.delete(filteredValue.getKey());
             }
             filterInfoMaintainService.delete(parentFilterInfo.getKey());
+            pointMaintainService.delete(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    public void testPrevious() throws ServiceException {
+        try {
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (FilteredValue filteredValue : filteredValues) {
+                filteredValue.setPointKey(parentPoint.getKey());
+                filteredValue.setKey(filteredValueMaintainService.insert(filteredValue));
+            }
+            FilteredValue previous = filteredValueMaintainService.previous(parentPoint.getKey(), new Date(12450));
+            assertNotNull(previous);
+            assertEquals(filteredValues.get(0).getKey(), previous.getKey());
+            previous = filteredValueMaintainService.previous(parentPoint.getKey(), new Date(10000));
+            assertNull(previous);
+            previous = filteredValueMaintainService.previous(parentPoint.getKey(), new Date(9999));
+            assertNull(previous);
+        } finally {
+            for (FilteredValue filteredValue : filteredValues) {
+                filteredValueMaintainService.delete(filteredValue.getKey());
+            }
             pointMaintainService.delete(parentPoint.getKey());
         }
     }

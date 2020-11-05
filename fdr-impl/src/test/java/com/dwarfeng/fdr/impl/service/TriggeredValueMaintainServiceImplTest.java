@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
 public class TriggeredValueMaintainServiceImplTest {
@@ -57,7 +59,7 @@ public class TriggeredValueMaintainServiceImplTest {
                     null,
                     parentPoint.getKey(),
                     parentTriggerInfo.getKey(),
-                    new Date(),
+                    i == 0 ? new Date(10000) : new Date(),
                     "triggered-value-" + i,
                     "this is a test"
             );
@@ -90,6 +92,29 @@ public class TriggeredValueMaintainServiceImplTest {
                 triggeredValueMaintainService.delete(triggeredValue.getKey());
             }
             triggerInfoMaintainService.delete(parentTriggerInfo.getKey());
+            pointMaintainService.delete(parentPoint.getKey());
+        }
+    }
+
+    @Test
+    public void testPrevious() throws ServiceException {
+        try {
+            parentPoint.setKey(pointMaintainService.insert(parentPoint));
+            for (TriggeredValue triggeredValue : triggeredValues) {
+                triggeredValue.setPointKey(parentPoint.getKey());
+                triggeredValue.setKey(triggeredValueMaintainService.insert(triggeredValue));
+            }
+            TriggeredValue previous = triggeredValueMaintainService.previous(parentPoint.getKey(), new Date(12450));
+            assertNotNull(previous);
+            assertEquals(triggeredValues.get(0).getKey(), previous.getKey());
+            previous = triggeredValueMaintainService.previous(parentPoint.getKey(), new Date(10000));
+            assertNull(previous);
+            previous = triggeredValueMaintainService.previous(parentPoint.getKey(), new Date(9999));
+            assertNull(previous);
+        } finally {
+            for (TriggeredValue triggeredValue : triggeredValues) {
+                triggeredValueMaintainService.delete(triggeredValue.getKey());
+            }
             pointMaintainService.delete(parentPoint.getKey());
         }
     }

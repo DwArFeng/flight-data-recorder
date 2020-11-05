@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("DuplicatedCode")
 @Component
 public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
 
@@ -63,7 +64,6 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
                 LongIdKey longIdKey = (LongIdKey) objs[0];
                 criteria.add(Restrictions.eqOrIsNull("pointLongId", longIdKey.getLongId()));
             }
-            criteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
@@ -77,7 +77,6 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
                 LongIdKey longIdKey = (LongIdKey) objs[0];
                 criteria.add(Restrictions.eqOrIsNull("filterLongId", longIdKey.getLongId()));
             }
-            criteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
@@ -96,7 +95,6 @@ public class FilteredValuePresetCriteriaMaker implements PresetCriteriaMaker {
                     criteria.add(Restrictions.in("filterLongId", longList(longIdKeys)));
                 }
             }
-            criteria.addOrder(Order.asc("longId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }

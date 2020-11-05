@@ -8,6 +8,10 @@
 - 消除预设配置文件中的真实的 ip 地址。
 - 优化本地 SQL 查询接口结构。
 - 优化列表类自动装配字段的代码结构。
+- 对数据维护服务增加前刻点查询方法。
+  - com.dwarfeng.fdr.stack.service.FilteredValueMaintainService.previous
+  - com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService.previous
+  - com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService.previous
 
 #### Bug修复
 
