@@ -13,6 +13,7 @@
   - com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService.previous
   - com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService.previous
 - com.dwarfeng.fdr.stack.service.MappingLookupService 完全重写，功能增强。
+- 升级subgrade依赖至1.1.8.a。
 
 #### Bug修复
 
