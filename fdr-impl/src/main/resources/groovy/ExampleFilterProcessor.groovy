@@ -5,8 +5,8 @@ import com.dwarfeng.fdr.stack.exception.FilterException
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey
 
 /**
- * 通过DataInfo的值的长度判断数据信息是否通过过滤的脚本。
- * <p> 如果DataInfo中数据的长度大于5，则不通过，否则通过。
+ * 通过 DataInfo 的值的长度判断数据信息是否通过过滤的脚本。
+ * <p> 如果 DataInfo 中数据的长度大于 5，则不通过，否则通过。
  */
 @SuppressWarnings("GrPackage")
 class ExampleFilterProcessor implements GroovyFilterRegistry.Processor {

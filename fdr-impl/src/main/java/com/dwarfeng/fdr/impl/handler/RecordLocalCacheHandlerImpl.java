@@ -28,43 +28,7 @@ public class RecordLocalCacheHandlerImpl implements RecordLocalCacheHandler {
     private final Map<LongIdKey, RecordContext> contextMap = new HashMap<>();
     private final Set<LongIdKey> notExistPoints = new HashSet<>();
 
-    @Override
-    public boolean existsPoint(LongIdKey pointKey) throws HandlerException {
-        try {
-            lock.readLock().lock();
-            try {
-                if (contextMap.containsKey(pointKey)) {
-                    return true;
-                }
-                if (notExistPoints.contains(pointKey)) {
-                    return false;
-                }
-            } finally {
-                lock.readLock().unlock();
-            }
-            lock.writeLock().lock();
-            try {
-                if (contextMap.containsKey(pointKey)) {
-                    return true;
-                }
-                if (notExistPoints.contains(pointKey)) {
-                    return false;
-                }
-                RecordContext recordContext = recordContextFetcher.fetchContext(pointKey);
-                if (Objects.isNull(recordContext)) {
-                    notExistPoints.add(pointKey);
-                    return false;
-                }
-                contextMap.put(pointKey, recordContext);
-                return true;
-            } finally {
-                lock.writeLock().unlock();
-            }
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
-    }
-
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public RecordContext getRecordContext(LongIdKey pointKey) throws HandlerException {
         try {

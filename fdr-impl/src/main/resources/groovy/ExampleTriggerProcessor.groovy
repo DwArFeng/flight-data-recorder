@@ -1,15 +1,15 @@
 import com.dwarfeng.dcti.stack.bean.dto.DataInfo
-import com.dwarfeng.fdr.impl.handler.trigger.GroovyTriggerMaker
+import com.dwarfeng.fdr.impl.handler.trigger.GroovyTriggerRegistry
 import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue
 import com.dwarfeng.fdr.stack.exception.TriggerException
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey
 
 /**
- * 通过DataInfo的值的长度判断是否触发的脚本。
- * <p> 如果DataInfo中数据的长度小于5，则触发，否则不触发。
+ * 通过 DataInfo 的值的长度判断是否触发的脚本。
+ * <p> 如果DataInfo 中数据的长度小于 5，则触发，否则不触发。
  */
 @SuppressWarnings("GrPackage")
-class ExampleTriggerProcessor implements GroovyTriggerMaker.Processor {
+class ExampleTriggerProcessor implements GroovyTriggerRegistry.Processor {
 
     @Override
     TriggeredValue test(LongIdKey pointIdKey, LongIdKey triggerIdKey, DataInfo dataInfo) throws TriggerException {

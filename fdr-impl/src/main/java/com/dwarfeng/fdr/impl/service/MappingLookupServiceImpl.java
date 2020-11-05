@@ -1,84 +1,60 @@
 package com.dwarfeng.fdr.impl.service;
 
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
-import com.dwarfeng.fdr.stack.bean.entity.PersistenceValue;
-import com.dwarfeng.fdr.stack.bean.entity.Point;
-import com.dwarfeng.fdr.stack.bean.entity.RealtimeValue;
-import com.dwarfeng.fdr.stack.exception.PersistenceDisabledException;
-import com.dwarfeng.fdr.stack.exception.RealtimeDisabledException;
+import com.dwarfeng.fdr.stack.exception.UnsupportedMapperTypeException;
+import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Mapper;
-import com.dwarfeng.fdr.stack.handler.MapperHandler;
+import com.dwarfeng.fdr.stack.service.FilteredValueMaintainService;
 import com.dwarfeng.fdr.stack.service.MappingLookupService;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
-import com.dwarfeng.fdr.stack.service.PointMaintainService;
-import com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService;
+import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class MappingLookupServiceImpl implements MappingLookupService {
 
     @Autowired
-    private PointMaintainService pointMaintainService;
-    @Autowired
-    private RealtimeValueMaintainService realtimeValueMaintainService;
+    private MapLocalCacheHandler mapLocalCacheHandler;
     @Autowired
     private PersistenceValueMaintainService persistenceValueMaintainService;
     @Autowired
-    private MapperHandler mapperHandler;
+    private FilteredValueMaintainService filteredValueMaintainService;
+    @Autowired
+    private TriggeredValueMaintainService triggeredValueMaintainService;
 
     @Autowired
     private ServiceExceptionMapper sem;
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
-    public TimedValue lookupRealtime(LongIdKey pointKey) throws ServiceException {
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<TimedValue> mappingPersistenceValue(
+            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
+            throws ServiceException {
         try {
-            return internalLookupRealtime(pointKey);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询并映射实时数据值时发生异常",
-                    LogLevel.WARN, sem, e
-            );
-        }
-    }
-
-    @Override
-    public List<TimedValue> mappingRealtime(
-            LongIdKey pointKey,
-            String mapperType, Object[] mapperArgs) throws ServiceException {
-        try {
-            TimedValue timedValue = internalLookupRealtime(pointKey);
-            return makeMapper(mapperType, mapperArgs).map(Collections.singletonList(timedValue));
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询并映射实时数据值时发生异常",
-                    LogLevel.WARN, sem, e
-            );
-        }
-    }
-
-    private TimedValue internalLookupRealtime(LongIdKey pointKey) throws Exception {
-        Point point = pointMaintainService.get(pointKey);
-        if (!point.isRealtimeEnabled()) {
-            throw new RealtimeDisabledException(pointKey);
-        }
-        RealtimeValue realtimeValue = realtimeValueMaintainService.get(pointKey);
-        return new TimedValue(realtimeValue.getValue(), realtimeValue.getHappenedDate());
-    }
-
-    @Override
-    public List<TimedValue> lookupPersistence(
-            LongIdKey pointKey, Date startDate, Date endDate) throws ServiceException {
-        try {
-            return internalLookupPersistence(pointKey, startDate, endDate);
+            Mapper mapper = checkAndGetMapper(mapperType);
+            List<TimedValue> timedValues = persistenceValueMaintainService.lookup(
+                    PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN,
+                    new Object[]{pointKey, startDate, endDate}).getData().stream()
+                    .map(value -> new TimedValue(value.getValue(), value.getHappenedDate()))
+                    .collect(Collectors.toList());
+            TimedValue previous = Optional.ofNullable(persistenceValueMaintainService.previous(pointKey, startDate))
+                    .map(value -> new TimedValue(value.getValue(), value.getHappenedDate())).orElse(null);
+            return mapper.map(new Mapper.MapData(timedValues, previous, startDate, endDate, mapperArgs));
         } catch (Exception e) {
             throw ServiceExceptionHelper.logAndThrow("查询并映射持久数据值时发生异常",
                     LogLevel.WARN, sem, e
@@ -86,34 +62,57 @@ public class MappingLookupServiceImpl implements MappingLookupService {
         }
     }
 
+    @SuppressWarnings("DuplicatedCode")
     @Override
-    public List<TimedValue> mappingPersistence(
-            LongIdKey pointKey, Date startDate, Date endDate,
-            String mapperType, Object[] mapperArgs) throws ServiceException {
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<TimedValue> mappingFilteredValue(
+            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
+            throws ServiceException {
         try {
-            List<TimedValue> timedValues = internalLookupPersistence(pointKey, startDate, endDate);
-            return makeMapper(mapperType, mapperArgs).map(timedValues);
+            Mapper mapper = checkAndGetMapper(mapperType);
+            List<TimedValue> timedValues = filteredValueMaintainService.lookup(
+                    FilteredValueMaintainService.CHILD_FOR_POINT_BETWEEN,
+                    new Object[]{pointKey, startDate, endDate}).getData().stream()
+                    .map(value -> new TimedValue(value.getValue(), value.getHappenedDate()))
+                    .collect(Collectors.toList());
+            TimedValue previous = Optional.ofNullable(filteredValueMaintainService.previous(pointKey, startDate))
+                    .map(value -> new TimedValue(value.getValue(), value.getHappenedDate())).orElse(null);
+            return mapper.map(new Mapper.MapData(timedValues, previous, startDate, endDate, mapperArgs));
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("查询并映射持久数据值时发生异常",
+            throw ServiceExceptionHelper.logAndThrow("查询并映射被过滤数据值时发生异常",
                     LogLevel.WARN, sem, e
             );
         }
     }
 
-    private List<TimedValue> internalLookupPersistence(
-            LongIdKey pointKey, Date startDate, Date endDate) throws Exception {
-        Point point = pointMaintainService.get(pointKey);
-        if (!point.isPersistenceEnabled()) {
-            throw new PersistenceDisabledException(pointKey);
+    @SuppressWarnings("DuplicatedCode")
+    @Override
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<TimedValue> mappingTriggeredValue(
+            String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
+            throws ServiceException {
+        try {
+            Mapper mapper = checkAndGetMapper(mapperType);
+            List<TimedValue> timedValues = triggeredValueMaintainService.lookup(
+                    TriggeredValueMaintainService.CHILD_FOR_POINT_BETWEEN,
+                    new Object[]{pointKey, startDate, endDate}).getData().stream()
+                    .map(value -> new TimedValue(value.getValue(), value.getHappenedDate()))
+                    .collect(Collectors.toList());
+            TimedValue previous = Optional.ofNullable(triggeredValueMaintainService.previous(pointKey, startDate))
+                    .map(value -> new TimedValue(value.getValue(), value.getHappenedDate())).orElse(null);
+            return mapper.map(new Mapper.MapData(timedValues, previous, startDate, endDate, mapperArgs));
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("查询并映射被触发数据值时发生异常",
+                    LogLevel.WARN, sem, e
+            );
         }
-        List<PersistenceValue> persistenceValues = persistenceValueMaintainService.lookup(
-                PersistenceValueMaintainService.CHILD_FOR_POINT_BETWEEN,
-                new Object[]{pointKey, startDate, endDate}).getData();
-        return persistenceValues.stream()
-                .map(p -> new TimedValue(p.getValue(), p.getHappenedDate())).collect(Collectors.toList());
     }
 
-    private Mapper makeMapper(String mapperType, Object[] mapperArgs) throws Exception {
-        return mapperHandler.make(mapperType, mapperArgs);
+    private Mapper checkAndGetMapper(String mapperType) throws HandlerException {
+        Mapper mapper = mapLocalCacheHandler.getMapper(mapperType);
+        if (Objects.isNull(mapper)) {
+            throw new UnsupportedMapperTypeException(mapperType);
+        }
+        return mapper;
     }
 }

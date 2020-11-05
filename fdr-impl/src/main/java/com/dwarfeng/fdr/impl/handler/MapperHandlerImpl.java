@@ -23,13 +23,13 @@ public class MapperHandlerImpl implements MapperHandler {
     private List<MapperMaker> mapperMakers = Collections.emptyList();
 
     @Override
-    public Mapper make(String type, Object[] args) throws HandlerException {
+    public Mapper make(String type) throws HandlerException {
         try {
             // 生成过滤器。
             LOGGER.debug("通过过滤器信息构建新的的映射器...");
             MapperMaker mapperMaker = mapperMakers.stream().filter(maker -> maker.supportType(type))
                     .findFirst().orElseThrow(() -> new UnsupportedMapperTypeException(type));
-            Mapper mapper = mapperMaker.makeMapper(args);
+            Mapper mapper = mapperMaker.makeMapper();
             LOGGER.debug("映射器构建成功!");
             LOGGER.debug("映射器: " + mapper);
             return mapper;

@@ -48,7 +48,7 @@ public class CountMapperRegistry extends AbstractMapperRegistry {
     }
 
     @Override
-    public Mapper makeMapper(Object[] args) throws MapperException {
+    public Mapper makeMapper() throws MapperException {
         try {
             return ctx.getBean(CountMapper.class);
         } catch (Exception e) {
@@ -69,8 +69,9 @@ public class CountMapperRegistry extends AbstractMapperRegistry {
     public static class CountMapper implements Mapper {
 
         @Override
-        public List<TimedValue> map(List<TimedValue> timedValues) {
-            return Collections.singletonList(new TimedValue(Integer.toString(timedValues.size()), new Date()));
+        public List<TimedValue> map(MapData mapData) {
+            return Collections.singletonList(
+                    new TimedValue(Integer.toString(mapData.getTimedValues().size()), new Date()));
         }
     }
 }

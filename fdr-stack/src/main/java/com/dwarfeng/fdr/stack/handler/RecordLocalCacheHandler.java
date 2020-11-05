@@ -9,7 +9,8 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
 import java.util.List;
 
 /**
- * 本地缓存处理器。
+ * 记录本地缓存处理器。
+ *
  * <p>处理器在本地保存数据，缓存中的数据可以保证与数据源保持同步。</p>
  * <p>数据存放在本地，必要时才与数据访问层通信，这有助于程序效率的提升。</p>
  * <p>该处理器线程安全。</p>
@@ -18,15 +19,6 @@ import java.util.List;
  * @since 1.2.0.a
  */
 public interface RecordLocalCacheHandler extends Handler {
-
-    /**
-     * 是否包含指定的数据点。
-     *
-     * @param pointKey 指定的数据点。
-     * @return 是否包含指定的数据点。
-     * @throws HandlerException 处理器异常。
-     */
-    boolean existsPoint(LongIdKey pointKey) throws HandlerException;
 
     /**
      * 获取指定数据点的记录上下文。

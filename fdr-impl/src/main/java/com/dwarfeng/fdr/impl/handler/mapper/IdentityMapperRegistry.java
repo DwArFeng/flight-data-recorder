@@ -46,7 +46,7 @@ public class IdentityMapperRegistry extends AbstractMapperRegistry {
     }
 
     @Override
-    public Mapper makeMapper(Object[] args) throws MapperException {
+    public Mapper makeMapper() throws MapperException {
         try {
             return ctx.getBean(IdentityMapper.class);
         } catch (Exception e) {
@@ -66,13 +66,8 @@ public class IdentityMapperRegistry extends AbstractMapperRegistry {
     public static class IdentityMapper implements Mapper {
 
         @Override
-        public List<TimedValue> map(List<TimedValue> timedValues) {
-            return timedValues;
-        }
-
-        @Override
-        public String toString() {
-            return "IdentityMapper{}";
+        public List<TimedValue> map(MapData mapData) {
+            return mapData.getTimedValues();
         }
     }
 }

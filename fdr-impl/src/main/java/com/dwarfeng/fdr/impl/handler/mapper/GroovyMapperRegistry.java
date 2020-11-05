@@ -6,6 +6,7 @@ import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.fdr.stack.exception.MapperException;
 import com.dwarfeng.fdr.stack.exception.MapperMakeException;
 import com.dwarfeng.fdr.stack.handler.Mapper;
+import com.dwarfeng.fdr.stack.handler.Mapper.MapData;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -57,11 +57,11 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
             StringBuilder sb = new StringBuilder();
             sb.append("------------------------第0个元素------------------------\n");
             Resource resource = ctx.getResource("classpath:groovy/ExampleMapperProcessor.groovy");
-            try (InputStream sin = resource.getInputStream();
-                 StringOutputStream sout = new StringOutputStream(StandardCharsets.UTF_8, true)) {
-                IOUtil.trans(sin, sout, 4096);
-                sout.flush();
-                sb.append(sout.toString());
+            try (InputStream in = resource.getInputStream();
+                 StringOutputStream out = new StringOutputStream(StandardCharsets.UTF_8, true)) {
+                IOUtil.trans(in, out, 4096);
+                out.flush();
+                sb.append(out.toString());
             }
             sb.append("------------------------第1个元素------------------------\n");
             sb.append(5);
@@ -73,25 +73,9 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
     }
 
     @Override
-    public Mapper makeMapper(Object[] args) throws MapperException {
+    public Mapper makeMapper() throws MapperException {
         try {
-            // 构建 args。
-            Object[] finalArgs;
-            if (args.length <= 1) {
-                finalArgs = new Object[0];
-            } else {
-                finalArgs = new Object[args.length - 1];
-                System.arraycopy(args, 1, finalArgs, 0, args.length - 1);
-            }
-            // 通过Groovy脚本生成处理器。
-            GroovyClassLoader classLoader = new GroovyClassLoader();
-            Class<?> aClass = classLoader.parseClass((String) args[0]);
-            Processor processor = (Processor) aClass.newInstance();
-            // 构建过滤器对象。
-            GroovyMapper mapper = ctx.getBean(GroovyMapper.class);
-            mapper.setArgs(finalArgs);
-            mapper.setProcessor(processor);
-            return mapper;
+            return ctx.getBean(GroovyMapper.class);
         } catch (Exception e) {
             throw new MapperMakeException(e);
         }
@@ -109,45 +93,30 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class GroovyMapper implements Mapper {
 
-        private Object[] args;
-        private Processor processor;
-
-        public GroovyMapper() {
-        }
-
         @Override
-        public List<TimedValue> map(List<TimedValue> timedValues) throws MapperException {
+        public List<TimedValue> map(MapData mapData) throws MapperException {
             try {
-                return processor.map(timedValues, args);
+                // 构建 args。
+                Object[] mapperArgs = mapData.getArgs();
+                Object[] processorArgs;
+                if (mapperArgs.length <= 1) {
+                    processorArgs = new Object[0];
+                } else {
+                    processorArgs = new Object[mapperArgs.length - 1];
+                    System.arraycopy(mapperArgs, 1, processorArgs, 0, mapperArgs.length - 1);
+                }
+                // 通过Groovy脚本生成处理器。
+                GroovyClassLoader classLoader = new GroovyClassLoader();
+                Class<?> aClass = classLoader.parseClass((String) mapperArgs[0]);
+                Processor processor = (Processor) aClass.newInstance();
+                // 映射数据值。
+                mapData.setArgs(processorArgs);
+                return processor.map(mapData);
             } catch (MapperException e) {
                 throw e;
             } catch (Exception e) {
                 throw new MapperException(e);
             }
-        }
-
-        public Object[] getArgs() {
-            return args;
-        }
-
-        public void setArgs(Object[] args) {
-            this.args = args;
-        }
-
-        public Processor getProcessor() {
-            return processor;
-        }
-
-        public void setProcessor(Processor processor) {
-            this.processor = processor;
-        }
-
-        @Override
-        public String toString() {
-            return "GroovyMapper{" +
-                    "args=" + Arrays.toString(args) +
-                    ", processor=" + processor +
-                    '}';
         }
     }
 
@@ -160,13 +129,12 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
     public interface Processor {
 
         /**
-         * 映射一组带时间的数据。
+         * 映射拥有发生时间的数据值。
          *
-         * @param timedValues 指定的带时间的数据组成的列表。
-         * @param args        映射参数。
-         * @return 映射后的带时间的数据组成的列表。
+         * @param mapData 待映射的数据。
+         * @return 映射后的拥有发生时间的数据值。
          * @throws MapperException 映射器异常。
          */
-        List<TimedValue> map(List<TimedValue> timedValues, Object[] args) throws MapperException;
+        List<TimedValue> map(MapData mapData) throws MapperException;
     }
 }

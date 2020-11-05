@@ -15,9 +15,8 @@ public interface MapperHandler extends Handler {
      * 构造映射器。
      *
      * @param type 映射器的类型。
-     * @param args 映射器的参数。
      * @return 构造出的映射器。
      * @throws HandlerException 处理器异常。
      */
-    Mapper make(String type, Object[] args) throws HandlerException;
+    Mapper make(String type) throws HandlerException;
 }

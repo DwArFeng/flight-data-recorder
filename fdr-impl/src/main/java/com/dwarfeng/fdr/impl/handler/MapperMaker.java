@@ -22,9 +22,8 @@ public interface MapperMaker {
     /**
      * 构造映射器。
      *
-     * @param args 参数。
      * @return 构造的映射器。
      * @throws MapperException 映射器异常。
      */
-    Mapper makeMapper(Object[] args) throws MapperException;
+    Mapper makeMapper() throws MapperException;
 }

@@ -43,11 +43,11 @@ public class MaxMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideArgsIllustrate() {
-        return "不需要任何参数";
+        return "元素0: true/false, 当指定时间段内没有数据的时候是否使用前刻数据代替。";
     }
 
     @Override
-    public Mapper makeMapper(Object[] args) throws MapperException {
+    public Mapper makeMapper() throws MapperException {
         try {
             return ctx.getBean(MaxMapper.class);
         } catch (Exception e) {
@@ -67,14 +67,27 @@ public class MaxMapperRegistry extends AbstractMapperRegistry {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class MaxMapper implements Mapper {
 
+        @SuppressWarnings("DuplicatedCode")
         @Override
-        public List<TimedValue> map(List<TimedValue> timedValues) throws MapperException {
+        public List<TimedValue> map(MapData mapData) throws MapperException {
             try {
+                // 提取必要参数。
+                List<TimedValue> timedValues = mapData.getTimedValues();
+                TimedValue previous = mapData.getPrevious();
+                boolean considerPrevious = (boolean) mapData.getArgs()[0];
+
+                // 当时间段内数据不存在时，根据参数确定返回结果。
                 if (timedValues.isEmpty()) {
-                    return Collections.emptyList();
+                    if (considerPrevious) {
+                        return Collections.singletonList(previous);
+                    } else {
+                        return Collections.emptyList();
+                    }
                 }
+
+                // 最大值判断。
                 int maxIndex = 0;
-                double maxValue = Double.MIN_VALUE;
+                double maxValue = -Double.MAX_VALUE;
                 for (int i = 0; i < timedValues.size(); i++) {
                     TimedValue timedValue = timedValues.get(i);
                     double v = Double.parseDouble(timedValue.getValue());
