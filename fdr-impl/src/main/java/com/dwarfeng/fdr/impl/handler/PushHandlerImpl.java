@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -19,7 +19,7 @@ public class PushHandlerImpl implements PushHandler {
 
     @Autowired(required = false)
     @SuppressWarnings("FieldMayBeFinal")
-    private List<Pusher> pushers = new ArrayList<>();
+    private List<Pusher> pushers = Collections.emptyList();
 
     @Value("${pusher.type}")
     private String pusherType;

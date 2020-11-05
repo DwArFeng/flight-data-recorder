@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -20,7 +20,7 @@ public class MapperHandlerImpl implements MapperHandler {
 
     @Autowired(required = false)
     @SuppressWarnings("FieldMayBeFinal")
-    private List<MapperMaker> mapperMakers = new ArrayList<>();
+    private List<MapperMaker> mapperMakers = Collections.emptyList();
 
     @Override
     public Mapper make(String type, Object[] args) throws HandlerException {

@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,8 +31,9 @@ public class MapperSupportMaintainServiceImpl implements MapperSupportMaintainSe
     @Autowired
     private DaoOnlyPresetLookupService<MapperSupport> presetLookupService;
 
+    @SuppressWarnings("FieldMayBeFinal")
     @Autowired(required = false)
-    private final List<MapperSupporter> mapperSupporters = new ArrayList<>();
+    private List<MapperSupporter> mapperSupporters = Collections.emptyList();
 
     @Autowired
     private ServiceExceptionMapper sem;

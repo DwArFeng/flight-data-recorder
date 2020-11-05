@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -20,7 +20,7 @@ public class FilterHandlerImpl implements FilterHandler {
 
     @Autowired(required = false)
     @SuppressWarnings("FieldMayBeFinal")
-    private List<FilterMaker> filterMakers = new ArrayList<>();
+    private List<FilterMaker> filterMakers = Collections.emptyList();
 
     @Override
     public Filter make(FilterInfo filterInfo) throws FilterException {

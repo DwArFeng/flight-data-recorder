@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -20,7 +20,7 @@ public class TriggerHandlerImpl implements TriggerHandler {
 
     @Autowired(required = false)
     @SuppressWarnings("FieldMayBeFinal")
-    private List<TriggerMaker> triggerMakers = new ArrayList<>();
+    private List<TriggerMaker> triggerMakers = Collections.emptyList();
 
     @Override
     public Trigger make(TriggerInfo triggerInfo) throws TriggerException {

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,8 +41,9 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     private HibernateBatchWriteDao<FilteredValue, HibernateFilteredValue> batchWriteDao;
     @Autowired
     private HibernateTemplate hibernateTemplate;
-    @Autowired
-    private List<FilteredValueNSQLQuery> nsqlGenerators;
+    @SuppressWarnings("FieldMayBeFinal")
+    @Autowired(required = false)
+    private List<FilteredValueNSQLQuery> nsqlGenerators = Collections.emptyList();
 
     @Value("${hibernate.accelerate.using_native_sql}")
     private boolean usingNativeSQL;

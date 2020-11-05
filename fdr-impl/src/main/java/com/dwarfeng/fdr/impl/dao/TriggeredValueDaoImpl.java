@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,8 +41,9 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
     private HibernateBatchWriteDao<TriggeredValue, HibernateTriggeredValue> batchWriteDao;
     @Autowired
     private HibernateTemplate hibernateTemplate;
-    @Autowired
-    private List<TriggeredValueNSQLQuery> nsqlGenerators;
+    @SuppressWarnings("FieldMayBeFinal")
+    @Autowired(required = false)
+    private List<TriggeredValueNSQLQuery> nsqlGenerators = Collections.emptyList();
 
     @Value("${hibernate.accelerate.using_native_sql}")
     private boolean usingNativeSQL;
