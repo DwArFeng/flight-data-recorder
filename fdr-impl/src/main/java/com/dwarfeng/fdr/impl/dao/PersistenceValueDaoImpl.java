@@ -41,14 +41,14 @@ public class PersistenceValueDaoImpl implements PersistenceValueDao {
     @Autowired
     private HibernateTemplate hibernateTemplate;
     @Autowired
-    private List<NSQLGenerator> nsqlGenerators;
+    private List<PersistenceValueNSQLQuery> nsqlGenerators;
 
     @Value("${hibernate.accelerate.using_native_sql}")
     private boolean usingNativeSQL;
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
-    private NSQLGenerator nsqlGenerator = null;
+    private PersistenceValueNSQLQuery nsqlGenerator = null;
 
     @PostConstruct
     public void init() {

@@ -6,6 +6,7 @@
 
 - 更新 pom.xml 中 commons-io 的 groupId。
 - 消除预设配置文件中的真实的 ip 地址。
+- 优化本地 SQL 查询接口结构。
 
 #### Bug修复
 

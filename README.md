@@ -286,7 +286,7 @@
 
 6. 原生SQL生成器的扩展
 
-   实现接口 `com.dwarfeng.fdr.impl.dao.NSQLGenerator` 并将实现类注入到spring的IoC容器中。
+   实现接口 `com.dwarfeng.fdr.impl.dao.NSQLQuery` 并将实现类注入到spring的IoC容器中。
    
    设置数据库连接 `conf/database/connection.properties`
    ```properties

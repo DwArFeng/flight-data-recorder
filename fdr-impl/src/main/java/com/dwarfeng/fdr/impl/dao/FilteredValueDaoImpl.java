@@ -41,18 +41,18 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     @Autowired
     private HibernateTemplate hibernateTemplate;
     @Autowired
-    private List<NSQLGenerator> nsqlGenerators;
+    private List<FilteredValueNSQLQuery> nsqlGenerators;
 
     @Value("${hibernate.accelerate.using_native_sql}")
     private boolean usingNativeSQL;
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
-    private NSQLGenerator nsqlGenerator = null;
+    private FilteredValueNSQLQuery nsqlQuery = null;
 
     @PostConstruct
     public void init() {
-        nsqlGenerator = nsqlGenerators.stream()
+        nsqlQuery = nsqlGenerators.stream()
                 .filter(generator -> generator.supportType(hibernateDialect)).findAny().orElse(null);
     }
 
@@ -160,7 +160,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     public List<FilteredValue> lookup(String preset, Object[] objs) throws DaoException {
         try {
             if (Objects.equals(FilteredValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlGenerator)) {
+                if (Objects.isNull(nsqlQuery)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs);
                 }
@@ -168,7 +168,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlGenerator.lookupFilteredForPoint(connection, objs);
+                                return nsqlQuery.lookupFilteredForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -182,7 +182,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                     return presetLookupDao.lookup(preset, objs);
                 }
             } else if (Objects.equals(FilteredValueMaintainService.CHILD_FOR_FILTER_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlGenerator)) {
+                if (Objects.isNull(nsqlQuery)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs);
                 }
@@ -190,7 +190,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlGenerator.lookupFilteredForFilter(connection, objs);
+                                return nsqlQuery.lookupFilteredForFilter(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -219,7 +219,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     public List<FilteredValue> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
         try {
             if (Objects.equals(FilteredValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlGenerator)) {
+                if (Objects.isNull(nsqlQuery)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs, pagingInfo);
                 }
@@ -227,7 +227,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlGenerator.lookupFilteredForPoint(connection, objs, pagingInfo);
+                                return nsqlQuery.lookupFilteredForPoint(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -241,7 +241,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                     return presetLookupDao.lookup(preset, objs, pagingInfo);
                 }
             } else if (Objects.equals(FilteredValueMaintainService.CHILD_FOR_FILTER_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlGenerator)) {
+                if (Objects.isNull(nsqlQuery)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookup(preset, objs, pagingInfo);
                 }
@@ -249,7 +249,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 List<FilteredValue> filteredValues = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlGenerator.lookupFilteredForFilter(connection, objs, pagingInfo);
+                                return nsqlQuery.lookupFilteredForFilter(connection, objs, pagingInfo);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -278,7 +278,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
     public int lookupCount(String preset, Object[] objs) throws DaoException {
         try {
             if (Objects.equals(FilteredValueMaintainService.CHILD_FOR_POINT_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlGenerator)) {
+                if (Objects.isNull(nsqlQuery)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookupCount(preset, objs);
                 }
@@ -286,7 +286,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlGenerator.lookupFilteredCountForPoint(connection, objs);
+                                return nsqlQuery.lookupFilteredCountForPoint(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
@@ -300,7 +300,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                     return presetLookupDao.lookupCount(preset, objs);
                 }
             } else if (Objects.equals(FilteredValueMaintainService.CHILD_FOR_FILTER_BETWEEN, preset) && usingNativeSQL) {
-                if (Objects.isNull(nsqlGenerator)) {
+                if (Objects.isNull(nsqlQuery)) {
                     LOGGER.warn("指定的 hibernateDialect: " + hibernateDialect + ", 不受支持, 将不会使用原生SQL进行查询");
                     return presetLookupDao.lookupCount(preset, objs);
                 }
@@ -308,7 +308,7 @@ public class FilteredValueDaoImpl implements FilteredValueDao {
                 Integer count = hibernateTemplate.executeWithNativeSession(
                         session -> session.doReturningWork(connection -> {
                             try {
-                                return nsqlGenerator.lookupFilteredCountForFilter(connection, objs);
+                                return nsqlQuery.lookupFilteredCountForFilter(connection, objs);
                             } catch (Exception e) {
                                 LOGGER.warn("原生SQL查询返回异常", e);
                                 return null;
