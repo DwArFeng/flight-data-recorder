@@ -38,7 +38,7 @@ public class MaxMapperRegistry extends AbstractMapperRegistry {
 
     @Override
     public String provideDescription() {
-        return "统计输入数据中的最大数据并输出，要求数据的全部数据均必须能被解析为double。";
+        return "统计输入数据中的最大数据并输出，要求待处理数据均必须能被解析为double。";
     }
 
     @Override

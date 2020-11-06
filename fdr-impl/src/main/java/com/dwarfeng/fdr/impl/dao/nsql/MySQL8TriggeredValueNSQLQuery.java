@@ -369,7 +369,7 @@ public class MySQL8TriggeredValueNSQLQuery extends AbstractNSQLQuery implements 
             {
                 sqlBuilder.append("tbl.happened_date DESC ");
             }
-            sqlBuilder.append("LIMIT ?, ?");
+            sqlBuilder.append("LIMIT 1");
 
             PreparedStatement preparedStatement = connection.prepareStatement(sqlBuilder.toString());
             if (Objects.isNull(pointKey)) {

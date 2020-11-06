@@ -16,6 +16,9 @@
 - 升级subgrade依赖至1.1.8.a。
 - 新增映射 QOS 服务，以及 telqos 指令实现。
   - com.dwarfeng.fdr.stack.service.MapQosService
+- 增加映射器。
+  - com.dwarfeng.fdr.impl.handler.mapper.GeneralGridMapperRegistry
+  - com.dwarfeng.fdr.impl.handler.mapper.NumericGridMapperRegistry
 
 #### Bug修复
 
