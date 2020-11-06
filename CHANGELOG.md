@@ -14,6 +14,8 @@
   - com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService.previous
 - com.dwarfeng.fdr.stack.service.MappingLookupService 完全重写，功能增强。
 - 升级subgrade依赖至1.1.8.a。
+- 新增映射 QOS 服务，以及 telqos 指令实现。
+  - com.dwarfeng.fdr.stack.service.MapQosService
 
 #### Bug修复
 

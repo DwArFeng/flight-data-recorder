@@ -27,7 +27,7 @@ public class RecordLocalCacheCommand extends CliCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordLocalCacheCommand.class);
 
     private static final String IDENTITY = "rlc";
-    private static final String DESCRIPTION = "本地缓存操作";
+    private static final String DESCRIPTION = "数据记录本地缓存操作";
     private static final String CMD_LINE_SYNTAX_C = "rlc -c";
     private static final String CMD_LINE_SYNTAX_P = "rlc -p point-id";
     private static final String CMD_LINE_SYNTAX = CMD_LINE_SYNTAX_C + System.lineSeparator() + CMD_LINE_SYNTAX_P;
