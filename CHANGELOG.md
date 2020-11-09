@@ -4,7 +4,7 @@
 
 #### 功能构建
 
-- (无)
+- 更正 application-context-scan.xml 配置文件中错误的格式。
 
 #### Bug修复
 
