@@ -6,6 +6,7 @@ import com.dwarfeng.fdr.stack.dao.RealtimeValueDao;
 import com.dwarfeng.subgrade.impl.dao.RedisBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.RedisEntireLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
@@ -60,48 +61,51 @@ public class RealtimeValueDaoImpl implements RealtimeValueDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(List<RealtimeValue> elements) throws DaoException {
+    public List<LongIdKey> batchInsert(@SkipRecord List<RealtimeValue> elements) throws DaoException {
         return batchBaseDao.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(List<RealtimeValue> elements) throws DaoException {
+    public void batchUpdate(@SkipRecord List<RealtimeValue> elements) throws DaoException {
         batchBaseDao.batchUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<LongIdKey> keys) throws DaoException {
+    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws DaoException {
         batchBaseDao.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<LongIdKey> keys) throws DaoException {
+    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<LongIdKey> keys) throws DaoException {
+    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<RealtimeValue> batchGet(List<LongIdKey> keys) throws DaoException {
+    public List<RealtimeValue> batchGet(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<RealtimeValue> lookup() throws DaoException {
         return entireLookupDao.lookup();
@@ -109,6 +113,7 @@ public class RealtimeValueDaoImpl implements RealtimeValueDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<RealtimeValue> lookup(PagingInfo pagingInfo) throws DaoException {
         return entireLookupDao.lookup(pagingInfo);

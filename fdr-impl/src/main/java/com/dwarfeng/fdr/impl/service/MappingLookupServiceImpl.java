@@ -9,6 +9,8 @@ import com.dwarfeng.fdr.stack.service.MappingLookupService;
 import com.dwarfeng.fdr.stack.service.PersistenceValueMaintainService;
 import com.dwarfeng.fdr.stack.service.TriggeredValueMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
@@ -41,6 +43,8 @@ public class MappingLookupServiceImpl implements MappingLookupService {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
+    @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TimedValue> mappingPersistenceValue(
             String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
@@ -64,6 +68,8 @@ public class MappingLookupServiceImpl implements MappingLookupService {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
+    @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TimedValue> mappingFilteredValue(
             String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)
@@ -87,6 +93,8 @@ public class MappingLookupServiceImpl implements MappingLookupService {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
+    @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TimedValue> mappingTriggeredValue(
             String mapperType, LongIdKey pointKey, Date startDate, Date endDate, Object[] mapperArgs)

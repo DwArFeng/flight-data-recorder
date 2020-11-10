@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.bean.entity.TriggeredValue;
 import com.dwarfeng.fdr.stack.service.TriggeredValueWriteService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyBatchWriteService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,9 @@ public class TriggeredValueWriteServiceImpl implements TriggeredValueWriteServic
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchWrite(List<TriggeredValue> elements) throws ServiceException {
+    public void batchWrite(@SkipRecord List<TriggeredValue> elements) throws ServiceException {
         batchWriteService.batchWrite(elements);
     }
 }

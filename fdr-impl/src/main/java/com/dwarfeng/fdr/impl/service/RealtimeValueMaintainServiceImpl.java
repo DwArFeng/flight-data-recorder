@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.service.RealtimeValueMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -93,6 +94,7 @@ public class RealtimeValueMaintainServiceImpl implements RealtimeValueMaintainSe
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public PagedData<RealtimeValue> lookup() throws ServiceException {
         return entireLookupService.lookup();
@@ -100,6 +102,7 @@ public class RealtimeValueMaintainServiceImpl implements RealtimeValueMaintainSe
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public PagedData<RealtimeValue> lookup(PagingInfo pagingInfo) throws ServiceException {
         return entireLookupService.lookup(pagingInfo);

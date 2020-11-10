@@ -10,6 +10,7 @@ import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.BeanTransformer;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -103,48 +104,51 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(List<TriggeredValue> elements) throws DaoException {
+    public List<LongIdKey> batchInsert(@SkipRecord List<TriggeredValue> elements) throws DaoException {
         return batchBaseDao.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(List<TriggeredValue> elements) throws DaoException {
+    public void batchUpdate(@SkipRecord List<TriggeredValue> elements) throws DaoException {
         batchBaseDao.batchUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<LongIdKey> keys) throws DaoException {
+    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws DaoException {
         batchBaseDao.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<LongIdKey> keys) throws DaoException {
+    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<LongIdKey> keys) throws DaoException {
+    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<TriggeredValue> batchGet(List<LongIdKey> keys) throws DaoException {
+    public List<TriggeredValue> batchGet(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggeredValue> lookup() throws DaoException {
         return entireLookupDao.lookup();
@@ -152,6 +156,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggeredValue> lookup(PagingInfo pagingInfo) throws DaoException {
         return entireLookupDao.lookup(pagingInfo);
@@ -166,6 +171,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggeredValue> lookup(String preset, Object[] objs) throws DaoException {
         try {
@@ -225,6 +231,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<TriggeredValue> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
         try {
@@ -350,6 +357,7 @@ public class TriggeredValueDaoImpl implements TriggeredValueDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchWrite(List<TriggeredValue> elements) throws DaoException {
         batchWriteDao.batchWrite(elements);

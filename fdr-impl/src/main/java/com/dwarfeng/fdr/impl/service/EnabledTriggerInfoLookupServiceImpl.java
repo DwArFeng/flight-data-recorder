@@ -6,6 +6,8 @@ import com.dwarfeng.fdr.stack.dao.TriggerInfoDao;
 import com.dwarfeng.fdr.stack.service.EnabledTriggerInfoLookupService;
 import com.dwarfeng.fdr.stack.service.TriggerInfoMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
@@ -29,6 +31,8 @@ public class EnabledTriggerInfoLookupServiceImpl implements EnabledTriggerInfoLo
     private long timeout;
 
     @Override
+    @BehaviorAnalyse
+    @SkipRecord
     public List<TriggerInfo> getEnabledTriggerInfos(LongIdKey pointKey) throws ServiceException {
         try {
             if (cache.exists(pointKey)) {

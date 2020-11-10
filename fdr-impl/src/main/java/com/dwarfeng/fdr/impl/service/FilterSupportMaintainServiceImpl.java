@@ -8,6 +8,7 @@ import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralCrudService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -110,6 +111,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<FilterSupport> lookup() throws ServiceException {
         return entireLookupService.lookup();
@@ -117,6 +119,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<FilterSupport> lookup(PagingInfo pagingInfo) throws ServiceException {
         return entireLookupService.lookup(pagingInfo);
@@ -124,6 +127,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<FilterSupport> lookup(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookup(preset, objs);
@@ -131,6 +135,7 @@ public class FilterSupportMaintainServiceImpl implements FilterSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<FilterSupport> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);

@@ -8,6 +8,7 @@ import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
@@ -64,48 +65,51 @@ public class PointDaoImpl implements PointDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(List<Point> elements) throws DaoException {
+    public List<LongIdKey> batchInsert(@SkipRecord List<Point> elements) throws DaoException {
         return batchBaseDao.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(List<Point> elements) throws DaoException {
+    public void batchUpdate(@SkipRecord List<Point> elements) throws DaoException {
         batchBaseDao.batchUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<LongIdKey> keys) throws DaoException {
+    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws DaoException {
         batchBaseDao.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<LongIdKey> keys) throws DaoException {
+    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<LongIdKey> keys) throws DaoException {
+    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<Point> batchGet(List<LongIdKey> keys) throws DaoException {
+    public List<Point> batchGet(@SkipRecord List<LongIdKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<Point> lookup() throws DaoException {
         return entireLookupDao.lookup();
@@ -113,6 +117,7 @@ public class PointDaoImpl implements PointDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<Point> lookup(PagingInfo pagingInfo) throws DaoException {
         return entireLookupDao.lookup(pagingInfo);
@@ -127,6 +132,7 @@ public class PointDaoImpl implements PointDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<Point> lookup(String preset, Object[] objs) throws DaoException {
         return presetLookupDao.lookup(preset, objs);
@@ -134,6 +140,7 @@ public class PointDaoImpl implements PointDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<Point> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
         return presetLookupDao.lookup(preset, objs, pagingInfo);

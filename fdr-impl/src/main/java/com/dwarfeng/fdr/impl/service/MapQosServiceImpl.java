@@ -4,6 +4,7 @@ import com.dwarfeng.fdr.stack.handler.MapLocalCacheHandler;
 import com.dwarfeng.fdr.stack.handler.Mapper;
 import com.dwarfeng.fdr.stack.service.MapQosService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
@@ -26,6 +27,7 @@ public class MapQosServiceImpl implements MapQosService {
     private final Lock lock = new ReentrantLock();
 
     @Override
+    @BehaviorAnalyse
     public Mapper getMapper(String mapperType) throws ServiceException {
         lock.lock();
         try {
@@ -40,6 +42,7 @@ public class MapQosServiceImpl implements MapQosService {
     }
 
     @Override
+    @BehaviorAnalyse
     public void clearLocalCache() throws ServiceException {
         lock.lock();
         try {

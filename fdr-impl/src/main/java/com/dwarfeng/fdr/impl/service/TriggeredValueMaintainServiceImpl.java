@@ -8,6 +8,7 @@ import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -109,82 +110,88 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<LongIdKey> keys) throws ServiceException {
+    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         return batchCrudService.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<LongIdKey> keys) throws ServiceException {
+    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         return batchCrudService.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<TriggeredValue> batchGet(List<LongIdKey> keys) throws ServiceException {
+    public List<TriggeredValue> batchGet(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         return batchCrudService.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(List<TriggeredValue> elements) throws ServiceException {
+    public List<LongIdKey> batchInsert(@SkipRecord List<TriggeredValue> elements) throws ServiceException {
         return batchCrudService.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(List<TriggeredValue> elements) throws ServiceException {
+    public void batchUpdate(@SkipRecord List<TriggeredValue> elements) throws ServiceException {
         batchCrudService.batchUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<LongIdKey> keys) throws ServiceException {
+    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         batchCrudService.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<TriggeredValue> batchGetIfExists(List<LongIdKey> keys) throws ServiceException {
+    public List<TriggeredValue> batchGetIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         return batchCrudService.batchGetIfExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertIfExists(List<TriggeredValue> elements) throws ServiceException {
+    public List<LongIdKey> batchInsertIfExists(@SkipRecord List<TriggeredValue> elements) throws ServiceException {
         return batchCrudService.batchInsertIfExists(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdateIfExists(List<TriggeredValue> elements) throws ServiceException {
+    public void batchUpdateIfExists(@SkipRecord List<TriggeredValue> elements) throws ServiceException {
         batchCrudService.batchUpdateIfExists(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDeleteIfExists(List<LongIdKey> keys) throws ServiceException {
+    public void batchDeleteIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         batchCrudService.batchDeleteIfExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertOrUpdate(List<TriggeredValue> elements) throws ServiceException {
+    public List<LongIdKey> batchInsertOrUpdate(@SkipRecord List<TriggeredValue> elements) throws ServiceException {
         return batchCrudService.batchInsertOrUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<TriggeredValue> lookup() throws ServiceException {
         return entireLookupService.lookup();
@@ -192,6 +199,7 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<TriggeredValue> lookup(PagingInfo pagingInfo) throws ServiceException {
         return entireLookupService.lookup(pagingInfo);
@@ -199,6 +207,7 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<TriggeredValue> lookup(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookup(preset, objs);
@@ -206,6 +215,7 @@ public class TriggeredValueMaintainServiceImpl implements TriggeredValueMaintain
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<TriggeredValue> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);

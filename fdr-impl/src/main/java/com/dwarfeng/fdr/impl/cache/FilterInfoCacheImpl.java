@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.FilterInfo;
 import com.dwarfeng.fdr.stack.cache.FilterInfoCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,75 +18,76 @@ import java.util.List;
 public class FilterInfoCacheImpl implements FilterInfoCache {
 
     @Autowired
-    private RedisBatchBaseCache<LongIdKey, FilterInfo, FastJsonFilterInfo> filterInfoRedisBatchBaseDelegate;
+    private RedisBatchBaseCache<LongIdKey, FilterInfo, FastJsonFilterInfo> batchBaseCache;
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(LongIdKey key) throws CacheException {
-        return filterInfoRedisBatchBaseDelegate.exists(key);
+        return batchBaseCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public FilterInfo get(LongIdKey key) throws CacheException {
-        return filterInfoRedisBatchBaseDelegate.get(key);
+        return batchBaseCache.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void push(FilterInfo value, long timeout) throws CacheException {
-        filterInfoRedisBatchBaseDelegate.push(value, timeout);
+        batchBaseCache.push(value, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(LongIdKey key) throws CacheException {
-        filterInfoRedisBatchBaseDelegate.delete(key);
+        batchBaseCache.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void clear() throws CacheException {
-        filterInfoRedisBatchBaseDelegate.clear();
+        batchBaseCache.clear();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<LongIdKey> keys) throws CacheException {
-        return filterInfoRedisBatchBaseDelegate.allExists(keys);
+    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
+        return batchBaseCache.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<LongIdKey> keys) throws CacheException {
-        return filterInfoRedisBatchBaseDelegate.nonExists(keys);
+    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
+        return batchBaseCache.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<FilterInfo> batchGet(List<LongIdKey> keys) throws CacheException {
-        return filterInfoRedisBatchBaseDelegate.batchGet(keys);
+    public List<FilterInfo> batchGet(@SkipRecord List<LongIdKey> keys) throws CacheException {
+        return batchBaseCache.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchPush(List<FilterInfo> entities, long timeout) throws CacheException {
-        filterInfoRedisBatchBaseDelegate.batchPush(entities, timeout);
+    public void batchPush(@SkipRecord List<FilterInfo> entities, long timeout) throws CacheException {
+        batchBaseCache.batchPush(entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<LongIdKey> keys) throws CacheException {
-        filterInfoRedisBatchBaseDelegate.batchDelete(keys);
+    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws CacheException {
+        batchBaseCache.batchDelete(keys);
     }
 }

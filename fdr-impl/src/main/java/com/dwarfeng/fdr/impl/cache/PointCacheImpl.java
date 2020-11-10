@@ -5,6 +5,7 @@ import com.dwarfeng.fdr.stack.bean.entity.Point;
 import com.dwarfeng.fdr.stack.cache.PointCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,35 +58,36 @@ public class PointCacheImpl implements PointCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<LongIdKey> keys) throws CacheException {
+    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
         return pointBatchBaseDelegate.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<LongIdKey> keys) throws CacheException {
+    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
         return pointBatchBaseDelegate.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<Point> batchGet(List<LongIdKey> keys) throws CacheException {
+    public List<Point> batchGet(@SkipRecord List<LongIdKey> keys) throws CacheException {
         return pointBatchBaseDelegate.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchPush(List<Point> entities, long timeout) throws CacheException {
+    public void batchPush(@SkipRecord List<Point> entities, long timeout) throws CacheException {
         pointBatchBaseDelegate.batchPush(entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<LongIdKey> keys) throws CacheException {
+    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws CacheException {
         pointBatchBaseDelegate.batchDelete(keys);
     }
 }
