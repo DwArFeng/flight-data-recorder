@@ -5,6 +5,7 @@
 #### 功能构建
 
 - 更正 application-context-scan.xml 配置文件中错误的格式。
+- 升级subgrade依赖至1.1.8.a。
 
 #### Bug修复
 
