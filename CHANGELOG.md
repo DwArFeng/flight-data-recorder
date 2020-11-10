@@ -21,7 +21,7 @@
 #### 功能构建
 
 - 更正 application-context-scan.xml 配置文件中错误的格式。
-- 升级subgrade依赖至1.1.8.a。
+- 升级subgrade依赖至1.2.0.a。
 - 优化 BehaviorAnalyse，取消有可能产生大量文本的返回结果以及入口参数的记录。
 
 #### Bug修复
