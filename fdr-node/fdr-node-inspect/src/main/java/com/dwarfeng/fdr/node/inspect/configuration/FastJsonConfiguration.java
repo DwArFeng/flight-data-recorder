@@ -6,10 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @author DwArFeng
- * @since 0.0.1-alpha
- */
 @Configuration
 public class FastJsonConfiguration {
 
