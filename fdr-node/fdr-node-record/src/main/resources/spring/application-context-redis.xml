@@ -67,20 +67,15 @@
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
           destroy-method="destroy">
         <property name="poolConfig" ref="jedisPoolConfig"/>
-        <!--IP地址 -->
         <property name="hostName" value="${redis.hostName}"/>
-        <!--端口号  -->
         <property name="port" value="${redis.port}"/>
-        <!--如果Redis设置有密码,没有的话就注释掉下面的配置  -->
         <property name="password" value="${redis.password}"/>
-        <!--客户端超时时间单位是毫秒  -->
         <property name="timeout" value="${redis.timeout}"/>
     </bean>
 
     <!--redis操作模版,使用该对象可以操作redis  -->
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory"/>
-        <!--如果不配置Serializer，那么存储的时候缺省使用String，如果用User类型存储，那么会提示错误User can't cast to String！！  -->
         <property name="keySerializer">
             <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>
         </property>

@@ -13,33 +13,37 @@ public final class ServiceExceptionCodes {
     private static int EXCEPTION_CODE_OFFSET = 5000;
 
     public static final ServiceException.Code FILTER_FAILED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET, "filter failed");
+            new ServiceException.Code(offset(0), "filter failed");
     public static final ServiceException.Code FILTER_MAKE_FAILED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 1, "filter make failed");
+            new ServiceException.Code(offset(1), "filter make failed");
     public static final ServiceException.Code FILTER_TYPE_UNSUPPORTED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 2, "filter type unsupported");
+            new ServiceException.Code(offset(2), "filter type unsupported");
     public static final ServiceException.Code TRIGGER_FAILED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 10, "trigger failed");
+            new ServiceException.Code(offset(10), "trigger failed");
     public static final ServiceException.Code TRIGGER_MAKE_FAILED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 11, "trigger make failed");
+            new ServiceException.Code(offset(11), "trigger make failed");
     public static final ServiceException.Code TRIGGER_TYPE_UNSUPPORTED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 12, "trigger type unsupported");
+            new ServiceException.Code(offset(12), "trigger type unsupported");
     public static final ServiceException.Code POINT_NOT_EXISTS =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 20, "point not exists");
+            new ServiceException.Code(offset(20), "point not exists");
     public static final ServiceException.Code RECORD_HANDLER_STOPPED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 30, "record handler stopped");
+            new ServiceException.Code(offset(30), "record handler stopped");
     public static final ServiceException.Code CONSUME_HANDLER_STOPPED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 31, "consume handler stopped");
+            new ServiceException.Code(offset(31), "consume handler stopped");
     public static final ServiceException.Code MAPPER_FAILED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 40, "mapper failed");
+            new ServiceException.Code(offset(40), "mapper failed");
     public static final ServiceException.Code MAPPER_MAKE_FAILED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 41, "mapper make failed");
+            new ServiceException.Code(offset(41), "mapper make failed");
     public static final ServiceException.Code MAPPER_TYPE_UNSUPPORTED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 42, "mapper type unsupported");
+            new ServiceException.Code(offset(42), "mapper type unsupported");
     public static final ServiceException.Code PERSISTENCE_DISABLED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 50, "persistence disabled");
+            new ServiceException.Code(offset(50), "persistence disabled");
     public static final ServiceException.Code REALTIME_DISABLED =
-            new ServiceException.Code(EXCEPTION_CODE_OFFSET + 51, "realtime disabled");
+            new ServiceException.Code(offset(51), "realtime disabled");
+
+    private static int offset(int i) {
+        return EXCEPTION_CODE_OFFSET + i;
+    }
 
     /**
      * 获取异常代号的偏移量。

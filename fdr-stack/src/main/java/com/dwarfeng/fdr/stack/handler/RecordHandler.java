@@ -15,7 +15,7 @@ public interface RecordHandler extends Handler {
     /**
      * 记录处理器是否启动。
      *
-     * @return 记录处理器是否被启用。
+     * @return 记录处理器是否启动。
      * @throws HandlerException 处理器异常。
      */
     boolean isStarted() throws HandlerException;
