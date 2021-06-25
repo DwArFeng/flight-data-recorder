@@ -33,8 +33,8 @@ public class RecordCommand extends CliCommand {
     @Override
     protected List<Option> buildOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder("online").optionalArg(true).hasArg(true).desc("上线服务").build());
-        list.add(Option.builder("offline").optionalArg(true).hasArg(true).desc("下线服务").build());
+        list.add(Option.builder("online").desc("上线服务").build());
+        list.add(Option.builder("offline").desc("下线服务").build());
         return list;
     }
 
