@@ -404,6 +404,12 @@
                 <artifactId>groovy-all</artifactId>
                 <type>pom</type>
                 <version>${groovy.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-test-junit5</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- 程序自身组件 -->
             <dependency>

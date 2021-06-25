@@ -29,7 +29,7 @@ final class GridUtil {
         long endTimeStamp = mapData.getEndDate().getTime();
 
         // 判断特殊情况。
-        if (!valid(timedValues, previous, startTimeStamp, endTimeStamp, baseTimeStamp, width)) {
+        if (!valid(previous, startTimeStamp, endTimeStamp, baseTimeStamp, width)) {
             return new Grid[0];
         }
 
@@ -85,16 +85,20 @@ final class GridUtil {
         return gridList.toArray(new Grid[0]);
     }
 
-    @SuppressWarnings("RedundantIfStatement")
-    private static boolean valid(
-            List<TimedValue> timedValues, TimedValue previous, long startTimeStamp, long endTimeStamp,
-            long baseTimeStamp, long width) {
+    @SuppressWarnings("RedundantIfStatement") // 为了可读性保留代码格式，不做简化。
+    private static boolean valid(TimedValue previous, long startTimeStamp, long endTimeStamp, long baseTimeStamp, long width) {
         // 如果 width 不是正数，不合法。
-        if (width <= 0) return false;
+        if (width <= 0) {
+            return false;
+        }
         // 如果结束时间减去开始时间小于栅格宽度，不合法。
-        if ((endTimeStamp - startTimeStamp) < width) return false;
+        if ((endTimeStamp - startTimeStamp) < width) {
+            return false;
+        }
         // 如果 startTimeStamp 不落在栅格点上且 previous 是 null，不合法。
-        if ((Math.abs(startTimeStamp - baseTimeStamp) % width) != 0 && Objects.isNull(previous)) return false;
+        if ((Math.abs(startTimeStamp - baseTimeStamp) % width) != 0 && Objects.isNull(previous)) {
+            return false;
+        }
         // 其余情形合法。
         return true;
     }

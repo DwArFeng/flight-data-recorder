@@ -55,16 +55,16 @@ public class GroovyMapperRegistry extends AbstractMapperRegistry {
     public String provideArgsIllustrate() {
         try {
             StringBuilder sb = new StringBuilder();
-            sb.append("------------------------第0个元素------------------------\n");
+            sb.append("元素0: String, Groovy代码, 需要实现 GroovyMapperRegistry.Processor 示例如下。\n");
             Resource resource = ctx.getResource("classpath:groovy/ExampleMapperProcessor.groovy");
             try (InputStream in = resource.getInputStream();
                  StringOutputStream out = new StringOutputStream(StandardCharsets.UTF_8, true)) {
                 IOUtil.trans(in, out, 4096);
                 out.flush();
-                sb.append(out.toString());
+                sb.append(out.toString().replaceAll("(.*)", "    $1"));
             }
-            sb.append("------------------------第1个元素------------------------\n");
-            sb.append(5);
+            sb.append("\n");
+            sb.append("元素1-n: GroovyMapperRegistry.Processor.map 方法中 mapData 的参数, 元素 n 对应 mapData 中第 n-1 个参数。");
             return sb.toString();
         } catch (Exception e) {
             LOGGER.warn("读取文件 classpath:groovy/ExampleFilterProcessor.groovy 时出现异常", e);

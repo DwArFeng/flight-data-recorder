@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.impl.handler.mapper.GridUtil.Grid;
@@ -55,24 +54,16 @@ public class NumericGridMapperRegistry extends AbstractMapperRegistry {
     @Override
     public String provideArgsIllustrate() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("元素0: JSON 文本\n");
-        stringBuilder.append("" +
-                "  {\n" +
-                "    \"base_time_stamp\":0,\n" +
-                "    \"process_type\":\"maximum\",\n" +
-                "    \"width\":60000,\n" +
-                "    \"decimal_format\":\"0.00\"\n" +
-                "  }\n\n"
-        );
-        stringBuilder.append("base_time_stamp: 时间戳, 栅格基点。\n");
-        stringBuilder.append("process_type: maximum/minimum/average/weighted_average, 栅格处理方式。\n");
+        stringBuilder.append("元素0: long, 当指定时间段内没有数据的时候是否使用前刻数据代替。\n");
+        stringBuilder.append("元素1: long, 栅格宽度。\n");
+        stringBuilder.append("元素2: String, 浮点数格式, 如 \"0.00\"(保留两位小数)。\n");
+        stringBuilder.append("元素3: String enumeration in (maximum, minimum, average, weighted_average), 栅格处理方式。\n");
         {
             stringBuilder.append("  maximum: 取栅格中的最大值。\n");
             stringBuilder.append("  minimum: 取栅格中的最小值。\n");
             stringBuilder.append("  average: 取栅格中的平均值。\n");
             stringBuilder.append("  weighted_average: 取栅格中的加权平均值。\n");
         }
-        stringBuilder.append("width: 数值, 栅格宽度。");
         return stringBuilder.toString();
     }
 
@@ -99,21 +90,23 @@ public class NumericGridMapperRegistry extends AbstractMapperRegistry {
         @Override
         public List<TimedValue> map(MapData mapData) throws MapperException {
             try {
-                MapParam mapParam = JSON.parseObject((String) mapData.getArgs()[0], MapParam.class);
-                DecimalFormat decimalFormat = new DecimalFormat(mapParam.getDecimalFormat());
-                mapData.setArgs(new Object[]{mapParam.getBaseTimeStamp(), mapParam.getWidth()});
-                switch (mapParam.getProcessType()) {
+                long baseTimeStamp = (long) mapData.getArgs()[0];
+                long width = (long) mapData.getArgs()[1];
+                DecimalFormat decimalFormat = new DecimalFormat((String) mapData.getArgs()[2]);
+                String processType = (String) mapData.getArgs()[3];
+
+                switch (processType) {
                     case PROCESS_TYPE_MAXIMUM:
-                        return mapMaximum(mapData, mapParam.getBaseTimeStamp(), mapParam.getWidth(), decimalFormat);
+                        return mapMaximum(mapData, baseTimeStamp, width, decimalFormat);
                     case PROCESS_TYPE_MINIMUM:
-                        return mapMinimum(mapData, mapParam.getBaseTimeStamp(), mapParam.getWidth(), decimalFormat);
+                        return mapMinimum(mapData, baseTimeStamp, width, decimalFormat);
                     case PROCESS_TYPE_AVERAGE:
-                        return mapAverage(mapData, mapParam.getBaseTimeStamp(), mapParam.getWidth(), decimalFormat);
+                        return mapAverage(mapData, baseTimeStamp, width, decimalFormat);
                     case PROCESS_TYPE_WEIGHTED_AVERAGE:
                         return mapWeightedAverage(
-                                mapData, mapParam.getBaseTimeStamp(), mapParam.getWidth(), decimalFormat);
+                                mapData, baseTimeStamp, width, decimalFormat);
                     default:
-                        throw new MapperException("未知的 process type: " + mapParam.getProcessType());
+                        throw new MapperException("未知的 process type: " + processType);
                 }
             } catch (MapperException e) {
                 throw e;
@@ -122,8 +115,7 @@ public class NumericGridMapperRegistry extends AbstractMapperRegistry {
             }
         }
 
-        private List<TimedValue> mapMaximum(
-                MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
+        private List<TimedValue> mapMaximum(MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
             List<TimedValue> timedValueList = new ArrayList<>();
             Grid[] grids = GridUtil.rasterizedData(mapData, baseTimeStamp, width);
             for (Grid grid : grids) {
@@ -139,8 +131,7 @@ public class NumericGridMapperRegistry extends AbstractMapperRegistry {
             return timedValueList;
         }
 
-        private List<TimedValue> mapMinimum(
-                MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
+        private List<TimedValue> mapMinimum(MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
             List<TimedValue> timedValueList = new ArrayList<>();
             Grid[] grids = GridUtil.rasterizedData(mapData, baseTimeStamp, width);
             for (Grid grid : grids) {
@@ -156,8 +147,7 @@ public class NumericGridMapperRegistry extends AbstractMapperRegistry {
             return timedValueList;
         }
 
-        private List<TimedValue> mapAverage(
-                MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
+        private List<TimedValue> mapAverage(MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
             List<TimedValue> timedValueList = new ArrayList<>();
             Grid[] grids = GridUtil.rasterizedData(mapData, baseTimeStamp, width);
             for (Grid grid : grids) {

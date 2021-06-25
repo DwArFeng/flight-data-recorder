@@ -1,7 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.impl.handler.mapper.GridUtil.Grid;
 import com.dwarfeng.fdr.impl.handler.mapper.GridUtil.GridData;
@@ -52,21 +50,13 @@ public class GeneralGridMapperRegistry extends AbstractMapperRegistry {
     @Override
     public String provideArgsIllustrate() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("元素0: JSON 文本\n");
-        stringBuilder.append("" +
-                "  {\n" +
-                "    \"base_time_stamp\":0,\n" +
-                "    \"process_type\":\"current\",\n" +
-                "    \"width\":60000\n" +
-                "  }\n\n"
-        );
-        stringBuilder.append("base_time_stamp: 时间戳, 栅格基点。\n");
-        stringBuilder.append("process_type: current/maximum_duration, 栅格处理方式。\n");
+        stringBuilder.append("元素0: long, 当指定时间段内没有数据的时候是否使用前刻数据代替。\n");
+        stringBuilder.append("元素1: long, 栅格宽度。\n");
+        stringBuilder.append("元素2: String enumeration in (current, maximum_duration), 栅格处理方式。\n");
         {
             stringBuilder.append("  current: 取栅格点当前的值。\n");
-            stringBuilder.append("  maximum_duration: 取栅格中持续时间最长的值。\n");
+            stringBuilder.append("  maximum_duration: 取栅格中持续时间最长的值。");
         }
-        stringBuilder.append("width: 数值, 栅格宽度。");
         return stringBuilder.toString();
     }
 
@@ -93,15 +83,17 @@ public class GeneralGridMapperRegistry extends AbstractMapperRegistry {
         @Override
         public List<TimedValue> map(MapData mapData) throws MapperException {
             try {
-                MapParam mapParam = JSON.parseObject((String) mapData.getArgs()[0], MapParam.class);
-                mapData.setArgs(new Object[]{mapParam.getBaseTimeStamp(), mapParam.getWidth()});
-                switch (mapParam.getProcessType()) {
+                long baseTimeStamp = (long) mapData.getArgs()[0];
+                long width = (long) mapData.getArgs()[1];
+                String processType = (String) mapData.getArgs()[2];
+
+                switch (processType) {
                     case PROCESS_TYPE_CURRENT:
-                        return mapCurrent(mapData, mapParam.getBaseTimeStamp(), mapParam.getWidth());
+                        return mapCurrent(mapData, baseTimeStamp, width);
                     case PROCESS_TYPE_MAXIMUM_DURATION:
-                        return mapMaximumDuration(mapData, mapParam.getBaseTimeStamp(), mapParam.getWidth());
+                        return mapMaximumDuration(mapData, baseTimeStamp, width);
                     default:
-                        throw new MapperException("未知的 process type: " + mapParam.getProcessType());
+                        throw new MapperException("未知的 process type: " + processType);
                 }
             } catch (MapperException e) {
                 throw e;
@@ -136,60 +128,6 @@ public class GeneralGridMapperRegistry extends AbstractMapperRegistry {
                 timedValueList.add(new TimedValue(value, new Date(grid.getBaseTimeStamp())));
             }
             return timedValueList;
-        }
-    }
-
-    private static class MapParam {
-
-        @JSONField(name = "base_time_stamp")
-        private long baseTimeStamp;
-
-        @JSONField(name = "width")
-        private long width;
-
-        @JSONField(name = "process_type")
-        private String processType;
-
-        public MapParam() {
-        }
-
-        public MapParam(long baseTimeStamp, long width, String processType) {
-            this.baseTimeStamp = baseTimeStamp;
-            this.width = width;
-            this.processType = processType;
-        }
-
-        public long getBaseTimeStamp() {
-            return baseTimeStamp;
-        }
-
-        public void setBaseTimeStamp(long baseTimeStamp) {
-            this.baseTimeStamp = baseTimeStamp;
-        }
-
-        public long getWidth() {
-            return width;
-        }
-
-        public void setWidth(long width) {
-            this.width = width;
-        }
-
-        public String getProcessType() {
-            return processType;
-        }
-
-        public void setProcessType(String processType) {
-            this.processType = processType;
-        }
-
-        @Override
-        public String toString() {
-            return "MapParam{" +
-                    "baseTimeStamp=" + baseTimeStamp +
-                    ", width=" + width +
-                    ", processType='" + processType + '\'' +
-                    '}';
         }
     }
 }
