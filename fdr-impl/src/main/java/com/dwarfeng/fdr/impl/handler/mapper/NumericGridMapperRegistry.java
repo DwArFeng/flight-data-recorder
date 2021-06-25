@@ -1,6 +1,5 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
 import com.dwarfeng.fdr.impl.handler.mapper.GridUtil.Grid;
 import com.dwarfeng.fdr.impl.handler.mapper.GridUtil.GridData;
@@ -164,8 +163,7 @@ public class NumericGridMapperRegistry extends AbstractMapperRegistry {
             return timedValueList;
         }
 
-        private List<TimedValue> mapWeightedAverage(
-                MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
+        private List<TimedValue> mapWeightedAverage(MapData mapData, long baseTimeStamp, long width, DecimalFormat decimalFormat) {
             List<TimedValue> timedValueList = new ArrayList<>();
             Grid[] grids = GridUtil.rasterizedData(mapData, baseTimeStamp, width);
             for (Grid grid : grids) {
@@ -181,72 +179,6 @@ public class NumericGridMapperRegistry extends AbstractMapperRegistry {
                 ));
             }
             return timedValueList;
-        }
-    }
-
-    private static class MapParam {
-
-        @JSONField(name = "base_time_stamp")
-        private long baseTimeStamp;
-
-        @JSONField(name = "width")
-        private long width;
-
-        @JSONField(name = "process_type")
-        private String processType;
-
-        @JSONField(name = "decimal_format")
-        private String decimalFormat;
-
-        public MapParam() {
-        }
-
-        public MapParam(long baseTimeStamp, long width, String processType) {
-            this.baseTimeStamp = baseTimeStamp;
-            this.width = width;
-            this.processType = processType;
-        }
-
-        public long getBaseTimeStamp() {
-            return baseTimeStamp;
-        }
-
-        public void setBaseTimeStamp(long baseTimeStamp) {
-            this.baseTimeStamp = baseTimeStamp;
-        }
-
-        public long getWidth() {
-            return width;
-        }
-
-        public void setWidth(long width) {
-            this.width = width;
-        }
-
-        public String getProcessType() {
-            return processType;
-        }
-
-        public void setProcessType(String processType) {
-            this.processType = processType;
-        }
-
-        public String getDecimalFormat() {
-            return decimalFormat;
-        }
-
-        public void setDecimalFormat(String decimalFormat) {
-            this.decimalFormat = decimalFormat;
-        }
-
-        @Override
-        public String toString() {
-            return "MapParam{" +
-                    "baseTimeStamp=" + baseTimeStamp +
-                    ", width=" + width +
-                    ", processType='" + processType + '\'' +
-                    ", decimalFormat='" + decimalFormat + '\'' +
-                    '}';
         }
     }
 }

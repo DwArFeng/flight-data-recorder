@@ -1,7 +1,7 @@
 package com.dwarfeng.fdr.impl.handler.mapper;
 
 import com.dwarfeng.dcti.stack.bean.dto.TimedValue;
-import com.dwarfeng.fdr.stack.handler.Mapper;
+import com.dwarfeng.fdr.stack.handler.Mapper.MapData;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ final class GridUtil {
      * @param width         栅格宽度。
      * @return 栅格，当数据无法建立时返回空数组。
      */
-    public static Grid[] rasterizedData(Mapper.MapData mapData, long baseTimeStamp, long width) {
+    public static Grid[] rasterizedData(MapData mapData, long baseTimeStamp, long width) {
         // 取出必要数据。
         List<TimedValue> timedValues = mapData.getTimedValues();
         TimedValue previous = mapData.getPrevious();
@@ -35,12 +35,16 @@ final class GridUtil {
 
         // 寻找起始栅格基点。
         baseTimeStamp = seekBegin(startTimeStamp, baseTimeStamp, width);
-        // 处理 timedValues，添加必要数据，保证其数量大于 2，
+        // 处理 timedValues，添加必要数据，保证其数量大于 2。
         timedValues = new ArrayList<>(timedValues);
         if (Objects.nonNull(previous)) {
             timedValues.add(0, previous);
         }
         timedValues.add(new TimedValue(null, new Date(Long.MAX_VALUE)));
+        // 如果处理后的 timedValues 数量不大于2，则直接返回空值。
+        if (timedValues.size() < 2) {
+            return new Grid[0];
+        }
 
         // 遍历并栅格化。
         List<Grid> gridList = new ArrayList<>();
